@@ -2,4 +2,4 @@
 
 NexCore Labs is a ✨ **best team ever** | 2025 cohort | _inspiring our env._ ✨
 
-progress makes improvement, not perfection.
+progress makes <ins>improvement</ins>, ~~not perfection~~.
