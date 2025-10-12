@@ -6,3 +6,9 @@ document.querySelectorAll('header nav a').forEach(anchor => {
     target.scrollIntoView({behavior: 'smooth'});
   });
 });
+
+// Log a message when the DOM is fully loaded
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("NexCore Hub loaded successfully.");
+});
