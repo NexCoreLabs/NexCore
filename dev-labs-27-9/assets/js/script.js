@@ -155,12 +155,17 @@ function dropButtonFunction() {
     }
   });
 
+
+  // Mobile Preview Transition
+  const phone = document.getElementById("phoneMockup");
+  if (phone) phone.addEventListener("click", openMobilePreview);
+  
   function openMobilePreview() {
-    window.open('mobile-preview.html', '_blank');
+      // add the expanding class
+  phone.classList.add("expand");
+
+  // wait for the animation to finish (same duration as CSS transition)
+  setTimeout(() => {
+    window.location.href = "mobile-preview.html";
+  }, 900); // 0.8s + small buffer
   }
-
-  let imgEl = document.querySelector('#mockupImg');
-
-  imgEl.addEventListener("contextmenu", (e) => {
-    e.preventDefault();
-  });

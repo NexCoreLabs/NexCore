@@ -86,25 +86,30 @@ div.large-screen{
         color: #9aa3b2;
     }
 
-    #mockupImg {
+    #phoneMockup {
       position: absolute;
       top: 64.5%;
       left: 40.5%;
       transform: translate(-50%, -50%);
       width: 100px;
-      transition: all 1s ease;
+      transition: all 0.8s ease-in-out;
       filter: drop-shadow(0 0 10px rgba(115, 188, 215, 0.2));
     }
 
-    #mockupImg:hover {
+    #phoneMockup:hover {
       cursor: pointer;
       padding-bottom: 10px;
       filter: drop-shadow(0 0 10px rgba(115,189,215,0.7));
     }
 
-    #mockupImg:active {
+    #phoneMockup:active {
       transform: translate(-50%, -50%) scale(0.98);
       filter: drop-shadow(0 0 10px rgba(115,189,215,0.4));
+    }
+
+    #phoneMockup.expand {
+      width: 100%;
+      filter: none;
     }
 }
 
