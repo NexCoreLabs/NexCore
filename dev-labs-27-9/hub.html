@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>          <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYZB5L2R8W"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-PYZB5L2R8W');
+        </script>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="NexCore Labs provides professional digital solutions and websites for student-led projects, showcasing innovation and excellence.">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="">
+
+        <title>NexCore | Hub</title>
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style-hub.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    </head>
+<body>
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <span class="dot"></span>
+      <h1>NexCore <span>Labs</span></h1>
+    </div>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="hub.html">Hub</a>
+      <a href="#team">Team</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="menu-toggle" id="menuToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</header>
+
+  <main>
+    <section class="hub-hero hero">
+      <div class="container">
+        <div class="hub-top">
+          <h1 class="title">NexCore Hub</h1>
+          <p class="lead">Central place for project cards, tool links and recent activity.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#projects">Projects</a>
+            <a class="btn ghost" href="#tools">Tools</a>
+          </div>
+        </div>
+      </div>
+      <div class="bg-orbit" aria-hidden="true"></div>
+    </section>
+
+    <section id="projects" class="panel">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <p class="section-lead">Active and archived projects. Click a card to open repository or demo.</p>
+
+        <div class="projects-grid reveal">
+          <a class="project-card" href="#" target="_blank" rel="noopener">
+            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
+            <p>Landing + demo website for Team Alpha Robotics.</p>
+          </a>
+
+          <a class="project-card" href="#" target="_blank" rel="noopener">
+            <div class="pc-top"><strong>Project Beta</strong><span class="status dev">DEV</span></div>
+            <p>Internal monitoring and build pipeline tools.</p>
+          </a>
+
+          <a class="project-card" href="#" target="_blank" rel="noopener">
+            <div class="pc-top"><strong>Mini Portfolio</strong><span class="status archived">ARCHIVED</span></div>
+            <p>Sample student portfolios and templates.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="activity" class="panel dark">
+      <div class="container">
+        <h2 class="section-title">Team Activity</h2>
+        <p class="section-lead">Manual updates — keep this area current.</p>
+
+        <ul class="activity-list reveal">
+          <li>✅ 2025-10-06 — Deployed Project Alpha landing.</li>
+          <li>🚧 2025-10-01 — Testing CI pipeline for Beta.</li>
+          <li>📚 2025-09-27 — New docs added to GitHub wiki.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="tools" class="panel">
+      <div class="container">
+        <h2 class="section-title">Tools & Integrations</h2>
+        <p class="section-lead">Quick links to accounts we use.</p>
+
+        <div class="tools-grid reveal">
+          <a class="tool-card" href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+          <a class="tool-card" href="#" target="_blank" rel="noopener">Trello</a>
+          <a class="tool-card" href="#" target="_blank" rel="noopener">Cloudflare</a>
+          <a class="tool-card" href="#" target="_blank" rel="noopener">UptimeRobot</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="f-left">
+        <span class="logo-mark">◐</span>
+        <small>NexCore Hub — © <span id="yearHub"></span></small>
+      </div>
+      <div class="f-right"><small>Back to <a href="index.html">Main site</a></small></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+  <script src="assets/js/script-hub.js"></script>
+</body>
+</html>
