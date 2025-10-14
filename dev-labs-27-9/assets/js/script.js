@@ -112,7 +112,7 @@ const dropButtonIcon = document.getElementById('dropButtonIcon');
 
 function dropButtonFunction() {
 
-    if(myDropdown.style.visibility == 'visible' || myDropdown.style.visibility == ''){
+    if(myDropdown.style.visibility == 'visible' && myDropdown.style.opacity == 1){
         dropButtonIcon.style.transform = 'rotateZ(0deg)';
         dropButtonIcon.style.background = 'none';
         myDropdown.style.visibility = 'hidden';
