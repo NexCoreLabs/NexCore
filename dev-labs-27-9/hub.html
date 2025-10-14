@@ -16,7 +16,7 @@
         <meta name="author" content="NexCore Labs">
         <meta name="keywords" content="">
 
-        <title>NexCore | Hub</title>
+        <title>NexCore | Hub (Dev)</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/style.css">
@@ -30,19 +30,17 @@
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <span class="dot"></span>
-      <h1>NexCore <span>Labs</span></h1>
+      <h1 id="logo">NexCore <span>Dev.</span></h1>
     </div>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="hub.html">Hub</a>
-      <a href="#team">Team</a>
-      <a href="#contact">Contact</a>
-    </nav>
-
-    <div class="menu-toggle" id="menuToggle">
-      <span></span><span></span><span></span>
+    <div class="dropdown">
+        <button onclick="dropButtonFunction()" id="dropButton" class="dropbtn" title="Menu"><i id="dropButtonIcon" class="fa-solid fa-bars"></i></button>
+        <div id="myDropdown" class="dropdown-content">
+            <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+            <a href="index.html" id="" title="Homepage">Home</a>
+            <a href="index.html#team" id="" title="Our Team">Team</a>
+            <a href="index.html#contact" id="" title="Contact Us">Contact</a>
+        </div>
     </div>
   </div>
 </header>

@@ -16,7 +16,7 @@
         <meta name="author" content="NexCore Labs">
         <meta name="keywords" content="">
 
-        <title>NexCore - Digital Solutions for Student Projects</title>
+        <title>NexCore Labs (Dev)</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/style.css">
@@ -25,24 +25,24 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     </head>
 <body>
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">
-      <span class="dot"></span>
-      <h1>NexCore <span>Labs</span></h1>
+      <h1 id="logo">NexCore <span>Dev.</span></h1>
     </div>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="index.html">Home</a>
-      <a href="hub.html">Hub</a>
-      <a href="#team">Team</a>
-      <a href="#contact">Contact</a>
-    </nav>
-
-    <div class="menu-toggle" id="menuToggle">
-      <span></span><span></span><span></span>
+    <div class="dropdown">
+        <button onclick="dropButtonFunction()" id="dropButton" class="dropbtn" title="Menu"><i id="dropButtonIcon" class="fa-solid fa-bars"></i></button>
+        <div id="myDropdown" class="dropdown-content">
+            <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+            <a href="hub.html" id="" title="NexCore Hub">Hub</a>
+            <a href="#team" id="" title="Our Team">Team</a>
+            <a href="#contact" id="" title="Contact Us">Contact</a>
+        </div>
     </div>
   </div>
 </header>
@@ -72,7 +72,7 @@
               <div class="kpis">
                 <div><strong>00+</strong><span>projects</span></div>
                 <div><strong>06</strong><span>members</span></div>
-                <div><strong>24h</strong><span>support</span></div>
+                <div><strong>32h</strong><span>support</span></div>
               </div>
             </div>
           </div>
@@ -127,7 +127,7 @@
 
           <div class="member">
             <div class="member-inner">
-              <div class="avatar"><a href="https://blinq.me/cmgj73hwc03qss60m11k9dxi2" target="_blank"><img src="assets/images/" alt="Co-Leader Profile Picture" width="55"></a></div>
+              <div class="avatar"><a href="https://blinq.me/cmgj73hwc03qss60m11k9dxi2" target="_blank"><img src="assets/images/" alt="Co-Leader Profile Picture"></a></div>
               <h4>Al-Mukhtar AlAbri <br><sup style="font-size: 10px; font-weight: 500;">Co-Leader</sup></h4>
               <p class="muted">Coordinator</p>
             </div>
@@ -221,8 +221,7 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="f-left">
-        <span class="logo-mark">◐</span>
-        <small>NexCore Labs — © <span id="year"></span></small>
+        <small>NexCore Labs © <span id="year"></span></small>
       </div>
       <div class="f-right"><small>Built with focus • Designed for clarity</small></div>
     </div>

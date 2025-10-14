@@ -10,17 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const notice = document.getElementById('formNotice');
   const resetBtn = document.getElementById('resetBtn');
 
+// Smooth scroll to the top when the logo is clicked
+document.getElementById('logo').addEventListener('click', function (event) {
+  event.preventDefault(); // Prevent default anchor behavior
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // Smooth scrolling
+  });
+});
+
   // set year
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // mobile menu toggle
-  if (menuToggle && navList) {
-    menuToggle.addEventListener('click', () => {
-      const isOpen = navList.style.display === 'flex';
-      navList.style.display = isOpen ? '' : 'flex';
-      menuToggle.setAttribute('aria-expanded', (!isOpen).toString());
-    });
-  }
 
   // smooth scroll offset for anchored links on same page
   document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -104,20 +104,53 @@ resetBtn.addEventListener('click', () => {
   }
 });
 
-// Toggle menu
-const menuToggle = document.getElementById("menuToggle");
-const navLinks = document.getElementById("navLinks");
+                    // Dropdown Menu
 
-menuToggle.addEventListener("click", () => {
-  navLinks.classList.toggle("active");
-});
+const myDropdown = document.getElementById('myDropdown');
+const dropButton = document.getElementById('dropButton');
+const dropButtonIcon = document.getElementById('dropButtonIcon');
 
-// Sticky fade on scroll
-window.addEventListener("scroll", () => {
-  const navbar = document.querySelector(".navbar");
-  if (window.scrollY > 30) {
-    navbar.classList.add("scrolled");
-  } else {
-    navbar.classList.remove("scrolled");
+function dropButtonFunction() {
+
+    if(myDropdown.style.visibility == 'visible' || myDropdown.style.visibility == ''){
+        dropButtonIcon.style.transform = 'rotateZ(0deg)';
+        dropButtonIcon.style.background = 'none';
+        myDropdown.style.visibility = 'hidden';
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = 'translateY(0)';
+        myDropdown.style.userSelect = 'none';
+    } else{
+        dropButtonIcon.style.transform = 'rotateZ(-90deg)';
+        dropButtonIcon.style.background = 'rgba(115, 189, 215, 0.05)';
+        myDropdown.style.visibility = 'visible';
+        myDropdown.style.opacity = 1;
+        myDropdown.style.transform = 'translateY(10px)';
+        myDropdown.style.userSelect = 'auto';
+    }
   }
-});
+  
+  function filterFunction() {
+    const input = document.getElementById("myInput");
+    const filter = input.value.toUpperCase();
+    const div = document.getElementById("myDropdown");
+    const a = div.getElementsByTagName("a");
+    for (let i = 0; i < a.length; i++) {
+      txtValue = a[i].textContent || a[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        a[i].style.display = "";
+      } else {
+        a[i].style.display = "none";
+      }
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    if (!dropButton.contains(event.target) && !myDropdown.contains(event.target)) {
+        dropButtonIcon.style.transform = 'rotateZ(0deg)';
+        dropButtonIcon.style.background = 'none';
+        myDropdown.style.visibility = 'hidden';
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = 'translateY(0)';
+        myDropdown.style.userSelect = 'none';
+    }
+  });
