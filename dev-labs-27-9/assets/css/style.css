@@ -195,7 +195,7 @@ button, .btn {
 }
 .tiny{color:var(--muted); font-size:13px; margin-top:10px; display:inline-block;}
 
-.hero-right{width:420px; display:flex; align-items:center; justify-content:center;}
+.hero-right{width:420px; display:flex; align-items:center; justify-content:center; cursor: default; margin-top: 20px;}
 
 /* glass card */
 .glass-card{width:360px; border-radius:18px; padding:20px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform:translateY(0); transition:transform .45s cubic-bezier(.2,.9,.3,1);}
@@ -203,6 +203,7 @@ button, .btn {
 .card-wave{position:absolute; right:-30%; top:-40%; width:200%; height:200%; background:
   radial-gradient(circle at 20% 20%, rgba(115,189,215,0.06), transparent 8%),
   radial-gradient(circle at 60% 60%, rgba(172,217,229,0.04), transparent 10%); transform:rotate(8deg); pointer-events:none;}
+
 .card-content h4{margin:0 0 8px; font-size:18px;}
 .card-content p{color:var(--muted); margin:0 0 12px; font-size:14px;}
 .kpis{display:flex; gap:12px; margin-top:8px;}
@@ -265,6 +266,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 /* footer */
 .site-footer{padding:28px 0; border-top:1px solid rgba(255,255,255,0.03); margin-top:28px; user-select: none; cursor: default;}
 .footer-inner{display:flex; align-items:center; justify-content:space-between; gap:20px; color:var(--muted);}
+.f-left, .f-right{font-size:14px;}
+.f-right a{color:var(--primary-accent); text-decoration:underline;}
 
 /* reveal animation base */
 .reveal{opacity:0; transform: translateY(12px) scale(0.997); transition:all .68s cubic-bezier(.2,.9,.3,1); will-change:transform,opacity;}
