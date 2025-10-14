@@ -43,6 +43,47 @@ body {
     scrollbar-color: #6EE7F3;
 }
 
+
+div.large-screen{
+    display: none;
+}
+
+@media screen and (min-width: 1201px){
+
+    main, header, footer{
+        display: none;
+    }
+
+    div.large-screen{
+        user-select: none;
+        text-align: center;
+        display: block;
+        padding: 32PX;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    div.large-screen img.screens{
+        width: 600px;
+        margin: 20% 0;
+        margin-bottom: 32px;
+    }
+
+    div.large-screen span.h2{
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    div.large-screen p.detail{
+        font-size: 20px;
+        font-weight: 500;
+        color: #9aa3b2;
+    }
+}
+
+
 a{color:inherit; text-decoration:none;}
 
 .dropdown{
