@@ -154,3 +154,13 @@ function dropButtonFunction() {
         myDropdown.style.userSelect = 'none';
     }
   });
+
+  function openMobilePreview() {
+    window.open('mobile-preview.html', '_blank');
+  }
+
+  let imgEl = document.querySelector('#mockupImg');
+
+  imgEl.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
