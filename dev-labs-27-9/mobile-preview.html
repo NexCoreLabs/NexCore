@@ -38,20 +38,44 @@
                 padding: 32PX;
 
             }
+
+            h1 {
+                position: absolute;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
             iframe {
                 position: absolute;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%, -50%);
-                width: 380px;
-                height: 814px;
-                border: 8px solid #111;
-                border-radius: 30px;
-                box-shadow: 0 0 30px rgba(115,189,215,0.4);
+                width: 330px;
+                height: 650px;
+                border-radius: 40px;
+                border: none;
+                transform: scale(3) translate(-15%, -15%);
             }
+
+            /* target mobile size after animation */
+            iframe.shrink {
+                transform: scale(1) translate(-50%, -50%);
+                box-shadow: 0 0 40px rgba(115, 189, 215, 0.4);
+                border: 6px solid rgba(115, 189, 215, 0.25);
+                transition: all 0.8s ease-in-out;
+            }
+
         </style>
     </head>
     <body>
-    <iframe src="index.html"></iframe>
+        <h1>NexCore Mobile Preview (Dev)</h1>
+        <iframe src="index.html" id="previewIframe" frameborder="0"></iframe>
     </body>
+  <script>
+    // Wait for the page to load, then start the shrink animation
+    window.addEventListener("load", () => {
+      const iframe = document.getElementById("previewIframe");
+      iframe.classList.add("shrink");
+    });
+  </script>
 </html>
