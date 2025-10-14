@@ -114,7 +114,7 @@ function dropButtonFunction() {
 
     if(myDropdown.style.visibility == 'visible' && myDropdown.style.opacity == 1){
         dropButtonIcon.style.transform = 'rotateZ(0deg)';
-        dropButtonIcon.style.background = 'none';
+        dropButtonIcon.style.background = 'transparent';
         myDropdown.style.visibility = 'hidden';
         myDropdown.style.opacity = 0;
         myDropdown.style.transform = 'translateY(0)';
@@ -147,7 +147,7 @@ function dropButtonFunction() {
   document.addEventListener('click', (event) => {
     if (!dropButton.contains(event.target) && !myDropdown.contains(event.target)) {
         dropButtonIcon.style.transform = 'rotateZ(0deg)';
-        dropButtonIcon.style.background = 'none';
+        dropButtonIcon.style.background = 'transparent';
         myDropdown.style.visibility = 'hidden';
         myDropdown.style.opacity = 0;
         myDropdown.style.transform = 'translateY(0)';
