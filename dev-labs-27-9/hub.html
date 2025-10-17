@@ -134,5 +134,29 @@
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/script-hub.js"></script>
+  <script>
+async function loadProjects() {
+  const response = await fetch('data/projects.json');
+  const data = await response.json();
+
+  const container = document.querySelector('.projects-container');
+  container.innerHTML = ''; // clear existing
+
+  data.projects.forEach(project => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <h3>${project.name}</h3>
+      <p>Project ID: ${project.id}</p>
+    `;
+    container.appendChild(card);
+  });
+
+  // update project count globally
+  localStorage.setItem('projectCount', data.projects.length);
+}
+
+loadProjects();
+</script>
 </body>
 </html>

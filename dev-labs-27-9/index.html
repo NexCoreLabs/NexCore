@@ -240,5 +240,21 @@
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/script-index.js"></script>
+  <script>
+async function updateProjectCount() {
+  try {
+    const response = await fetch('data/projects.json');
+    const data = await response.json();
+    const projectCount = data.projects.length;
+
+    const numberElement = document.querySelector('.stat.projects .number');
+    if (numberElement) numberElement.textContent = projectCount + '+';
+  } catch (error) {
+    console.error('Error loading project count:', error);
+  }
+}
+
+updateProjectCount();
+</script>
 </body>
 </html>
