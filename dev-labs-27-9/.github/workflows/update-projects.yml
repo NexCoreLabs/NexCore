@@ -24,24 +24,56 @@ jobs:
           mkdir -p data
           node <<'EOF'
           const fs = require('fs');
+
           const html = fs.readFileSync('hub.html', 'utf8');
 
-          // match each card element
+          // Match project cards
           const matches = [...html.matchAll(/<div\s+class="project-card"[^>]*>([\s\S]*?)<\/div>/g)];
 
-          const projects = matches.map((m, i) => ({
-            id: i + 1,
-            name: (m[1].match(/<h3>(.*?)<\/h3>/) || [])[1] || `Project ${i + 1}`
-          }));
+          const projects = matches.map((m, i) => {
+            // Extract project name
+            const nameMatch = m[1].match(/<h3[^>]*>(.*?)<\/h3>/);
+            const name = nameMatch ? nameMatch[1].trim() : `Project ${i + 1}`;
 
-          fs.writeFileSync('data/projects.json', JSON.stringify({ projects }, null, 2));
-          console.log(`✅ Updated ${projects.length} projects.`);
+            // Optional: extract description (if available)
+            const descMatch = m[1].match(/<p[^>]*>(.*?)<\/p>/);
+            const description = descMatch ? descMatch[1].trim() : "";
+
+            return {
+              id: i + 1,
+              name,
+              description
+            };
+          });
+
+          // Load old JSON if it exists
+          const jsonPath = 'data/projects.json';
+          let oldData = { projects: [] };
+          if (fs.existsSync(jsonPath)) {
+            try {
+              oldData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            } catch (e) {
+              console.warn('⚠️ Could not parse existing projects.json, recreating...');
+            }
+          }
+
+          // Compare hashes (to avoid unnecessary commits)
+          const newData = { projects };
+          const changed = JSON.stringify(newData) !== JSON.stringify(oldData);
+
+          if (changed) {
+            fs.writeFileSync(jsonPath, JSON.stringify(newData, null, 2));
+            console.log(`✅ Updated ${projects.length} projects.`);
+          } else {
+            console.log('ℹ️ No changes detected, skipping update.');
+          }
           EOF
 
       - name: Commit and push changes
+        if: success()
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add data/projects.json
-          git commit -m "Auto-update projects.json [skip ci]" || echo "No changes"
+          git diff --cached --quiet && echo "No JSON changes to commit." || git commit -m "Auto-update projects.json [skip ci]"
           git push
