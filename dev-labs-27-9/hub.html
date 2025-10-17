@@ -76,21 +76,22 @@
         <h2 class="section-title">Projects</h2>
         <p class="section-lead">Active and archived projects. Click a card to open repository or demo.</p>
 
-        <div class="projects-grid reveal">
+        <div class="projects-grid reveal" id="projects-container">
           <a class="project-card" href="#" target="_blank" rel="noopener">
             <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
             <p>Landing + demo website for Team Alpha Robotics.</p>
           </a>
 
           <a class="project-card" href="#" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>Project Beta</strong><span class="status dev">DEV</span></div>
-            <p>Internal monitoring and build pipeline tools.</p>
+            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
+            <p>Landing + demo website for Team Alpha Robotics.</p>
           </a>
 
           <a class="project-card" href="#" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>Mini Portfolio</strong><span class="status archived">ARCHIVED</span></div>
-            <p>Sample student portfolios and templates.</p>
+            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
+            <p>Landing + demo website for Team Alpha Robotics.</p>
           </a>
+
         </div>
       </div>
     </section>
@@ -135,28 +136,28 @@
   <script src="assets/js/script.js"></script>
   <script src="assets/js/script-hub.js"></script>
   <script>
-async function loadProjects() {
-  const response = await fetch('data/projects.json');
-  const data = await response.json();
+    async function loadProjects() {
+      const response = await fetch('data/projects.json');
+      const data = await response.json();
 
-  const container = document.querySelector('.projects-container');
-  container.innerHTML = ''; // clear existing
+      const container = document.querySelector('#projects-container');
+      container.innerHTML = ''; // clear existing
 
-  data.projects.forEach(project => {
-    const card = document.createElement('div');
-    card.className = 'project-card';
-    card.innerHTML = `
-      <h3>${project.name}</h3>
-      <p>Project ID: ${project.id}</p>
-    `;
-    container.appendChild(card);
-  });
+      data.projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        card.innerHTML = `
+          <h3>${project.name}</h3>
+          <p>Project ID: ${project.id}</p>
+        `;
+        container.appendChild(card);
+      });
 
-  // update project count globally
-  localStorage.setItem('projectCount', data.projects.length);
-}
+      // update project count globally
+      localStorage.setItem('projectCount', data.projects.length);
+    }
 
-loadProjects();
-</script>
+    loadProjects();
+  </script>
 </body>
 </html>
