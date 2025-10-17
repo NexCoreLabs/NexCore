@@ -76,19 +76,28 @@ div.large-screen{
     }
 
     div.large-screen span.h2{
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 600;
     }
 
     div.large-screen p.detail{
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 500;
         color: #9aa3b2;
+        margin-top: 12px;
+        margin-bottom: 0;
     }
+
+        div.large-screen p.tap-hint{
+        font-size: 14px;
+        font-weight: 400;
+        color: #9aa3b2;
+        margin-top: 12px;
+        }
 
     #phoneMockup {
       position: absolute;
-      top: 64.5%;
+      top: 61%;
       left: 40.5%;
       transform: translate(-50%, -50%);
       width: 100px;
