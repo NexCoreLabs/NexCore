@@ -1,8 +1,6 @@
 {
   "projects": [
-    {
-      "id": 1,
-      "name": "NexCore Website"
-    }
+    { "id": 1, "name": "NexCore Website" },
+    { "id": 2, "name": "Space Vision Portal" }
   ]
 }
