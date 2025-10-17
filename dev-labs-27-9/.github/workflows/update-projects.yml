@@ -1,0 +1,47 @@
+name: Update Projects JSON
+
+on:
+  push:
+    paths:
+      - "hub.html"
+  workflow_dispatch:
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate projects.json from hub.html
+        run: |
+          mkdir -p data
+          node <<'EOF'
+          const fs = require('fs');
+          const html = fs.readFileSync('hub.html', 'utf8');
+
+          // match each card element
+          const matches = [...html.matchAll(/<div\s+class="project-card"[^>]*>([\s\S]*?)<\/div>/g)];
+
+          const projects = matches.map((m, i) => ({
+            id: i + 1,
+            name: (m[1].match(/<h3>(.*?)<\/h3>/) || [])[1] || `Project ${i + 1}`
+          }));
+
+          fs.writeFileSync('data/projects.json', JSON.stringify({ projects }, null, 2));
+          console.log(`✅ Updated ${projects.length} projects.`);
+          EOF
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/projects.json
+          git commit -m "Auto-update projects.json [skip ci]" || echo "No changes"
+          git push
