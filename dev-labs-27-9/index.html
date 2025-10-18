@@ -78,12 +78,12 @@
           <div class="glass-card" id="glassCard">
             <div class="card-wave"></div>
             <div class="card-content">
-              <h4>Active Projects</h4>
-              <p class="muted">Alpha · Beta · Monitoring</p>
+              <h4>Current Initiatives</h4>
+              <p class="muted">Planning · Development · Monitoring</p>
               <div class="kpis">
-                <a href="hub.html"><div class="stat"><strong class="number">00+</strong><span>projects</span></div></a>
-                <div class="stat"><strong>06</strong><span>members</span></div>
-                <div class="stat"><strong>48h</strong><span>support</span></div>
+                <a href="hub.html"><div class="stat"><strong id="team-number">00+</strong><span>projects</span><div class="tooltip">All ongoing projects currently active</div></div></a>
+                <div class="stat"><strong id="tasks">120+</strong><span>tasks</span><div class="tooltip">We’ve completed 120+ small actionable items</div></div>
+                <div class="stat"><strong id="support">48h</strong><span>support</span><div class="tooltip">Our support responds within 48-hours</div></div>
               </div>
             </div>
           </div>
@@ -247,8 +247,9 @@
         const data = await response.json();
         const projectCount = data.projects.length;
 
-        const numberElement = document.querySelector('.stat .number');
-        if (numberElement) numberElement.textContent = projectCount + '+';
+
+        const teamNumberElement = document.querySelector('.stat #team-number');
+        if (teamNumberElement) teamNumberElement.textContent = projectCount + '+';
       } catch (error) {
         console.error('Error loading project count:', error);
       }
