@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "Crafted with care • Inspired by simplicity",
       "Fast • Focused • Clean",
       // brand icons will render if Font Awesome CSS loaded
-      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> and <i class="fa-brands fa-android" aria-hidden="true"></i>'
+      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>'
     ];
 
     // initial index: show first sentence immediately (index 0 already in HTML)

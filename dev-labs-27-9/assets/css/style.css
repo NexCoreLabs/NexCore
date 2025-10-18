@@ -280,7 +280,7 @@ button, .btn {
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 0 6px rgba(115, 189, 215, 0.2);
 }
-.tiny{color:var(--muted); font-size:13px; margin-top:30px; display:inline-block; cursor: default; user-select: none;}
+.tiny{color:var(--muted); font-size:13px; margin-top:30px; margin-bottom: 10px; display:inline-block; cursor: default; user-select: none;}
 
 .hero-right{width:420px; display:flex; align-items:center; justify-content:center; cursor: default; margin-top: 20px;}
 
