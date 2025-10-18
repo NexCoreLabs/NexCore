@@ -1,12 +1,15 @@
 body {
-display: flex;
-align-items: center;
-justify-content: center;
-height: 100vh;
-text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    font-family: "Inter", sans-serif;
 }
 
-a { color: #73BDD7; }
+a {
+    color: #73BDD7;
+}
 
 @media screen and (min-width: 1201px){
     main{
