@@ -77,21 +77,7 @@
         <p class="section-lead">Active and archived projects. Click a card to open repository or demo.</p>
 
         <div class="projects-grid reveal" id="projects-container">
-          <a class="project-card" href="#" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
-            <p>Landing + demo website for Team Alpha Robotics.</p>
-          </a>
-
-          <a class="project-card" href="#" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
-            <p>Landing + demo website for Team Alpha Robotics.</p>
-          </a>
-
-          <a class="project-card" href="#" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>Project Alpha</strong><span class="status live">LIVE</span></div>
-            <p>Landing + demo website for Team Alpha Robotics.</p>
-          </a>
-
+          <!-- Project cards will be loaded here dynamically -->
         </div>
       </div>
     </section>
@@ -147,9 +133,10 @@
         const card = document.createElement('div');
         card.className = 'project-card';
         card.innerHTML = `
-          <h3>${project.name}</h3>
-          <p>${project.description}</p>
-          <p>Project ID: ${project.id}</p>
+          <a class="project-card" href="${project.link}" target="_blank" rel="noopener">
+            <div class="pc-top"><strong>${project.name}</strong><span class="status live">Proj-${project.id}</span></div>
+            <p>${project.description}</p>
+          </a>
         `;
         container.appendChild(card);
       });

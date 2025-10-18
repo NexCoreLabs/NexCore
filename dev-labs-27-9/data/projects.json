@@ -1,9 +1,8 @@
 {
   "projects": [
-    { "id": 1, "name": "NexCore Website", "description": "The main website for NexCore" },
-    { "id": 2, "name": "Space Vision Portal", "description": "A portal for visualizing space data" },
-    { "id": 3, "name": "AI Research Lab", "description": "Exploring advanced AI algorithms" },
-    { "id": 4, "name": "Open Source Contributions", "description": "Various open source projects and contributions" },
-    { "id": 5, "name": "Mobile App Development", "description": "Developing mobile applications for iOS and Android" }
+    { "id": 1, "name": "Space Vision Portal", "description": "A portal for visualizing space data", "link": "" },
+    { "id": 2, "name": "AI Research Lab", "description": "Exploring advanced AI algorithms", "link": "" },
+    { "id": 3, "name": "Open Source Contributions", "description": "Various open source projects and contributions", "link": "" },
+    { "id": 4, "name": "Mobile App Development", "description": "Developing mobile applications for iOS and Android", "link": "" }
   ]
 }
