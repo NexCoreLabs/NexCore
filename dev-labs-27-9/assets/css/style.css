@@ -378,8 +378,21 @@ article.info-card:hover{box-shadow:0 12px 40px rgba(3,6,12,0.8); transform:trans
   box-shadow: 0 0 12px rgba(115, 189, 215, 0.4);
 }
 
+.tool-card span{}
+
+.tool-card:hover span{
+  opacity: 0.2;
+}
+
+.tool-card:hover img{
+  visibility: visible;
+  opacity: 1;
+}
+
 .tool-card img{
-  width: 32px;
+  position: absolute;
+  width: 30px;
+  opacity: 0.3;
 }
 
 /* contact */
