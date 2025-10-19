@@ -25,6 +25,8 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     </head>
 <body>
 <header class="navbar">
@@ -94,20 +96,6 @@
         </ul>
       </div>
     </section>
-
-    <section id="tools" class="panel">
-      <div class="container">
-        <h2 class="section-title">Tools & Integrations</h2>
-        <p class="section-lead">Quick links to accounts we use.</p>
-
-        <div class="tools-grid reveal">
-          <a class="tool-card" href="https://github.com" target="_blank" rel="noopener">GitHub</a>
-          <a class="tool-card" href="#" target="_blank" rel="noopener">Trello</a>
-          <a class="tool-card" href="#" target="_blank" rel="noopener">Cloudflare</a>
-          <a class="tool-card" href="#" target="_blank" rel="noopener">UptimeRobot</a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer class="site-footer">
@@ -134,7 +122,7 @@
         card.className = 'project-card';
         card.innerHTML = `
           <a class="project-card" href="${project.link}" target="_blank" rel="noopener">
-            <div class="pc-top"><strong>${project.name}</strong><span class="status live">Proj-${project.id}</span></div>
+            <div class="pc-top"><strong>${project.name}</strong><span class="id">Proj-${project.id}</span></div>
             <p>${project.description}</p>
           </a>
         `;
