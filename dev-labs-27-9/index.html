@@ -127,16 +127,20 @@
         <p class="section-lead">Quick links to tools & services we use.</p>
 
         <div class="tools-grid reveal">
-          <a class="tool-card" href="https://chatgpt.com/" target="_blank" rel="noopener"><img src="assets/images/openai.png"><span>ChatGPT</span></a>
-          <a class="tool-card" href="https://grok.com/" target="_blank" rel="noopener"><img src="assets/images/grok.png"><span>Grok</span></a>
-          <a class="tool-card" href="https://github.com" target="_blank" rel="noopener"><img src="assets/images/github.png"><span>GitHub</span></a>
-          <a class="tool-card" href="https://trello.com/" target="_blank" rel="noopener"><img src="assets/images/trello.png"><span>Trello</span></a>
-          <a class="tool-card" href="https://uptimerobot.com/" target="_blank" rel="noopener"><img src="assets/images/uptimerobot.png"><span>UptimeRobot</span></a>
-          <a class="tool-card" href="https://analytics.google.com/" target="_blank" rel="noopener"><img src="assets/images/googleanalytics.png"><span>Google Analytics</span></a>
-          <a class="tool-card" href="https://search.google.com/search-console" target="_blank" rel="noopener"><img src="assets/images/googlesearchconsole.png"><span>Google Search Console</span></a>
-          <a class="tool-card" href="https://fonts.google.com/" target="_blank" rel="noopener"><img src="assets/images/googlefont.png"><span>Google Font</span></a>
-          <a class="tool-card" href="https://www.flaticon.com/" target="_blank" rel="noopener"><img src="assets/images/flaticon.png"><span>Flaticon</span></a>
-          <a class="tool-card" href="https://fontawesome.com/" target="_blank" rel="noopener"><img src="assets/images/fontawesome.png"><span>Font Awesome</span></a>
+          <a class="tool-card" href="https://chatgpt.com/" target="_blank" rel="noopener"><span>ChatGPT</span><img src="assets/images/openai.png"></a>
+          <a class="tool-card" href="https://x.ai/" target="_blank" rel="noopener"><span>xAI</span><img id="xai" src="assets/images/xai.png"></a>
+          <a class="tool-card" href="https://github.com/" target="_blank" rel="noopener"><span>GitHub</span><img src="assets/images/github.png"></a>
+          <a class="tool-card" href="https://code.visualstudio.com/" target="_blank" rel="noopener"><span>Visual Studio Code</span><img src="assets/images/vscode.png"></a>
+          <a class="tool-card" href="https://trello.com/" target="_blank" rel="noopener"><span>Trello</span><img src="assets/images/trello.png"></a>
+          <a class="tool-card" href="https://uptimerobot.com/" target="_blank" rel="noopener"><span>UptimeRobot</span><img src="assets/images/uptimerobot.png"></a>
+          <a class="tool-card" href="https://supabase.com/" target="_blank" rel="noopener"><span>Supabase</span><img src="assets/images/supabase.png"></a>
+          <a class="tool-card" href="https://analytics.google.com/" target="_blank" rel="noopener"><span>Google Analytics</span><img src="assets/images/googleanalytics.png"></a>
+          <a class="tool-card" href="https://search.google.com/search-console/" target="_blank" rel="noopener"><span>Google Search Console</span><img src="assets/images/googlesearchconsole.png"></a>
+          <a class="tool-card" href="https://fonts.google.com/" target="_blank" rel="noopener"><span>Google Font</span><img src="assets/images/googlefont.png"></a>
+          <a class="tool-card" href="https://inkscape.org/" target="_blank" rel="noopener"><span>Inkscape</span><img src="assets/images/inkscape.png"></a>
+          <a class="tool-card" href="https://shots.so/" target="_blank" rel="noopener"><span>Shots</span><img src="assets/images/shots.png"></a>
+          <a class="tool-card" href="https://www.flaticon.com/" target="_blank" rel="noopener"><span>Flaticon</span><img src="assets/images/flaticon.png"></a>
+          <a class="tool-card" href="https://fontawesome.com/" target="_blank" rel="noopener"><span>Font Awesome</span><img src="assets/images/fontawesome.png"></a>
         </div>
       </div>
     </section>
@@ -227,20 +231,20 @@
                 <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
                 <label class="field">
-                <input name="name" id="name" type="text" placeholder="Your Full Name" required>
+                  <input name="name" id="name" type="text" placeholder="Your Name">
                 </label>
 
                 <label class="field">
-                <input name="email" id="email" type="email" placeholder="Your Email" required>
+                  <input name="email" id="email" type="email" placeholder="Your Email" required>
                 </label>
 
                 <label class="field">
-                <textarea name="message" id="message" rows="4" placeholder="Message" required></textarea>
+                  <textarea name="message" id="message" rows="4" placeholder="Message" required></textarea>
                 </label>
 
                 <div class="form-actions">
-                <button type="submit" class="btn primary">Send Message</button>
-                <button type="button" id="resetBtn" class="btn ghost">Reset</button>
+                  <button type="submit" class="btn primary">Send Message</button>
+                  <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
                 </div>
 
                 <p class="notice" id="formNotice" aria-live="polite"></p>

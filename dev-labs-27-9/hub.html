@@ -65,7 +65,7 @@
           <h1 class="title">NexCore Hub</h1>
           <p class="lead">Central place for project cards, tool links and recent activity.</p>
           <div class="hero-actions">
-            <a class="btn primary" href="#signup">Sign-up your team</a>
+            <a class="btn primary" href="#signup">Sign-up Your Team</a>
             <a class="btn ghost" href="#projects">Projects</a>
           </div>
         </div>
@@ -99,14 +99,36 @@
 
     <section id="signup" class="panel dark">
       <div class="container">
-        <h2 class="section-title">Team Activity</h2>
-        <p class="section-lead">Manual updates — keep this area current.</p>
+        <h2 class="section-title">Sign-Up</h2>
+        <p class="section-lead">Join us by submitting your project! Fill in your details below and let’s bring your idea to life.</p>
 
-        <ul class="activity-list reveal">
-          <li>✅ 2025-10-06 — Deployed Project Alpha landing.</li>
-          <li>🚧 2025-10-01 — Testing CI pipeline for Beta.</li>
-          <li>📚 2025-09-27 — New docs added to GitHub wiki.</li>
-        </ul>
+        <form id="signupForm" class="signup-form reveal">
+          <label class="field">
+            <input name="projectName" placeholder="Project Name" required>
+          </label>
+
+          <label class="field">
+            <input name="leaderName" placeholder="Leader Name" required>
+          </label>
+
+          <label class="field">
+            <input name="leaderEmail" type="email" placeholder="Leader Email" required>
+          </label>
+
+          <label class="field">
+            <textarea name="idea" rows="4" placeholder="Project Idea" required></textarea>
+          </label>
+          
+          <label class="field checkbox-field">
+            <input type="checkbox" name="terms" required>
+            <p>I'm the leader of the team.</p>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Submit</button>
+            <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
+          </div>
+        </form>
       </div>
     </section>
   </main>
@@ -148,5 +170,23 @@
 
     loadProjects();
   </script>
+  <script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+  const supabase = createClient('https://qacupmuqeuqspfhwosfu.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3VwbXVxZXVxc3BmaHdvc2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODc0MDksImV4cCI6MjA3NjQ2MzQwOX0.wg3Csls252_yP4P0-CgYrop0W1DqtlyNO2XpbdZ5Zzk')
+
+  document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault()
+    const form = new FormData(e.target)
+    const { error } = await supabase.from('teams').insert({
+      project_name: form.get('projectName'),
+      leader_name: form.get('leaderName'),
+      leader_email: form.get('leaderEmail'),
+      idea: form.get('idea')
+    })
+    alert(error ? 'Error submitting form.' : 'Submitted successfully!')
+  })
+</script>
 </body>
 </html>
