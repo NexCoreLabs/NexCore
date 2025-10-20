@@ -190,14 +190,14 @@
 
           // Insert into Supabase
           const { data, error } = await supabase
-            .from('projects') // your table name
+            .from('teams_sign_up_form') // your table name
             .insert([
-              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, terms_accepted: terms }
+              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea}
             ])
 
           if (error) {
-            console.error('Error inserting data:', error)
-            alert('Failed to submit. Try again.')
+            console.error(error)
+            alert('Failed to submit: ' + error.message)
           } else {
             alert('Project submitted successfully!')
             signupForm.reset()
