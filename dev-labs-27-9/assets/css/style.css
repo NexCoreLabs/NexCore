@@ -627,7 +627,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       visibility: hidden;
       transition: 0.5s;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-      overflow-y: auto;
+      overflow-y: visible;
       padding: 12px 16px;
     }
 
