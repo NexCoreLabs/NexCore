@@ -37,12 +37,14 @@
 
         <div class="dropdown">
             <button onclick="dropButtonFunction()" id="dropButton" class="dropbtn" title="Menu"><i id="dropButtonIcon" class="fa-solid fa-bars"></i></button>
-            <div id="myDropdown" class="dropdown-content">
+              <div id="myDropdown" class="dropdown-content">
                 <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
-                <a href="index.html" id="" title="Homepage">Home</a>
-                <a href="index.html#team" id="" title="Our Team">Team</a>
-                <a href="index.html#contact" id="" title="Contact Us">Contact</a>
-            </div>
+                <a href="hub.html" id="" title="NexCore Hub">Hub</a>
+                <a href="#about" id="" title="About Us">About</a>
+                <a href="#tools&systems" id="" title="Tools & Systems">Tools & Systems</a>
+                <a href="#team" id="" title="Our Team">Team</a>
+                <a href="#contact" id="" title="Contact Us">Contact</a>
+              </div>
         </div>
       </div>
     </header>
@@ -136,7 +138,11 @@
       <footer class="site-footer">
         <div class="container footer-inner">
           <div class="f-left">
-            <small>NexCore Labs © <span id="yearHub"></span></small>
+            <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> |
+              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                <i class="fa-solid fa-scale-balanced"></i> MIT License
+              </a>
+            </small>
           </div>
           <div class="f-right"><small>Back to <a href="index.html">Main site</a></small></div>
         </div>
@@ -157,7 +163,7 @@
             card.className = 'project-card';
             card.innerHTML = `
               <a class="project-card" href="${project.link}" target="_blank" rel="noopener">
-                <div class="pc-top"><strong>${project.name}</strong><span class="id">Proj-${project.id}</span></div>
+                <div class="pc-top"><strong>${project.name} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong><span class="id">Proj-${project.id}</span></div>
                 <p>${project.description}</p>
               </a>
             `;
