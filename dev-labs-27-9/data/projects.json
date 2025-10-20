@@ -1,8 +1,5 @@
 {
   "projects": [
-    { "id": 1, "name": "Space Vision Portal", "description": "A portal for visualizing space data", "link": "" },
-    { "id": 2, "name": "AI Research Lab", "description": "Exploring advanced AI algorithms", "link": "" },
-    { "id": 3, "name": "Open Source Contributions", "description": "Various open source projects and contributions", "link": "" },
-    { "id": 4, "name": "Mobile App Development", "description": "Developing mobile applications for iOS and Android", "link": "" }
+    { "id": 1, "name": "NexCore Labs", "description": "We bring projects to life online, making every idea count.", "link": "https://nexcorelabs.github.io/NexCore/" }
   ]
 }
