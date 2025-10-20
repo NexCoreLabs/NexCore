@@ -251,9 +251,9 @@ a{color:inherit; text-decoration:none;}
 .btn{display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); cursor:pointer; font-weight:600; text-decoration:none;}
 button, .btn {
   backdrop-filter: blur(6px);
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
 }
-.btn.primary{background:linear-gradient(65deg,#6EE7F3 0%, #ACD9E5 50%, #6BD3C9 100%); background-size: 200% 100%; background-position: 0% 50%; color:#031017; transition: background-position 2s cubic-bezier(.2,.9,.3,1); box-shadow:0 12px 40px rgba(115,189,215,0.09);}
+.btn.primary{background:linear-gradient(65deg,#6EE7F3 0%, #ACD9E5 50%, #6BD3C9 100%); background-size: 200% 100%; background-position: 0% 50%; color:#031017; transition: background-position 2s cubic-bezier(.2,.9,.3,1), 0.3s; box-shadow:0 12px 40px rgba(115,189,215,0.09);}
 .btn.primary:hover {
   background-position: 100% 50%;
   box-shadow: 0 0 18px rgba(115, 189, 215, 0.6);
@@ -499,7 +499,18 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 .site-footer{padding:28px 0; border-top:1px solid rgba(255,255,255,0.03); margin-top:28px; user-select: none; cursor: default;}
 .footer-inner{display:flex; align-items:center; justify-content:space-between; gap:20px; color:var(--muted);}
 .f-left, .f-right{font-size:14px;}
-.f-right a{color:var(--primary-accent); text-decoration:underline;}
+.footer-line {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #6EE7F3, transparent);
+  animation: flow 3s ease-in-out infinite;
+}
+
+@keyframes flow {
+  0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
+  50% { opacity: 1; transform: scaleX(1); }
+}
+
 
 .license-link {
   color: #6EE7F3;
@@ -608,7 +619,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       max-width: 300px;
       min-width: 230px;
       max-height: 300px;
-      min-height: 230px;
+      min-height: 100px;
       user-select: none;
       border-radius: var(--radius);
       border: none;
@@ -624,7 +635,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(10,11,28,1), rgba(10,11,28,0.5));
+      background: linear-gradient(180deg, rgba(10,11,28,1), rgba(10,11,28,0.6));
       z-index: -1;
     }
     
@@ -643,8 +654,52 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       color: #6BD3C9;
       background: rgba(10, 11, 28, 1);
       transform: translateX(4px);
-      transition: 0.3s ease-in-out;
+      transition: 0.1s ease-in-out;
       border-radius: var(--radius);
+    }
+
+    .dropdown-content a:active{
+      color: #6EE7F3;
+      transform: scale(0.95);
+    }
+
+    .dropdown-content a.magic-signup{
+      background:linear-gradient(65deg, #6EE7F3 0%, #ACD9E5 50%, #6EE7F3 100%);
+      background-size: 200% 100%;
+      background-position: 0% 50%; color:#031017;
+      transition: background-position 2s cubic-bezier(.2,.9,.3,1), 0.3s;
+      box-shadow:0 12px 40px rgba(115,189,215,0.09);
+      font-weight: 400;
+      font-size: 14px;
+      padding: 8px 10px;
+      border-radius: 18px;
+      letter-spacing: 2px;
+      margin-top: 8px;
+      text-align: center;
+      animation: gradientMove 4s ease-in-out infinite;
+    }
+
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .dropdown-content a.magic-signup:hover {
+      animation-duration: 2s;
+      box-shadow: 0 0 25px rgba(115, 189, 215, 0.25);
+      transform: translateX(0) scale(1.02);
+      transition: 0.1s ease-in-out;
+    }
+
+    .dropdown-content a.magic-signup:active{
+      transform: scale(0.98);
     }
 
     #myInput{
@@ -668,7 +723,6 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       color: var(--muted);
       border-bottom-color: #6EE7F3;
       transform: translateY(-2px);
-
     }
 
     #myInput:focus {
@@ -711,4 +765,10 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       .socials{justify-content: center;}
 
       .form-actions{justify-content: center;}
+}
+
+@media screen and (max-width: 400px){
+  .license-link {
+    display: block;
+  }
 }
