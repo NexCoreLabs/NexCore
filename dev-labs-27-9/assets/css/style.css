@@ -600,8 +600,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       background: linear-gradient(180deg,#6EE7F3,#73BDD7);
       box-shadow: 0 0 8px rgba(115,189,215,0.6), 0 2px 8px rgba(10,11,28,0.6);
       transform-origin: center;
-      transition: transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease,
-      box-shadow 420ms ease, background 420ms ease, opacity 300ms ease;
+      transition: transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease,,
+      box-shadow 420ms ease, background 420ms ease, opacity 300ms ease, transform 0.3s;
       will-change: transform, width, height, box-shadow, opacity;
     }
 
@@ -614,12 +614,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
     .core-menu .dot:nth-child(5) { transform: rotate(240deg) translateY(calc(-1 * (var(--size) * 0.32))); }
     .core-menu .dot:nth-child(6) { transform: rotate(300deg) translateY(calc(-1 * (var(--size) * 0.32))); }
 
-    .core-menu:hover .dot:nth-child(1) { transform: translateY(-15px);}
-    .core-menu:hover .dot:nth-child(2) { transform: translateY(-15px); }
-    .core-menu:hover .dot:nth-child(3) { transform: translate(0px); }
-    .core-menu:hover .dot:nth-child(4) { transform: translateY(15px); }
-    .core-menu:hover .dot:nth-child(5) { transform: translateY(15px); }
-    .core-menu:hover .dot:nth-child(6) { transform: translateY(0px); }
+    .core-menu:hover { transform: scale(0.95); }
 
 
     /* tweak for smaller screens (reduce radius) */
