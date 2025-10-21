@@ -112,6 +112,7 @@ coreMenu.addEventListener('click', () => {
     coreMenu.classList.toggle("active");
 
     if(myDropdown.style.visibility == 'visible' && myDropdown.style.opacity == 1){
+      coreMenu.style
         myDropdown.style.visibility = 'hidden';
         myDropdown.style.opacity = 0;
         myDropdown.style.transform = 'translateY(0)';
