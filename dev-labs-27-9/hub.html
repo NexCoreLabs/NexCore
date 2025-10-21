@@ -53,7 +53,7 @@
         <div id="myDropdown" class="dropdown-content">
             <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
             <a href="index.html" id="" title="Homepage">Home</a>
-            <a href="index.html#tools&systems" id="" title="Tools & Systems">Tools & Systems</a>
+            <a href="index.html#tools" id="" title="Tools & Systems">Tools & Systems</a>
             <a href="index.html#about" id="" title="About Us">About</a>
             <a href="index.html#team" id="" title="Our Team">Team</a>
             <a href="index.html#contact" id="" title="Contact Us">Contact</a>
@@ -180,10 +180,8 @@
             const card = document.createElement('div');
             card.className = 'project-card';
             card.innerHTML = `
-              <a class="project-card" href="${project.link}" target="_blank" rel="noopener">
-                <div class="pc-top"><strong>${project.name} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong><span class="id">Proj-${project.id}</span></div>
+                <a class="project-card" href="${project.link}" target="_blank" rel="noopener"><strong>${project.name} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong><span class="id">Proj-${project.id}</span></a>
                 <p>${project.description}</p>
-              </a>
             `;
             container.appendChild(card);
           });
