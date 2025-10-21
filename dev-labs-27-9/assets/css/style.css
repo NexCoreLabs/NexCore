@@ -600,9 +600,10 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       background: linear-gradient(180deg,#6EE7F3,#73BDD7);
       box-shadow: 0 0 8px rgba(115,189,215,0.6), 0 2px 8px rgba(10,11,28,0.6);
       transform-origin: center;
-      transition: transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease,,
+      transition: transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease,
       box-shadow 420ms ease, background 420ms ease, opacity 300ms ease, transform 0.3s;
       will-change: transform, width, height, box-shadow, opacity;
+
     }
 
     /* place the 6 dots on hexagon using rotation + translate
@@ -614,7 +615,15 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
     .core-menu .dot:nth-child(5) { transform: rotate(240deg) translateY(calc(-1 * (var(--size) * 0.32))); }
     .core-menu .dot:nth-child(6) { transform: rotate(300deg) translateY(calc(-1 * (var(--size) * 0.32))); }
 
-    .core-menu:hover { transform: scale(0.95); }
+    .core-menu:hover .dot{
+      box-shadow: 0 0 8px #6ee7f3;
+    }
+
+    .core-menu .dot:hover {
+      transform: scale(1.5);
+      background: radial-gradient(circle at 30% 25%, #bffcff, #6ee7f3 40%, #3ac5c0 100%);
+      box-shadow: 0 0px 10px 1px #6ee7f3;
+      }
 
 
     /* tweak for smaller screens (reduce radius) */
@@ -624,7 +633,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 
     /* Active: gather into center and grow & glow */
     .core-menu.active .dot {
-      transform: translate(-50%, -50%) scale(1); /* we will overwrite with JS so keep safe */
+      transform: translate(-50%, -50%) scale(1);
       left: 50%;
       top: 50%;
       width: var(--dot-active-size);
