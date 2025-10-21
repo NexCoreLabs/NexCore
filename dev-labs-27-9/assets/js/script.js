@@ -1,6 +1,5 @@
 // script.js — shared for index & hub
 document.addEventListener('DOMContentLoaded', () => {
-  const menuToggle = document.getElementById('menuToggle') || document.getElementById('menuToggleHub');
   const navList = document.getElementById('navList') || document.getElementById('navListHub');
   const navLinks = document.querySelectorAll('.nav-link');
   const revealItems = document.querySelectorAll('.reveal');
@@ -104,30 +103,26 @@ resetBtn.addEventListener('click', () => {
   }
 });
 
+
                     // Dropdown Menu
-
 const myDropdown = document.getElementById('myDropdown');
-const dropButton = document.getElementById('dropButton');
-const dropButtonIcon = document.getElementById('dropButtonIcon');
+const coreMenu = document.getElementById('coreMenu');
 
-function dropButtonFunction() {
+coreMenu.addEventListener('click', () => {
+    coreMenu.classList.toggle("active");
 
     if(myDropdown.style.visibility == 'visible' && myDropdown.style.opacity == 1){
-        dropButtonIcon.style.transform = 'rotateZ(0deg)';
-        dropButtonIcon.style.background = 'transparent';
         myDropdown.style.visibility = 'hidden';
         myDropdown.style.opacity = 0;
         myDropdown.style.transform = 'translateY(0)';
         myDropdown.style.userSelect = 'none';
     } else{
-        dropButtonIcon.style.transform = 'rotateZ(-90deg)';
-        dropButtonIcon.style.background = 'rgba(115, 189, 215, 0.05)';
         myDropdown.style.visibility = 'visible';
         myDropdown.style.opacity = 1;
         myDropdown.style.transform = 'translateY(10px)';
         myDropdown.style.userSelect = 'auto';
     }
-  }
+});
   
   function filterFunction() {
     const input = document.getElementById("myInput");
@@ -145,9 +140,8 @@ function dropButtonFunction() {
   }
 
   document.addEventListener('click', (event) => {
-    if (!dropButton.contains(event.target) && !myDropdown.contains(event.target)) {
-        dropButtonIcon.style.transform = 'rotateZ(0deg)';
-        dropButtonIcon.style.background = 'transparent';
+    if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
+        coreMenu.classList.remove("active");
         myDropdown.style.visibility = 'hidden';
         myDropdown.style.opacity = 0;
         myDropdown.style.transform = 'translateY(0)';

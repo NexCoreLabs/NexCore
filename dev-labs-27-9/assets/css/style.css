@@ -70,6 +70,8 @@ div.large-screen{
     }
 
     div.large-screen img.screens{
+        pointer-events: none;
+        -webkit-user-drag: none;
         width: 700px;
         margin: 20% 0;
         margin-bottom: 32px;
@@ -96,6 +98,7 @@ div.large-screen{
         }
 
     #phoneMockup {
+      -webkit-user-drag: none;
       position: absolute;
       top: 61%;
       left: 40.5%;
@@ -146,14 +149,14 @@ a{color:inherit; text-decoration:none;}
   justify-content: space-between;
   padding: 12px 20px;
   position: relative;
-  backdrop-filter: blur(3px);
 }
 
 .nav-container::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10,11,28,0.8), transparent);
+  mask: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(10px);
   filter: blur(30px);
   z-index: -1;
 }
@@ -170,7 +173,7 @@ a{color:inherit; text-decoration:none;}
 }
 
 .logo #logo{
-    margin-bottom: 0; 
+  margin: 0;
 }
 
 .logo span {
@@ -356,7 +359,9 @@ article.info-card:hover{box-shadow:0 12px 40px rgba(3,6,12,0.8); transform:trans
 .team-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-top:18px;}
 .member{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); text-align:center; transition: all 0.5s ease-in-out;}
 .member:hover{box-shadow: -10px 0px 13px -7px rgba(115, 189, 215, 0.15), 10px 0px 13px -7px rgba(115, 189, 215, 0.15), 5px 5px 0px 9px rgba(0,0,0,0); transform:scale(1.02);}
-.member .member-inner .avatar a img{border-radius:8px; box-shadow:0 8px 30px rgba(77, 77, 77, 0.6); transition:transform .3s cubic-bezier(.2,.9,.3,1), border-radius .3s cubic-bezier(.2,.9,.3,1); user-select: none;}
+.member .member-inner .avatar a img{border-radius:8px; box-shadow:0 8px 30px rgba(77, 77, 77, 0.6); transition:transform .3s cubic-bezier(.2,.9,.3,1), border-radius .3s cubic-bezier(.2,.9,.3,1);   pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;}
 .member .member-inner .avatar:hover a img{transform:scale(1.3); border-radius: 5px;}
 .avatar{width:64px; height:64px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center;}
 
@@ -384,6 +389,9 @@ a.project-card:hover{box-shadow: 0 0 12px rgba(115, 189, 215, 0.4);}
 }
 
 .tool-card:hover img{
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
   visibility: visible;
   opacity: 1;
 }
@@ -564,42 +572,80 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 @media screen and (max-width: 640px){
   body, html{width:auto;}
 
-    .dropbtn{
-        color: #6EE7F3;
-        font-size: 22px;
-        font-weight: 600;
-        width: auto;
-        border: none;
-        cursor: pointer;
-        text-align: right;
-        border-radius: 50%;
-        margin-top: 25px;
-        padding: 13px 16px 11px 16px;
-        background: transparent;
-      }
+      /* container sizing (keeps menu compact) */
+    .core-menu {
+      --size: 50px;           /* overall control size */
+      --dot-size: 8px;       /* small dot */
+      --dot-active-size: 16px; /* central dot when gathered */
+      width: var(--size);
+      height: var(--size);
+      display: inline-grid;
+      place-items: center;
+      position: relative;
+      margin-top: 10px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      overflow: visible;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-      .dropbtn:hover{
-        background: rgba(115, 189, 215, 0.05);
-      }
+    /* dot base style */
+    .core-menu .dot {
+      position: absolute;
+      width: var(--dot-size);
+      height: var(--dot-size);
+      border-radius: 50%;
+      background: linear-gradient(180deg,#6EE7F3,#73BDD7);
+      box-shadow: 0 0 8px rgba(115,189,215,0.6), 0 2px 8px rgba(10,11,28,0.6);
+      transform-origin: center;
+      transition: transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease,
+                  box-shadow 420ms ease, background 420ms ease, opacity 300ms ease;
+      will-change: transform, width, height, box-shadow, opacity;
+    }
 
-      .dropbtn:active{
-        transform: translateY(1px) scale(0.98);
-        box-shadow: 0 6px 20px rgba(115, 189, 215, 0.06);
-      }
-      
-      .dropbtn:focus{
-        outline: none;
-        background: rgba(115, 189, 215, 0.05);
-        box-shadow: 0 6px 20px rgba(115, 189, 215, 0.06);
-      }
+    /* place the 6 dots on hexagon using rotation + translate
+      they are centered and each span is rotated by a multiple of 60deg, then translated outward */
+    .core-menu .dot:nth-child(1) { transform: rotate(0deg)   translateY(calc(-1 * (var(--size) * 0.32))); }
+    .core-menu .dot:nth-child(2) { transform: rotate(60deg)  translateY(calc(-1 * (var(--size) * 0.32))); }
+    .core-menu .dot:nth-child(3) { transform: rotate(120deg) translateY(calc(-1 * (var(--size) * 0.32))); }
+    .core-menu .dot:nth-child(4) { transform: rotate(180deg) translateY(calc(-1 * (var(--size) * 0.32))); }
+    .core-menu .dot:nth-child(5) { transform: rotate(240deg) translateY(calc(-1 * (var(--size) * 0.32))); }
+    .core-menu .dot:nth-child(6) { transform: rotate(300deg) translateY(calc(-1 * (var(--size) * 0.32))); }
 
-      .dropbtn i{
-        transition: 0.3s ease-in-out;
-      }
+    /* tweak for smaller screens (reduce radius) */
+    @media (max-width: 420px) {
+      .core-menu { --size: 46px; --dot-size: 7px; --dot-active-size: 14px; }
+    }
 
-      .dropbtn:hover i{
-        transform: translateX(2px) rotate(-10deg);
-      }
+    /* Active: gather into center and grow & glow */
+    .core-menu.active .dot {
+      transform: translate(-50%, -50%) scale(1); /* we will overwrite with JS so keep safe */
+      left: 50%;
+      top: 50%;
+      width: var(--dot-active-size);
+      height: var(--dot-active-size);
+      margin: 0;
+      background: radial-gradient(circle at 30% 25%, #bffcff, #6ee7f3 40%, #3ac5c0 100%);
+      box-shadow:
+        0 0 20px rgba(115,189,215,0.5),
+        0 0 40px rgba(115,189,215,0.3),
+        0 6px 60px rgba(67,138,168,0.12);
+    }
+
+    /* pulse effect for the central core after gather */
+    .core-menu.active .dot.pulse {
+      animation: corePulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes corePulse {
+      0%   { box-shadow: 0 0 18px rgba(115,189,215,0.45), 0 0 36px rgba(115,189,215,0.25); transform: translate(-50%,-50%) scale(1); }
+      100% { box-shadow: 0 0 36px rgba(115,189,215,0.65), 0 0 80px rgba(115,189,215,0.35); transform: translate(-50%,-50%) scale(1.08); }
+    }
+
+    /* small accessibility focus outline */
+    .core-menu:focus { outline: 2px solid rgba(115,189,215,0.12); outline-offset: 3px; }
 
     .dropdown {
       position: relative;
@@ -607,7 +653,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       justify-content: center;
       align-items: center;
     }
-    
+     
     .dropdown-content {
       display: flex;
       flex-direction: column;
@@ -618,7 +664,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       width: 90%;
       max-width: 300px;
       min-width: 230px;
-      max-height: 300px;
+      max-height: fit-content;
       min-height: 100px;
       user-select: none;
       border-radius: var(--radius);
@@ -627,7 +673,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       visibility: hidden;
       transition: 0.5s;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-      overflow-y: visible;
+      overflow-y: auto;
       padding: 12px 16px;
     }
 
@@ -636,6 +682,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(10,11,28,1), rgba(10,11,28,0.6));
+      height: 100%;
       z-index: -1;
     }
     
