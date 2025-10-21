@@ -582,7 +582,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       display: inline-grid;
       place-items: center;
       position: relative;
-      margin-top: 10px;
+      margin-top: 5px;
       border: 0;
       background: transparent;
       cursor: pointer;
@@ -636,7 +636,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 
     /* pulse effect for the central core after gather */
     .core-menu.active .dot.pulse {
-      animation: corePulse 1.4s ease-in-out infinite;
+      animation: corePulse 1.4s ease-in-out infinite alternate;
     }
 
     @keyframes corePulse {

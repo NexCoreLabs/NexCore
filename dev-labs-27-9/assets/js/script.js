@@ -163,3 +163,83 @@ coreMenu.addEventListener('click', () => {
     window.location.href = "mobile-preview.html";
   }, 900); // 0.8s + small buffer
   }
+
+
+//   const coreMenu = document.getElementById('coreMenu');
+// const dropdown = document.getElementById('myDropdown');
+// const dots = Array.from(coreMenu.querySelectorAll('.dot'));
+
+// function openMenu() {
+//   // compute each dot's current center and the core center
+//   const menuRect = coreMenu.getBoundingClientRect();
+//   const centerX = menuRect.left + menuRect.width / 2;
+//   const centerY = menuRect.top + menuRect.height / 2;
+
+//   dots.forEach((d, i) => {
+//     const r = d.getBoundingClientRect();
+//     const dx = centerX - (r.left + r.width / 2);
+//     const dy = centerY - (r.top + r.height / 2);
+
+//     // translate to center (uses transform; preserve existing rotate by applying translate)
+//     d.style.transition = 'transform 420ms cubic-bezier(.2,.9,.3,1), width 420ms ease, height 420ms ease, box-shadow 420ms ease';
+//     d.style.transform = `translate(${dx}px, ${dy}px) scale(${(parseFloat(getComputedStyle(d).width) || 8) / (parseFloat(getComputedStyle(d).width) || 8)})`;
+//     d.style.left = '50%'; d.style.top = '50%'; // ensure absolute positioning centered
+//   });
+
+//   // after animation, make them visually one (set classes/size)
+//   setTimeout(() => {
+//     dots.forEach(d => {
+//       d.style.transform = 'translate(-50%, -50%)';
+//       d.style.left = '50%';
+//       d.style.top = '50%';
+//       d.style.width = getComputedStyle(coreMenu).getPropertyValue('--dot-active-size') || '16px';
+//       d.style.height = getComputedStyle(coreMenu).getPropertyValue('--dot-active-size') || '16px';
+//       d.classList.add('pulse');
+//     });
+//     coreMenu.classList.add('active');
+//     dropdown.classList.add('open');
+//     dropdown.setAttribute('aria-hidden', 'false');
+//   }, 420);
+// }
+
+// function closeMenu() {
+//   // reverse: remove active flags, animate dots back to hex positions by clearing inline transform
+//   dropdown.classList.remove('open');
+//   dropdown.setAttribute('aria-hidden', 'true');
+//   coreMenu.classList.remove('active');
+//   dots.forEach((d) => {
+//     d.classList.remove('pulse');
+//     // clear explicit width/height so CSS returns them to base size
+//     d.style.width = '';
+//     d.style.height = '';
+//     d.style.transition = 'transform 420ms cubic-bezier(.2,.9,.3,1), width 320ms ease, height 320ms ease';
+//     // Clearing transform will return each dot to its CSS positioned location (hex positions)
+//     d.style.transform = '';
+//     // ensure left/top css isn't forcing it
+//     d.style.left = '';
+//     d.style.top = '';
+//   });
+// }
+
+// let opened = false;
+// coreMenu.addEventListener('click', (e) => {
+//   e.stopPropagation();
+//   if (!opened) openMenu(); else closeMenu();
+//   opened = !opened;
+// });
+
+// // close on outside click
+// window.addEventListener('click', (e) => {
+//   if (opened && !coreMenu.contains(e.target) && !dropdown.contains(e.target)) {
+//     closeMenu();
+//     opened = false;
+//   }
+// });
+
+// // keyboard accessibility: Enter / Space
+// coreMenu.addEventListener('keydown', (ev) => {
+//   if (ev.key === 'Enter' || ev.key === ' ') {
+//     ev.preventDefault();
+//     coreMenu.click();
+//   }
+// });
