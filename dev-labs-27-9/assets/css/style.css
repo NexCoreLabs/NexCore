@@ -635,14 +635,14 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
     }
 
     /* pulse effect for the central core after gather */
-    .core-menu.active .dot.pulse {
+    /* .core-menu .dot.pulse {
       animation: corePulse 1.4s ease-in-out infinite alternate;
     }
 
     @keyframes corePulse {
-      0%   { box-shadow: 0 0 18px rgba(115,189,215,0.45), 0 0 36px rgba(115,189,215,0.25); transform: translate(-50%,-50%) scale(1); }
-      100% { box-shadow: 0 0 36px rgba(115,189,215,0.65), 0 0 80px rgba(115,189,215,0.35); transform: translate(-50%,-50%) scale(1.08); }
-    }
+      0%   { box-shadow: 0 0 18px rgba(115,189,215,0.45), 0 0 36px rgba(115,189,215,0.25); transform: scale(1); }
+      100% { box-shadow: 0 0 36px rgba(115,189,215,0.65), 0 0 80px rgba(115,189,215,0.35); transform: scale(1.08); }
+    } */
 
     /* small accessibility focus outline */
     .core-menu:focus { outline: 2px solid rgba(115,189,215,0.12); outline-offset: 3px; }
