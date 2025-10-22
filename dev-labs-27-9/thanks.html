@@ -27,11 +27,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     </head>
     <body onload="redirectToHome()">
-        <div>
+        <div class="background">
+            <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.png">
+            <div id="spotLight" class="spot-light"></div>
+        </div>
             <main>
-            <h1>Thank You!</h1>
+                <div>
             <p>Your message has been sent successfully.</p>
             <a href="index.html">← Back to Home</a>
+                </div>
+            <h1>Thank You!</h1>
             </main>
 
             <div class="large-screen">
@@ -44,6 +49,5 @@
 
             <script src="assets/js/script.js"></script>
             <script src="assets/js/script-thanks.js"></script>
-        </div>
     </body>
 </html>
