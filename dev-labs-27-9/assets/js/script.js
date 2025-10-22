@@ -164,3 +164,31 @@ coreMenu.addEventListener('click', () => {
     window.location.href = "mobile-preview.html";
   }, 900); // 0.8s + small buffer
   }
+
+
+const logoImg = document.getElementById('logoImg');
+const shape = document.getElementById('shape');
+const mainContent = document.querySelector('main');
+const links = document.querySelectorAll('a.fade');
+
+links.forEach(link => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    mainContent.style.opacity = '0';
+    myDropdown.style.opacity = '0';
+    logoImg.style.opacity = '0.8';
+
+    setTimeout(() => {
+      window.location.href = event.target.href;
+    }, 1000);
+  });
+});
+
+window.onload = () =>{
+    logoImg.style.filter = 'drop-shadow(0 0 25px rgba(110, 231, 243, 1)';
+    mainContent.style.opacity = '1';
+    
+    setTimeout(() =>{
+      logoImg.style.opacity = '0.3';
+    }, 1000);
+};
