@@ -12,10 +12,25 @@ document.addEventListener('DOMContentLoaded', () => {
 // Smooth scroll to the top when the logo is clicked
 document.getElementById('logo').addEventListener('click', function (event) {
   event.preventDefault(); // Prevent default anchor behavior
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth' // Smooth scrolling
-  });
+
+  if(window.scrollY === 0){
+      mainContent.style.opacity = '0';
+      myDropdown.style.opacity = '0';
+      logoImg.style.opacity = '0.8';
+      logoImg.style.left = '50%';
+      logoImg.style.top = '10%';
+      logoImg.style.width = '600px';
+
+      setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1000);
+  }
+  else{
+      window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling
+    });
+  }
 });
 
   // set year

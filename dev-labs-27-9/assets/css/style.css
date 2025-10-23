@@ -466,18 +466,18 @@ a.project-card:hover .id{background-position: 100% 50%; padding:5px 10px;}
   opacity: 0.2;
 }
 
+.tool-card img{
+  position: absolute;
+  width: 30px;
+  opacity: 0.3;
+}
+
 .tool-card:hover img{
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
   visibility: visible;
   opacity: 1;
-}
-
-.tool-card img{
-  position: absolute;
-  width: 30px;
-  opacity: 0.3;
 }
 
 .tool-card img#xai{
