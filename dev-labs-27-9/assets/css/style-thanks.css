@@ -11,8 +11,7 @@ a {
     color: #73BDD7;
 }
 
-@media screen and (min-width: 1201px){
-    main{
-            display: none;
-        }
+main{
+    opacity: 1;
+    display: inline-block;
 }

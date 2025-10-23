@@ -1,5 +1,5 @@
-function redirectToHome() {
-    setTimeout(function() {
-        window.location.href = 'index.html';
-    }, 5000);
-}
+// function redirectToHome() {
+//     setTimeout(function() {
+//         window.location.href = 'index.html';
+//     }, 5000);
+// }
