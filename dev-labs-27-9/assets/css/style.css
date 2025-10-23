@@ -212,15 +212,14 @@ a{color:inherit; text-decoration:none;}
   /* logo positioned inside the fixed background */
   .background .logo-img {
     position: absolute;
-    left: 90%;
-    top: -32px;
+    left: 50%;
+    top: 10%;
     transform: translateX(-50%);
-    max-width: var(--logo-max);
-    width: clamp(150px, 20vw, 420px); /* responsive sizing */
+    width: 600px;
     opacity: 0.8;
     pointer-events: none;
     user-select: none;
-    transition: opacity 0.6s ease, transform 0.6s ease, filter 3s ease, 1s ease;
+    transition: opacity 0.6s ease, transform 1s ease, filter 3s ease, 1s ease;
   }
 
   /* spotlight (large blurred radial) */
@@ -486,14 +485,14 @@ a.project-card:hover .id{background-position: 100% 50%; padding:5px 10px;}
 }
 
 /* contact */
-.contact-grid{display:grid; grid-template-columns:1fr 420px; gap:26px; align-items:start; border-radius:12px; border:1px solid rgba(255,255,255,0.03); background: rgba(255,255,255,0.03); }
+.contact-grid{display:grid; grid-template-columns:1fr 420px; gap:26px; align-items:start; border-radius:12px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);}
 .contact-card{padding:18px; border-radius:12px; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);}
 .socials{display:flex; gap:10px; margin-top:12px; justify-content: center;}
 .social{display:inline-block; font-size: 22px; color:var(--muted); transition: color 0.3s;}
 .social:hover{color:var(--primary-accent);}
 
 /* form */
-.contact-form{padding:18px; border-radius:12px; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);}
+.contact-form{padding:18px; border-radius:12px; background: none;}
 .field{display:block; margin-bottom:12px;}
 
       input, textarea{
@@ -655,9 +654,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 
 @media screen and (max-width: 780px){
     body, html{width:auto;}
-
-            .hero-inner{gap:18px;}
-        .projects-grid{grid-template-columns:1fr;}
+      .hero-inner{gap:18px;}
+      .projects-grid{grid-template-columns:1fr;}
       .contact-grid{grid-template-columns:1fr; display: flex; justify-content: space-around; align-items: center;}
       .hero{padding:90px 12px 60px;}
 
@@ -970,6 +968,10 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       .kpis div{min-width:60px; font-size:13px; padding:6px 8px;}
 
       .hero-actions{display:flex; flex-direction:column; gap:12px; margin-bottom:14px; width: 60%; margin-left: auto; margin-right: auto;}
+
+      .contact-card{
+        background: rgba(255,255,255,0.03);
+      }
 }
 
 @media screen and (max-width: 400px){

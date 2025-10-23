@@ -177,7 +177,10 @@ links.forEach(link => {
     mainContent.style.opacity = '0';
     myDropdown.style.opacity = '0';
     logoImg.style.opacity = '0.8';
-
+    logoImg.style.left = '50%';
+    logoImg.style.top = '10%';
+    logoImg.style.width = '600px';
+    
     setTimeout(() => {
       window.location.href = event.target.href;
     }, 1000);
@@ -186,6 +189,10 @@ links.forEach(link => {
 
 window.onload = () =>{
     logoImg.style.filter = 'drop-shadow(0 0 25px rgba(110, 231, 243, 1)';
+    logoImg.style.webkitFilter = 'drop-shadow(0 0 25px rgba(110, 231, 243, 1)';
+    logoImg.style.left = '100%';
+    logoImg.style.top = '15%';
+    logoImg.style.width = '200px';
     mainContent.style.opacity = '1';
     
     setTimeout(() =>{
