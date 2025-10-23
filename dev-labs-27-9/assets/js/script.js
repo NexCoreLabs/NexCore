@@ -33,6 +33,14 @@ document.getElementById('logo').addEventListener('click', function (event) {
   }
 });
 
+document.getElementById('nexcoreSign').addEventListener('click', function(event) {
+  event.preventDefault(); // Prevent default anchor behavior
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth' // Smooth scrolling
+    });
+});
+
   // set year
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 

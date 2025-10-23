@@ -193,7 +193,6 @@ a{color:inherit; text-decoration:none;}
 }
 
 .nexcore-sign img{
-    pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
     max-width: 250px;
