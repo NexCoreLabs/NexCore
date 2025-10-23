@@ -583,6 +583,48 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
   color: #9aa3b2;
 }
 
+  /* Optional custom style to match your form theme */
+  .form-message-popup {
+  border-radius: 18px !important;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 0 20px rgba(115, 189, 215, 0.06);
+  }
+
+  .form-message-btn {
+  background:linear-gradient(65deg,#6EE7F3 0%, #ACD9E5 50%, #6BD3C9 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color:#031017;
+  transition: background-position 2s cubic-bezier(.2,.9,.3,1), 0.3s;
+  box-shadow:0 12px 40px rgba(115,189,215,0.09);
+  padding:10px 16px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;
+  font-weight:600;
+  text-decoration:none;
+}
+
+.form-message-btn:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 0 18px rgba(115, 189, 215, 0.6);
+}
+
+.form-message-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 10px rgba(115, 189, 215, 0.3);
+}
+  .swal2-title {
+    font-family: 'Poppins', sans-serif !important;
+  }
+
+  .swal2-html-container {
+    font-family: 'Inter', sans-serif !important;
+    opacity: 0.8;
+  }
+
 .notice{margin-top:12px; color:var(--muted); font-size:14px;}
 
 /* footer */

@@ -169,6 +169,7 @@
 
       <script src="assets/js/script.js"></script>
       <script src="assets/js/script-hub.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script>
         async function loadProjects() {
           const response = await fetch('data/projects.json');
@@ -193,7 +194,43 @@
 
         loadProjects();
       </script>
-      <!-- <script type="module">
+      <script type="module">
+          // SweetAlert2 function
+        function showStatus(success, message) {
+          if (success) {
+            Swal.fire({
+              title: '✅ Submitted Successfully!',
+              text: message || 'Your request has been submitted to NexCore Labs.',
+              background: 'transparent',
+              color: '#eaf6fb',
+              confirmButtonText: 'Awesome 🚀',
+              customClass: {
+                popup: 'form-message-popup',
+                confirmButton: 'form-message-btn'
+              },
+              backdrop: `
+                rgba(0, 0, 0, 0.6)
+                url("https://cdn.dribbble.com/users/730703/screenshots/6581243/space.gif")
+                center top
+                no-repeat
+              `,
+            })
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Submission Failed',
+              text: message || 'Please try again later or check your connection.',
+              background: 'transparent',
+              color: '#eaf6fb',
+              confirmButtonText: 'Got it',
+              customClass: {
+                popup: 'form-message-popup',
+                confirmButton: 'form-message-btn'
+              }
+            })
+          }
+        }
+
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
         const supabaseUrl = 'https://qacupmuqeuqspfhwosfu.supabase.co'
@@ -219,13 +256,12 @@
             ])
 
           if (error) {
-            console.error(error)
-            alert('Failed to submit: ' + error.message)
+            showStatus(false, error.message)
           } else {
-            alert('Project submitted successfully!')
+            showStatus(true)
             signupForm.reset()
           }
         })
-      </script> -->
+      </script>
     </body>
 </html>
