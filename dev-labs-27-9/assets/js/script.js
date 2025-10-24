@@ -222,3 +222,17 @@ window.onload = () =>{
       logoImg.style.opacity = '0.3';
     }, 1000);
 };
+
+
+const searchInput = document.getElementById('projectSearch');
+const projectsContainer = document.getElementById('projects-container');
+
+searchInput.addEventListener('input', () => {
+  const query = searchInput.value.toLowerCase();
+  const projectCards = projectsContainer.querySelectorAll('.project-card'); // adjust class name if needed
+
+  projectCards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(query) ? 'block' : 'none';
+  });
+});

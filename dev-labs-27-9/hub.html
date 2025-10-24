@@ -94,6 +94,11 @@
           <div class="container">
             <h2 class="section-title">Projects</h2>
             <p class="section-lead">Tap a card and see what teams are building.</p>
+            
+                <!-- 🔍 Search Bar -->
+            <div class="search-bar">
+              <input type="text" id="projectSearch" placeholder="Search by name or ID...">
+            </div>
 
             <div class="projects-grid reveal" id="projects-container">
               <!-- Project cards will be loaded here dynamically -->
@@ -181,6 +186,8 @@
           data.projects.forEach(project => {
             const card = document.createElement('div');
             card.className = 'project-card';
+            card.setAttribute('data-id', `${project.id}`);
+            card.setAttribute('data-name', `${project.name}`);
             card.innerHTML = `
                 <a class="project-card" href="${project.link}" target="_blank" rel="noopener"><strong>${project.name} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong><span class="id">Proj-${project.id}</span></a>
                 <p>${project.description}</p>
@@ -194,7 +201,7 @@
 
         loadProjects();
       </script>
-      <script type="module">
+      <!-- <script type="module">
           // SweetAlert2 function
         function showStatus(success, message) {
           if (success) {
@@ -262,6 +269,6 @@
             signupForm.reset()
           }
         })
-      </script>
+      </script> -->
     </body>
 </html>
