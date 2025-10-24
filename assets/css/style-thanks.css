@@ -1,0 +1,26 @@
+*{
+        transition: all 1s ease;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+}
+
+img{
+    filter: drop-shadow(0 0 25px rgba(110, 231, 243, 1)) opacity(0.3);
+}
+
+main{
+    opacity: 1;
+    display: inline-block;
+}
+
+main div{
+  box-shadow:0 8px 30px rgba(2,6,23,0.6);
+    padding:18px; border-radius:12px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); 
+}

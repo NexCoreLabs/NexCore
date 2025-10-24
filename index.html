@@ -9,137 +9,301 @@
 
         gtag('config', 'G-PYZB5L2R8W');
         </script>
-        
 
         <meta charset="UTF-8">
-        <meta name="google-site-verification" content="N2TxW4yXzwm3-iwO_LONeDpL-Ag_CsiFdnx0wfb5r0U" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="NexCore Labs provides professional digital solutions and websites for student-led projects, showcasing innovation and excellence.">
         <meta name="author" content="NexCore Labs">
-        <meta name="keywords" content="">
+        <meta name="keywords" content="NexCore Labs, web development, HTML, CSS, JavaScript, innovation, technology, creative projects, Oman, university tech teams, front-end development">
+        <meta name="theme-color" content="#0a0b1c">
 
-        <title>NexCore - Digital Solutions for Student Projects</title>
+        <title>NexCore Labs - Brings projects to life online</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/style-index.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">    </head>
-    <body>
-        <!-- Header -->
-        <header>
-            <div class="container">
-            <h1>NexCore Labs</h1>
-            <p>At the Core of Every Idea.</p>
-            <nav>
-                <a href="#about">About</a>
-                <a href="#mission">Mission</a>
-                <a href="#team">Team</a>
-                <a href="#services">Services</a>
-                <a href="#tools">Tools</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <!-- <hr>
-                <a href="hub.html" class="hub-link">Go to NexCore Hub →</a> -->
-            </div>
-        </header>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    </head>
+<body>
+  <div class="background">
+      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.png">
+      <div id="spotLight" class="spot-light"></div>
+  </div>
+  
+<header class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <h1 id="logo">NexCore <span>Labs</span></h1>
+    </div>
 
-        <!-- About Section -->
-        <section id="about">
-            <div class="container">
-            <h2>About Us</h2>
-            <p>NexCore Labs is a student-led technology team focused on creating professional digital solutions for other teams’ projects. We help showcase the core ideas and key details of projects through interactive websites.</p>
-            </div>
-        </section>
+    <div class="dropdown">
+     <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="dot" aria-hidden="true"></span>
+     </div>
+     
+     <div id="myDropdown" class="dropdown-content">
+         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+         <a href="hub.html" class="fade" id="" title="NexCore Hub">Hub</a>
+         <a href="#tools" id="" title="Tools & Systems">Tools & Systems</a>
+         <a href="#about" id="" title="About Us">About</a>
+         <a href="#team" id="" title="Our Team">Team</a>
+         <a href="#contact" id="" title="Contact Us">Contact</a>
+         <a href="hub.html#signup" id="" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+     </div>
+    </div>
+  </div>
+</header>
 
-        <!-- Mission Section -->
-        <section id="mission">
-            <div class="container">
-            <h2>Mission & Vision</h2>
-            <p><strong>Mission: </strong>We bring projects to life online, making every idea count.</p>
-            <p><strong>Vision: </strong>To become the go-to hub for showcasing innovation, connecting creators and audiences worldwide.</p>
-            </div>
-        </section>
+        <div class="large-screen">
+          <img class="screens" src="assets/images/large-screen.png" alt="Computers & Laptops & iPads">
+          <img onclick="openMobilePreview()" id="phoneMockup" src="assets/images/iphone.png" alt="iPhone">
+          <div class="details">
+              <span class="h2">Large Screen Website Under Progress...</span>
+              <p class="detail">Accessing NexCore with a screen < 600px will provide better experience.</p>
+          </div>
 
-        <!-- Team Section -->
-        <section id="team">
-            <div class="container">
-            <h2>Our Team</h2>
-                <p>Having great team:</p>
-            <div class="team-members">
-                <div class="member">
-                <h3>Al-Faris Mujahid AlZakwani <sup>Team Lead</sup></h3>
-                <p>Project Manager / SWE</p>
+            <p class="tap-hint">-Tap the phone to open mobile view-</p>
+        </div>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-inner container">
+        <div class="hero-left">
+          <h1 class="title">At the Core of Every Idea</h1>
+          <p class="lead">NexCore Labs — student-driven digital solutions, rapid prototypes and polished showcases for SQU students' projects.</p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#about">Learn More</a>
+            <a class="btn ghost fade" href="hub.html">Open Hub</a>
+          </div>
+
+          <div class="tiny" id="changing-text" aria-live="polite"></div>
+        </div>
+
+        <div class="hero-right">
+          <div class="glass-card" id="glassCard">
+            <div class="card-wave"></div>
+            <div class="card-content">
+              <h4>Current Initiatives</h4>
+              <p class="muted">Planning · Development · Monitoring</p>
+              <div class="kpis">
+                <a href="hub.html#projects"><div class="stat"><strong id="team-number">00+</strong><span><i class="fa-solid fa-diagram-project"></i> projects</span><div class="tooltip">All ongoing projects currently active</div></div></a>
+                <div class="stat"><strong id="tasks">120+</strong><span><i class="fa-solid fa-bars-progress"></i> tasks</span><div class="tooltip">We’ve completed 120+ small actionable items</div></div>
+                <div class="stat"><strong id="support">48h</strong><span><i class="fa-solid fa-headset"></i> support</span><div class="tooltip">Our support responds within 48-hours</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-orbit" id="bgOrbit" aria-hidden="true"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="panel">
+      <div class="container">
+        <h2 class="section-title">About NexCore Labs</h2>
+        <p class="section-lead">We take student projects and turn them into clean, presentable and deployable websites — fast. We emphasize clarity of message, speed of delivery, and maintainability.</p>
+
+        <div class="cards-grid">
+          <article class="info-card reveal">
+            <div class="ic-ico">🎯</div>
+            <h3>Focus</h3>
+            <p>We distill the core idea and create a concise online narrative.</p>
+          </article>
+
+          <article class="info-card reveal">
+            <div class="ic-ico">⚡</div>
+            <h3>Speed</h3>
+            <p>Prototype quickly, iterate fast and ship stable static sites.</p>
+          </article>
+
+          <article class="info-card reveal">
+            <div class="ic-ico">🔒</div>
+            <h3>Care</h3>
+            <p>Security basics, performance checks and simple documentation.</p>
+          </article>
+
+          <article class="info-card reveal">
+            <div class="ic-ico"><img src="assets/images/squ-logo.png" alt="SQU Logo" width="65"></div>
+            <h3>Sultan Qaboos University</h3>
+            <p>Dedicated for Sultan Qaboos University students</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools" class="panel">
+      <div class="container">
+        <h2 class="section-title">Core Tools & Systems</h2>
+        <p class="section-lead">Explore the technologies powering our projects and workflow.</p>
+
+        <div class="tools-grid reveal">
+          <div class="tool-card"><span>ChatGPT</span><img src="assets/images/openai.png"></div>
+          <div class="tool-card"><span>xAI</span><img id="xai" src="assets/images/xai.png"></div>
+          <div class="tool-card"><span>GitHub</span><img src="assets/images/github.png"></div>
+          <div class="tool-card"><span>Visual Studio Code</span><img src="assets/images/vscode.png"></div>
+          <div class="tool-card"><span>UptimeRobot</span><img src="assets/images/uptimerobot.png"></div>
+          <div class="tool-card"><span>OpenGraph</span><img src="assets/images/opengraph.png"></div>
+          <div class="tool-card"><span>Supabase</span><img src="assets/images/supabase.png"></div>
+          <div class="tool-card"><span>Google Analytics</span><img src="assets/images/googleanalytics.png"></div>
+          <div class="tool-card"><span>Google Search Console</span><img src="assets/images/googlesearchconsole.png"></div>
+          <div class="tool-card"><span>PageSpeed Insights</span><img src="assets/images/pagespeed.png"></div>
+          <div class="tool-card"><span>Cloudflare</span><img src="assets/images/cloudflare.png"></div>
+          <div class="tool-card"><span>XML Sitemaps</span><img src="assets/images/xmlsitemaps.png"></div>
+          <div class="tool-card"><span>Web3Forms</span><img src="assets/images/Web3Forms.png"></div>
+          <div class="tool-card"><span>Trello</span><img src="assets/images/trello.png"></div>
+          <div class="tool-card"><span>Audacity</span><img src="assets/images/audacity.png"></div>
+          <div class="tool-card"><span>Google Font</span><img src="assets/images/googlefont.png"></div>
+          <div class="tool-card"><span>Inkscape</span><img src="assets/images/inkscape.png"></div>
+          <div class="tool-card"><span>Shots</span><img src="assets/images/shots.png"></div>
+          <div class="tool-card"><span>WebUtility</span><img src="assets/images/webutility.png"></div>
+          <div class="tool-card"><span>Uiverse</span><img src="assets/images/uiverse.png"></div>
+          <div class="tool-card"><span>Flaticon</span><img src="assets/images/flaticon.png"></div>
+          <div class="tool-card"><span>Font Awesome</span><img src="assets/images/fontawesome.png"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team" class="panel dark">
+      <div class="container">
+        <h2 class="section-title">Team</h2>
+        <p class="section-lead">Having -gr8!- team driven by ambitious.</p>
+
+        <div class="team-grid reveal">
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgiwe8wn01zhs60mfmiu60fj" target="_blank"><img src="assets/images/alfarismujahid-profile.jpeg" alt="Leader Profile Picture" width="60"></a></div>
+              <h4>Al-Faris Mujahid AlZakwani<br><sup style="font-size: 10px; font-weight: 500;">Leader</sup></h4>
+              <p class="muted">Project Manager & SWE</p>
+          </div>
+
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgj73hwc03qss60m11k9dxi2" target="_blank"><i class="fa-solid fa-lightbulb"></i></a></div>
+              <h4>Al-Mukhtar AlAbri <br><sup style="font-size: 10px; font-weight: 500;">Co-Leader</sup></h4>
+              <p class="muted">Coordinator</p>
+          </div>
+
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgj7rwqz0hies60mmtf2i2f6" target="_blank"><i class="fa-solid fa-lightbulb"></i></a></div>
+              <h4>Talal AlKalbani <br><sup style="font-size: 10px; font-weight: 500;">Tech</sup></h4>
+              <p class="muted">Support & Technician</p>
+          </div>
+
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgvx2o9703lrs60mmrehgetc" target="_blank"><i class="fa-solid fa-lightbulb"></i></a></div>
+              <h4>Mohammed AlHarrasi <br><sup style="font-size: 10px; font-weight: 500;">Media</sup></h4>
+              <p class="muted">Socializing</p>
+          </div>
+
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgj6pduk01mbs60lca2kz7xf" target="_blank"><i class="fa-solid fa-lightbulb"></i></a></div>
+              <h4>Mohammed AlAsmi <br><sup style="font-size: 10px; font-weight: 500;">Monitor</sup></h4>
+              <p class="muted">Data Analyst</p>
+          </div>
+
+          <div class="member">
+              <div class="avatar"><a href="https://blinq.me/cmgw32zrr5lzfs60tp73sssot" target="_blank"><i class="fa-solid fa-lightbulb"></i></a></div>
+              <h4>Sultan AlShibli <br><sup style="font-size: 10px; font-weight: 500;">Researcher</sup></h4>
+              <p class="muted">Support & Ideas Developer ‘n’ Researcher</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="panel contact-panel">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+        <p class="section-lead">Drop a short message — we'll reply.</p>
+
+        <div class="contact-grid">
+          <div class="contact-card reveal">
+            <p>Oman · Sultan Qaboos University</p>
+            <div class="socials">
+              <a class="social" href="https://github.com/NexCoreLabs" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+              <a class="social" href="https://x.com/nexcorelabs" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter"></i></a>
+              <a class="social" href="https://instagram.com/nexcorelabs" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i></a>
+              <a class="social" href="https://youtube.com/@NexCore-Labs" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+          </div>
+          
+            <form id="contactForm" class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="ba811578-09f0-4f90-b1eb-7acc03fe745d">
+                <input type="hidden" name="from_name" value="NexCore Website">
+                <input type="hidden" name="subject" value="New Submission from NexCore Website">
+                <input type="hidden" name="redirect" value="https://nexcorelabs.github.io/NexCore/thanks.html">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+
+                <label class="field">
+                  <input name="name" id="name" type="text" placeholder="Your Name">
+                </label>
+
+                <label class="field">
+                  <input name="email" id="email" type="email" placeholder="Your Email" required>
+                </label>
+
+                <label class="field">
+                  <textarea name="message" id="message" rows="4" placeholder="Message to nexcorelabs@outlook.com" required></textarea>
+                </label>
+
+                <div class="form-actions">
+                  <button type="submit" class="btn primary">Send Message</button>
+                  <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
                 </div>
-                <div class="member">
-                <h3>Al-Mukhtar AlAbri</h3>
-                <p>Coordinator</p>
-                </div>
-                <div class="member">
-                <h3>Talal AlKalbani</h3>
-                <p>Technician</p>
-                </div>
-                <div class="member">
-                <h3>Mohammed AlHarrasi</h3>
-                <p>Socializing</p>
-                </div>
-                <div class="member">
-                <h3>Mohammed AlAsmi</h3>
-                <p>Data Analyst</p>
-                </div>
-                <div class="member">
-                <h3>Sultan AlShibli</h3>
-                <p>Development & Research</p>
-                </div>
-            </div>
-            </div>
-        </section>
 
-        <!-- Services Section -->
-        <section id="services">
-            <div class="container">
-            <h2>Our Services</h2>
-            <ul>
-                <li>Project Consultation</li>
-                <li>Website Design</li>
-                <li>Development & Implementation</li>
-                <li>Testing & Quality Assurance</li>
-                <li>Deployment & Support</li>
-            </ul>
-            </div>
-        </section>
+                <p class="notice" id="formNotice" aria-live="polite"></p>
+            </form>
+        </div>
+      </div>
+    </section>
 
-        <!-- Tools Section -->
-        <section id="tools">
-            <div class="container">
-            <h2>Tools & Technologies</h2>
-            <p>We use modern tools to deliver quality results:</p>
-            <ul>
-                <li>GitHub – Version control & collaboration</li>
-                <li>Google Analytics - User Analytics & Performance Tracking</li>
-                <li>Visual Studio Code – IDL</li>
-                <li>HTML, CSS, JavaScript – Front-end development</li>
-                <li>Trello – Project management</li>
-            </ul>
-            </div>
-        </section>
+    <div class="nexcore-sign">
+      <img id="nexcoreSign" src="assets/images/nexcoredev-word.png" alt="NexCore Dev.">
+    </div>
+  </main>
 
-        <!-- Contact Section -->
-        <section id="contact">
-            <div class="container">
-            <h2>Contact Us</h2>
-            <p>Email: <a href="mailto:nexcorelabs@outlook.com">nexcorelabs@outlook.com</a></p>
-            <p>X: <a href="https://x.com/nexcorelabs">nexcorelabs</a></p>
-            <p>Location: Oman, Sultan Qaboos University</p>
-            </div>
-        </section>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="f-left">
+        <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> |
+          <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+            <i class="fa-solid fa-scale-balanced"></i> MIT License
+          </a>
+        </small>
+      </div>
+      <div class="f-right footer-line"></div>
+    </div>
+  </footer>
 
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2025 NexCore Labs. All rights reserved.</p>
-        </footer>
+  <script src="assets/js/script.js"></script>
+  <script src="assets/js/script-index.js"></script>
+  <script>
+    async function updateProjectCount() {
+      try {
+        const response = await fetch('data/projects.json');
+        const data = await response.json();
+        const projectCount = data.projects.length;
 
-        <script src="assets/js/script.js"></script>
-    </body>
+
+        const teamNumberElement = document.querySelector('.stat #team-number');
+        if (teamNumberElement) teamNumberElement.textContent = projectCount + '+';
+      } catch (error) {
+        console.error('Error loading project count:', error);
+      }
+    }
+
+    updateProjectCount();
+  </script>
+</body>
 </html>
