@@ -31,7 +31,7 @@ const urlsToCache = [
   './assets/images/iphone.png',
   './assets/images/lap.png',
   './assets/images/large-screen.png',
-  './assets/images/nexcoredev-word.png',
+  './assets/images/nexcore-word.png',
   './assets/images/nexcore-icon.png',
   './assets/images/nexcore-logo.png',
   './assets/images/openai.png',
