@@ -244,3 +244,19 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log('✅ Service Worker registered successfully'))
     .catch(err => console.error('Service Worker registration failed:', err));
 }
+
+function showWebsiteLabel() {
+  // Get the checkbox
+  var checkBox = document.getElementById("websiteShow");
+  // Get the output text
+  var websiteLabel = document.getElementById("websiteURLLabel");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    websiteLabel.style.display = "block";
+    websiteLabel.setAttribute('required', 'required');
+  } else {
+    websiteLabel.style.display = "none";
+    websiteLabel.removeAttribute('required');
+  }
+}

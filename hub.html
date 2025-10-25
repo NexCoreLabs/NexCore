@@ -160,7 +160,7 @@
               </label>
 
               <label class="field">
-                <input name="leaderName" placeholder="Leader Name" required>
+                <input name="leaderName" placeholder="Leader Full-Name" required>
               </label>
 
               <label class="field">
@@ -172,8 +172,22 @@
               </label>
               
               <label class="field checkbox-field">
+                <input type="checkbox" name="websiteConfirmation" class="checkbox" id="websiteShow" onclick="showWebsiteLabel()">
+                <p>Already have website?</p>
+              </label>
+
+              <label class="field checkbox-field">
+                <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;">
+              </label>
+              
+              <label class="field checkbox-field">
                 <input type="checkbox" name="leader" class="checkbox" required>
-                <p>I'm the leader of the team.</p>
+                <p>I'm the leader of the team*</p>
+              </label>
+
+              <label class="field checkbox-field">
+                <input type="checkbox" name="squAffiliated" class="checkbox" required>
+                <p>Affiliated with Sultan Qaboos University*</p>
               </label>
 
               <div class="form-actions">
@@ -280,16 +294,20 @@
           e.preventDefault() // prevent default form submission
 
           const formData = new FormData(signupForm)
+
           const projectName = formData.get('projectName')
           const leaderName = formData.get('leaderName')
           const leaderEmail = formData.get('leaderEmail')
           const idea = formData.get('idea')
+          const websiteConfirmation = document.querySelector('input[name="websiteConfirmation"]').checked; // ✅ boolean
+          const websiteURL = formData.get('websiteURL') || null;
+          
 
           // Insert into Supabase
           const { data, error } = await supabase
             .from('teams_sign_up_form') // your table name
             .insert([
-              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea}
+              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, website_confirmation: websiteConfirmation, website_url: websiteURL}
             ])
 
           if (error) {

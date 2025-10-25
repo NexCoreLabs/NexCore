@@ -247,7 +247,9 @@ function showWebsiteLabel() {
   // If the checkbox is checked, display the output text
   if (checkBox.checked == true){
     websiteLabel.style.display = "block";
+    websiteLabel.setAttribute('required', 'required');
   } else {
     websiteLabel.style.display = "none";
+    websiteLabel.removeAttribute('required');
   }
 }

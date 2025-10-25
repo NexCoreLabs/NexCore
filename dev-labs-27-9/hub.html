@@ -130,11 +130,11 @@
               </label>
 
               <label class="field">
-                <input name="leaderName" placeholder="Leader Name" required>
+                <input name="leaderName" placeholder="Leader Full-Name" required>
               </label>
 
               <label class="field">
-                <input name="leaderEmail" type="email" placeholder="Leader Email" required>
+                <input name="leaderEmail" type="email" placeholder="Leader Email (e.g.@student.squ.edu.om)" required>
               </label>
 
               <label class="field">
@@ -147,7 +147,7 @@
               </label>
 
               <label class="field checkbox-field">
-                <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;" required>
+                <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;">
               </label>
               
               <label class="field checkbox-field">
@@ -215,7 +215,7 @@
 
         loadProjects();
       </script>
-      <script type="module">
+      <!-- <script type="module">
           // SweetAlert2 function
         function showStatus(success, message) {
           if (success) {
@@ -264,12 +264,13 @@
           e.preventDefault() // prevent default form submission
 
           const formData = new FormData(signupForm)
+
           const projectName = formData.get('projectName')
           const leaderName = formData.get('leaderName')
           const leaderEmail = formData.get('leaderEmail')
           const idea = formData.get('idea')
-          const websiteConfirmation = formData.get('websiteConfirmation')
-          const websiteURL = formData.get('websiteURL')
+          const websiteConfirmation = document.querySelector('input[name="websiteConfirmation"]').checked; // ✅ boolean
+          const websiteURL = formData.get('websiteURL') || null;
           
 
           // Insert into Supabase
@@ -286,6 +287,6 @@
             signupForm.reset()
           }
         })
-      </script>
+      </script> -->
     </body>
 </html>
