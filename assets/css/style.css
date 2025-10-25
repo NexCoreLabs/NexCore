@@ -505,6 +505,7 @@ a.project-card:hover .id{background-position: 100% 50%; padding:5px 10px;}
 /* form */
 .contact-form{padding:18px; border-radius:12px; background: none;}
 .field{display:block; margin-bottom:12px;}
+.field p{margin: 0;}
 
       input, textarea{
         box-sizing: border-box;
@@ -544,7 +545,7 @@ a.project-card:hover .id{background-position: 100% 50%; padding:5px 10px;}
       }
       
 input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215,0.06); border-color:rgba(115,189,215,0.2);}
-.form-actions{display:flex; gap:8px; margin-top:10px;}
+.form-actions{display:flex; gap:8px; margin-top:30px;}
 
 .checkbox {
   appearance: none;
