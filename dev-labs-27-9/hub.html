@@ -140,10 +140,24 @@
               <label class="field">
                 <textarea name="idea" rows="4" placeholder="Project Idea" required></textarea>
               </label>
+
+              <label class="field checkbox-field">
+                <input type="checkbox" name="websiteConfirmation" class="checkbox" id="websiteShow" onclick="showWebsiteLabel()">
+                <p>Already have website?</p>
+              </label>
+
+              <label class="field checkbox-field">
+                <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;" required>
+              </label>
               
               <label class="field checkbox-field">
                 <input type="checkbox" name="leader" class="checkbox" required>
-                <p>I'm the leader of the team.</p>
+                <p>I'm the leader of the team*</p>
+              </label>
+
+              <label class="field checkbox-field">
+                <input type="checkbox" name="squAffiliated" class="checkbox" required>
+                <p>Affiliated with Sultan Qaboos University*</p>
               </label>
 
               <div class="form-actions">
@@ -201,7 +215,7 @@
 
         loadProjects();
       </script>
-      <!-- <script type="module">
+      <script type="module">
           // SweetAlert2 function
         function showStatus(success, message) {
           if (success) {
@@ -254,12 +268,15 @@
           const leaderName = formData.get('leaderName')
           const leaderEmail = formData.get('leaderEmail')
           const idea = formData.get('idea')
+          const websiteConfirmation = formData.get('websiteConfirmation')
+          const websiteURL = formData.get('websiteURL')
+          
 
           // Insert into Supabase
           const { data, error } = await supabase
             .from('teams_sign_up_form') // your table name
             .insert([
-              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea}
+              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, website_confirmation: websiteConfirmation, website_url: websiteURL}
             ])
 
           if (error) {
@@ -269,6 +286,6 @@
             signupForm.reset()
           }
         })
-      </script> -->
+      </script>
     </body>
 </html>

@@ -236,3 +236,18 @@ searchInput.addEventListener('input', () => {
     card.style.display = text.includes(query) ? 'block' : 'none';
   });
 });
+
+
+function showWebsiteLabel() {
+  // Get the checkbox
+  var checkBox = document.getElementById("websiteShow");
+  // Get the output text
+  var websiteLabel = document.getElementById("websiteURLLabel");
+
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true){
+    websiteLabel.style.display = "block";
+  } else {
+    websiteLabel.style.display = "none";
+  }
+}
