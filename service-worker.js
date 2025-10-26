@@ -8,18 +8,15 @@ const urlsToCache = [
   './googleb60d962a5a64f048.html',
 
   './assets/css/style.css',
-  './assets/css/style-index.css',
-  './assets/css/style-hub.css',
-  './assets/css/style-thanks.css',
+
 
   './assets/js/script.js',
-  './assets/js/script-index.js',
-  './assets/js/script-hub.js',
-  './assets/js/script-thanks.js',
+
 
   './assets/images/alfarismujahid-profile.jpeg',
   './assets/images/audacity.png',
   './assets/images/cloudflare.png',
+  './assets/images/davinciresolve.png',
   './assets/images/flaticon.png',
   './assets/images/fontawesome.png',
   './assets/images/github.png',
@@ -53,7 +50,13 @@ const urlsToCache = [
 
   './manifest.json',
 
-  './sitemap.xml'
+  './sitemap.xml',
+
+  './robots.txt',
+
+  './README.md',
+
+  './LICENSE'
 ];
 
 // Install
