@@ -9,11 +9,9 @@ const urlsToCache = [
 
   './assets/css/style.css',
 
-
   './assets/js/script.js',
 
-
-  './assets/images/alfarismujahid-profile.jpeg',
+  './assets/images/leaderpic.png',
   './assets/images/audacity.png',
   './assets/images/cloudflare.png',
   './assets/images/davinciresolve.png',
@@ -24,9 +22,7 @@ const urlsToCache = [
   './assets/images/googlefont.png',
   './assets/images/googlesearchconsole.png',
   './assets/images/inkscape.png',
-  './assets/images/ipad.png',
   './assets/images/iphone.png',
-  './assets/images/lap.png',
   './assets/images/large-screen.png',
   './assets/images/nexcore-word.png',
   './assets/images/nexcore-icon.png',
@@ -34,7 +30,6 @@ const urlsToCache = [
   './assets/images/openai.png',
   './assets/images/opengraph.png',
   './assets/images/pagespeed.png',
-  './assets/images/pc.png',
   './assets/images/shots.png',
   './assets/images/squ-logo.png',
   './assets/images/squ-word.png',
