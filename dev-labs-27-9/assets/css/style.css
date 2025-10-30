@@ -688,7 +688,7 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
       border-top: none;
       visibility: hidden;
       transition: 0.5s;
-      box-shadow: 0 8px 32px 0 rgba(115, 189, 215, 0.06), inset 0px 0px 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(115, 189, 215, 0.06), inset 0px 0px 20px rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       background: rgba(10,11,28,0.8);
