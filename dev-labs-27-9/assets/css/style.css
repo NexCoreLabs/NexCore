@@ -382,6 +382,9 @@ a.project-card:hover .id{background-position: 100% 50%; padding:5px 10px;}
 .contact-grid{display:grid; grid-template-columns:1fr 420px; gap:26px; align-items:start; border-radius:12px; border:1px solid rgba(255,255,255,0.03); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);}
 .contact-card{padding:18px; border-radius:12px; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);}
 .socials{display:flex; gap:10px; margin-top:12px; justify-content: center;}
+.social.discord{
+  font-size: 14px;
+}
 .social{display:inline-block; font-size: 22px; color:var(--muted); transition: color 0.3s;}
 .social:hover{color:var(--primary-accent);}
 
@@ -534,6 +537,15 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
   background: linear-gradient(90deg, transparent, #6EE7F3, transparent);
   animation: flow 3s ease-in-out infinite;
 }
+
+ .paypal{
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+ .paypal:hover{
+  color: #6EE7F3;
+ }
 
 @keyframes flow {
   0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
