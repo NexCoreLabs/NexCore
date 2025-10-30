@@ -1073,6 +1073,10 @@ margin: auto;
   .license-link {
     display: block;
   }
+
+  span#splitter{
+    display: none;
+  }
 }
 
 @media screen and (max-width: 380px){
