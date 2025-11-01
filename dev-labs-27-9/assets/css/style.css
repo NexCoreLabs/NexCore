@@ -436,16 +436,17 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 
 .checkbox {
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   padding: 0;
   border: 2px solid #6BD3C9;
   border-radius: 5px;
   background-color: transparent;
   display: inline-block;
   position: relative;
-  margin-right: 10px;
+  margin-right: 5px;
   margin-bottom: 4px;
+  margin-top: 1px;
   cursor: pointer;
 }
 
@@ -461,8 +462,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
 }
@@ -472,14 +473,13 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 }
 
 .checkbox-field {
-  font-size: 18px;
   color: #fff;
   cursor: pointer;
   user-select: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #9aa3b2;
 }
 
