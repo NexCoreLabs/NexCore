@@ -4,12 +4,13 @@ const urlsToCache = [
   './index.html',
   './hub.html',
   './thanks.html',
-  './mobile-preview.html',
+  './research.html',
   './googleb60d962a5a64f048.html',
 
   './assets/css/style.css',
 
   './assets/js/script.js',
+  './version.js',
 
   './assets/images/leaderpic.webp',
   './assets/images/audacity.webp',
@@ -51,7 +52,9 @@ const urlsToCache = [
 
   './README.md',
 
-  './LICENSE'
+  './LICENSE',
+
+  './CHANGELOG.md'
 ];
 
 // Install

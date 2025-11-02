@@ -2,7 +2,7 @@
 
 ## v1.1.1 — 02 Nov 2025
 - Fixing broken pictures path in service-worker.js
-- Deleted mobile=-preview.html
+- Deleted mobile-preview.html
 
 ## v1.1.0 — 01 Nov 2025
 - Enabled image compression (WebP)
