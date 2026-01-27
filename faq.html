@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYZB5L2R8W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PYZB5L2R8W');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently Asked Questions about NexCore Labs - answers to common questions about our services, pricing, and platform.">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="FAQ, frequently asked questions, NexCore Labs, help, support, web development">
+    <meta name="theme-color" content="#0a0b1c">
+
+    <meta property="og:url" content="https://nexcorelabs.github.io/NexCore/faq.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs - FAQ">
+    <meta property="og:description" content="Frequently Asked Questions about NexCore Labs services and platform.">
+
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:domain" content="nexcorelabs.github.io">
+    <meta property="twitter:url" content="https://nexcorelabs.github.io/NexCore/faq.html">
+    <meta name="twitter:title" content="NexCore Labs - FAQ">
+    <meta name="twitter:description" content="Frequently Asked Questions about NexCore Labs.">
+
+    <title>NexCore Labs - FAQ</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+    <style>
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 40px;
+        }
+
+        .faq-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .faq-header p {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .faq-search {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(110, 231, 243, 0.3);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-search input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .faq-search input::placeholder {
+            color: #718096;
+        }
+
+        .faq-search i {
+            color: #6EE7F3;
+        }
+
+        .breadcrumb {
+            color: #a0aec0;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #6EE7F3;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .faq-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 50px;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0aec0;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .category-btn:hover {
+            border-color: #6EE7F3;
+            background: rgba(110, 231, 243, 0.1);
+            color: #6EE7F3;
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            border-color: #6EE7F3;
+        }
+
+        .faq-sections {
+            display: grid;
+            gap: 60px;
+        }
+
+        .faq-category-section {
+            display: none;
+        }
+
+        .faq-category-section.active {
+            display: block;
+        }
+
+        .faq-category-title {
+            font-size: 2rem;
+            color: #6EE7F3;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(110, 231, 243, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .faq-category-title i {
+            font-size: 2.5rem;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #6EE7F3;
+            background: rgba(110, 231, 243, 0.05);
+        }
+
+        .faq-question {
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            font-size: 1.05rem;
+        }
+
+        .faq-question span {
+            flex: 1;
+        }
+
+        .faq-toggle-icon {
+            color: #6EE7F3;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            min-width: 20px;
+            text-align: right;
+        }
+
+        .faq-item.active .faq-toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            color: #cbd5e0;
+            margin-top: 15px;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .faq-answer a {
+            color: #6EE7F3;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .faq-answer a:hover {
+            text-decoration: underline;
+        }
+
+        .code-snippet {
+            background: #0a0b1c;
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #6EE7F3;
+        }
+
+        .highlight-box {
+            background: rgba(159, 122, 234, 0.1);
+            border-left: 4px solid #9F7AEA;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .contact-cta {
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.1), rgba(159, 122, 234, 0.1));
+            border: 2px solid rgba(110, 231, 243, 0.3);
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .contact-cta h2 {
+            color: #6EE7F3;
+            margin-top: 0;
+        }
+
+        .contact-cta p {
+            color: #a0aec0;
+            margin-bottom: 20px;
+        }
+
+        .contact-cta a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .contact-cta a:hover {
+            transform: translateY(-3px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #a0aec0;
+            display: none;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #6EE7F3;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .faq-header h1 {
+                font-size: 2rem;
+            }
+
+            .faq-categories {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="index.html" class="fade" title="Home">Home</a>
+                    <a href="how-to-use.html" class="fade" title="How to Use">How to Use</a>
+                    <a href="pricing.html" class="fade" title="Pricing">Pricing</a>
+                    <a href="faq.html" class="fade" title="FAQ"><strong>FAQ</strong></a>
+                    <a href="hub.html#signup" class="magic-signup fade" title="Sign-Up">Access the Core</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="faq-container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / <span>FAQ</span>
+            </div>
+
+            <div class="faq-header">
+                <h1>Frequently Asked Questions</h1>
+                <p>Find answers to common questions about NexCore Labs, our services, and how to get the most out of our platform.</p>
+            </div>
+
+            <div class="faq-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="faqSearch" placeholder="Search questions...">
+            </div>
+
+            <div class="faq-categories" id="categoryButtons">
+                <button class="category-btn active" data-category="general">General</button>
+                <button class="category-btn" data-category="service">Services</button>
+                <button class="category-btn" data-category="technical">Technical</button>
+                <button class="category-btn" data-category="support">Support</button>
+                <button class="category-btn" data-category="security">Security</button>
+            </div>
+
+            <div class="faq-sections">
+                <!-- General Category -->
+                <div class="faq-category-section active" data-section="general">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-circle-info"></i> General</h2>
+
+                    <div class="faq-item active">
+                        <h3 class="faq-question">
+                            <span>What is NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs is a student-driven digital solution platform at Sultan Qaboos University that specializes in creating professional websites and digital experiences for student-led projects. We combine speed, quality, and innovation to bring your ideas to life online.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Who can use NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs is dedicated to Sultan Qaboos University (SQU) affiliates and student-led projects. This includes research initiatives, tech startups, creative ventures, innovation projects, and clubs. If you're a student at SQU working on a project, we'd love to help!
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>When was NexCore Labs founded?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs was founded in 2025 by a dedicated team of SQU students passionate about web development and innovation. We're a young, energetic team committed to helping student projects shine online.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How do I get started with NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Getting started is simple! <a href="hub.html#signup">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html">How to Use guide</a> for more details.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's the difference between NexCore Labs and other web development services?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs is uniquely focused on student projects at SQU. We understand the constraints of student teams — limited budgets, learning objectives, and tight timelines. Our team is dedicated to delivering professional results while mentoring the next generation of developers. We prioritize speed, quality, and affordability.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Category -->
+                <div class="faq-category-section" data-section="service">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-briefcase"></i> Services</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What services does NexCore Labs offer?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We offer comprehensive web development services including:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Custom website design and development</li>
+                                <li>Responsive mobile design</li>
+                                <li>SEO optimization</li>
+                                <li>Analytics setup and monitoring</li>
+                                <li>E-commerce capabilities (Enterprise plan)</li>
+                                <li>Content management systems</li>
+                                <li>Blog and news sections</li>
+                                <li>Form integration and submission handling</li>
+                                <li>Ongoing support and maintenance</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How long does it take to build a website?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Typical project timeline is 2-4 weeks depending on complexity and scope:
+                            <div class="highlight-box">
+                                <strong>Week 1:</strong> Initial consultation and design mockups<br>
+                                <strong>Week 2-3:</strong> Development and implementation<br>
+                                <strong>Week 4:</strong> Testing, refinements, and deployment
+                            </div>
+                            We can expedite for urgent projects — contact us to discuss timeline options.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Do you provide hosting?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! All projects are hosted on secure, fast servers with 99.9% uptime guarantee. Hosting is included in all our plans. We also set up CDN (Content Delivery Network) via Cloudflare for lightning-fast global performance.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you help with content creation?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We can provide guidance on content structure and best practices. While you should provide the core project content, we can help optimize it for web and improve messaging. For larger projects (Professional/Enterprise), we offer content writing services.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What about mobile optimization?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            All NexCore Labs websites are <strong>fully responsive and mobile-optimized</strong>. Your site will look perfect on smartphones, tablets, and desktops. We test extensively across all devices to ensure seamless user experience.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you integrate with existing tools and platforms?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Absolutely! We can integrate with:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Email services (newsletters, notifications)</li>
+                                <li>Payment processors (Stripe, PayPal)</li>
+                                <li>Analytics platforms (Google Analytics, Hotjar)</li>
+                                <li>CRM systems (Supabase, custom databases)</li>
+                                <li>Social media platforms</li>
+                                <li>Slack and communication tools</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Category -->
+                <div class="faq-category-section" data-section="technical">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-code"></i> Technical</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What technologies do you use?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Our tech stack includes:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript ES6+</li>
+                                <li><strong>Backend:</strong> Supabase, Node.js (when needed)</li>
+                                <li><strong>Tools:</strong> GitHub, VS Code, Git</li>
+                                <li><strong>Performance:</strong> Cloudflare CDN, PageSpeed optimization</li>
+                                <li><strong>Analytics:</strong> Google Analytics, Search Console</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Is my website Progressive Web App (PWA) compatible?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! All NexCore Labs websites are built as Progressive Web Apps. This means users can install your site on their devices like a native app, enjoy offline functionality, and get push notifications. It's a modern, user-friendly approach that boosts engagement.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How is performance optimized?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We implement multiple performance optimizations:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Image optimization and lazy loading</li>
+                                <li>WebP format for modern browsers</li>
+                                <li>CSS and JavaScript minification</li>
+                                <li>Caching strategies via service workers</li>
+                                <li>CDN via Cloudflare</li>
+                                <li>Regular performance audits with PageSpeed Insights</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What about SEO?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            All our websites are SEO optimized from day one:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Proper meta tags and descriptions</li>
+                                <li>Semantic HTML structure</li>
+                                <li>Mobile-first responsive design</li>
+                                <li>Fast loading times (Core Web Vitals)</li>
+                                <li>XML sitemaps and robots.txt</li>
+                                <li>Google Search Console integration</li>
+                                <li>Schema markup for rich snippets</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can I edit the code myself after launch?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! We provide you with full access to your project's source code on GitHub. If you have developers on your team, they can make updates themselves (with our guidance). We also offer ongoing support hours for content and feature updates.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's the infrastructure like?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Your website is hosted on industry-leading infrastructure:
+                            <div class="highlight-box">
+                                <strong>Hosting:</strong> High-performance servers with SSD storage<br>
+                                <strong>CDN:</strong> Cloudflare for global distribution<br>
+                                <strong>Monitoring:</strong> UptimeRobot 24/7 monitoring with instant alerts<br>
+                                <strong>SSL:</strong> Free HTTPS encryption (Let's Encrypt)<br>
+                                <strong>Uptime:</strong> 99.9% guaranteed SLA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Category -->
+                <div class="faq-category-section" data-section="support">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-headset"></i> Support</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What support options are available?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We offer multiple support channels:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>Email:</strong> nexcorelabs@outlook.com (48-hour response)</li>
+                                <li><strong>Contact Form:</strong> Via our website</li>
+                                <li><strong>GitHub:</strong> For technical issues</li>
+                                <li><strong>Social Media:</strong> Twitter, Instagram, GitHub</li>
+                                <li><strong>Discord:</strong> Community support (coming soon)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's your response time?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We guarantee a <strong>48-hour response time</strong> for all support requests. Most inquiries are answered within 24 hours. Enterprise plan customers receive 24/7 support with guaranteed 4-hour response time.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you help with bug fixes?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Absolutely! All bug fixes are covered under your support plan. Critical issues are prioritized and fixed immediately. For issues outside your support period, we offer pay-as-you-go support at $49/hour.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Do you provide training for our team?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! We provide comprehensive training for your team on:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Content management and updates</li>
+                                <li>Using analytics and monitoring tools</li>
+                                <li>Basic code modifications (if applicable)</li>
+                                <li>SEO best practices</li>
+                                <li>Security and maintenance</li>
+                            </ul>
+                            Training is included in Professional and Enterprise plans.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What happens after my support period ends?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Your website remains live and fully functional. You have several options:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Continue your monthly subscription for ongoing support</li>
+                                <li>Upgrade to a higher tier plan</li>
+                                <li>Use our pay-as-you-go support ($49/hour)</li>
+                                <li>Maintain the site yourself with code access</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How do I request new features?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We love feature requests! Submit them through:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Email (nexcorelabs@outlook.com)</li>
+                                <li>GitHub issues</li>
+                                <li>Contact form on our website</li>
+                            </ul>
+                            We'll evaluate the request and provide a timeline and cost estimate.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Category -->
+                <div class="faq-category-section" data-section="security">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-shield"></i> Security</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How secure is my website?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Security is a top priority. Your website includes:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>HTTPS Encryption:</strong> Free SSL certificates via Let's Encrypt</li>
+                                <li><strong>DDoS Protection:</strong> Cloudflare DDoS protection</li>
+                                <li><strong>WAF (Web Application Firewall):</strong> Cloudflare WAF rules</li>
+                                <li><strong>Regular Backups:</strong> Daily automated backups</li>
+                                <li><strong>Security Headers:</strong> Proper HTTP security headers</li>
+                                <li><strong>Form Security:</strong> CSRF protection and validation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Is my data protected?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes. We implement data protection best practices:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>End-to-end encryption for sensitive data</li>
+                                <li>Secure database with Supabase</li>
+                                <li>PCI DSS compliance (if accepting payments)</li>
+                                <li>GDPR-compliant data handling</li>
+                                <li>Regular security audits</li>
+                                <li>Access controls and authentication</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What if there's a security breach?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We have an incident response protocol:
+                            <div class="highlight-box">
+                                <strong>Detection:</strong> 24/7 monitoring with instant alerts<br>
+                                <strong>Response:</strong> Immediate investigation and containment<br>
+                                <strong>Notification:</strong> We notify you within 24 hours<br>
+                                <strong>Resolution:</strong> Complete fix and remediation plan<br>
+                                <strong>Prevention:</strong> Updated security measures to prevent recurrence
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Do you comply with regulations like GDPR?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! Our websites are built with compliance in mind:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>GDPR:</strong> EU privacy regulation compliant</li>
+                                <li><strong>Cookie Consent:</strong> Proper consent management</li>
+                                <li><strong>Privacy Policy:</strong> We help you implement proper policies</li>
+                                <li><strong>Data Access:</strong> Users can request their data</li>
+                                <li><strong>Data Deletion:</strong> Secure data removal protocols</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What about payment security?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            If your project accepts payments, we implement enterprise-grade security:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>PCI DSS Compliant:</strong> Payment Card Industry standards</li>
+                                <li><strong>Secure Processors:</strong> Stripe, PayPal integrations</li>
+                                <li><strong>Encryption:</strong> End-to-end encryption for card data</li>
+                                <li><strong>SSL/TLS:</strong> Secure transmission protocols</li>
+                                <li><strong>No Card Storage:</strong> We don't store card details</li>
+                                <li><strong>Fraud Detection:</strong> Built-in fraud prevention</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="contact-cta">
+                <h2>Didn't Find Your Answer?</h2>
+                <p>Our team is here to help! Get in touch with any questions or concerns.</p>
+                <a href="index.html#contact">Send a Message</a>
+                <a href="how-to-use.html#support">View Support Options</a>
+            </div>
+
+            <div class="no-results">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <p>No questions match your search. Try different keywords or <a href="index.html#contact" style="color: #6EE7F3;">contact us</a>.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener">🩵 Tip us on PayPal</a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>
+                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // FAQ functionality
+        const faqItems = document.querySelectorAll('.faq-item');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const faqSections = document.querySelectorAll('.faq-category-section');
+        const searchInput = document.getElementById('faqSearch');
+        const noResults = document.querySelector('.no-results');
+
+        // FAQ item toggle
+        faqItems.forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        // Category filtering
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                categoryButtons.forEach(b => b.classList.remove('active'));
+                faqSections.forEach(s => s.classList.remove('active'));
+                
+                btn.classList.add('active');
+                const category = btn.dataset.category;
+                document.querySelector(`[data-section="${category}"]`).classList.add('active');
+            });
+        });
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            let visibleItems = 0;
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                
+                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    visibleItems++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (visibleItems === 0 && searchTerm.length > 0) {
+                noResults.style.display = 'block';
+                faqSections.forEach(s => s.style.display = 'none');
+                categoryButtons.forEach(b => b.style.opacity = '0.5');
+            } else {
+                noResults.style.display = 'none';
+                faqSections.forEach(s => s.style.display = 'block');
+                categoryButtons.forEach(b => b.style.opacity = '1');
+            }
+        });
+
+        console.log(`NexCore Labs version ${APP_VERSION}`);
+    </script>
+</body>
+</html>

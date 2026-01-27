@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYZB5L2R8W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PYZB5L2R8W');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexCore Labs pricing plans - transparent, affordable digital solutions for student projects. Multiple tiers to fit your needs.">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="NexCore Labs, pricing, plans, web development, student projects, affordable">
+    <meta name="theme-color" content="#0a0b1c">
+
+    <meta property="og:url" content="https://nexcorelabs.github.io/NexCore/pricing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs Pricing - Affordable Digital Solutions">
+    <meta property="og:description" content="Transparent pricing for professional website development. Choose the plan that fits your student project.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="nexcorelabs.github.io">
+    <meta property="twitter:url" content="https://nexcorelabs.github.io/NexCore/pricing.html">
+    <meta name="twitter:title" content="NexCore Labs Pricing">
+    <meta name="twitter:description" content="Transparent pricing for professional website development.">
+
+    <title>NexCore Labs - Pricing Plans</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+    <style>
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 80px;
+            padding-top: 40px;
+        }
+
+        .pricing-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pricing-header p {
+            font-size: 1.1rem;
+            color: #a0aec0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-toggle {
+            text-align: center;
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .toggle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #cbd5e0;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            border-color: #6EE7F3;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.1), rgba(159, 122, 234, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .pricing-card:hover {
+            border-color: #6EE7F3;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(110, 231, 243, 0.1);
+        }
+
+        .pricing-card:hover::before {
+            opacity: 1;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid #6EE7F3;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured .featured-badge {
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #0a0b1c;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 10px;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+
+        .featured-badge span {
+            transform: rotate(-45deg);
+            display: block;
+        }
+
+        .plan-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #6EE7F3;
+        }
+
+        .plan-name {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .plan-description {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            min-height: 40px;
+        }
+
+        .plan-price {
+            margin-bottom: 30px;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            color: #6EE7F3;
+            font-weight: bold;
+        }
+
+        .price-currency {
+            font-size: 1.2rem;
+            position: relative;
+            top: -15px;
+        }
+
+        .price-period {
+            color: #a0aec0;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .price-note {
+            color: #9F7AEA;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .plan-features li {
+            color: #cbd5e0;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+
+        .plan-features li::before {
+            content: '✓';
+            color: #6EE7F3;
+            font-weight: bold;
+            min-width: 20px;
+        }
+
+        .plan-features li.disabled {
+            color: #4a5568;
+            opacity: 0.6;
+        }
+
+        .plan-features li.disabled::before {
+            content: '✗';
+            color: #718096;
+        }
+
+        .plan-cta {
+            width: 100%;
+            padding: 14px 20px;
+            margin-top: 30px;
+            background: transparent;
+            border: 2px solid #6EE7F3;
+            color: #6EE7F3;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .plan-cta:hover {
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            transform: translateY(-3px);
+        }
+
+        .pricing-card.featured .plan-cta {
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            border-color: #6EE7F3;
+        }
+
+        .pricing-card.featured .plan-cta:hover {
+            box-shadow: 0 10px 30px rgba(110, 231, 243, 0.3);
+        }
+
+        .comparison-table {
+            margin-top: 80px;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(110, 231, 243, 0.1);
+            color: #6EE7F3;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e0;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(110, 231, 243, 0.05);
+        }
+
+        .feature-check {
+            color: #6EE7F3;
+            font-weight: bold;
+        }
+
+        .feature-cross {
+            color: #718096;
+            opacity: 0.6;
+        }
+
+        .faq-section {
+            margin-top: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 50px 40px;
+        }
+
+        .faq-section h2 {
+            text-align: center;
+            color: #6EE7F3;
+            margin-bottom: 40px;
+            font-size: 2rem;
+        }
+
+        .faq-items {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #6EE7F3;
+            background: rgba(110, 231, 243, 0.05);
+        }
+
+        .faq-item h4 {
+            color: #6EE7F3;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .faq-item p {
+            margin-top: 15px;
+            color: #cbd5e0;
+            display: none;
+            line-height: 1.7;
+        }
+
+        .faq-item.active p {
+            display: block;
+        }
+
+        .breadcrumb {
+            color: #a0aec0;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb a {
+            color: #6EE7F3;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .custom-plan {
+            text-align: center;
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.1), rgba(159, 122, 234, 0.1));
+            border: 2px dashed rgba(110, 231, 243, 0.3);
+            border-radius: 12px;
+        }
+
+        .custom-plan h3 {
+            color: #6EE7F3;
+            margin-bottom: 15px;
+        }
+
+        .custom-plan p {
+            color: #a0aec0;
+            margin-bottom: 20px;
+        }
+
+        .custom-plan a {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
+            color: #0a0b1c;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-plan a:hover {
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            .pricing-card.featured {
+                transform: scale(1);
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="index.html" class="fade" title="Home">Home</a>
+                    <a href="how-to-use.html" class="fade" title="How to Use">How to Use</a>
+                    <a href="pricing.html" class="fade" title="Pricing"><strong>Pricing</strong></a>
+                    <a href="faq.html" class="fade" title="FAQ">FAQ</a>
+                    <a href="hub.html#signup" class="magic-signup fade" title="Sign-Up">Access the Core</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="pricing-container">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a> / <span>Pricing</span>
+            </div>
+
+            <div class="pricing-header">
+                <h1>Transparent Pricing for Your Project</h1>
+                <p>Professional digital solutions designed for student projects at Sultan Qaboos University. Choose the plan that fits your needs.</p>
+            </div>
+
+            <div class="pricing-toggle" id="pricingToggle">
+                <button class="toggle-btn active" data-type="monthly">Monthly</button>
+                <button class="toggle-btn" data-type="annual">Annual <span style="color: #6EE7F3;"><small>(Save 15%)</small></span></button>
+            </div>
+
+            <div class="pricing-cards" id="pricingCards">
+                <!-- Starter Plan -->
+                <div class="pricing-card">
+                    <div class="plan-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h3 class="plan-name">Starter</h3>
+                    <p class="plan-description">Perfect for small projects and proof of concepts</p>
+                    <div class="plan-price">
+                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="49">49</span><span class="price-currency">/</span><span class="price-period">month</span>
+                        <span class="price-amount annual" data-price="499" style="display:none;">499</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
+                        <p class="price-note">Billed monthly or annually</p>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Basic project website</li>
+                        <li>Up to 5 pages</li>
+                        <li>Mobile responsive design</li>
+                        <li>Contact form integration</li>
+                        <li>Basic SEO optimization</li>
+                        <li>1 month of support</li>
+                        <li class="disabled">Analytics dashboard</li>
+                        <li class="disabled">Custom domain</li>
+                    </ul>
+                    <button class="plan-cta" onclick="contactUs('Starter')">Get Started</button>
+                </div>
+
+                <!-- Professional Plan (Featured) -->
+                <div class="pricing-card featured">
+                    <div class="featured-badge"><span>Most<br>Popular</span></div>
+                    <div class="plan-icon"><i class="fa-solid fa-star"></i></div>
+                    <h3 class="plan-name">Professional</h3>
+                    <p class="plan-description">Ideal for active projects and tech initiatives</p>
+                    <div class="plan-price">
+                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="99">99</span><span class="price-currency">/</span><span class="price-period">month</span>
+                        <span class="price-amount annual" data-price="999" style="display:none;">999</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
+                        <p class="price-note">Billed monthly or annually</p>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Professional website design</li>
+                        <li>Up to 15 pages</li>
+                        <li>Fully responsive design</li>
+                        <li>Contact forms & submissions</li>
+                        <li>Advanced SEO optimization</li>
+                        <li>6 months of support</li>
+                        <li>Analytics dashboard</li>
+                        <li>Custom domain included</li>
+                        <li>Blog/News section</li>
+                        <li>Social media integration</li>
+                    </ul>
+                    <button class="plan-cta" onclick="contactUs('Professional')">Choose Plan</button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="pricing-card">
+                    <div class="plan-icon"><i class="fa-solid fa-building"></i></div>
+                    <h3 class="plan-name">Enterprise</h3>
+                    <p class="plan-description">For large-scale projects needing advanced features</p>
+                    <div class="plan-price">
+                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="199">199</span><span class="price-currency">/</span><span class="price-period">month</span>
+                        <span class="price-amount annual" data-price="1999" style="display:none;">1999</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
+                        <p class="price-note">Billed monthly or annually</p>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Enterprise website design</li>
+                        <li>Unlimited pages</li>
+                        <li>Premium responsive design</li>
+                        <li>Advanced form systems</li>
+                        <li>Premium SEO optimization</li>
+                        <li>Dedicated support (24/7)</li>
+                        <li>Advanced analytics</li>
+                        <li>Custom domain & subdomain</li>
+                        <li>Full blog system</li>
+                        <li>E-commerce capabilities</li>
+                        <li>Advanced integrations</li>
+                        <li>Monthly strategy calls</li>
+                    </ul>
+                    <button class="plan-cta" onclick="contactUs('Enterprise')">Contact Sales</button>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-table">
+                <h2 style="text-align: center; color: #6EE7F3; margin-bottom: 40px;">Detailed Feature Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Starter</th>
+                            <th>Professional</th>
+                            <th>Enterprise</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Website Pages</td>
+                            <td><span class="feature-check">5</span></td>
+                            <td><span class="feature-check">15</span></td>
+                            <td><span class="feature-check">Unlimited</span></td>
+                        </tr>
+                        <tr>
+                            <td>Responsive Design</td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>SEO Optimization</td>
+                            <td><span class="feature-check">Basic</span></td>
+                            <td><span class="feature-check">Advanced</span></td>
+                            <td><span class="feature-check">Premium</span></td>
+                        </tr>
+                        <tr>
+                            <td>Analytics</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">Advanced</span></td>
+                        </tr>
+                        <tr>
+                            <td>Custom Domain</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Blog System</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>E-commerce</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Support Duration</td>
+                            <td><span class="feature-check">1 month</span></td>
+                            <td><span class="feature-check">6 months</span></td>
+                            <td><span class="feature-check">24/7</span></td>
+                        </tr>
+                        <tr>
+                            <td>Strategy Calls</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">Monthly</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Custom Plan -->
+            <div class="custom-plan">
+                <h3>Need Something Different?</h3>
+                <p>We offer custom packages tailored to your specific project requirements and budget.</p>
+                <a href="index.html#contact">Request Custom Quote</a>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2>Pricing Questions</h2>
+                <div class="faq-items">
+                    <div class="faq-item active">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What's included in the setup fee?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>The setup includes initial consultation, design creation, development, testing, deployment, and 2 weeks of post-launch support to ensure everything works perfectly.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Can I upgrade plans later?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Absolutely! You can upgrade to a higher plan anytime. We'll credit any remaining balance from your current plan towards the upgrade.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Is there a setup fee?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes, we charge a one-time setup fee of $299 to cover initial consultation, design, and deployment. This is waived for annual subscriptions to the Professional and Enterprise plans.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Do you offer student discounts?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes! SQU students receive a 20% discount on all plans. Simply verify your SQU email address during checkout to apply the discount automatically.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What happens after the support period ends?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Your website remains live and accessible. You can continue the monthly subscription for ongoing support, or opt for our pay-as-you-go support model at $49/hour.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Can I cancel anytime?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes, monthly plans can be cancelled with 30 days notice. Annual plans include a 30-day refund guarantee. We want to ensure you're completely satisfied with our service.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What payment methods do you accept?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>We accept all major credit cards, PayPal, and bank transfers. For larger enterprise projects, we offer flexible payment plans.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Is there a contract?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>No long-term contracts required. Monthly plans are flexible and can be adjusted or cancelled with 30 days notice. We rely on quality service to keep your business, not contracts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener">🩵 Tip us on PayPal</a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>
+                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Pricing toggle
+        const toggleButtons = document.querySelectorAll('.toggle-btn');
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                toggleButtons.forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+
+                const type = button.dataset.type;
+                document.querySelectorAll('.price-amount, .price-period').forEach(el => {
+                    if (el.classList.contains(type)) {
+                        el.style.display = 'inline';
+                    } else if (el.classList.contains(type === 'monthly' ? 'annual' : 'monthly')) {
+                        el.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // FAQ toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.addEventListener('click', function() {
+                faqItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function contactUs(plan) {
+            window.location.href = `index.html#contact?plan=${plan}`;
+        }
+
+        console.log(`NexCore Labs version ${APP_VERSION}`);
+    </script>
+</body>
+</html>
