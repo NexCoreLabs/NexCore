@@ -97,6 +97,13 @@ a{color:inherit; text-decoration:none;}
   z-index: -1;
 }
 
+div.div-menu-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(0deg, transparent, #6EE7F3, transparent);
+  margin: 10px 0;
+}
+
 /* Logo */
 .logo {
   display: flex;
