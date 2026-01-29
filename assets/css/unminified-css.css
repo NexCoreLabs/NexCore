@@ -834,8 +834,9 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
                 border: 1px solid rgba(110, 231, 243, 0.1);
                 border-radius: 12px;
                 padding: 1.5rem;
-                backdrop-filter: blur(10px);
                 max-width: 760px;
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
             }
 
             .info-block h3 {
@@ -853,6 +854,16 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
                 line-height: 1.6;
                 margin-bottom: 0.5rem;
             }
+
+            .info-block a {
+                color: #678CA8;
+                font-weight: 500;
+            }
+
+            .info-block a:hover {
+              color: #6EE7F3;
+            }
+
 
             .info-block ul {
                 list-style: none;
@@ -878,7 +889,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             .signup-form-wrapper {
                 position: sticky;
                 top: 2rem;
-;
+                backdrop-filter: blur(3px);
+                -webkit-backdrop-filter: blur(3px);
             }
 
             .form-container {
@@ -886,7 +898,6 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
                 border: 1px solid rgba(110, 231, 243, 0.15);
                 border-radius: 12px;
                 padding: 2.5rem;
-                backdrop-filter: blur(15px);
                 max-width: 760px;
             }
 
@@ -968,7 +979,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             border-radius: 12px;
             padding: 30px;
             margin-bottom: 50px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .table-of-contents h2 {
@@ -989,7 +1001,6 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
         .table-of-contents a {
             color: #a0aec0;
             text-decoration: none;
-            transition: color 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -1037,6 +1048,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             padding: 20px;
             margin: 20px 0;
             border-radius: 8px;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .feature-box strong {
@@ -1051,6 +1064,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
 
         .steps-list li {
             background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
             margin-bottom: 15px;
             padding: 20px;
             border-radius: 8px;
@@ -1115,7 +1130,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             margin-bottom: 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .faq-item:hover {
@@ -1153,6 +1169,8 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             border-radius: 12px;
             text-align: center;
             margin-top: 80px;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .cta-section h2 {
@@ -1160,22 +1178,6 @@ input:focus, textarea:focus{outline:none; box-shadow:0 6px 20px rgba(115,189,215
             border: none;
             padding: 0;
             margin-bottom: 20px;
-        }
-
-        .cta-section a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            color: #0a0b1c;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-section a:hover {
-            transform: translateY(-3px);
         }
 
         .breadcrumb {
