@@ -19,7 +19,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!-- Facebook Meta Tags -->
-        <meta property="og:url" content="https://nexcorelabs.github.io/NexCore/">
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/">
         <meta property="og:type" content="website">
         <meta property="og:title" content="NexCore Labs - Brings projects to life online">
         <meta property="og:description" content="NexCore Labs provides professional digital solutions and websites for Sultan Qaboos University student-led projects, showcasing innovation and excellence.">
@@ -32,8 +32,8 @@
 
         <!-- Twitter Meta Tags -->
         <meta name="twitter:card" content="summary_large_image">
-        <meta property="twitter:domain" content="nexcorelabs.github.io">
-        <meta property="twitter:url" content="https://nexcorelabs.github.io/NexCore/">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/">
         <meta name="twitter:title" content="NexCore Labs - Brings projects to life online">
         <meta name="twitter:description" content="NexCore Labs provides professional digital solutions and websites for Sultan Qaboos University student-led projects, showcasing innovation and excellence.">
         <!--
@@ -48,7 +48,8 @@
         <title>NexCore | Hub</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+        <link rel="stylesheet" href="assets/css/unminified-css.css">
         <link rel="manifest" href="manifest.json">
         <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -80,16 +81,23 @@
           <span class="dot" aria-hidden="true"></span>
         </div>
         
-        <div id="myDropdown" class="dropdown-content">
-            <a href="#signup" class="magic-signup" title="Sign-Up your team">Access the Core</a>
-            <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
-            <a href="index.html" class="fade" title="Homepage">Homepage</a>
-            <a href="" class="fade" title="NexCore Research" style="cursor: pointer;">Research <small><sup>soon</sup></small></a>
-            <a href="index.html#tools" class="fade" title="Tools & Systems">Tools & Systems</a>
-            <a href="index.html#team" class="fade" title="NexCore Team">Our Team</a>
-            <a href="index.html#about" class="fade" title="About NexCore Labs">About Us</a>
-            <a href="index.html#contact" class="fade" title="Contact NexCore">Contact Us</a>
-        </div>
+     <div id="myDropdown" class="dropdown-content">
+         <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+         <a href="#" class="fade" title="NexCore Hub">Hub</a>
+         <a href="#projects" class="fade" title="Projects">Projects</a>
+         <div class="div-menu-line"></div>
+         <a href="how-to-use.html" class="fade" title="How to Use NexCore" style="margin-top: 0;">How to Use</a>
+         <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
+         <div class="div-menu-line"></div>
+         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
+         <a href="index.html#about" title="About NexCore Labs">About Us</a>
+         <a href="index.html#team" title="NexCore Team">Our Team</a>
+         <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+         <div class="div-menu-line"></div>
+         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+     </div>
         </div>
       </div>
     </header>
@@ -100,7 +108,7 @@
               <h1 class="title">NexCore Hub</h1>
               <p class="lead">Where projects converge — the central hub.</p>
               <div class="hero-actions">
-                <a class="btn primary" href="#signup">Access the Core</a>
+                <a class="btn primary" href="signup.html">Access the Core</a>
                 <a class="btn ghost" href="#projects">Projects</a>
               </div>
             </div>
@@ -137,55 +145,6 @@
           </div>
         </section> -->
 
-        <section id="signup" class="panel dark">
-          <div class="container">
-            <h2 class="section-title">Align with the Core</h2>
-            <p class="section-lead">Connect your vision with the Core — where ideas evolve into impact.</p>
-
-            <form id="signupForm" class="signup-form reveal">
-              <label class="field">
-                <input name="projectName" placeholder="Project Name" required>
-              </label>
-
-              <label class="field">
-                <input name="leaderName" placeholder="Leader Full-Name" required>
-              </label>
-
-              <label class="field">
-                <input name="leaderEmail" type="email" placeholder="Leader Email (e.g.@student.squ.edu.om)" required>
-              </label>
-
-              <label class="field">
-                <textarea name="idea" rows="4" placeholder="Project Idea" required></textarea>
-              </label>
-              
-              <label class="field checkbox-field">
-                <input type="checkbox" name="websiteConfirmation" class="checkbox" id="websiteShow" onclick="showWebsiteLabel()">
-                <p>Already have website?</p>
-              </label>
-
-              <label class="field checkbox-field">
-                <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;">
-              </label>
-              
-              <label class="field checkbox-field">
-                <input type="checkbox" name="leader" class="checkbox" required>
-                <p>I'm the leader of the team*</p>
-              </label>
-
-              <label class="field checkbox-field">
-                <input type="checkbox" name="squAffiliated" class="checkbox" required>
-                <p>Affiliated with Sultan Qaboos University*</p>
-              </label>
-
-              <div class="form-actions">
-                <button type="submit" class="btn primary">Submit</button>
-                <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
-              </div>
-            </form>
-          </div>
-        </section>
-
         <div class="nexcore-sign">
           <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
         </div>
@@ -194,7 +153,7 @@
       <footer class="site-footer">
         <div class="container footer-inner">
           <div class="f-left">
-            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener">🩵 Tip us on PayPal</a>
+            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
             <br>
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
               <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
@@ -237,79 +196,6 @@
         }
 
         loadProjects();
-      </script>
-      <script type="module">
-          // SweetAlert2 function
-        function showStatus(success, message) {
-          if (success) {
-            Swal.fire({
-              title: '✅ Submitted Successfully!',
-              text: message || 'Your request has been submitted to NexCore Labs.',
-              background: 'transparent',
-              color: '#eaf6fb',
-              confirmButtonText: 'Awesome 🚀',
-              customClass: {
-                popup: 'form-message-popup',
-                confirmButton: 'form-message-btn'
-              },
-              backdrop: `
-                rgba(0, 0, 0, 0.6)
-                url("https://cdn.dribbble.com/users/730703/screenshots/6581243/space.gif")
-                center top
-                no-repeat
-              `,
-            })
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Submission Failed',
-              text: message || 'Please try again later or check your connection.',
-              background: 'transparent',
-              color: '#eaf6fb',
-              confirmButtonText: 'Got it',
-              customClass: {
-                popup: 'form-message-popup',
-                confirmButton: 'form-message-btn'
-              }
-            })
-          }
-        }
-
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
-        const supabaseUrl = 'https://qacupmuqeuqspfhwosfu.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3VwbXVxZXVxc3BmaHdvc2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODc0MDksImV4cCI6MjA3NjQ2MzQwOX0.wg3Csls252_yP4P0-CgYrop0W1DqtlyNO2XpbdZ5Zzk'
-        const supabase = createClient(supabaseUrl, supabaseKey)
-
-        const signupForm = document.getElementById('signupForm')
-
-        signupForm.addEventListener('submit', async (e) => {
-          e.preventDefault() // prevent default form submission
-
-          const formData = new FormData(signupForm)
-
-          const projectName = formData.get('projectName')
-          const leaderName = formData.get('leaderName')
-          const leaderEmail = formData.get('leaderEmail')
-          const idea = formData.get('idea')
-          const websiteConfirmation = document.querySelector('input[name="websiteConfirmation"]').checked; // ✅ boolean
-          const websiteURL = formData.get('websiteURL') || null;
-          
-
-          // Insert into Supabase
-          const { data, error } = await supabase
-            .from('teams_sign_up_form') // your table name
-            .insert([
-              { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, website_confirmation: websiteConfirmation, website_url: websiteURL}
-            ])
-
-          if (error) {
-            showStatus(false, error.message)
-          } else {
-            showStatus(true)
-            signupForm.reset()
-          }
-        })
       </script>
     </body>
 </html>

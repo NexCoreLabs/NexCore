@@ -31,7 +31,7 @@
     <title>How to Use NexCore Labs - Platform Guide</title>
 
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/unminified-css.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,267 +39,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-brands/css/uicons-brands.css'>
-
-    <style>
-        .doc-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .doc-header {
-            text-align: center;
-            margin-bottom: 60px;
-            padding-top: 40px;
-        }
-
-        .doc-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .doc-header p {
-            font-size: 1.1rem;
-            color: #a0aec0;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .table-of-contents {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 50px;
-            backdrop-filter: blur(10px);
-        }
-
-        .table-of-contents h2 {
-            margin-top: 0;
-            color: #6EE7F3;
-            margin-bottom: 20px;
-        }
-
-        .table-of-contents ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .table-of-contents li {
-            margin-bottom: 12px;
-        }
-
-        .table-of-contents a {
-            color: #9F7AEA;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .table-of-contents a:hover {
-            color: #6EE7F3;
-        }
-
-        .table-of-contents a::before {
-            content: '→';
-            font-weight: bold;
-        }
-
-        .doc-section {
-            margin-bottom: 60px;
-            scroll-margin-top: 80px;
-        }
-
-        .doc-section h2 {
-            font-size: 2rem;
-            color: #6EE7F3;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(110, 231, 243, 0.2);
-        }
-
-        .doc-section h3 {
-            font-size: 1.4rem;
-            color: #9F7AEA;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        .doc-section p {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #cbd5e0;
-            margin-bottom: 15px;
-        }
-
-        .feature-box {
-            background: rgba(159, 122, 234, 0.1);
-            border-left: 4px solid #9F7AEA;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-
-        .feature-box strong {
-            color: #6EE7F3;
-        }
-
-        .steps-list {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
-
-        .steps-list li {
-            background: rgba(255, 255, 255, 0.05);
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #6EE7F3;
-            position: relative;
-            padding-left: 50px;
-        }
-
-        .steps-list li::before {
-            content: attr(data-step);
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #6EE7F3;
-            color: #0a0b1c;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        .steps-list li strong {
-            color: #6EE7F3;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .code-block {
-            background: #0a0b1c;
-            border: 1px solid rgba(110, 231, 243, 0.2);
-            padding: 15px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #6EE7F3;
-        }
-
-        .icon-row {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin: 15px 0;
-            flex-wrap: wrap;
-        }
-
-        .icon-row i {
-            font-size: 1.5rem;
-            color: #6EE7F3;
-        }
-
-        .faq-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: #6EE7F3;
-            background: rgba(110, 231, 243, 0.05);
-        }
-
-        .faq-item h4 {
-            color: #6EE7F3;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .faq-item p {
-            margin-top: 10px;
-            display: none;
-            color: #cbd5e0;
-        }
-
-        .faq-item.active p {
-            display: block;
-        }
-
-        .highlight {
-            color: #6EE7F3;
-            font-weight: 600;
-        }
-
-        .cta-section {
-            background: linear-gradient(135deg, rgba(110, 231, 243, 0.1), rgba(159, 122, 234, 0.1));
-            border: 1px solid rgba(110, 231, 243, 0.2);
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 80px;
-        }
-
-        .cta-section h2 {
-            color: #6EE7F3;
-            border: none;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-
-        .cta-section a {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            color: #0a0b1c;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-section a:hover {
-            transform: translateY(-3px);
-        }
-
-        .breadcrumb {
-            color: #a0aec0;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-
-        .breadcrumb a {
-            color: #6EE7F3;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
     <div class="background">
@@ -321,12 +60,23 @@
                     <span class="dot" aria-hidden="true"></span>
                     <span class="dot" aria-hidden="true"></span>
                 </div>
+
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="index.html" class="fade" title="Home">Home</a>
-                    <a href="how-to-use.html" class="fade" title="How to Use"><strong>How to Use</strong></a>
-                    <a href="pricing.html" class="fade" title="Pricing">Pricing</a>
-                    <a href="faq.html" class="fade" title="FAQ">FAQ</a>
-                    <a href="hub.html#signup" class="magic-signup fade" title="Sign-Up">Access the Core</a>
+                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                    <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
+                    <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                    <div class="div-menu-line"></div>
+                    <a href="#" class="fade" title="How to Use NexCore">How to Use</a>
+                    <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
+                    <div class="div-menu-line"></div>
+                    <a href="index.html#tools" title="Tools & Systems">Tools & Systems</a>
+                    <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                    <a href="index.html#team" title="NexCore Team">Our Team</a>
+                    <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+                    <div class="div-menu-line"></div>
+                    <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+                    <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
                 </div>
             </div>
         </div>
@@ -334,9 +84,9 @@
 
     <main>
         <div class="doc-container">
-            <div class="breadcrumb">
+            <!-- <div class="breadcrumb">
                 <a href="index.html">Home</a> / <span>How to Use</span>
-            </div>
+            </div> -->
 
             <div class="doc-header">
                 <h1>How to Use NexCore Labs</h1>
@@ -362,7 +112,7 @@
 
                 <h3>What is NexCore Labs?</h3>
                 <p>
-                    NexCore Labs is a <span class="highlight">student-driven digital solution platform</span> specifically designed for Sultan Qaboos University student projects. We transform your ideas into professional, deployable websites that showcase your team's innovation and creativity.
+                    NexCore Labs is a <span class="highlight">student-driven digital solution platform</span> specifically designed for Sultan Qaboos University student projects. We transform your ideas into professional, deployable page that showcase your team's innovation and creativity.
                 </p>
 
                 <div class="feature-box">
@@ -372,7 +122,7 @@
 
                 <h3>Who Can Use NexCore Labs?</h3>
                 <p>
-                    Our platform is dedicated to <span class="highlight">SQU affiliates and student-led projects</span>. Whether you're working on a research initiative, tech startup, creative venture, or innovation project, NexCore Labs provides the infrastructure and expertise to bring your vision online.
+                    Our platform is dedicated to <span class="highlight">SQU affiliates and student-led projects</span>. Whether you're working on a research initiative, tech startup, creative venture, or innovation project, NexCore Labs provides the infrastructure and expertise to bring your vision online by a page displays your project.
                 </p>
 
                 <h3>Quick Start in 3 Steps</h3>
@@ -387,65 +137,12 @@
                     </li>
                     <li data-step="3">
                         <strong>Work with Our Team</strong><br>
-                        Our developers will collaborate with you to create a professional website tailored to your project's needs.
+                        We will collaborate with you to create a professional page tailored to your project's needs.
                     </li>
                 </ol>
             </section>
 
-            <!-- Section 2: Platform Overview -->
-            <section id="platform-overview" class="doc-section">
-                <h2><i class="fa-solid fa-globe"></i> Platform Overview</h2>
-
-                <h3>Main Website Components</h3>
-                <p>The NexCore Labs platform consists of several integrated components:</p>
-
-                <h3>1. Homepage (index.html)</h3>
-                <p>
-                    Your entry point to NexCore Labs featuring:
-                </p>
-                <ul class="steps-list" style="list-style: none; padding: 0;">
-                    <li data-step="🏠">
-                        <strong>Hero Section</strong><br>
-                        Bold mission statement and quick access to the Hub and learning resources.
-                    </li>
-                    <li data-step="ℹ️">
-                        <strong>About Section</strong><br>
-                        Learn about our focus on innovation, speed, security, and SQU community commitment.
-                    </li>
-                    <li data-step="🛠️">
-                        <strong>Tools & Systems</strong><br>
-                        Explore the 24+ technologies and tools we use to build your projects.
-                    </li>
-                    <li data-step="👥">
-                        <strong>Team Section</strong><br>
-                        Meet the talented individuals driving NexCore Labs forward.
-                    </li>
-                    <li data-step="📧">
-                        <strong>Contact Section</strong><br>
-                        Get in touch via our contact form with guaranteed 48-hour response time.
-                    </li>
-                </ul>
-
-                <h3>2. Key Features Explained</h3>
-                <div class="feature-box">
-                    <strong>🔍 Smart Search</strong><br>
-                    Use the search feature in the dropdown menu to quickly find projects by name or ID.
-                </div>
-                <div class="feature-box">
-                    <strong>📱 Progressive Web App (PWA)</strong><br>
-                    Install NexCore Labs on your device for offline access and native app-like experience.
-                </div>
-                <div class="feature-box">
-                    <strong>🌙 Dark Mode Optimized</strong><br>
-                    Our interface is carefully designed with dark mode as the primary theme for reduced eye strain.
-                </div>
-                <div class="feature-box">
-                    <strong>⚡ Fast Loading</strong><br>
-                    All images are optimized, lazy-loaded, and served in modern WebP format for lightning-fast performance.
-                </div>
-            </section>
-
-            <!-- Section 3: Accessing the Hub -->
+            <!-- Section 2: Accessing the Hub -->
             <section id="accessing-hub" class="doc-section">
                 <h2><i class="fa-solid fa-door-open"></i> Accessing the Hub</h2>
 
@@ -458,7 +155,7 @@
                 <ol class="steps-list" style="list-style: none; padding: 0;">
                     <li data-step="1">
                         <strong>From the Navigation Menu</strong><br>
-                        Click the dots menu (⋯) in the top-right corner and select "Hub".
+                        Click the dots menu (⋯⋯) in the top-right corner and select "Hub".
                     </li>
                     <li data-step="2">
                         <strong>Using the "Open Hub" Button</strong><br>
@@ -466,22 +163,22 @@
                     </li>
                     <li data-step="3">
                         <strong>Direct URL Access</strong><br>
-                        Navigate directly to <code class="code-block">hub.html</code>
+                        Navigate directly to <a href="hub.html" style="color: #6EE7F3; text-decoration: underline;"><code class="code-block">hub.html</code></a>
                     </li>
                 </ol>
 
                 <h3>Hub Features</h3>
                 <div class="feature-box">
                     <strong>📊 Project Listings</strong><br>
-                    Browse all active projects with descriptions, team information, and direct links to project websites.
+                    Browse all active projects with descriptions, team information, and direct links to project pages.
                 </div>
                 <div class="feature-box">
                     <strong>🔐 Secure Signup</strong><br>
                     Register your project through our encrypted signup form with necessary project details and team information.
                 </div>
                 <div class="feature-box">
-                    <strong>📈 Project Analytics</strong><br>
-                    View engagement metrics and insights about how your project is performing online.
+                    <strong>📈 Page Analytics</strong><br>
+                    View engagement metrics and insights about how your project page is performing online.
                 </div>
                 <div class="feature-box">
                     <strong>🤝 Team Collaboration</strong><br>
@@ -489,58 +186,36 @@
                 </div>
             </section>
 
-            <!-- Section 4: Project Showcase Features -->
+            <!-- Section 3: Project Showcase Features -->
             <section id="project-showcase" class="doc-section">
                 <h2><i class="fa-solid fa-star"></i> Project Showcase Features</h2>
 
                 <h3>Creating a Professional Project Presence</h3>
                 <p>
-                    When you partner with NexCore Labs, your project receives a dedicated professional website with these features:
+                    When you partner with NexCore Labs, your project receives a dedicated professional page with these features:
                 </p>
 
-                <h3>1. Project Website Design</h3>
-                <ul class="steps-list" style="list-style: none; padding: 0;">
-                    <li data-step="🎨">
-                        <strong>Custom Branding</strong><br>
-                        Your project's unique visual identity, colors, and messaging reflected throughout the site.
-                    </li>
-                    <li data-step="📱">
-                        <strong>Responsive Design</strong><br>
-                        Perfect display on all devices: smartphones, tablets, desktops, and large screens.
-                    </li>
-                    <li data-step="⚡">
-                        <strong>Lightning Fast Performance</strong><br>
-                        Optimized loading times with Core Web Vitals optimization.
-                    </li>
-                    <li data-step="🔍">
-                        <strong>SEO Optimized</strong><br>
-                        Built-in search engine optimization for maximum discoverability.
-                    </li>
-                </ul>
-
-                <h3>2. Project Card Display</h3>
+                <h3>1. Project Card Display</h3>
                 <p>Each project features an interactive card in the Hub with:</p>
                 <div class="feature-box">
-                    <strong>Project Name & Description</strong> • <strong>Team Information</strong> • <strong>Live Links</strong> • <strong>Visual Previews</strong>
+                    <strong>Project Name-ID & Description</strong> • <strong>Live Links</strong> • <strong>Visual Previews</strong>
                 </div>
 
-                <h3>3. Analytics & Monitoring</h3>
+                <!-- <h3>2. Analytics & Monitoring</h3>
                 <p>Track your project's online performance with:</p>
                 <ul style="color: #cbd5e0; line-height: 1.8;">
                     <li>Google Analytics integration for traffic insights</li>
-                    <li>UptimeRobot monitoring for 99.9% uptime assurance</li>
                     <li>Real-time visitor metrics and engagement data</li>
                     <li>Search Console integration for SEO performance</li>
-                </ul>
+                </ul> -->
 
-                <h3>4. Social Media Optimization</h3>
+                <h3>2. Social Media Optimization</h3>
                 <div class="feature-box">
-                    <strong>OpenGraph Tags</strong><br>
-                    When your project link is shared on social media, it displays a professional preview with title, description, and image.
+                    When your project page link is shared on social media, it displays a professional preview with title, description, and image.
                 </div>
             </section>
 
-            <!-- Section 5: Tools & Systems -->
+            <!-- Section 4: Tools & Systems -->
             <section id="tools-systems" class="doc-section">
                 <h2><i class="fa-solid fa-toolbox"></i> Tools & Systems We Use</h2>
 
@@ -606,7 +281,7 @@
                 </div>
             </section>
 
-            <!-- Section 6: Best Practices -->
+            <!-- Section 5: Best Practices -->
             <section id="best-practices" class="doc-section">
                 <h2><i class="fa-solid fa-lightbulb"></i> Best Practices</h2>
 
@@ -627,29 +302,23 @@
                 <h3>3. Social Media Promotion</h3>
                 <div class="feature-box">
                     <strong>Share your presence:</strong><br>
-                    Leverage your new professional website across social media platforms (GitHub, Twitter, Instagram, LinkedIn).
+                    Leverage your new professional page across social media platforms (GitHub, Twitter, Instagram, LinkedIn, etc...).
                 </div>
 
-                <h3>4. Performance Optimization</h3>
-                <div class="feature-box">
-                    <strong>Use provided tools:</strong><br>
-                    Utilize Google PageSpeed Insights and Search Console to optimize your project's online visibility.
-                </div>
-
-                <h3>5. Accessibility</h3>
+                <h3>4. Accessibility</h3>
                 <div class="feature-box">
                     <strong>Inclusive design:</strong><br>
                     All NexCore Labs projects are built with accessibility standards (WCAG 2.1) in mind.
                 </div>
 
-                <h3>6. Security</h3>
+                <h3>5. Security</h3>
                 <div class="feature-box">
                     <strong>Built-in protection:</strong><br>
                     Your project benefits from Cloudflare DDoS protection and security best practices.
                 </div>
             </section>
 
-            <!-- Section 7: Support -->
+            <!-- Section 6: Support -->
             <section id="support" class="doc-section">
                 <h2><i class="fa-solid fa-headset"></i> Getting Support</h2>
 
@@ -662,30 +331,26 @@
                 <ul class="steps-list" style="list-style: none; padding: 0;">
                     <li data-step="📧">
                         <strong>Email Support</strong><br>
-                        Contact us via the website contact form. We'll respond within 48 hours with solutions.
-                    </li>
-                    <li data-step="🐙">
-                        <strong>GitHub Issues</strong><br>
-                        For technical issues, open an issue on our GitHub repository.
+                        Contact us via the website <a href="index.html#contact" style="color: #6EE7F3; text-decoration: underline;">contact form</a>. We'll respond within 48 hours with solutions.
                     </li>
                     <li data-step="𝕏">
                         <strong>Social Media</strong><br>
-                        Reach out on Twitter (@nexcorelabs) or Instagram for quick inquiries.
+                        Reach out on <a href="https://x.com/nexcorelabs" style="color: #6EE7F3; text-decoration: underline;" target="_blank">X</a> or <a href="https://instagram.com/nexcorelabs" style="color: #6EE7F3; text-decoration: underline;" target="_blank">Instagram</a> for quick inquiries.
                     </li>
                     <li data-step="💬">
                         <strong>Discord Community</strong><br>
-                        Join our Discord server (coming soon) for real-time chat with the team.
+                        Join our <a href="https://discord.gg/ExtGSwy5Pn" style="color: #6EE7F3; text-decoration: underline;" target="_blank">Discord Server</a> for real-time chat with the team.
                     </li>
                 </ul>
 
                 <h3>Common Questions</h3>
                 <div class="faq-item active">
-                    <h4><i class="fa-solid fa-circle-question"></i> How long does project setup take?</h4>
-                    <p>Typically 2-4 weeks depending on project complexity and scope. We'll provide a timeline during the initial consultation.</p>
+                    <h4><i class="fa-solid fa-circle-question"></i> How long does page setup take?</h4>
+                    <p>Typically 1-14 days depending on project complexity and scope. We'll provide a timeline during the initial consultation.</p>
                 </div>
 
                 <div class="faq-item">
-                    <h4><i class="fa-solid fa-circle-question"></i> Can I update my project after launch?</h4>
+                    <h4><i class="fa-solid fa-circle-question"></i> Can I update my page after launch?</h4>
                     <p>Absolutely! We provide ongoing support and training for content updates. You can modify details anytime with our guidance.</p>
                 </div>
 
@@ -693,27 +358,20 @@
                     <h4><i class="fa-solid fa-circle-question"></i> Is my project data secure?</h4>
                     <p>Yes, all projects are protected with Cloudflare DDoS protection, HTTPS encryption, and security best practices.</p>
                 </div>
-
-                <div class="faq-item">
-                    <h4><i class="fa-solid fa-circle-question"></i> What happens if my site goes down?</h4>
-                    <p>UptimeRobot monitors your site 24/7 and alerts our team within minutes if any issues occur.</p>
-                </div>
             </section>
 
             <!-- CTA Section -->
             <div class="cta-section">
                 <h2>Ready to Bring Your Project to Life?</h2>
-                <p>Join hundreds of SQU student projects already showcasing innovation online with NexCore Labs.</p>
-                <a href="hub.html#signup" class="btn primary">Sign Up Your Project</a>
-                <p style="margin-top: 20px; color: #a0aec0; font-size: 0.9rem;">or explore our <a href="pricing.html" style="color: #6EE7F3;">pricing options</a></p>
-            </div>
+                
+                <p>Explore our <a href="pricing.html" class="btn primary">Pricing Options</a></p>            </div>
         </div>
     </main>
 
     <footer class="site-footer">
         <div class="container footer-inner">
             <div class="f-left">
-                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener">🩵 Tip us on PayPal</a>
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
                 <br>
                 <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
                     <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
