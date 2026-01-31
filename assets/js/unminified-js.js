@@ -134,6 +134,10 @@ resetBtn.addEventListener('click', () => {
 
     // Sentences — note: these are HTML strings for innerHTML
     const sentences = [
+      `<div class="made-in-oman">
+        <img src="assets/images/oman.webp" alt="Oman flag">
+        <span>Proudly Built in Oman.</span>
+      </div>`,
       "Powered by NexCore • Driven by ambition",
       "Crafted with care • Inspired by simplicity",
       "Fast • Focused • Clean",

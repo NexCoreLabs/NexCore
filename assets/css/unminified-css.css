@@ -177,6 +177,19 @@ a{color:inherit; text-decoration:none;}
     50% { transform: scale(1.2); }
   }
 
+  .made-in-oman {
+  display: flex;
+  align-items: center;   /* vertical centring */
+  justify-content: center; /* optional: centre as a group */
+  gap: 8px;              /* space between flag & text */
+}
+
+.made-in-oman img {
+  width: 18px;           /* adjust to taste */
+  height: auto;
+}
+
+
 
 /* hero */
 .hero{min-height:70vh; display:flex; align-items:center; position:relative; padding-top: 120px; padding-bottom:60px; overflow:hidden;}
@@ -225,7 +238,7 @@ button, .btn {
 .hero-right{width:420px; display:flex; align-items:center; justify-content:center; cursor: default; margin-top: 20px;}
 
 /* glass card */
-.glass-card{width:360px; border-radius:18px; padding:20px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); box-shadow:var(--card-shadow); position:relative; overflow:hidden; transform:translateY(0); transition:transform .45s cubic-bezier(.2,.9,.3,1);}
+.glass-card{width:360px; border-radius:18px; padding:20px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); box-shadow:var(--card-shadow); position:relative; overflow:visible; transform:translateY(0); transition:transform .45s cubic-bezier(.2,.9,.3,1);}
 .glass-card:hover{transform:translateY(-8px) rotate(-0.2deg);}
 .card-wave{position:absolute; right:-30%; top:-40%; width:200%; height:200%; background:
   radial-gradient(circle at 20% 20%, rgba(115,189,215,0.06), transparent 8%),
@@ -256,7 +269,6 @@ button, .btn {
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
-  transition: opacity 0.3s ease;
   font-size: 0.85rem;
   pointer-events: none;
   z-index: 100;
