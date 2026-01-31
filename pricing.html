@@ -51,15 +51,6 @@
             padding-top: 40px;
         }
 
-        .pricing-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
         .pricing-header p {
             font-size: 1.1rem;
             color: #a0aec0;
@@ -74,23 +65,6 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-        }
-
-        .toggle-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #cbd5e0;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .toggle-btn.active {
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            color: #0a0b1c;
-            border-color: #6EE7F3;
         }
 
         .pricing-cards {
@@ -108,6 +82,8 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .pricing-card::before {
@@ -290,6 +266,8 @@
             border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
 
         .comparison-table th {
@@ -327,10 +305,6 @@
 
         .faq-section {
             margin-top: 100px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 50px 40px;
         }
 
         .faq-section h2 {
@@ -348,11 +322,12 @@
         .faq-item {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
             padding: 20px;
             margin-bottom: 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         .faq-item:hover {
@@ -487,18 +462,9 @@
 
     <main>
         <div class="pricing-container">
-            <div class="breadcrumb">
-                <a href="index.html">Home</a> / <span>Pricing</span>
-            </div>
-
             <div class="pricing-header">
                 <h1>Transparent Pricing for Your Project</h1>
-                <p>Professional digital solutions designed for student projects at Sultan Qaboos University. Choose the plan that fits your needs.</p>
-            </div>
-
-            <div class="pricing-toggle" id="pricingToggle">
-                <button class="toggle-btn active" data-type="monthly">Monthly</button>
-                <button class="toggle-btn" data-type="annual">Annual <span style="color: #6EE7F3;"><small>(Save 15%)</small></span></button>
+                <p>Choose the plan that fits your needs.</p>
             </div>
 
             <div class="pricing-cards" id="pricingCards">
@@ -508,74 +474,34 @@
                     <h3 class="plan-name">Starter</h3>
                     <p class="plan-description">Perfect for small projects and proof of concepts</p>
                     <div class="plan-price">
-                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="49">49</span><span class="price-currency">/</span><span class="price-period">month</span>
-                        <span class="price-amount annual" data-price="499" style="display:none;">499</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
-                        <p class="price-note">Billed monthly or annually</p>
+                        <span class="price-currency">OMR</span><span class="price-amount" data-price="0.9">0.9</span><span class="price-period">Lifetime</span>
+                        <p class="price-note">One-time payment</p>
                     </div>
                     <ul class="plan-features">
-                        <li>Basic project website</li>
-                        <li>Up to 5 pages</li>
-                        <li>Mobile responsive design</li>
-                        <li>Contact form integration</li>
-                        <li>Basic SEO optimization</li>
-                        <li>1 month of support</li>
-                        <li class="disabled">Analytics dashboard</li>
-                        <li class="disabled">Custom domain</li>
+                        <li>Special card on the Hub</li>
+                        <li>1-week of support</li>
+                        <li class="disabled">Independent page</li>
+                        <li class="disabled">You can avoid setup fee of 0.500 OMR</li>
                     </ul>
-                    <button class="plan-cta" onclick="contactUs('Starter')">Get Started</button>
+                    <a class="btn ghost fade" href="signup.html">Go for it!</a>
                 </div>
 
-                <!-- Professional Plan (Featured) -->
-                <div class="pricing-card featured">
-                    <div class="featured-badge"><span>Most<br>Popular</span></div>
-                    <div class="plan-icon"><i class="fa-solid fa-star"></i></div>
-                    <h3 class="plan-name">Professional</h3>
-                    <p class="plan-description">Ideal for active projects and tech initiatives</p>
-                    <div class="plan-price">
-                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="99">99</span><span class="price-currency">/</span><span class="price-period">month</span>
-                        <span class="price-amount annual" data-price="999" style="display:none;">999</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
-                        <p class="price-note">Billed monthly or annually</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li>Professional website design</li>
-                        <li>Up to 15 pages</li>
-                        <li>Fully responsive design</li>
-                        <li>Contact forms & submissions</li>
-                        <li>Advanced SEO optimization</li>
-                        <li>6 months of support</li>
-                        <li>Analytics dashboard</li>
-                        <li>Custom domain included</li>
-                        <li>Blog/News section</li>
-                        <li>Social media integration</li>
-                    </ul>
-                    <button class="plan-cta" onclick="contactUs('Professional')">Choose Plan</button>
-                </div>
-
-                <!-- Enterprise Plan -->
+                <!-- Professional Plan -->
                 <div class="pricing-card">
                     <div class="plan-icon"><i class="fa-solid fa-building"></i></div>
-                    <h3 class="plan-name">Enterprise</h3>
+                    <h3 class="plan-name">Professional</h3>
                     <p class="plan-description">For large-scale projects needing advanced features</p>
                     <div class="plan-price">
-                        <span class="price-currency">$</span><span class="price-amount monthly" data-price="199">199</span><span class="price-currency">/</span><span class="price-period">month</span>
-                        <span class="price-amount annual" data-price="1999" style="display:none;">1999</span><span style="display:none;" class="price-currency">/</span><span class="price-period annual" style="display:none;">year</span>
-                        <p class="price-note">Billed monthly or annually</p>
+                        <span class="price-currency">OMR</span><span class="price-amount" data-price="3.9">3.9</span><span class="price-period">Lifetime</span>
+                        <p class="price-note">One-time payment</p>
                     </div>
                     <ul class="plan-features">
-                        <li>Enterprise website design</li>
-                        <li>Unlimited pages</li>
-                        <li>Premium responsive design</li>
-                        <li>Advanced form systems</li>
-                        <li>Premium SEO optimization</li>
-                        <li>Dedicated support (24/7)</li>
-                        <li>Advanced analytics</li>
-                        <li>Custom domain & subdomain</li>
-                        <li>Full blog system</li>
-                        <li>E-commerce capabilities</li>
-                        <li>Advanced integrations</li>
-                        <li>Monthly strategy calls</li>
+                        <li>Special card on the Hub</li>
+                        <li>1-month of support</li>
+                        <li>Independent page</li>
+                        <li>You can avoid setup fee of 0.500 OMR</li>
                     </ul>
-                    <button class="plan-cta" onclick="contactUs('Enterprise')">Contact Sales</button>
+                    <a class="btn primary" href="signup.html">Get Started</a>
                 </div>
             </div>
 
@@ -588,73 +514,31 @@
                             <th>Feature</th>
                             <th>Starter</th>
                             <th>Professional</th>
-                            <th>Enterprise</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Website Pages</td>
-                            <td><span class="feature-check">5</span></td>
-                            <td><span class="feature-check">15</span></td>
-                            <td><span class="feature-check">Unlimited</span></td>
-                        </tr>
-                        <tr>
-                            <td>Responsive Design</td>
+                            <td>Special card on the Hub</td>
                             <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>SEO Optimization</td>
-                            <td><span class="feature-check">Basic</span></td>
-                            <td><span class="feature-check">Advanced</span></td>
-                            <td><span class="feature-check">Premium</span></td>
-                        </tr>
-                        <tr>
-                            <td>Analytics</td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">Advanced</span></td>
-                        </tr>
-                        <tr>
-                            <td>Custom Domain</td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>Blog System</td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>E-commerce</td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-cross">✗</span></td>
                             <td><span class="feature-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Support Duration</td>
-                            <td><span class="feature-check">1 month</span></td>
-                            <td><span class="feature-check">6 months</span></td>
-                            <td><span class="feature-check">24/7</span></td>
+                            <td><span class="feature-check">1-week</span></td>
+                            <td><span class="feature-check">1-month</span></td>
                         </tr>
                         <tr>
-                            <td>Strategy Calls</td>
+                            <td>Independent Page</td>
                             <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-check">Monthly</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Setup Fee</td>
+                            <td><span class="feature-check">0.500 OMR</span></td>
+                            <td><span class="feature-check">Waived</span></td>
                         </tr>
                     </tbody>
                 </table>
-            </div>
-
-            <!-- Custom Plan -->
-            <div class="custom-plan">
-                <h3>Need Something Different?</h3>
-                <p>We offer custom packages tailored to your specific project requirements and budget.</p>
-                <a href="index.html#contact">Request Custom Quote</a>
             </div>
 
             <!-- FAQ Section -->
@@ -666,7 +550,7 @@
                             <span><i class="fa-solid fa-circle-question"></i> What's included in the setup fee?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>The setup includes initial consultation, design creation, development, testing, deployment, and 2 weeks of post-launch support to ensure everything works perfectly.</p>
+                        <p>The setup includes initial consultation, design creation, development, testing, deployment, and 2-days of post-launch support to ensure everything works perfectly.</p>
                     </div>
 
                     <div class="faq-item">
@@ -682,23 +566,23 @@
                             <span><i class="fa-solid fa-circle-question"></i> Is there a setup fee?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>Yes, we charge a one-time setup fee of $299 to cover initial consultation, design, and deployment. This is waived for annual subscriptions to the Professional and Enterprise plans.</p>
+                        <p>Yes, we charge a one-time setup fee of 0.500 OMR to cover initial consultation, design, and deployment. This is waived just for Professional subscription.</p>
                     </div>
 
-                    <div class="faq-item">
+                    <!-- <div class="faq-item">
                         <h4>
                             <span><i class="fa-solid fa-circle-question"></i> Do you offer student discounts?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
                         <p>Yes! SQU students receive a 20% discount on all plans. Simply verify your SQU email address during checkout to apply the discount automatically.</p>
-                    </div>
+                    </div> -->
 
                     <div class="faq-item">
                         <h4>
                             <span><i class="fa-solid fa-circle-question"></i> What happens after the support period ends?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>Your website remains live and accessible. You can continue the monthly subscription for ongoing support, or opt for our pay-as-you-go support model at $49/hour.</p>
+                        <p>Your page will remain available and accessible. You can subscribe to a monthly support plan, or choose a pay-as-you-go support model at 0.800 OMR/hour.</p>
                     </div>
 
                     <div class="faq-item">
@@ -706,7 +590,7 @@
                             <span><i class="fa-solid fa-circle-question"></i> Can I cancel anytime?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>Yes, monthly plans can be cancelled with 30 days notice. Annual plans include a 30-day refund guarantee. We want to ensure you're completely satisfied with our service.</p>
+                        <p>Yes, Plans can be cancelled with 30 days notice. Plans include a 7-day refund guarantee. We want to ensure you're completely satisfied with our service.</p>
                     </div>
 
                     <div class="faq-item">
@@ -714,7 +598,7 @@
                             <span><i class="fa-solid fa-circle-question"></i> What payment methods do you accept?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>We accept all major credit cards, PayPal, and bank transfers. For larger enterprise projects, we offer flexible payment plans.</p>
+                        <p>We accept PayPal, and bank transfers only.</p>
                     </div>
 
                     <div class="faq-item">
@@ -722,7 +606,7 @@
                             <span><i class="fa-solid fa-circle-question"></i> Is there a contract?</span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </h4>
-                        <p>No long-term contracts required. Monthly plans are flexible and can be adjusted or cancelled with 30 days notice. We rely on quality service to keep your business, not contracts.</p>
+                        <p>No long-term contracts required. We rely on quality service to keep your business, not contracts.</p>
                     </div>
                 </div>
             </div>
@@ -751,28 +635,7 @@
     <script src="assets/js/script.js"></script>
     <script src="version.js"></script>
     <script>
-        // Set current year
-        document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Pricing toggle
-        const toggleButtons = document.querySelectorAll('.toggle-btn');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                toggleButtons.forEach(b => b.classList.remove('active'));
-                button.classList.add('active');
-
-                const type = button.dataset.type;
-                document.querySelectorAll('.price-amount, .price-period').forEach(el => {
-                    if (el.classList.contains(type)) {
-                        el.style.display = 'inline';
-                    } else if (el.classList.contains(type === 'monthly' ? 'annual' : 'monthly')) {
-                        el.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // FAQ toggle
+                // FAQ toggle
         const faqItems = document.querySelectorAll('.faq-item');
         faqItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -784,8 +647,6 @@
         function contactUs(plan) {
             window.location.href = `index.html#contact?plan=${plan}`;
         }
-
-        console.log(`NexCore Labs version ${APP_VERSION}`);
     </script>
 </body>
 </html>

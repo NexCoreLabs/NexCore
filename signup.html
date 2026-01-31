@@ -33,8 +33,21 @@
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 
         <style>
-
-        </style>
+            /* Plan option radios - card style */
+            .plan-options .small-label { color: #a0aec0; margin-bottom: 8px; font-weight:600; }
+            .plan-grid { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; }
+            .plan-option { cursor:pointer; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px; min-width:170px; background:transparent; transition: all .15s ease; position:relative; }
+            .plan-option input[type="radio"] { position:absolute; opacity:0; pointer-events:none; }
+            .plan-option .option-inner { display:flex; flex-direction:column; align-items:flex-start; color:#cbd5e0; }
+            .plan-option .option-title { font-weight:700; color:#fff; font-size:1rem; display:flex; align-items:center; gap:8px; }
+            .plan-option .option-desc { font-size:0.85rem; color:#9aa6b2; margin-top:4px; }
+            .plan-option .option-price { font-weight:700; color:#6EE7F3; font-size:0.95rem; margin-left:6px; }
+            .plan-option i { color:#6EE7F3; font-size:1.3rem; }
+            .plan-option.selected { border-color:#6EE7F3; box-shadow:0 8px 24px rgba(110,231,243,0.08); background:linear-gradient(135deg, rgba(110,231,243,0.03), rgba(159,122,234,0.02)); transform:translateY(-3px); }
+            .plan-option:focus { outline:2px solid rgba(110,231,243,0.12); }
+            .plan-option .featured { color:#0a0b1c; background:linear-gradient(135deg,#6EE7F3,#9F7AEA); padding:6px 8px; border-radius:8px; color:#0a0b1c; }
+            @media (max-width:600px){ .plan-grid { flex-direction:column; } .plan-option{ width:100%; } }
+        </style> 
     </head>
     <body>
         <div class="background">
@@ -154,6 +167,28 @@
                                     <label class="field">
                                         <textarea name="idea" rows="4" placeholder="Project Idea" required></textarea>
                                     </label>
+
+                                    <div class="field plan-options" role="radiogroup" aria-label="Plan Type">
+                                        <p class="small-label">Plan Type:</p>
+                                        <div class="plan-grid">
+                                            <label class="plan-option" tabindex="0">
+                                                <input type="radio" name="planType" value="Starter" data-price="0.9" required>
+                                                <div class="option-inner">
+                                                    <i class="fa-solid fa-rocket"></i>
+                                                    <span class="option-title">Starter <span class="option-price">0.9 OMR + 0.5 OMR (setup fee)</span></span>
+                                                    <span class="option-desc">Special card on the Hub · 1-week support</span>
+                                                </div>
+                                            </label>
+                                            <label class="plan-option" tabindex="0">
+                                                <input type="radio" name="planType" value="Professional" data-price="3.9" required>
+                                                <div class="option-inner">
+                                                    <i class="fa-solid fa-building"></i>
+                                                    <span class="option-title">Professional <span class="option-price">3.9 OMR</span></span>
+                                                    <span class="option-desc">Independent page · 1-month support · setup waived</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div> 
                                     
                                     <label class="field checkbox-field">
                                         <input type="checkbox" name="websiteConfirmation" class="checkbox" id="websiteShow" onchange="showWebsiteLabel()">
@@ -224,11 +259,39 @@
                 }
             }
 
+            function initPlanOptions() {
+                const options = document.querySelectorAll('.plan-option');
+                options.forEach(opt => {
+                    const input = opt.querySelector('input[type="radio"]');
+                    const select = () => {
+                        options.forEach(o => o.classList.remove('selected'));
+                        if (input.checked) opt.classList.add('selected');
+                    };
+                    input.addEventListener('change', select);
+                    opt.addEventListener('click', () => {
+                        input.checked = true;
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                    });
+                    opt.addEventListener('keydown', (e) => {
+                        if (e.key === ' ' || e.key === 'Enter') {
+                            e.preventDefault();
+                            input.checked = true;
+                            input.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    });
+                    // initialize state
+                    if (input.checked) opt.classList.add('selected');
+                });
+            }
+
+            // initialize plan options after DOM content loaded
+            document.addEventListener('DOMContentLoaded', initPlanOptions);
+
             function showStatus(success, message) {
                 if (success) {
                     Swal.fire({
                         title: '✅ Submitted Successfully!',
-                        text: message || 'Your request has been submitted to NexCore Labs.',
+                        text: message || 'Your request has been submitted to NexCore Labs. We will contact you soon via email.',
                         background: 'transparent',
                         color: '#eaf6fb',
                         confirmButtonText: 'Awesome 🚀',
@@ -272,6 +335,14 @@
             signupForm.addEventListener('submit', async (e) => {
                 e.preventDefault()
 
+                // Use built-in validity checks (shows browser UI if invalid)
+                if (!signupForm.reportValidity()) return;
+
+                const submitBtn = signupForm.querySelector('button[type="submit"]');
+                const originalText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting...';
+
                 const formData = new FormData(signupForm)
 
                 const projectName = formData.get('projectName')
@@ -281,17 +352,38 @@
                 const websiteConfirmation = document.querySelector('input[name="websiteConfirmation"]').checked;
                 const websiteURL = formData.get('websiteURL') || null;
 
-                const { data, error } = await supabase
-                    .from('teams_sign_up_form')
-                    .insert([
-                        { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, website_confirmation: websiteConfirmation, website_url: websiteURL}
-                    ])
+                // Plan info (only sending plan type to Supabase)
+                const planType = formData.get('planType') || null;
+                if (!planType) {
+                    showStatus(false, 'Please select a plan type.')
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    return;
+                }
 
-                if (error) {
-                    showStatus(false, error.message)
-                } else {
-                    showStatus(true)
-                    signupForm.reset()
+                try {
+                    const { data, error } = await supabase
+                        .from('teams_sign_up_form')
+                        .insert([
+                            { project_name: projectName, leader_name: leaderName, leader_email: leaderEmail, idea, website_confirmation: websiteConfirmation, website_url: websiteURL, plan_type: planType }
+                        ])
+
+                    if (error) {
+                        console.error('Supabase insert error:', error)
+                        showStatus(false, error.message || JSON.stringify(error))
+                    } else {
+                        console.info('Submission success:', data)
+                        showStatus(true, `Selected plan: ${planType}`)
+                        signupForm.reset()
+                        // reinitialize plan selection visual state
+                        initPlanOptions()
+                    }
+                } catch (err) {
+                    console.error('Submission exception:', err)
+                    showStatus(false, err.message || String(err))
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
                 }
             })
         </script>
