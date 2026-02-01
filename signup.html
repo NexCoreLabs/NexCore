@@ -15,21 +15,30 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Sign up your team with NexCore Labs. Get professional digital solutions for your student-led projects.">
         <meta name="author" content="NexCore Labs">
-        <meta name="keywords" content="NexCore Labs, signup, web development, project solutions, student projects">
+        <meta name="keywords" content="NexCore Labs, signup, page development, project solutions, student projects, digital services, Sultan Qaboos University, Oman, technology, innovation">
         <meta name="theme-color" content="#0a0b1c">
-        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
 
-        <title>NexCore | Sign Up</title>
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/signup.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs Pricing - Affordable Digital Solutions">
+        <meta property="og:description" content="Transparent pricing for professional page development. Choose the plan that fits your student project.">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/signup.html">
+        <meta name="twitter:title" content="NexCore Labs | Sign Up">
+        <meta name="twitter:description" content="Sign up your team with NexCore Labs. Get professional digital solutions for your student-led projects.">
+
+        <title>NexCore Labs | Sign Up</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/unminified-css.css">
         <link rel="manifest" href="manifest.json">
-        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     </head>
     <body>
@@ -85,8 +94,7 @@
                                 <h3><i class="fa-solid fa-rocket"></i> Why Join NexCore?</h3>
                                 <p>Align your project vision with our expertise and bring your ideas to life online. We provide comprehensive digital solutions tailored for student-led initiatives.</p>
                                 <ul>
-                                    <li>Professional web development</li>
-                                    <li>Custom design solutions</li>
+                                    <li>Professional page development</li>
                                     <li>Technical support & guidance</li>
                                     <li>Portfolio building opportunity</li>
                                 </ul>
@@ -182,8 +190,8 @@
                                         <p>Have a website?</p>
                                     </label>
 
-                                    <label class="field checkbox-field">
-                                        <input name="websiteURL" placeholder="https://www.example.com/" id="websiteURLLabel" style="display: none;">
+                                    <label class="field checkbox-field" id="websiteURLLabel" style="display: none;">
+                                        <input name="websiteURL" placeholder="https://www.example.com/">
                                     </label>
                                     
                                     <label class="field checkbox-field">
@@ -194,6 +202,11 @@
                                     <label class="field checkbox-field">
                                         <input type="checkbox" name="squAffiliated" class="checkbox" required>
                                         <p>Affiliated with Sultan Qaboos University*</p>
+                                    </label>
+
+                                    <label class="field checkbox-field">
+                                        <input type="checkbox" name="termsConfirmation" class="checkbox" required>
+                                        <p>I agree to the <a href="terms.html" style="text-decoration: underline;" target="_blank">Terms of Service</a>*</p>
                                     </label>
 
                                     <div class="form-actions">
