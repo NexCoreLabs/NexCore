@@ -43,7 +43,7 @@
         -->
         <meta name="twitter:image" content="https://ogcdn.net/2c2c6737-47d4-4459-9969-e711eb48394c/v1/nexcorelabs.github.io/NexCore%20Labs%20-%20Brings%20projects%20to%20life%20online/NexCore%20Labs%20provides%20professional%20digital%20solutions%20and%20websites%20for%20Sultan%20Qaboos%20University%20student-led%20projects%2C%20showcasing%20innovation%20and%20excellence./https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fimages%2F162620cb-4ba4-4855-ab44-70d55b31a41e.png%3Ftoken%3DYP8aqoB8UqLtu-idAa5UOGekvgo_RxcsbCQ2UzKjD8A%26height%3D675%26width%3D1200%26expires%3D33297289309/og.png">
 
-        <title>NexCore | Thanks</title>
+        <title>NexCore | Unsubscribe</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/style.css">
@@ -75,31 +75,105 @@
                 padding:18px; border-radius:12px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             }
         </style>
-    </head>
-    <body onload="redirectToHome()">
+</head>
+<body>
 
-            <div class="background">
-                <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
-            </div>
 
-            <main>
-                <div>
-                <p>Your message has been sent successfully.</p>
-                <h2>Thank you!</h2>
-                </div>
-            </main>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+    </div>
 
-            <script src="assets/js/script.js"></script>
-            <script src="version.js"></script>
-            <script>
-                console.log(`NexCore Labs version ${APP_VERSION}`);
-            </script>
-            <script>
-                function redirectToHome() {
-                    setTimeout(function() {
-                        window.location.href = 'index.html';
-                    }, 1000);
-                }
-            </script>
-    </body>
-</html>
+    <main>
+        <div>
+            <h2>Unsubscribe</h2>
+            <p id="status">Ready to unsubscribe.</p>
+
+            <form id="unsubscribe-form" class="subscribe-box" style="margin-top:10px;">
+                <input type="email" id="unsubscribe-email" placeholder="Enter your email" />
+                <button type="submit" id="confirm" class="btn ghost fade">Unsubscribe</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+    (function () {
+      const SUPABASE_URL = 'https://qacupmuqeuqspfhwosfu.supabase.co';
+      const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3VwbXVxZXVxc3BmaHdvc2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODc0MDksImV4cCI6MjA3NjQ2MzQwOX0.wg3Csls252_yP4P0-CgYrop0W1DqtlyNO2XpbdZ5Zzk';
+
+      let supabaseClient;
+      try {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        console.log('Supabase client initialized (unsubscribe).');
+      } catch (err) {
+        console.error('Failed to initialize Supabase client:', err);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('unsubscribe-form');
+        const emailInput = document.getElementById('unsubscribe-email');
+        const status = document.getElementById('status');
+
+        if (!form) {
+          console.error('Unsubscribe form not found.');
+          return;
+        }
+
+        // prefill email input from ?email=... if present
+        const initialEmail = new URLSearchParams(window.location.search).get('email');
+        if (initialEmail) {
+          emailInput.value = initialEmail;
+        }
+
+        if (!supabaseClient) {
+          status.textContent = '❌ Unsubscribe service unavailable.';
+          return;
+        }
+
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          // email preference: input field or ?email= query param or prompt fallback
+          let email = (emailInput.value || new URLSearchParams(window.location.search).get('email') || '').trim().toLowerCase();
+          if (!email) {
+            email = prompt('Enter your email to unsubscribe:');
+            if (!email) { status.textContent = 'Cancelled.'; return; }
+            email = email.trim().toLowerCase();
+          }
+
+          status.textContent = 'Processing...';
+
+          try {
+            const { data, error } = await supabaseClient
+              .from('email_subscribers')
+              .delete()
+              .eq('email', email)
+              .select();
+
+            if (error) {
+              console.error('Supabase delete error:', error);
+              status.textContent = '❌ ' + (error.message || 'Failed to unsubscribe');
+              return;
+            }
+
+            if (data && data.length) {
+              console.log('Unsubscribed:', data);
+              status.textContent = '✅ Unsubscribed successfully.';
+              emailInput.value = '';
+            } else {
+              console.log('No rows deleted (email not found).');
+              status.textContent = '⚠️ Email not found.';
+            }
+          } catch (err) {
+            console.error('Unexpected error while unsubscribing:', err);
+            status.textContent = '❌ Unexpected error. Check console.';
+          } finally {
+            console.info('Tip: If deletes fail, check that the table `email_subscribers` exists and RLS/policies allow the anon role to delete or use a server-side unsubscribe flow.');
+          }
+        });
+      });
+    })();
+</script>
+
+</body>
+// addEventListener</html>

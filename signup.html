@@ -31,23 +31,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-
-        <style>
-            /* Plan option radios - card style */
-            .plan-options .small-label { color: #a0aec0; margin-bottom: 8px; font-weight:600; }
-            .plan-grid { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; }
-            .plan-option { cursor:pointer; border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px 14px; display:flex; align-items:center; gap:12px; min-width:170px; background:transparent; transition: all .15s ease; position:relative; }
-            .plan-option input[type="radio"] { position:absolute; opacity:0; pointer-events:none; }
-            .plan-option .option-inner { display:flex; flex-direction:column; align-items:flex-start; color:#cbd5e0; }
-            .plan-option .option-title { font-weight:700; color:#fff; font-size:1rem; display:flex; align-items:center; gap:8px; }
-            .plan-option .option-desc { font-size:0.85rem; color:#9aa6b2; margin-top:4px; }
-            .plan-option .option-price { font-weight:700; color:#6EE7F3; font-size:0.95rem; margin-left:6px; }
-            .plan-option i { color:#6EE7F3; font-size:1.3rem; }
-            .plan-option.selected { border-color:#6EE7F3; box-shadow:0 8px 24px rgba(110,231,243,0.08); background:linear-gradient(135deg, rgba(110,231,243,0.03), rgba(159,122,234,0.02)); transform:translateY(-3px); }
-            .plan-option:focus { outline:2px solid rgba(110,231,243,0.12); }
-            .plan-option .featured { color:#0a0b1c; background:linear-gradient(135deg,#6EE7F3,#9F7AEA); padding:6px 8px; border-radius:8px; color:#0a0b1c; }
-            @media (max-width:600px){ .plan-grid { flex-direction:column; } .plan-option{ width:100%; } }
-        </style> 
     </head>
     <body>
         <div class="background">
@@ -168,14 +151,16 @@
                                         <textarea name="idea" rows="4" placeholder="Project Idea" required></textarea>
                                     </label>
 
+                                    <div class="div-menu-line"></div>
+
                                     <div class="field plan-options" role="radiogroup" aria-label="Plan Type">
-                                        <p class="small-label">Plan Type:</p>
+                                        <!-- <p class="small-label">Plan Type:</p> -->
                                         <div class="plan-grid">
                                             <label class="plan-option" tabindex="0">
-                                                <input type="radio" name="planType" value="Starter" data-price="0.9" required>
+                                                <input type="radio" name="planType" value="Starter" data-price="0.3" required>
                                                 <div class="option-inner">
                                                     <i class="fa-solid fa-rocket"></i>
-                                                    <span class="option-title">Starter <span class="option-price">0.9 OMR + 0.5 OMR (setup fee)</span></span>
+                                                    <span class="option-title">Starter <span class="option-price">0.3 OMR + 0.5 OMR (setup fee)</span></span>
                                                     <span class="option-desc">Special card on the Hub · 1-week support</span>
                                                 </div>
                                             </label>
@@ -189,7 +174,9 @@
                                             </label>
                                         </div>
                                     </div> 
-                                    
+
+                                    <div class="div-menu-line"></div>
+
                                     <label class="field checkbox-field">
                                         <input type="checkbox" name="websiteConfirmation" class="checkbox" id="websiteShow" onchange="showWebsiteLabel()">
                                         <p>Have a website?</p>
@@ -324,14 +311,44 @@
         </script>
 
         <script type="module">
-            import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
-
+            // Dynamic import of Supabase so page and event listeners work even if module load fails.
             const supabaseUrl = 'https://qacupmuqeuqspfhwosfu.supabase.co'
             const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3VwbXVxZXVxc3BmaHdvc2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODc0MDksImV4cCI6MjA3NjQ2MzQwOX0.wg3Csls252_yP4P0-CgYrop0W1DqtlyNO2XpbdZ5Zzk'
-            const supabase = createClient(supabaseUrl, supabaseKey)
+
+            let supabase = null
+            async function ensureSupabase() {
+                if (supabase) return supabase
+                try {
+                    const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm')
+                    const createClient = mod.createClient || (mod.default && mod.default.createClient)
+                    if (!createClient) throw new Error('Supabase createClient not found in module')
+                    supabase = createClient(supabaseUrl, supabaseKey)
+                    console.info('Supabase client initialized')
+                    return supabase
+                } catch (err) {
+                    console.error('Failed to load Supabase module:', err)
+                    // showStatus may not yet be available if scripts failed earlier; guard it
+                    try { showStatus(false, 'Unable to reach backend (Supabase). Please try again later or check your connection.') } catch(e){}
+                    throw err
+                }
+            }
+
+            // Helper to test network reachability to Supabase (lightweight)
+            async function testSupabaseReachable() {
+                try {
+                    const res = await fetch(supabaseUrl, { method: 'HEAD', mode: 'no-cors' })
+                    console.info('Supabase reachable (HEAD)')
+                    return true
+                } catch (err) {
+                    console.warn('Supabase reachability check failed:', err)
+                    return false
+                }
+            }
 
             const signupForm = document.getElementById('signupForm')
+            if (!signupForm) console.error('signupForm element not found')
 
+            // Attach submit handler immediately so page responds even if module import fails
             signupForm.addEventListener('submit', async (e) => {
                 e.preventDefault()
 
@@ -339,9 +356,8 @@
                 if (!signupForm.reportValidity()) return;
 
                 const submitBtn = signupForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Submitting...';
+                const originalText = submitBtn ? submitBtn.textContent : 'Submit';
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Submitting...' }
 
                 const formData = new FormData(signupForm)
 
@@ -356,12 +372,15 @@
                 const planType = formData.get('planType') || null;
                 if (!planType) {
                     showStatus(false, 'Please select a plan type.')
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText }
                     return;
                 }
 
                 try {
+                    // ensure supabase client is available
+                    await ensureSupabase()
+
+                    console.info('Attempting Supabase insert for plan:', planType)
                     const { data, error } = await supabase
                         .from('teams_sign_up_form')
                         .insert([
@@ -370,7 +389,14 @@
 
                     if (error) {
                         console.error('Supabase insert error:', error)
-                        showStatus(false, error.message || JSON.stringify(error))
+                        // Add helpful guidance for common cases
+                        if (error.status === 401 || error.status === 403) {
+                            showStatus(false, 'Authentication or permission error (check anon key / RLS).')
+                        } else if (error.code || error.message) {
+                            showStatus(false, error.message || JSON.stringify(error))
+                        } else {
+                            showStatus(false, 'Unknown error from Supabase. Check console for details.')
+                        }
                     } else {
                         console.info('Submission success:', data)
                         showStatus(true, `Selected plan: ${planType}`)
@@ -380,12 +406,20 @@
                     }
                 } catch (err) {
                     console.error('Submission exception:', err)
-                    showStatus(false, err.message || String(err))
+                    // If module import failed, attempt a basic reachability test to provide guidance
+                    const reachable = await testSupabaseReachable()
+                    if (!reachable) {
+                        showStatus(false, 'Network or CORS issue reaching Supabase. Please check your connection or CORS settings.')
+                    } else {
+                        showStatus(false, err.message || String(err))
+                    }
                 } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = originalText }
                 }
             })
+
+            // Extra diagnostics: confirm handler attached
+            console.info('Signup submit handler attached')
         </script>
     </body>
 </html>
