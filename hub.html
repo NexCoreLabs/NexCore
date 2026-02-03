@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>          <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYZB5L2R8W"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-PYZB5L2R8W');
-        </script>
-
+    <head>
+        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+        <link rel="stylesheet" href="assets/css/cookie-consent.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="NexCore Labs provides professional digital solutions and websites for student-led projects, showcasing innovation and excellence.">
@@ -158,8 +151,7 @@
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
               <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
                 <i class="fa-solid fa-scale-balanced"></i> MIT License
-              </a>
-            </small>
+              </a>                <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>            </small>
           </div>
           <div class="f-right footer-line"></div>
         </div>
@@ -197,5 +189,19 @@
 
         loadProjects();
       </script>
+
+  <!-- Cookie Consent Banner + Module -->
+  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
+    <div class="cc-inner container">
+      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
+      <div class="cc-actions">
+        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
+        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
+        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/cookie-consent.js" defer></script>
   </body>
 </html>

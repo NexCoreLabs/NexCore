@@ -155,12 +155,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Sentences — note: these are HTML strings for innerHTML
   const sentences = [
-    `<div class="made-in-oman">
+    `<div class="flag-includes">
         <img src="assets/images/oman.webp" alt="Oman flag">
-        <span>Proudly Built in Oman.</span>
+        <span>Proudly Built in Oman</span>
       </div>`,
+
+      `<div class="flag-includes">
+        <img src="assets/images/eu.webp" alt="EU flag">
+        <span>Fully EU GDPR Compliant</span>
+      </div>`,
+
     "Powered by NexCore • Driven by ambition",
+
     "Crafted with care • Inspired by simplicity",
+
     "Fast • Focused • Clean",
     // brand icons will render if Font Awesome CSS loaded
     'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
