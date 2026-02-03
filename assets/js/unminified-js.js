@@ -328,15 +328,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Sentences — note: these are HTML strings for innerHTML
-  const sentences = [
-    "Powered by NexCore • Driven by ambition",
-    "Crafted with care • Inspired by simplicity",
-    "Fast • Focused • Clean",
-    // brand icons will render if Font Awesome CSS loaded
-    'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
-  ];
-
   // initial index: show first sentence immediately (index 0 already in HTML)
   let index = 0;
   const changeInterval = 3000; // milliseconds
@@ -365,11 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }, changeInterval);
 });
 
-const img = document.createElement("img");
-img.src = project.image;
-img.loading = "lazy";
-img.alt = project.name + " project thumbnail";
-card.appendChild(img);
+// Legacy snippet removed: avoid referencing undefined 'project' and 'card' variables.
 
 document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
   img.addEventListener("load", () => {

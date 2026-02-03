@@ -1,5 +1,8 @@
 # 🧾 Changelog
 
+## v1.2.0 — 03 Feb 2026
+- Rewrote Service Worker for robust precaching, runtime caching, navigation preload and offline fallback (`offline.html`)
+
 ## v1.1.1 — 02 Nov 2025
 - Fixing broken pictures path in service-worker.js
 - Deleted mobile-preview.html

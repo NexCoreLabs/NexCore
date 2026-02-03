@@ -237,6 +237,7 @@ Professional service agreement covering:
 - Screen reader friendly
 - Mobile responsive (tested for tablets and phones)
 
+
 ---
 
 ## 📈 SEO Benefits

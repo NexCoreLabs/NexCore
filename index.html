@@ -48,8 +48,8 @@
         <title>NexCore Labs - Brings projects to life online</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
-        <link rel="stylesheet" href="assets/css/unminified-css.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
         <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -179,6 +179,7 @@
         <div class="tools-grid reveal">
           <div class="tool-card"><span>ChatGPT</span><img src="assets/images/openai.webp" loading="lazy" alt="ChatGPT"></div>
           <div class="tool-card"><span>xAI</span><img id="xai" src="assets/images/xai.webp" loading="lazy" alt="Grok AI"></div>
+          <div class="tool-card"><span>Microsoft Copilot</span><img src="assets/images/ms-copilot.webp" loading="lazy" alt="Microsoft Copilot"></div>
           <div class="tool-card"><span>GitHub</span><img src="assets/images/github.webp" loading="lazy" alt="GitHub"></div>
           <div class="tool-card"><span>Vercel</span><img src="assets/images/vercel.webp" loading="lazy" alt="Vercel"></div>
           <div class="tool-card"><span>Visual Studio Code</span><img src="assets/images/vscode.webp" loading="lazy" alt="VS Code"></div>
@@ -324,8 +325,8 @@
     </div>
   </footer>
 
-  <!-- <script src="assets/js/script.js"></script> -->
-  <script src="assets/js/unminified-js.js"></script>
+  <script src="assets/js/script.js"></script>
+  <!-- <script src="assets/js/unminified-js.js"></script> -->
   <script src="version.js"></script>
   <script>
     console.log(`NexCore Labs version ${APP_VERSION}`);
@@ -346,6 +347,34 @@
     }
 
     updateProjectCount();
+
+    // Register Service Worker (resilient, cross-page registration)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          const reg = await navigator.serviceWorker.register('/service-worker.js', { scope: '/' });
+          console.log('Service Worker registered:', reg);
+
+          if (reg.waiting) {
+            // Optionally notify user about update
+            console.log('New service worker waiting to activate');
+          }
+
+          // Listen for updates
+          reg.addEventListener('updatefound', () => {
+            const nw = reg.installing;
+            nw.addEventListener('statechange', () => {
+              if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+                // New content available
+                console.log('New content is available; please refresh.');
+              }
+            });
+          });
+        } catch (e) {
+          console.warn('Service Worker registration failed:', e);
+        }
+      });
+    }
   </script>
 </body>
 </html>
