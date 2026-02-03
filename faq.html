@@ -37,279 +37,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-
-    <style>
-        .faq-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .faq-header {
-            text-align: center;
-            margin-bottom: 60px;
-            padding-top: 40px;
-        }
-
-        .faq-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .faq-header p {
-            font-size: 1.1rem;
-            color: #a0aec0;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .faq-search {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(110, 231, 243, 0.3);
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 50px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .faq-search input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-size: 1rem;
-        }
-
-        .faq-search input::placeholder {
-            color: #718096;
-        }
-
-        .faq-search i {
-            color: #6EE7F3;
-        }
-
-        .breadcrumb {
-            color: #a0aec0;
-            margin-bottom: 30px;
-            font-size: 0.9rem;
-        }
-
-        .breadcrumb a {
-            color: #6EE7F3;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .faq-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 50px;
-        }
-
-        .category-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #a0aec0;
-            padding: 12px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .category-btn:hover {
-            border-color: #6EE7F3;
-            background: rgba(110, 231, 243, 0.1);
-            color: #6EE7F3;
-        }
-
-        .category-btn.active {
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            color: #0a0b1c;
-            border-color: #6EE7F3;
-        }
-
-        .faq-sections {
-            display: grid;
-            gap: 60px;
-        }
-
-        .faq-category-section {
-            display: none;
-        }
-
-        .faq-category-section.active {
-            display: block;
-        }
-
-        .faq-category-title {
-            font-size: 2rem;
-            color: #6EE7F3;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(110, 231, 243, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .faq-category-title i {
-            font-size: 2.5rem;
-        }
-
-        .faq-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 25px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .faq-item:hover {
-            border-color: #6EE7F3;
-            background: rgba(110, 231, 243, 0.05);
-        }
-
-        .faq-question {
-            color: #fff;
-            margin: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
-            font-size: 1.05rem;
-        }
-
-        .faq-question span {
-            flex: 1;
-        }
-
-        .faq-toggle-icon {
-            color: #6EE7F3;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-            min-width: 20px;
-            text-align: right;
-        }
-
-        .faq-item.active .faq-toggle-icon {
-            transform: rotate(180deg);
-        }
-
-        .faq-answer {
-            color: #cbd5e0;
-            margin-top: 15px;
-            line-height: 1.8;
-            display: none;
-        }
-
-        .faq-item.active .faq-answer {
-            display: block;
-        }
-
-        .faq-answer a {
-            color: #6EE7F3;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .faq-answer a:hover {
-            text-decoration: underline;
-        }
-
-        .code-snippet {
-            background: #0a0b1c;
-            border: 1px solid rgba(110, 231, 243, 0.2);
-            padding: 15px;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #6EE7F3;
-        }
-
-        .highlight-box {
-            background: rgba(159, 122, 234, 0.1);
-            border-left: 4px solid #9F7AEA;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
-
-        .contact-cta {
-            background: linear-gradient(135deg, rgba(110, 231, 243, 0.1), rgba(159, 122, 234, 0.1));
-            border: 2px solid rgba(110, 231, 243, 0.3);
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 80px;
-        }
-
-        .contact-cta h2 {
-            color: #6EE7F3;
-            margin-top: 0;
-        }
-
-        .contact-cta p {
-            color: #a0aec0;
-            margin-bottom: 20px;
-        }
-
-        .contact-cta a {
-            display: inline-block;
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #6EE7F3, #9F7AEA);
-            color: #0a0b1c;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: transform 0.3s ease;
-            margin: 0 10px;
-        }
-
-        .contact-cta a:hover {
-            transform: translateY(-3px);
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #a0aec0;
-            display: none;
-        }
-
-        .no-results i {
-            font-size: 3rem;
-            color: #6EE7F3;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .faq-header h1 {
-                font-size: 2rem;
-            }
-
-            .faq-categories {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="background">
@@ -355,19 +82,15 @@
 
     <main>
         <div class="faq-container">
-            <div class="breadcrumb">
-                <a href="index.html">Home</a> / <span>FAQ</span>
-            </div>
-
             <div class="faq-header">
                 <h1>Frequently Asked Questions</h1>
                 <p>Find answers to common questions about NexCore Labs, our services, and how to get the most out of our platform.</p>
             </div>
 
-            <div class="faq-search">
+            <!-- <div class="faq-search">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" id="faqSearch" placeholder="Search questions...">
-            </div>
+            </div> -->
 
             <div class="faq-categories" id="categoryButtons">
                 <button class="category-btn active" data-category="general">General</button>
@@ -388,7 +111,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            NexCore Labs is a student-driven digital solution platform at Sultan Qaboos University that specializes in creating professional websites and digital experiences for student-led projects. We combine speed, quality, and innovation to bring your ideas to life online.
+                            NexCore Labs is a student-run digital solutions platform at Sultan Qaboos University, specializing in building pages and digital experiences for student-led projects. We focus on speed, quality, and collaboration to bring your ideas to life online.
                         </div>
                     </div>
 
@@ -398,7 +121,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            NexCore Labs is dedicated to Sultan Qaboos University (SQU) affiliates and student-led projects. This includes research initiatives, tech startups, creative ventures, innovation projects, and clubs. If you're a student at SQU working on a project, we'd love to help!
+                            NexCore Labs serves Sultan Qaboos University students and affiliated groups, including research teams, student startups, clubs, and creative projects. If you're an SQU student working on a project, we can help you get online quickly and professionally.
                         </div>
                     </div>
 
@@ -408,7 +131,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            NexCore Labs was founded in 2025 by a dedicated team of SQU students passionate about web development and innovation. We're a young, energetic team committed to helping student projects shine online.
+                            NexCore Labs was founded in Sep 23, 2025 by a dedicated team of SQU students passionate about web development and innovation. We're a young, energetic team committed to helping student projects shine online.
                         </div>
                     </div>
 
@@ -418,7 +141,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Getting started is simple! <a href="hub.html#signup">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html">How to Use guide</a> for more details.
+                            Getting started is simple! <a href="hub.html#signup" style="text-decoration: underline;">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html" style="text-decoration: underline;">How to Use guide</a> for more details.
                         </div>
                     </div>
 
@@ -428,7 +151,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            NexCore Labs is uniquely focused on student projects at SQU. We understand the constraints of student teams — limited budgets, learning objectives, and tight timelines. Our team is dedicated to delivering professional results while mentoring the next generation of developers. We prioritize speed, quality, and affordability.
+                            NexCore Labs 100% led by Omani team and it's uniquely focused on student projects at SQU. We understand the constraints of student teams — limited budgets, learning objectives, and tight timelines. Our team is dedicated to delivering professional results while mentoring the next generation of developers. We prioritize speed, quality, and affordability.
                         </div>
                     </div>
                 </div>
@@ -443,15 +166,11 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            We offer comprehensive web development services including:
+                            We offer showcase services including:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li>Custom website design and development</li>
-                                <li>Responsive mobile design</li>
+                                <li>Project card display</li>
+                                <li>Page design and development</li>
                                 <li>SEO optimization</li>
-                                <li>Analytics setup and monitoring</li>
-                                <li>E-commerce capabilities (Enterprise plan)</li>
-                                <li>Content management systems</li>
-                                <li>Blog and news sections</li>
                                 <li>Form integration and submission handling</li>
                                 <li>Ongoing support and maintenance</li>
                             </ul>
@@ -460,15 +179,15 @@
 
                     <div class="faq-item">
                         <h3 class="faq-question">
-                            <span>How long does it take to build a website?</span>
+                            <span>How long does it take to build a page?</span>
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Typical project timeline is 2-4 weeks depending on complexity and scope:
+                            Typical project timeline is 2-10 days depending on complexity and scope:
                             <div class="highlight-box">
-                                <strong>Week 1:</strong> Initial consultation and design mockups<br>
-                                <strong>Week 2-3:</strong> Development and implementation<br>
-                                <strong>Week 4:</strong> Testing, refinements, and deployment
+                                <strong>Day 2-3:</strong> Initial consultation<br>
+                                <strong>day 3-8:</strong> Development and implementation<br>
+                                <strong>Day 9-10:</strong> Testing, refinements, and deployment
                             </div>
                             We can expedite for urgent projects — contact us to discuss timeline options.
                         </div>
@@ -480,7 +199,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Yes! All projects are hosted on secure, fast servers with 99.9% uptime guarantee. Hosting is included in all our plans. We also set up CDN (Content Delivery Network) via Cloudflare for lightning-fast global performance.
+                            Yes! All projects page are hosted on secure, fast servers with 99.9% uptime guarantee. Hosting is included in all our plans.
                         </div>
                     </div>
 
@@ -490,7 +209,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            We can provide guidance on content structure and best practices. While you should provide the core project content, we can help optimize it for web and improve messaging. For larger projects (Professional/Enterprise), we offer content writing services.
+                            We can provide guidance on content structure and best practices. While you should provide the core project content, we can help optimize it for page and improve messaging.
                         </div>
                     </div>
 
@@ -500,7 +219,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            All NexCore Labs websites are <strong>fully responsive and mobile-optimized</strong>. Your site will look perfect on smartphones, tablets, and desktops. We test extensively across all devices to ensure seamless user experience.
+                            NexCore Labs is <strong>fully responsive and mobile-optimized</strong>. Your site will look perfect on smartphones, tablets, and desktops. We test extensively across all devices to ensure seamless user experience.
                         </div>
                     </div>
 
@@ -512,8 +231,6 @@
                         <div class="faq-answer">
                             Absolutely! We can integrate with:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li>Email services (newsletters, notifications)</li>
-                                <li>Payment processors (Stripe, PayPal)</li>
                                 <li>Analytics platforms (Google Analytics, Hotjar)</li>
                                 <li>CRM systems (Supabase, custom databases)</li>
                                 <li>Social media platforms</li>
@@ -536,21 +253,21 @@
                             Our tech stack includes:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
                                 <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript ES6+</li>
-                                <li><strong>Backend:</strong> Supabase, Node.js (when needed)</li>
+                                <li><strong>Backend:</strong> Supabase</li>
                                 <li><strong>Tools:</strong> GitHub, VS Code, Git</li>
-                                <li><strong>Performance:</strong> Cloudflare CDN, PageSpeed optimization</li>
-                                <li><strong>Analytics:</strong> Google Analytics, Search Console</li>
+                                <li><strong>Performance:</strong> PageSpeed optimization</li>
+                                <li><strong>Analytics:</strong> Google Analytics, Search Console(SEO)</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="faq-item">
                         <h3 class="faq-question">
-                            <span>Is my website Progressive Web App (PWA) compatible?</span>
+                            <span>Is NexCore Labs website Progressive Web App (PWA) compatible?</span>
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Yes! All NexCore Labs websites are built as Progressive Web Apps. This means users can install your site on their devices like a native app, enjoy offline functionality, and get push notifications. It's a modern, user-friendly approach that boosts engagement.
+                            Yes! NexCore Labs is built as Progressive Web Apps. This means users can install the site on their devices like a native app, enjoy offline functionality, and get push notifications. It's a modern, user-friendly approach that boosts engagement.
                         </div>
                     </div>
 
@@ -566,7 +283,6 @@
                                 <li>WebP format for modern browsers</li>
                                 <li>CSS and JavaScript minification</li>
                                 <li>Caching strategies via service workers</li>
-                                <li>CDN via Cloudflare</li>
                                 <li>Regular performance audits with PageSpeed Insights</li>
                             </ul>
                         </div>
@@ -578,7 +294,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            All our websites are SEO optimized from day one:
+                            All our pages are SEO optimized from day one:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
                                 <li>Proper meta tags and descriptions</li>
                                 <li>Semantic HTML structure</li>
@@ -610,9 +326,8 @@
                             Your website is hosted on industry-leading infrastructure:
                             <div class="highlight-box">
                                 <strong>Hosting:</strong> High-performance servers with SSD storage<br>
-                                <strong>CDN:</strong> Cloudflare for global distribution<br>
                                 <strong>Monitoring:</strong> UptimeRobot 24/7 monitoring with instant alerts<br>
-                                <strong>SSL:</strong> Free HTTPS encryption (Let's Encrypt)<br>
+                                <strong>SSL:</strong>HTTPS encryption<br>
                                 <strong>Uptime:</strong> 99.9% guaranteed SLA
                             </div>
                         </div>
@@ -634,8 +349,8 @@
                                 <li><strong>Email:</strong> nexcorelabs@outlook.com (48-hour response)</li>
                                 <li><strong>Contact Form:</strong> Via our website</li>
                                 <li><strong>GitHub:</strong> For technical issues</li>
-                                <li><strong>Social Media:</strong> Twitter, Instagram, GitHub</li>
-                                <li><strong>Discord:</strong> Community support (coming soon)</li>
+                                <li><strong>Social Media:</strong> X, Instagram, GitHub</li>
+                                <li><strong>Discord:</strong> Real-time chat with the team.</li>
                             </ul>
                         </div>
                     </div>
@@ -646,7 +361,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            We guarantee a <strong>48-hour response time</strong> for all support requests. Most inquiries are answered within 24 hours. Enterprise plan customers receive 24/7 support with guaranteed 4-hour response time.
+                            <strong>48-hour response time</strong> for all support requests. Most inquiries are answered within 24 hours. Professional plan clients receive 24/7 support with guaranteed 4-hour response time.
                         </div>
                     </div>
 
@@ -656,11 +371,11 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Absolutely! All bug fixes are covered under your support plan. Critical issues are prioritized and fixed immediately. For issues outside your support period, we offer pay-as-you-go support at $49/hour.
+                            Absolutely! All bug fixes are covered under your support plan. Critical issues are prioritized and fixed immediately. For issues outside your support period, we offer pay-as-you-go support at 0.800 OMR/hour.
                         </div>
                     </div>
 
-                    <div class="faq-item">
+                    <!-- <div class="faq-item">
                         <h3 class="faq-question">
                             <span>Do you provide training for our team?</span>
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
@@ -676,7 +391,7 @@
                             </ul>
                             Training is included in Professional and Enterprise plans.
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="faq-item">
                         <h3 class="faq-question">
@@ -686,9 +401,9 @@
                         <div class="faq-answer">
                             Your website remains live and fully functional. You have several options:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li>Continue your monthly subscription for ongoing support</li>
+                                <li>Continue your monthly support plan for ongoing support</li>
                                 <li>Upgrade to a higher tier plan</li>
-                                <li>Use our pay-as-you-go support ($49/hour)</li>
+                                <li>Use our pay-as-you-go support (0.800 OMR/hour)</li>
                                 <li>Maintain the site yourself with code access</li>
                             </ul>
                         </div>
@@ -703,7 +418,6 @@
                             We love feature requests! Submit them through:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
                                 <li>Email (nexcorelabs@outlook.com)</li>
-                                <li>GitHub issues</li>
                                 <li>Contact form on our website</li>
                             </ul>
                             We'll evaluate the request and provide a timeline and cost estimate.
@@ -723,9 +437,7 @@
                         <div class="faq-answer">
                             Security is a top priority. Your website includes:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li><strong>HTTPS Encryption:</strong> Free SSL certificates via Let's Encrypt</li>
-                                <li><strong>DDoS Protection:</strong> Cloudflare DDoS protection</li>
-                                <li><strong>WAF (Web Application Firewall):</strong> Cloudflare WAF rules</li>
+                                <li><strong>HTTPS Encryption:</strong>SSL certificates</li>
                                 <li><strong>Regular Backups:</strong> Daily automated backups</li>
                                 <li><strong>Security Headers:</strong> Proper HTTP security headers</li>
                                 <li><strong>Form Security:</strong> CSRF protection and validation</li>
@@ -743,7 +455,6 @@
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
                                 <li>End-to-end encryption for sensitive data</li>
                                 <li>Secure database with Supabase</li>
-                                <li>PCI DSS compliance (if accepting payments)</li>
                                 <li>GDPR-compliant data handling</li>
                                 <li>Regular security audits</li>
                                 <li>Access controls and authentication</li>
@@ -767,41 +478,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="faq-item">
-                        <h3 class="faq-question">
-                            <span>Do you comply with regulations like GDPR?</span>
-                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
-                        </h3>
-                        <div class="faq-answer">
-                            Yes! Our websites are built with compliance in mind:
-                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li><strong>GDPR:</strong> EU privacy regulation compliant</li>
-                                <li><strong>Cookie Consent:</strong> Proper consent management</li>
-                                <li><strong>Privacy Policy:</strong> We help you implement proper policies</li>
-                                <li><strong>Data Access:</strong> Users can request their data</li>
-                                <li><strong>Data Deletion:</strong> Secure data removal protocols</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="faq-item">
-                        <h3 class="faq-question">
-                            <span>What about payment security?</span>
-                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
-                        </h3>
-                        <div class="faq-answer">
-                            If your project accepts payments, we implement enterprise-grade security:
-                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li><strong>PCI DSS Compliant:</strong> Payment Card Industry standards</li>
-                                <li><strong>Secure Processors:</strong> Stripe, PayPal integrations</li>
-                                <li><strong>Encryption:</strong> End-to-end encryption for card data</li>
-                                <li><strong>SSL/TLS:</strong> Secure transmission protocols</li>
-                                <li><strong>No Card Storage:</strong> We don't store card details</li>
-                                <li><strong>Fraud Detection:</strong> Built-in fraud prevention</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -809,8 +485,7 @@
             <div class="contact-cta">
                 <h2>Didn't Find Your Answer?</h2>
                 <p>Our team is here to help! Get in touch with any questions or concerns.</p>
-                <a href="index.html#contact">Send a Message</a>
-                <a href="how-to-use.html#support">View Support Options</a>
+                <a href="index.html#contact" class="btn ghost fade">Send a Message</a>
             </div>
 
             <div class="no-results">
@@ -845,59 +520,154 @@
         // Set current year
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // FAQ functionality
-        const faqItems = document.querySelectorAll('.faq-item');
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        const faqSections = document.querySelectorAll('.faq-category-section');
-        const searchInput = document.getElementById('faqSearch');
-        const noResults = document.querySelector('.no-results');
+        // Scoped FAQ functionality to avoid conflicts with other pages
+        (function () {
+            const container = document.querySelector('.faq-container');
+            if (!container) return;
 
-        // FAQ item toggle
-        faqItems.forEach(item => {
-            item.addEventListener('click', () => {
-                item.classList.toggle('active');
+            const faqSections = container.querySelectorAll('.faq-category-section');
+            const categoryButtons = container.querySelectorAll('.category-btn');
+            const searchInput = container.querySelector('#faqSearch');
+            const noResults = container.querySelector('.no-results');
+
+            // Initialize ARIA attributes for accessibility
+            container.querySelectorAll('.faq-item').forEach(item => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
             });
-        });
 
-        // Category filtering
-        categoryButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                categoryButtons.forEach(b => b.classList.remove('active'));
-                faqSections.forEach(s => s.classList.remove('active'));
-                
-                btn.classList.add('active');
-                const category = btn.dataset.category;
-                document.querySelector(`[data-section="${category}"]`).classList.add('active');
-            });
-        });
-
-        // Search functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            let visibleItems = 0;
-
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question span').textContent.toLowerCase();
-                const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
-                
-                if (question.includes(searchTerm) || answer.includes(searchTerm)) {
-                    item.style.display = 'block';
-                    visibleItems++;
+            function updateNoResultsAndButtons(matchesCountPerSection, searchTerm) {
+                const totalMatches = Array.from(matchesCountPerSection.values()).reduce((a, b) => a + b, 0);
+                if (searchTerm && totalMatches === 0) {
+                    noResults.style.display = 'block';
                 } else {
-                    item.style.display = 'none';
+                    noResults.style.display = 'none';
+                }
+
+                // Dim categories that have no matches when searching
+                categoryButtons.forEach(btn => {
+                    const sec = btn.dataset.category;
+                    const hasMatches = matchesCountPerSection.get(sec) > 0;
+                    btn.style.opacity = searchTerm ? (hasMatches ? '1' : '0.5') : '1';
+                });
+            }
+
+            // Debounced search + combined with category filter
+            let searchTimeout;
+            function performSearch() {
+                const searchTerm = (searchInput.value || '').trim().toLowerCase();
+                const activeCategory = container.querySelector('.category-btn.active')?.dataset.category || null;
+                const matchesCountPerSection = new Map();
+
+                // First pass: count matches per section (ignore activeCategory) to inform button states
+                faqSections.forEach(section => {
+                    let sectionMatches = 0;
+                    const items = section.querySelectorAll('.faq-item');
+
+                    items.forEach(item => {
+                        const questionEl = item.querySelector('.faq-question span');
+                        const answerEl = item.querySelector('.faq-answer');
+                        const question = questionEl ? questionEl.textContent.toLowerCase() : '';
+                        const answer = answerEl ? answerEl.textContent.toLowerCase() : '';
+                        const matches = (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm));
+
+                        if (matches) {
+                            sectionMatches++;
+                        }
+                    });
+
+                    matchesCountPerSection.set(section.dataset.section, sectionMatches);
+                });
+
+                // Second pass: show/hide items. If a search term exists, show matches across all sections.
+                // If there is no search term, respect the active category (only show items in that category).
+                faqSections.forEach(section => {
+                    const sectionName = section.dataset.section;
+                    const items = section.querySelectorAll('.faq-item');
+                    let visibleInSection = 0;
+
+                    items.forEach(item => {
+                        const questionEl = item.querySelector('.faq-question span');
+                        const answerEl = item.querySelector('.faq-answer');
+                        const question = questionEl ? questionEl.textContent.toLowerCase() : '';
+                        const answer = answerEl ? answerEl.textContent.toLowerCase() : '';
+                        const matches = (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm));
+
+                        const showItem = matches && (searchTerm !== '' ? true : (!activeCategory || sectionName === activeCategory));
+
+                        if (showItem) {
+                            item.style.display = '';
+                            visibleInSection++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    section.style.display = visibleInSection > 0 ? '' : 'none';
+                });
+
+                updateNoResultsAndButtons(matchesCountPerSection, searchTerm);
+            }
+
+            /* Search functionality temporarily disabled per request
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 150);
+            });
+            */
+
+            // Category filtering (click + keyboard)
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const category = btn.dataset.category;
+                    faqSections.forEach(section => {
+                        if (section.dataset.section === category) {
+                            section.classList.add('active');
+                            section.style.display = '';
+                        } else {
+                            section.classList.remove('active');
+                            section.style.display = 'none';
+                        }
+                    });
+
+                    // Re-run search to apply both filters
+                    performSearch();
+                });
+
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        btn.click();
+                    }
+                });
+            });
+
+            // Delegated FAQ item toggle (click + keyboard for accessibility)
+            container.addEventListener('click', (e) => {
+                const item = e.target.closest('.faq-item');
+                if (!item || !container.contains(item)) return;
+                item.classList.toggle('active');
+                item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+            });
+
+            container.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const item = e.target.closest('.faq-item');
+                    if (!item || !container.contains(item)) return;
+                    e.preventDefault();
+                    item.classList.toggle('active');
+                    item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
                 }
             });
 
-            if (visibleItems === 0 && searchTerm.length > 0) {
-                noResults.style.display = 'block';
-                faqSections.forEach(s => s.style.display = 'none');
-                categoryButtons.forEach(b => b.style.opacity = '0.5');
-            } else {
-                noResults.style.display = 'none';
-                faqSections.forEach(s => s.style.display = 'block');
-                categoryButtons.forEach(b => b.style.opacity = '1');
-            }
-        });
+            // Initial run to respect active category on load
+            performSearch();
+
+        })();
 
         console.log(`NexCore Labs version ${APP_VERSION}`);
     </script>

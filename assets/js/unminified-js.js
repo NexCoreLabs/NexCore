@@ -1,93 +1,109 @@
 // script.js — shared for index & hub
-document.addEventListener('DOMContentLoaded', () => {
-  const navList = document.getElementById('navList') || document.getElementById('navListHub');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const revealItems = document.querySelectorAll('.reveal');
-  const glass = document.getElementById('glassCard');
-  const yearEl = document.getElementById('year') || document.getElementById('yearHub');
-  const form = document.getElementById('contactForm');
-  const notice = document.getElementById('formNotice');
-  const resetBtn = document.getElementById('resetBtn');
+document.addEventListener("DOMContentLoaded", () => {
+  const navList =
+    document.getElementById("navList") || document.getElementById("navListHub");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const revealItems = document.querySelectorAll(".reveal");
+  const glass = document.getElementById("glassCard");
+  const yearEl =
+    document.getElementById("year") || document.getElementById("yearHub");
+  const form = document.getElementById("contactForm");
+  const notice = document.getElementById("formNotice");
+  const resetBtn = document.getElementById("resetBtn");
 
-// Smooth scroll to the top when the logo is clicked
-document.getElementById('logo').addEventListener('click', function (event) {
-  event.preventDefault(); // Prevent default anchor behavior
+  // Smooth scroll to the top when the logo is clicked
+  document.getElementById("logo").addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent default anchor behavior
 
-  if(window.scrollY === 0){
-      mainContent.style.opacity = '0';
-      myDropdown.style.opacity = '0';
-      logoImg.style.opacity = '0.8';
-      logoImg.style.left = '50%';
-      logoImg.style.top = '10%';
-      logoImg.style.width = '600px';
+    if (window.scrollY === 0) {
+      mainContent.style.opacity = "0";
+      myDropdown.style.opacity = "0";
+      logoImg.style.opacity = "0.8";
+      logoImg.style.left = "50%";
+      logoImg.style.top = "10%";
+      logoImg.style.width = "600px";
 
       setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1000);
-  }
-  else{
+        window.location.href = "index.html";
+      }, 1000);
+    } else {
       window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Smooth scrolling
-    });
-  }
-});
+        top: 0,
+        behavior: "smooth", // Smooth scrolling
+      });
+    }
+  });
 
-document.getElementById('nexcoreSign').addEventListener('click', function(event) {
-  event.preventDefault(); // Prevent default anchor behavior
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth' // Smooth scrolling
+  document
+    .getElementById("nexcoreSign")
+    .addEventListener("click", function (event) {
+      event.preventDefault(); // Prevent default anchor behavior
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth", // Smooth scrolling
+      });
     });
-});
 
   // set year
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   // smooth scroll offset for anchored links on same page
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (ev) => {
-      const target = document.querySelector(a.getAttribute('href'));
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (ev) => {
+      const target = document.querySelector(a.getAttribute("href"));
       if (!target) return;
       ev.preventDefault();
       const headerOffset = 82;
-      const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        target.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - headerOffset;
-      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-      if (window.innerWidth <= 980 && navList && navList.style.display === 'flex') {
-        navList.style.display = '';
+      if (
+        window.innerWidth <= 980 &&
+        navList &&
+        navList.style.display === "flex"
+      ) {
+        navList.style.display = "";
       }
     });
   });
 
   // scroll spy (active nav)
-  const sections = Array.from(document.querySelectorAll('main section[id]'));
-  window.addEventListener('scroll', () => {
-    const fromTop = window.scrollY + 120;
-    let current = sections[0] && sections[0].id;
-    for (const sec of sections) {
-      if (sec.offsetTop <= fromTop) current = sec.id;
-    }
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${current}` || link.getAttribute('href') === current);
-    });
-  }, { passive: true });
+  const sections = Array.from(document.querySelectorAll("main section[id]"));
+  window.addEventListener(
+    "scroll",
+    () => {
+      const fromTop = window.scrollY + 120;
+      let current = sections[0] && sections[0].id;
+      for (const sec of sections) {
+        if (sec.offsetTop <= fromTop) current = sec.id;
+      }
+      navLinks.forEach((link) => {
+        link.classList.toggle(
+          "active",
+          link.getAttribute("href") === `#${current}` ||
+            link.getAttribute("href") === current,
+        );
+      });
+    },
+    { passive: true },
+  );
 
   // reveal on scroll
   const revealOnScroll = () => {
     const bottom = window.innerHeight;
-    revealItems.forEach(el => {
+    revealItems.forEach((el) => {
       const rect = el.getBoundingClientRect();
-      if (rect.top < bottom - 80) el.classList.add('visible');
+      if (rect.top < bottom - 80) el.classList.add("visible");
     });
   };
   revealOnScroll();
-  window.addEventListener('scroll', revealOnScroll, { passive: true });
+  window.addEventListener("scroll", revealOnScroll, { passive: true });
 
   // subtle parallax on glass card with mouse move
   if (glass) {
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener("mousemove", (e) => {
       const rect = glass.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
@@ -95,195 +111,198 @@ document.getElementById('nexcoreSign').addEventListener('click', function(event)
       const dy = (e.clientY - cy) / rect.height;
       glass.style.transform = `translate3d(${dx * 8}px, ${dy * 8}px, 0) rotate(${dx * 1.2}deg)`;
     });
-    document.addEventListener('mouseleave', () => { glass.style.transform = ''; });
+    document.addEventListener("mouseleave", () => {
+      glass.style.transform = "";
+    });
   }
 
   // simple form handling (no back-end). Validate & simulate send.
-form.addEventListener('submit', (ev) => {
-  const name = form.name.value.trim();
-  const email = form.email.value.trim();
-  const message = form.message.value.trim();
+  form.addEventListener("submit", (ev) => {
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
 
-  if (!name || !email || !message) {
-    ev.preventDefault(); // block submission only if invalid
-    notice.textContent = 'Please fill all fields.';
-  } else {
-    notice.textContent = 'Sending...';
-  }
-});
-
-resetBtn.addEventListener('click', () => {
-  form.reset();
-  notice.textContent = '';
-});
-
-
-  // respect reduced motion
-  const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (media && media.matches) {
-    document.querySelectorAll('.bg-orbit').forEach(n => n.style.animation = 'none');
-    document.querySelectorAll('.reveal').forEach(n => n.classList.add('visible'));
-  }
-
-      // Safety check: element exists
-    const textElement = document.getElementById('changing-text');
-    if (!textElement) {
-      console.warn('changing-text element not found – tiny rotation aborted');
-      return;
-    }
-
-    // Sentences — note: these are HTML strings for innerHTML
-    const sentences = [
-      `<div class="made-in-oman">
-        <img src="assets/images/oman.webp" alt="Oman flag">
-        <span>Proudly Built in Oman.</span>
-      </div>`,
-      "Powered by NexCore • Driven by ambition",
-      "Crafted with care • Inspired by simplicity",
-      "Fast • Focused • Clean",
-      // brand icons will render if Font Awesome CSS loaded
-      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>'
-    ];
-
-    // initial index: show first sentence immediately (index 0 already in HTML)
-    let index = 0;
-    const changeInterval = 3000; // milliseconds
-    const fadeDuration = 550; // should match CSS transition (ms)
-
-    // Ensure initial content is the first sentence (in case footer HTML changed)
-    textElement.innerHTML = sentences[index];
-
-    // Rotator
-    setInterval(() => {
-      // fade out
-      textElement.classList.add('fade-out');
-
-      // after fade duration, change text and fade in
-      setTimeout(() => {
-        index = (index + 1) % sentences.length;
-        textElement.innerHTML = sentences[index];
-
-        // force reflow to allow transition to apply consistently
-        // (read offsetHeight triggers reflow)
-        void textElement.offsetHeight;
-
-        // fade in
-        textElement.classList.remove('fade-out');
-      }, fadeDuration);
-    }, changeInterval);
-});
-
-
-                    // Dropdown Menu
-const myDropdown = document.getElementById('myDropdown');
-const coreMenu = document.getElementById('coreMenu');
-
-coreMenu.addEventListener('click', () => {
-    coreMenu.classList.toggle("active");
-
-    if(myDropdown.style.visibility == 'visible' && myDropdown.style.opacity == 1){
-      coreMenu.style
-        myDropdown.style.visibility = 'hidden';
-        myDropdown.style.opacity = 0;
-        myDropdown.style.transform = 'translateY(0)';
-        myDropdown.style.userSelect = 'none';
-    } else{
-        myDropdown.style.visibility = 'visible';
-        myDropdown.style.opacity = 1;
-        myDropdown.style.transform = 'translateY(10px)';
-        myDropdown.style.userSelect = 'auto';
-    }
-});
-  
-  function filterFunction() {
-    const input = document.getElementById("myInput");
-    const filter = input.value.toUpperCase();
-    const div = document.getElementById("myDropdown");
-    const a = div.getElementsByTagName("a");
-    for (let i = 0; i < a.length; i++) {
-      txtValue = a[i].textContent || a[i].innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        a[i].style.display = "";
-      } else {
-        a[i].style.display = "none";
-      }
-    }
-  }
-
-  document.addEventListener('click', (event) => {
-    if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
-        coreMenu.classList.remove("active");
-        myDropdown.style.visibility = 'hidden';
-        myDropdown.style.opacity = 0;
-        myDropdown.style.transform = 'translateY(0)';
-        myDropdown.style.userSelect = 'none';
+    if (!name || !email || !message) {
+      ev.preventDefault(); // block submission only if invalid
+      notice.textContent = "Please fill all fields.";
+    } else {
+      notice.textContent = "Sending...";
     }
   });
 
+  resetBtn.addEventListener("click", () => {
+    form.reset();
+    notice.textContent = "";
+  });
 
-  // Mobile Preview Transition
-  const phone = document.getElementById("phoneMockup");
-  if (phone) phone.addEventListener("click", openMobilePreview);
-  
-  function openMobilePreview() {
-      // add the expanding class
+  // respect reduced motion
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (media && media.matches) {
+    document
+      .querySelectorAll(".bg-orbit")
+      .forEach((n) => (n.style.animation = "none"));
+    document
+      .querySelectorAll(".reveal")
+      .forEach((n) => n.classList.add("visible"));
+  }
+
+  // Safety check: element exists
+  const textElement = document.getElementById("changing-text");
+  if (!textElement) {
+    console.warn("changing-text element not found – tiny rotation aborted");
+    return;
+  }
+
+  // Sentences — note: these are HTML strings for innerHTML
+  const sentences = [
+    `<div class="made-in-oman">
+        <img src="assets/images/oman.webp" alt="Oman flag">
+        <span>Proudly Built in Oman.</span>
+      </div>`,
+    "Powered by NexCore • Driven by ambition",
+    "Crafted with care • Inspired by simplicity",
+    "Fast • Focused • Clean",
+    // brand icons will render if Font Awesome CSS loaded
+    'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
+  ];
+
+  // initial index: show first sentence immediately (index 0 already in HTML)
+  let index = 0;
+  const changeInterval = 3000; // milliseconds
+  const fadeDuration = 550; // should match CSS transition (ms)
+
+  // Ensure initial content is the first sentence (in case footer HTML changed)
+  textElement.innerHTML = sentences[index];
+
+  // Rotator
+  setInterval(() => {
+    // fade out
+    textElement.classList.add("fade-out");
+
+    // after fade duration, change text and fade in
+    setTimeout(() => {
+      index = (index + 1) % sentences.length;
+      textElement.innerHTML = sentences[index];
+
+      // force reflow to allow transition to apply consistently
+      // (read offsetHeight triggers reflow)
+      void textElement.offsetHeight;
+
+      // fade in
+      textElement.classList.remove("fade-out");
+    }, fadeDuration);
+  }, changeInterval);
+});
+
+// Dropdown Menu
+const myDropdown = document.getElementById("myDropdown");
+const coreMenu = document.getElementById("coreMenu");
+
+coreMenu.addEventListener("click", () => {
+  coreMenu.classList.toggle("active");
+
+  if (
+    myDropdown.style.visibility == "visible" &&
+    myDropdown.style.opacity == 1
+  ) {
+    coreMenu.style;
+    myDropdown.style.visibility = "hidden";
+    myDropdown.style.opacity = 0;
+    myDropdown.style.transform = "translateY(0)";
+    myDropdown.style.userSelect = "none";
+  } else {
+    myDropdown.style.visibility = "visible";
+    myDropdown.style.opacity = 1;
+    myDropdown.style.transform = "translateY(10px)";
+    myDropdown.style.userSelect = "auto";
+  }
+});
+
+function filterFunction() {
+  const input = document.getElementById("myInput");
+  const filter = input.value.toUpperCase();
+  const div = document.getElementById("myDropdown");
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+document.addEventListener("click", (event) => {
+  if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
+    coreMenu.classList.remove("active");
+    myDropdown.style.visibility = "hidden";
+    myDropdown.style.opacity = 0;
+    myDropdown.style.transform = "translateY(0)";
+    myDropdown.style.userSelect = "none";
+  }
+});
+
+// Mobile Preview Transition
+const phone = document.getElementById("phoneMockup");
+if (phone) phone.addEventListener("click", openMobilePreview);
+
+function openMobilePreview() {
+  // add the expanding class
   phone.classList.add("expand");
 
   // wait for the animation to finish (same duration as CSS transition)
   setTimeout(() => {
     window.location.href = "mobile-preview.html";
   }, 900); // 0.8s + small buffer
-  }
+}
 
+const logoImg = document.getElementById("logoImg");
+const shape = document.getElementById("shape");
+const mainContent = document.querySelector("main");
+const links = document.querySelectorAll("a.fade");
 
-const logoImg = document.getElementById('logoImg');
-const shape = document.getElementById('shape');
-const mainContent = document.querySelector('main');
-const links = document.querySelectorAll('a.fade');
-
-links.forEach(link => {
-  link.addEventListener('click', (event) => {
+links.forEach((link) => {
+  link.addEventListener("click", (event) => {
     event.preventDefault();
-    mainContent.style.opacity = '0';
-    myDropdown.style.opacity = '0';
-    logoImg.style.opacity = '0.8';
-    logoImg.style.left = '50%';
-    logoImg.style.top = '10%';
-    logoImg.style.width = '600px';
-    
+    mainContent.style.opacity = "0";
+    myDropdown.style.opacity = "0";
+    logoImg.style.opacity = "0.8";
+    logoImg.style.left = "50%";
+    logoImg.style.top = "10%";
+    logoImg.style.width = "600px";
+
     setTimeout(() => {
       window.location.href = event.target.href;
     }, 1000);
   });
 });
 
-window.onload = () =>{
-    logoImg.style.filter = 'drop-shadow(0 0 25px rgba(110, 231, 243, 1)';
-    logoImg.style.webkitFilter = 'drop-shadow(0 0 25px rgba(110, 231, 243, 1)';
-    logoImg.style.left = '100%';
-    logoImg.style.top = '15%';
-    logoImg.style.width = '200px';
-    mainContent.style.opacity = '1';
-    
-    setTimeout(() =>{
-      logoImg.style.opacity = '0.3';
-    }, 1000);
+window.onload = () => {
+  logoImg.style.filter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1)";
+  logoImg.style.webkitFilter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1)";
+  logoImg.style.left = "100%";
+  logoImg.style.top = "15%";
+  logoImg.style.width = "200px";
+  mainContent.style.opacity = "1";
+
+  setTimeout(() => {
+    logoImg.style.opacity = "0.3";
+  }, 1000);
 };
 
+const searchInput = document.getElementById("projectSearch");
+const projectsContainer = document.getElementById("projects-container");
 
-const searchInput = document.getElementById('projectSearch');
-const projectsContainer = document.getElementById('projects-container');
-
-searchInput.addEventListener('input', () => {
+searchInput.addEventListener("input", () => {
   const query = searchInput.value.toLowerCase();
-  const projectCards = projectsContainer.querySelectorAll('.project-card'); // adjust class name if needed
+  const projectCards = projectsContainer.querySelectorAll(".project-card"); // adjust class name if needed
 
-  projectCards.forEach(card => {
+  projectCards.forEach((card) => {
     const text = card.textContent.toLowerCase();
-    card.style.display = text.includes(query) ? 'block' : 'none';
+    card.style.display = text.includes(query) ? "block" : "none";
   });
 });
-
 
 function showWebsiteLabel() {
   // Get the checkbox
@@ -292,69 +311,68 @@ function showWebsiteLabel() {
   var websiteLabel = document.getElementById("websiteURLLabel");
 
   // If the checkbox is checked, display the output text
-  if (checkBox.checked == true){
+  if (checkBox.checked == true) {
     websiteLabel.style.display = "block";
-    websiteLabel.setAttribute('required', 'required');
+    websiteLabel.setAttribute("required", "required");
   } else {
     websiteLabel.style.display = "none";
-    websiteLabel.removeAttribute('required');
+    websiteLabel.removeAttribute("required");
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Safety check: element exists
-    const textElement = document.getElementById('changing-text');
-    if (!textElement) {
-      console.warn('changing-text element not found – tiny rotation aborted');
-      return;
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  // Safety check: element exists
+  const textElement = document.getElementById("changing-text");
+  if (!textElement) {
+    console.warn("changing-text element not found – tiny rotation aborted");
+    return;
+  }
 
-    // Sentences — note: these are HTML strings for innerHTML
-    const sentences = [
-      "Powered by NexCore • Driven by ambition",
-      "Crafted with care • Inspired by simplicity",
-      "Fast • Focused • Clean",
-      // brand icons will render if Font Awesome CSS loaded
-      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>'
-    ];
+  // Sentences — note: these are HTML strings for innerHTML
+  const sentences = [
+    "Powered by NexCore • Driven by ambition",
+    "Crafted with care • Inspired by simplicity",
+    "Fast • Focused • Clean",
+    // brand icons will render if Font Awesome CSS loaded
+    'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
+  ];
 
-    // initial index: show first sentence immediately (index 0 already in HTML)
-    let index = 0;
-    const changeInterval = 3000; // milliseconds
-    const fadeDuration = 550; // should match CSS transition (ms)
+  // initial index: show first sentence immediately (index 0 already in HTML)
+  let index = 0;
+  const changeInterval = 3000; // milliseconds
+  const fadeDuration = 550; // should match CSS transition (ms)
 
-    // Ensure initial content is the first sentence (in case footer HTML changed)
-    textElement.innerHTML = sentences[index];
+  // Ensure initial content is the first sentence (in case footer HTML changed)
+  textElement.innerHTML = sentences[index];
 
-    // Rotator
-    setInterval(() => {
-      // fade out
-      textElement.classList.add('fade-out');
+  // Rotator
+  setInterval(() => {
+    // fade out
+    textElement.classList.add("fade-out");
 
-      // after fade duration, change text and fade in
-      setTimeout(() => {
-        index = (index + 1) % sentences.length;
-        textElement.innerHTML = sentences[index];
+    // after fade duration, change text and fade in
+    setTimeout(() => {
+      index = (index + 1) % sentences.length;
+      textElement.innerHTML = sentences[index];
 
-        // force reflow to allow transition to apply consistently
-        // (read offsetHeight triggers reflow)
-        void textElement.offsetHeight;
+      // force reflow to allow transition to apply consistently
+      // (read offsetHeight triggers reflow)
+      void textElement.offsetHeight;
 
-        // fade in
-        textElement.classList.remove('fade-out');
-      }, fadeDuration);
-    }, changeInterval);
-  });
+      // fade in
+      textElement.classList.remove("fade-out");
+    }, fadeDuration);
+  }, changeInterval);
+});
 
-
-  const img = document.createElement('img');
+const img = document.createElement("img");
 img.src = project.image;
-img.loading = 'lazy';
-img.alt = project.name + ' project thumbnail';
+img.loading = "lazy";
+img.alt = project.name + " project thumbnail";
 card.appendChild(img);
 
-document.querySelectorAll('img[loading="lazy"]').forEach(img => {
-  img.addEventListener('load', () => {
-    img.classList.add('is-loaded');
+document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
+  img.addEventListener("load", () => {
+    img.classList.add("is-loaded");
   });
 });
