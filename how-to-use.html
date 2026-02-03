@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+    <link rel="stylesheet" href="assets/css/cookie-consent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how to use NexCore Labs platform - a comprehensive guide to navigating, accessing services, and maximizing project visibility.">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="NexCore Labs, how to use, tutorial, documentation, guide, platform usage, student projects, digital solutions, Sultan Qaboos University, Oman">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta property="og:url" content="https://nexcorelabs.vercel.app/how-to-use.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="How to Use NexCore Labs - Comprehensive Guide">
+    <meta property="og:description" content="Step-by-step guide to using NexCore Labs platform for showcasing and managing your student projects.">
+    <meta property="og:image" content="https://ogcdn.net/2c2c6737-47d4-4459-9969-e711eb48394c/v1/nexcorelabs.github.io/How%20to%20Use%20NexCore%20Labs/Comprehensive%20platform%20guide%20and%20tutorial/https%3A%2F%2Fopengraph.b-cdn.net%2Fproduction%2Fimages%2F162620cb-4ba4-4855-ab44-70d55b31a41e.webp/og.webp">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+    <meta property="twitter:url" content="https://nexcorelabs.vercel.app/how-to-use.html">
+    <meta name="twitter:title" content="How to Use NexCore Labs | Comprehensive Guide">
+    <meta name="twitter:description" content="Step-by-step guide to using NexCore Labs platform for showcasing and managing your student projects.">
+
+    <title>How to Use NexCore Labs | Comprehensive Guide</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-brands/css/uicons-brands.css'>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                    <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
+                    <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                    <div class="div-menu-line"></div>
+                    <a href="#" class="fade" title="How to Use NexCore">How to Use</a>
+                    <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
+                    <div class="div-menu-line"></div>
+                    <a href="index.html#tools" title="Tools & Systems">Tools & Systems</a>
+                    <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                    <a href="index.html#team" title="NexCore Team">Our Team</a>
+                    <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+                    <div class="div-menu-line"></div>
+                    <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+                    <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+                    <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="doc-container">
+            <!-- <div class="breadcrumb">
+                <a href="index.html">Home</a> / <span>How to Use</span>
+            </div> -->
+
+            <div class="doc-header">
+                <h1>How to Use NexCore Labs</h1>
+                <p>Your complete guide to navigating the platform, accessing services, and showcasing your student projects professionally online.</p>
+            </div>
+
+            <div class="table-of-contents">
+                <h2><i class="fa-solid fa-list"></i> Table of Contents</h2>
+                <ul>
+                    <li><a href="#getting-started">Getting Started</a></li>
+                    <li><a href="#platform-overview">Platform Overview</a></li>
+                    <li><a href="#accessing-hub">Accessing the Hub</a></li>
+                    <li><a href="#project-showcase">Project Showcase Features</a></li>
+                    <li><a href="#tools-systems">Tools & Systems</a></li>
+                    <li><a href="#best-practices">Best Practices</a></li>
+                    <li><a href="#support">Getting Support</a></li>
+                </ul>
+            </div>
+
+            <!-- Section 1: Getting Started -->
+            <section id="getting-started" class="doc-section">
+                <h2><i class="fa-solid fa-rocket"></i> Getting Started</h2>
+
+                <h3>What is NexCore Labs?</h3>
+                <p>
+                    NexCore Labs is a <span class="highlight">student-driven digital solution platform</span> specifically designed for Sultan Qaboos University student projects. We transform your ideas into professional, deployable page that showcase your team's innovation and creativity.
+                </p>
+
+                <div class="feature-box">
+                    <strong>✨ Key Benefits:</strong>
+                    <p>Fast project deployment • Professional page presence • Search engine optimization • Community visibility</p>
+                </div>
+
+                <h3>Who Can Use NexCore Labs?</h3>
+                <p>
+                    Our platform is dedicated to <span class="highlight">SQU affiliates and student-led projects</span>. Whether you're working on a research initiative, tech startup, creative venture, or innovation project, NexCore Labs provides the infrastructure and expertise to bring your vision online by a page displays your project.
+                </p>
+
+                <h3>Quick Start in 3 Steps</h3>
+                <ol class="steps-list" style="list-style: none; padding: 0;">
+                    <li data-step="1">
+                        <strong>Visit the Hub</strong><br>
+                        Navigate to the NexCore Labs Hub to explore existing projects and understand our capabilities.
+                    </li>
+                    <li data-step="2">
+                        <strong>Sign Up Your Team</strong><br>
+                        Click "Access the Core" and register your project details through our secure signup form.
+                    </li>
+                    <li data-step="3">
+                        <strong>Work with Our Team</strong><br>
+                        We will collaborate with you to create a professional page tailored to your project's needs.
+                    </li>
+                </ol>
+            </section>
+
+            <!-- Section 2: Accessing the Hub -->
+            <section id="accessing-hub" class="doc-section">
+                <h2><i class="fa-solid fa-door-open"></i> Accessing the Hub</h2>
+
+                <h3>What is the Hub?</h3>
+                <p>
+                    The NexCore Labs Hub (hub.html) is the <span class="highlight">project management and exploration center</span>. It showcases all active projects, displays project details, and provides team information.
+                </p>
+
+                <h3>How to Access the Hub</h3>
+                <ol class="steps-list" style="list-style: none; padding: 0;">
+                    <li data-step="1">
+                        <strong>From the Navigation Menu</strong><br>
+                        Click the dots menu (⋯⋯) in the top-right corner and select "Hub".
+                    </li>
+                    <li data-step="2">
+                        <strong>Using the "Open Hub" Button</strong><br>
+                        On the homepage hero section, click the "Open Hub" button.
+                    </li>
+                    <li data-step="3">
+                        <strong>Direct URL Access</strong><br>
+                        Navigate directly to <a href="hub.html" style="color: #6EE7F3; text-decoration: underline;"><code class="code-block">hub.html</code></a>
+                    </li>
+                </ol>
+
+                <h3>Hub Features</h3>
+                <div class="feature-box">
+                    <strong>📊 Project Listings</strong><br>
+                    Browse all active projects with descriptions, team information, and direct links to project pages.
+                </div>
+                <div class="feature-box">
+                    <strong>🔐 Secure Signup</strong><br>
+                    Register your project through our encrypted signup form with necessary project details and team information.
+                </div>
+                <div class="feature-box">
+                    <strong>📈 Page Analytics</strong><br>
+                    View engagement metrics and insights about how your project page is performing online.
+                </div>
+                <div class="feature-box">
+                    <strong>🤝 Team Collaboration</strong><br>
+                    Collaborate with our team members in real-time through integrated communication channels.
+                </div>
+            </section>
+
+            <!-- Section 3: Project Showcase Features -->
+            <section id="project-showcase" class="doc-section">
+                <h2><i class="fa-solid fa-star"></i> Project Showcase Features</h2>
+
+                <h3>Creating a Professional Project Presence</h3>
+                <p>
+                    When you partner with NexCore Labs, your project receives a dedicated professional page with these features:
+                </p>
+
+                <h3>1. Project Card Display</h3>
+                <p>Each project features an interactive card in the Hub with:</p>
+                <div class="feature-box">
+                    <strong>Project Name-ID & Description</strong> • <strong>Live Links</strong> • <strong>Visual Previews</strong>
+                </div>
+
+                <!-- <h3>2. Analytics & Monitoring</h3>
+                <p>Track your project's online performance with:</p>
+                <ul style="color: #cbd5e0; line-height: 1.8;">
+                    <li>Google Analytics integration for traffic insights</li>
+                    <li>Real-time visitor metrics and engagement data</li>
+                    <li>Search Console integration for SEO performance</li>
+                </ul> -->
+
+                <h3>2. Social Media Optimization</h3>
+                <div class="feature-box">
+                    When your project page link is shared on social media, it displays a professional preview with title, description, and image.
+                </div>
+            </section>
+
+            <!-- Section 4: Tools & Systems -->
+            <section id="tools-systems" class="doc-section">
+                <h2><i class="fa-solid fa-toolbox"></i> Tools & Systems We Use</h2>
+
+                <h3>Understanding Our Tech Stack</h3>
+                <p>
+                    NexCore Labs leverages <span class="highlight">24+ professional tools and technologies</span> to deliver high-quality projects. Here's what powers your project:
+                </p>
+
+                <h3>Development Tools</h3>
+                <div class="icon-row">
+                    <i class="fa-brands fa-github"></i> <strong>GitHub</strong> - Version control and code management
+                </div>
+                <div class="icon-row">
+                    <i class="fa-brands fa-code"></i> <strong>VS Code</strong> - Professional code editing
+                </div>
+
+                <h3>AI & Automation</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-brain"></i> <strong>ChatGPT & xAI</strong> - AI-assisted development and content
+                </div>
+
+                <h3>Backend & Database</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-database"></i> <strong>Supabase</strong> - Modern backend infrastructure
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-envelope"></i> <strong>Web3Forms</strong> - Secure form submissions
+                </div>
+
+                <h3>Performance & Monitoring</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-chart-line"></i> <strong>Google Analytics</strong> - Traffic insights
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-search"></i> <strong>Google Search Console</strong> - SEO monitoring
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-heart"></i> <strong>UptimeRobot</strong> - Uptime monitoring & alerts
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-tachometer-alt"></i> <strong>PageSpeed Insights</strong> - Performance analysis
+                </div>
+
+                <h3>Security & CDN</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-shield"></i> <strong>Microsoft GitHub Hosting</strong> - DDoS protection and CDN
+                </div>
+
+                <h3>Design & Media</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-palette"></i> <strong>Inkscape</strong> - Vector graphics creation
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-image"></i> <strong>DaVinci Resolve & Audacity</strong> - Video and audio editing
+                </div>
+
+                <h3>Resources & Assets</h3>
+                <div class="icon-row">
+                    <i class="fa-solid fa-icons"></i> <strong>Font Awesome & Flaticon</strong> - Icon libraries
+                </div>
+                <div class="icon-row">
+                    <i class="fa-solid fa-font"></i> <strong>Google Fonts</strong> - Typography
+                </div>
+            </section>
+
+            <!-- Section 5: Best Practices -->
+            <section id="best-practices" class="doc-section">
+                <h2><i class="fa-solid fa-lightbulb"></i> Best Practices</h2>
+
+                <h3>For Maximum Impact with Your Project</h3>
+
+                <h3>1. Project Documentation</h3>
+                <div class="feature-box">
+                    <strong>Prepare clear project materials:</strong><br>
+                    Have your project description, team member bios, project goals, and visuals ready before contacting us.
+                </div>
+
+                <h3>2. Engagement & Updates</h3>
+                <div class="feature-box">
+                    <strong>Keep content fresh:</strong><br>
+                    Regularly update your project information, achievements, and milestones for continued engagement.
+                </div>
+
+                <h3>3. Social Media Promotion</h3>
+                <div class="feature-box">
+                    <strong>Share your presence:</strong><br>
+                    Leverage your new professional page across social media platforms (GitHub, Twitter, Instagram, LinkedIn, etc...).
+                </div>
+
+                <h3>4. Accessibility</h3>
+                <div class="feature-box">
+                    <strong>Inclusive design:</strong><br>
+                    All NexCore Labs projects are built with accessibility standards (WCAG 2.1) in mind.
+                </div>
+
+                <h3>5. Security</h3>
+                <div class="feature-box">
+                    <strong>Built-in protection:</strong><br>
+                    Your project benefits from Microsoft GitHub hosting protection and security best practices.
+                </div>
+            </section>
+
+            <!-- Section 6: Support -->
+            <section id="support" class="doc-section">
+                <h2><i class="fa-solid fa-headset"></i> Getting Support</h2>
+
+                <h3>Our Commitment</h3>
+                <p>
+                    We're committed to <span class="highlight">48-hour support response time</span>. Whether you have questions, need assistance, or want to report issues, we're here to help.
+                </p>
+
+                <h3>Support Channels</h3>
+                <ul class="steps-list" style="list-style: none; padding: 0;">
+                    <li data-step="📧">
+                        <strong>Email Support</strong><br>
+                        Contact us via the website <a href="index.html#contact" style="color: #6EE7F3; text-decoration: underline;">contact form</a>. We'll respond within 48 hours with solutions.
+                    </li>
+                    <li data-step="𝕏">
+                        <strong>Social Media</strong><br>
+                        Reach out on <a href="https://x.com/nexcorelabs" style="color: #6EE7F3; text-decoration: underline;" target="_blank">X</a> or <a href="https://instagram.com/nexcorelabs" style="color: #6EE7F3; text-decoration: underline;" target="_blank">Instagram</a> for quick inquiries.
+                    </li>
+                    <li data-step="💬">
+                        <strong>Discord Community</strong><br>
+                        Join our <a href="https://discord.gg/ExtGSwy5Pn" style="color: #6EE7F3; text-decoration: underline;" target="_blank">Discord Server</a> for real-time chat with the team.
+                    </li>
+                </ul>
+
+                <h3>Common Questions</h3>
+                <div class="faq-item active">
+                    <h4><i class="fa-solid fa-circle-question"></i> How long does page setup take?</h4>
+                    <p>Typically 2-10 days depending on project complexity and scope. We'll provide a timeline during the initial consultation.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4><i class="fa-solid fa-circle-question"></i> Can I update my page after launch?</h4>
+                    <p>Absolutely! We provide ongoing support and training for content updates. You can modify details anytime with our guidance.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h4><i class="fa-solid fa-circle-question"></i> Is my project data secure?</h4>
+                    <p>Yes, all projects are protected with Microsoft GitHub protection, HTTPS encryption, and security best practices.</p>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <h2>Ready to Bring Your Project to Life?</h2>
+                <p>Explore our <a href="pricing.html" class="btn ghost fade">Pricing Options</a></p>
+            </div>
+        </div>
+
+        <div class="nexcore-sign">
+            <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>                  <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // FAQ toggle functionality
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        console.log(`NexCore Labs version ${APP_VERSION}`);
+    </script>
+
+  <!-- Cookie Consent Banner + Module -->
+  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
+    <div class="cc-inner container">
+      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
+      <div class="cc-actions">
+        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
+        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
+        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/cookie-consent.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+    <link rel="stylesheet" href="assets/css/cookie-consent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NexCore Labs pricing plans - transparent, affordable digital solutions for student projects. Multiple tiers to fit your needs.">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="NexCore Labs, pricing, plans, page development, student projects, affordable, digital solutions, Sultan Qaboos University, Oman">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta property="og:url" content="https://nexcorelabs.vercel.app/pricing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs Pricing - Affordable Digital Solutions">
+    <meta property="og:description" content="Transparent pricing for professional page development. Choose the plan that fits your student project.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+    <meta property="twitter:url" content="https://nexcorelabs.vercel.app/pricing.html">
+    <meta name="twitter:title" content="NexCore Labs Pricing">
+    <meta name="twitter:description" content="Transparent pricing for professional page development.">
+
+    <title>NexCore Labs | Pricing Plans</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                    <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
+                    <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                    <div class="div-menu-line"></div>
+                    <a href="how-to-use.html" class="fade" title="How to Use NexCore">How to Use</a>
+                    <a href="#" class="fade" title="Pricing Plans">Pricing</a>
+                    <div class="div-menu-line"></div>
+                    <a href="index.html#tools" title="Tools & Systems">Tools & Systems</a>
+                    <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                    <a href="index.html#team" title="NexCore Team">Our Team</a>
+                    <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+                    <div class="div-menu-line"></div>
+                    <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+                    <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+                    <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="pricing-container">
+            <div class="pricing-header">
+                <h1>Transparent Pricing for Your Project</h1>
+                <p>Choose the plan that fits your needs.</p>
+            </div>
+
+            <div class="pricing-cards" id="pricingCards">
+                <!-- Starter Plan -->
+                <div class="pricing-card">
+                    <div class="plan-icon"><i class="fa-solid fa-rocket"></i></div>
+                    <h3 class="plan-name">Starter</h3>
+                    <p class="plan-description">Perfect for small projects and proof of concepts</p>
+                    <div class="plan-price">
+                        <span class="price-currency">OMR</span><span class="price-amount" data-price="0">0</span><span class="price-period">Lifetime</span>
+                        <p class="price-note">Free Lifetime</p>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Special card on the Hub</li>
+                        <li>1-week of support</li>
+                        <li>You can avoid setup fee of 0.500 OMR</li>
+                        <li class="disabled">Independent page</li>
+                    </ul>
+                    <a class="btn primary" href="signup.html">Get Started</a>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="pricing-card">
+                    <div class="plan-icon"><i class="fa-solid fa-building"></i></div>
+                    <h3 class="plan-name">Professional</h3>
+                    <p class="plan-description">For large-scale projects needing advanced features</p>
+                    <div class="plan-price">
+                        <span class="price-currency">OMR</span><span class="price-amount" data-price="2.9">2.9</span><span class="price-period">Lifetime</span>
+                        <p class="price-note">One-time payment</p>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Special card on the Hub</li>
+                        <li>1-month of support</li>
+                        <li>You can avoid setup fee of 0.500 OMR</li>
+                        <li>Independent page</li>
+                    </ul>
+                    <a class="btn ghost fade" href="signup.html">Go for it!</a>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="comparison-table">
+                <h2 style="text-align: center; margin-bottom: 40px;">Detailed Feature Comparison</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Starter</th>
+                            <th>Professional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Special card on the Hub</td>
+                            <td><span class="feature-check">✓</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Support Duration</td>
+                            <td><span class="feature-check">1-week</span></td>
+                            <td><span class="feature-check">1-month</span></td>
+                        </tr>
+                        <tr>
+                            <td>Independent Page</td>
+                            <td><span class="feature-cross">✗</span></td>
+                            <td><span class="feature-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Setup Fee</td>
+                            <td><span class="feature-check">Waived</span></td>
+                            <td><span class="feature-check">Waived</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="faq-section">
+                <h2>Pricing Questions</h2>
+                <div class="faq-items">
+                    <div class="faq-item active">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What's included in the setup fee?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>The setup includes initial consultation, design creation, development, testing, deployment, and 2-days of post-launch support to ensure everything works perfectly.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Can I upgrade plans later?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Absolutely! You can upgrade to a higher plan anytime. We'll credit any remaining balance from your current plan towards the upgrade.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Is there a setup fee?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes, we charge a one-time setup fee of 0.500 OMR to cover initial consultation, design, and deployment. This is waived for all subscription plans.</p>
+                    </div>
+
+                    <!-- <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Do you offer student discounts?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes! SQU students receive a 20% discount on all plans. Simply verify your SQU email address during checkout to apply the discount automatically.</p>
+                    </div> -->
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What happens after the support period ends?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Your page will remain available and accessible. You can subscribe to a monthly support plan, or choose a pay-as-you-go support model at 0.800 OMR/hour.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Can I cancel anytime?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>Yes, Plans can be cancelled with 30 days notice. Plans include a 7-day refund guarantee. We want to ensure you're completely satisfied with our service.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> What payment methods do you accept?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>We accept PayPal, and bank transfers only.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>
+                            <span><i class="fa-solid fa-circle-question"></i> Is there a contract?</span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </h4>
+                        <p>No long-term contracts required. We rely on quality service to keep your business, not contracts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nexcore-sign">
+            <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>                  <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+    <script>
+                // FAQ toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.addEventListener('click', function() {
+                faqItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        function contactUs(plan) {
+            window.location.href = `index.html#contact?plan=${plan}`;
+        }
+    </script>
+
+  <!-- Cookie Consent Banner + Module -->
+  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
+    <div class="cc-inner container">
+      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
+      <div class="cc-actions">
+        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
+        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
+        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/cookie-consent.js" defer></script>
+</script>
+</body>
+</html>

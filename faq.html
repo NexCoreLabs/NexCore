@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+    <link rel="stylesheet" href="assets/css/cookie-consent.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently Asked Questions about NexCore Labs - answers to common questions about our services, pricing, and platform.">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="FAQ, frequently asked questions, NexCore Labs, help, support, page development, student projects, digital solutions, Sultan Qaboos University, Oman">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <meta property="og:url" content="https://nexcorelabs.vercel.app/faq.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs | FAQ">
+    <meta property="og:description" content="Frequently Asked Questions about NexCore Labs services and platform.">
+
+    <meta name="twitter:card" content="summary">
+    <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+    <meta property="twitter:url" content="https://nexcorelabs.vercel.app/faq.html">
+    <meta name="twitter:title" content="NexCore Labs | FAQ">
+    <meta name="twitter:description" content="Frequently Asked Questions about NexCore Labs.">
+
+    <title>NexCore Labs | FAQ</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                    <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
+                    <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                    <div class="div-menu-line"></div>
+                    <a href="how-to-use.html" class="fade" title="How to Use NexCore">How to Use</a>
+                    <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
+                    <div class="div-menu-line"></div>
+                    <a href="index.html#tools" title="Tools & Systems">Tools & Systems</a>
+                    <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                    <a href="index.html#team" title="NexCore Team">Our Team</a>
+                    <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+                    <div class="div-menu-line"></div>
+                    <a href="#" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+                    <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+                    <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="faq-container">
+            <div class="faq-header">
+                <h1>Frequently Asked Questions</h1>
+                <p>Find answers to common questions about NexCore Labs, our services, and how to get the most out of our platform.</p>
+            </div>
+
+            <!-- <div class="faq-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="faqSearch" placeholder="Search questions...">
+            </div> -->
+
+            <div class="faq-categories" id="categoryButtons">
+                <button class="category-btn active" data-category="general">General</button>
+                <button class="category-btn" data-category="service">Services</button>
+                <button class="category-btn" data-category="technical">Technical</button>
+                <button class="category-btn" data-category="support">Support</button>
+                <button class="category-btn" data-category="security">Security</button>
+            </div>
+
+            <div class="faq-sections">
+                <!-- General Category -->
+                <div class="faq-category-section active" data-section="general">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-circle-info"></i> General</h2>
+
+                    <div class="faq-item active">
+                        <h3 class="faq-question">
+                            <span>What is NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs is a student-run digital solutions platform at Sultan Qaboos University, specializing in building pages and digital experiences for student-led projects. We focus on speed, quality, and collaboration to bring your ideas to life online.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Who can use NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs serves Sultan Qaboos University students and affiliated groups, including research teams, student startups, clubs, and creative projects. If you're an SQU student working on a project, we can help you get online quickly and professionally.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>When was NexCore Labs founded?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs was founded in Sep 23, 2025 by a dedicated team of SQU students passionate about web development and innovation. We're a young, energetic team committed to helping student projects shine online.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How do I get started with NexCore Labs?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Getting started is simple! <a href="hub.html#signup" style="text-decoration: underline;">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html" style="text-decoration: underline;">How to Use guide</a> for more details.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's the difference between NexCore Labs and other web development services?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs 100% led by Omani team and it's uniquely focused on student projects at SQU. We understand the constraints of student teams — limited budgets, learning objectives, and tight timelines. Our team is dedicated to delivering professional results while mentoring the next generation of developers. We prioritize speed, quality, and affordability.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Category -->
+                <div class="faq-category-section" data-section="service">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-briefcase"></i> Services</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What services does NexCore Labs offer?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We offer showcase services including:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Project card display</li>
+                                <li>Page design and development</li>
+                                <li>SEO optimization</li>
+                                <li>Form integration and submission handling</li>
+                                <li>Ongoing support and maintenance</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How long does it take to build a page?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Typical project timeline is 2-10 days depending on complexity and scope:
+                            <div class="highlight-box">
+                                <strong>Day 2-3:</strong> Initial consultation<br>
+                                <strong>day 3-8:</strong> Development and implementation<br>
+                                <strong>Day 9-10:</strong> Testing, refinements, and deployment
+                            </div>
+                            We can expedite for urgent projects — contact us to discuss timeline options.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Do you provide hosting?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! All projects page are hosted on secure, fast servers with 99.9% uptime guarantee. Hosting is included in all our plans.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you help with content creation?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We can provide guidance on content structure and best practices. While you should provide the core project content, we can help optimize it for page and improve messaging.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What about mobile optimization?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            NexCore Labs is <strong>fully responsive and mobile-optimized</strong>. Your site will look perfect on smartphones, tablets, and desktops. We test extensively across all devices to ensure seamless user experience.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you integrate with existing tools and platforms?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Absolutely! We can integrate with:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Analytics platforms (Google Analytics, Hotjar)</li>
+                                <li>CRM systems (Supabase, custom databases)</li>
+                                <li>Social media platforms</li>
+                                <li>Slack and communication tools</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Category -->
+                <div class="faq-category-section" data-section="technical">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-code"></i> Technical</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What technologies do you use?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Our tech stack includes:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript ES6+</li>
+                                <li><strong>Backend:</strong> Supabase</li>
+                                <li><strong>Tools:</strong> GitHub, VS Code, Git</li>
+                                <li><strong>Performance:</strong> PageSpeed optimization</li>
+                                <li><strong>Analytics:</strong> Google Analytics, Search Console(SEO)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Is NexCore Labs website Progressive Web App (PWA) compatible?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! NexCore Labs is built as Progressive Web Apps. This means users can install the site on their devices like a native app, enjoy offline functionality, and get push notifications. It's a modern, user-friendly approach that boosts engagement.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How is performance optimized?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We implement multiple performance optimizations:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Image optimization and lazy loading</li>
+                                <li>WebP format for modern browsers</li>
+                                <li>CSS and JavaScript minification</li>
+                                <li>Caching strategies via service workers</li>
+                                <li>Regular performance audits with PageSpeed Insights</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What about SEO?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            All our pages are SEO optimized from day one:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Proper meta tags and descriptions</li>
+                                <li>Semantic HTML structure</li>
+                                <li>Mobile-first responsive design</li>
+                                <li>Fast loading times (Core Web Vitals)</li>
+                                <li>XML sitemaps and robots.txt</li>
+                                <li>Google Search Console integration</li>
+                                <li>Schema markup for rich snippets</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can I edit the code myself after launch?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! We provide you with full access to your project's source code on GitHub. If you have developers on your team, they can make updates themselves (with our guidance). We also offer ongoing support hours for content and feature updates.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's the infrastructure like?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Your website is hosted on industry-leading infrastructure:
+                            <div class="highlight-box">
+                                <strong>Hosting:</strong> High-performance servers with SSD storage<br>
+                                <strong>Monitoring:</strong> UptimeRobot 24/7 monitoring with instant alerts<br>
+                                <strong>SSL:</strong>HTTPS encryption<br>
+                                <strong>Uptime:</strong> 99.9% guaranteed SLA
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Category -->
+                <div class="faq-category-section" data-section="support">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-headset"></i> Support</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What support options are available?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We offer multiple support channels:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>Email:</strong> nexcorelabs@outlook.com (48-hour response)</li>
+                                <li><strong>Contact Form:</strong> Via our website</li>
+                                <li><strong>GitHub:</strong> For technical issues</li>
+                                <li><strong>Social Media:</strong> X, Instagram, GitHub</li>
+                                <li><strong>Discord:</strong> Real-time chat with the team.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What's your response time?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            <strong>48-hour response time</strong> for all support requests. Most inquiries are answered within 24 hours. Professional plan clients receive 24/7 support with guaranteed 4-hour response time.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Can you help with bug fixes?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Absolutely! All bug fixes are covered under your support plan. Critical issues are prioritized and fixed immediately. For issues outside your support period, we offer pay-as-you-go support at 0.800 OMR/hour.
+                        </div>
+                    </div>
+
+                    <!-- <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Do you provide training for our team?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes! We provide comprehensive training for your team on:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Content management and updates</li>
+                                <li>Using analytics and monitoring tools</li>
+                                <li>Basic code modifications (if applicable)</li>
+                                <li>SEO best practices</li>
+                                <li>Security and maintenance</li>
+                            </ul>
+                            Training is included in Professional and Enterprise plans.
+                        </div>
+                    </div> -->
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What happens after my support period ends?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Your website remains live and fully functional. You have several options:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Continue your monthly support plan for ongoing support</li>
+                                <li>Upgrade to a higher tier plan</li>
+                                <li>Use our pay-as-you-go support (0.800 OMR/hour)</li>
+                                <li>Maintain the site yourself with code access</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How do I request new features?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We love feature requests! Submit them through:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>Email (nexcorelabs@outlook.com)</li>
+                                <li>Contact form on our website</li>
+                            </ul>
+                            We'll evaluate the request and provide a timeline and cost estimate.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Category -->
+                <div class="faq-category-section" data-section="security">
+                    <h2 class="faq-category-title"><i class="fa-solid fa-shield"></i> Security</h2>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>How secure is my website?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Security is a top priority. Your website includes:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li><strong>HTTPS Encryption:</strong>SSL certificates</li>
+                                <li><strong>Regular Backups:</strong> Daily automated backups</li>
+                                <li><strong>Security Headers:</strong> Proper HTTP security headers</li>
+                                <li><strong>Form Security:</strong> CSRF protection and validation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>Is my data protected?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            Yes. We implement data protection best practices:
+                            <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
+                                <li>End-to-end encryption for sensitive data</li>
+                                <li>Secure database with Supabase</li>
+                                <li>GDPR-compliant data handling</li>
+                                <li>Regular security audits</li>
+                                <li>Access controls and authentication</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <h3 class="faq-question">
+                            <span>What if there's a security breach?</span>
+                            <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
+                        </h3>
+                        <div class="faq-answer">
+                            We have an incident response protocol:
+                            <div class="highlight-box">
+                                <strong>Detection:</strong> 24/7 monitoring with instant alerts<br>
+                                <strong>Response:</strong> Immediate investigation and containment<br>
+                                <strong>Notification:</strong> We notify you within 24 hours<br>
+                                <strong>Resolution:</strong> Complete fix and remediation plan<br>
+                                <strong>Prevention:</strong> Updated security measures to prevent recurrence
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="contact-cta">
+                <h2>Didn't Find Your Answer?</h2>
+                <p>Our team is here to help! Get in touch with any questions or concerns.</p>
+                <a href="index.html#contact" class="btn ghost fade">Send a Message</a>
+            </div>
+
+            <div class="no-results">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <p>No questions match your search. Try different keywords or <a href="index.html#contact" style="color: #6EE7F3;">contact us</a>.</p>
+            </div>
+        </div>
+
+        <div class="nexcore-sign">
+            <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>                  <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Scoped FAQ functionality to avoid conflicts with other pages
+        (function () {
+            const container = document.querySelector('.faq-container');
+            if (!container) return;
+
+            const faqSections = container.querySelectorAll('.faq-category-section');
+            const categoryButtons = container.querySelectorAll('.category-btn');
+            const searchInput = container.querySelector('#faqSearch');
+            const noResults = container.querySelector('.no-results');
+
+            // Initialize ARIA attributes for accessibility
+            container.querySelectorAll('.faq-item').forEach(item => {
+                item.setAttribute('role', 'button');
+                item.setAttribute('tabindex', '0');
+                item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+            });
+
+            function updateNoResultsAndButtons(matchesCountPerSection, searchTerm) {
+                const totalMatches = Array.from(matchesCountPerSection.values()).reduce((a, b) => a + b, 0);
+                if (searchTerm && totalMatches === 0) {
+                    noResults.style.display = 'block';
+                } else {
+                    noResults.style.display = 'none';
+                }
+
+                // Dim categories that have no matches when searching
+                categoryButtons.forEach(btn => {
+                    const sec = btn.dataset.category;
+                    const hasMatches = matchesCountPerSection.get(sec) > 0;
+                    btn.style.opacity = searchTerm ? (hasMatches ? '1' : '0.5') : '1';
+                });
+            }
+
+            // Debounced search + combined with category filter
+            let searchTimeout;
+            function performSearch() {
+                const searchTerm = (searchInput.value || '').trim().toLowerCase();
+                const activeCategory = container.querySelector('.category-btn.active')?.dataset.category || null;
+                const matchesCountPerSection = new Map();
+
+                // First pass: count matches per section (ignore activeCategory) to inform button states
+                faqSections.forEach(section => {
+                    let sectionMatches = 0;
+                    const items = section.querySelectorAll('.faq-item');
+
+                    items.forEach(item => {
+                        const questionEl = item.querySelector('.faq-question span');
+                        const answerEl = item.querySelector('.faq-answer');
+                        const question = questionEl ? questionEl.textContent.toLowerCase() : '';
+                        const answer = answerEl ? answerEl.textContent.toLowerCase() : '';
+                        const matches = (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm));
+
+                        if (matches) {
+                            sectionMatches++;
+                        }
+                    });
+
+                    matchesCountPerSection.set(section.dataset.section, sectionMatches);
+                });
+
+                // Second pass: show/hide items. If a search term exists, show matches across all sections.
+                // If there is no search term, respect the active category (only show items in that category).
+                faqSections.forEach(section => {
+                    const sectionName = section.dataset.section;
+                    const items = section.querySelectorAll('.faq-item');
+                    let visibleInSection = 0;
+
+                    items.forEach(item => {
+                        const questionEl = item.querySelector('.faq-question span');
+                        const answerEl = item.querySelector('.faq-answer');
+                        const question = questionEl ? questionEl.textContent.toLowerCase() : '';
+                        const answer = answerEl ? answerEl.textContent.toLowerCase() : '';
+                        const matches = (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm));
+
+                        const showItem = matches && (searchTerm !== '' ? true : (!activeCategory || sectionName === activeCategory));
+
+                        if (showItem) {
+                            item.style.display = '';
+                            visibleInSection++;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+
+                    section.style.display = visibleInSection > 0 ? '' : 'none';
+                });
+
+                updateNoResultsAndButtons(matchesCountPerSection, searchTerm);
+            }
+
+            /* Search functionality temporarily disabled per request
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performSearch, 150);
+            });
+            */
+
+            // Category filtering (click + keyboard)
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const category = btn.dataset.category;
+                    faqSections.forEach(section => {
+                        if (section.dataset.section === category) {
+                            section.classList.add('active');
+                            section.style.display = '';
+                        } else {
+                            section.classList.remove('active');
+                            section.style.display = 'none';
+                        }
+                    });
+
+                    // Re-run search to apply both filters
+                    performSearch();
+                });
+
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        btn.click();
+                    }
+                });
+            });
+
+            // Delegated FAQ item toggle (click + keyboard for accessibility)
+            container.addEventListener('click', (e) => {
+                const item = e.target.closest('.faq-item');
+                if (!item || !container.contains(item)) return;
+                item.classList.toggle('active');
+                item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+            });
+
+            container.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const item = e.target.closest('.faq-item');
+                    if (!item || !container.contains(item)) return;
+                    e.preventDefault();
+                    item.classList.toggle('active');
+                    item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+                }
+            });
+
+            // Initial run to respect active category on load
+            performSearch();
+
+        })();
+
+        console.log(`NexCore Labs version ${APP_VERSION}`);
+    </script>
+
+  <!-- Cookie Consent Banner + Module -->
+  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
+    <div class="cc-inner container">
+      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
+      <div class="cc-actions">
+        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
+        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
+        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/cookie-consent.js" defer></script>
+</body>
+</html>
