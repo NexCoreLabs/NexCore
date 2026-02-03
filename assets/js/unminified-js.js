@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       `<div class="flag-includes">
         <img src="assets/images/eu.webp" alt="EU flag">
-        <span>Fully EU GDPR Compliant</span>
+        <span>EU GDPR-aligned</span>
       </div>`,
 
     "Powered by NexCore • Driven by ambition",
