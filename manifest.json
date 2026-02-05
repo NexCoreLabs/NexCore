@@ -2,7 +2,7 @@
   "name": "NexCore Labs",
   "short_name": "NexCore",
   "description": "Student-driven digital solutions and polished showcases for SQU students' projects.",
-  "start_url": "/NexCore/",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0A0B1C",
   "theme_color": "#6EE7F3",

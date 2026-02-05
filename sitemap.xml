@@ -8,18 +8,48 @@
 
 
 <url>
-  <loc>https://nexcorelabs.github.io/NexCore/</loc>
-  <lastmod>2025-10-24T07:18:24+00:00</lastmod>
+  <loc>https://nexcorelabs.vercel.app/</loc>
+  <lastmod>2026-02-03T18:25:13+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://nexcorelabs.github.io/NexCore/hub.html</loc>
-  <lastmod>2025-10-24T07:18:24+00:00</lastmod>
+  <loc>https://nexcorelabs.vercel.app/signup.html</loc>
+  <lastmod>2026-02-03T18:25:14+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://nexcorelabs.github.io/NexCore/index.html</loc>
-  <lastmod>2025-10-24T07:18:24+00:00</lastmod>
+  <loc>https://nexcorelabs.vercel.app/hub.html</loc>
+  <lastmod>2026-02-03T18:25:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/how-to-use.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/pricing.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/faq.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/terms.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/privacy-policy.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://nexcorelabs.vercel.app/index.html</loc>
+  <lastmod>2026-02-03T18:25:15+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 
