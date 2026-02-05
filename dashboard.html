@@ -116,197 +116,67 @@
   <script src="assets/js/supabase-client.js"></script>
 
   <script>
-    const sb = window.supabaseClient; // matches your supabase-client.js
+const sb = window.supabaseClient;
 
-    function setMsg(text) {
-      document.getElementById("msg").textContent = text || "";
+function isSQU(email) {
+  const e = (email || "").toLowerCase().trim();
+  return e.endsWith("@squ.edu.om") || e.endsWith("@student.squ.edu.om");
+}
+
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const btn = form.querySelector('button[type="submit"]');
+
+let cooldownTimer = null;
+let cooldownSeconds = 0;
+
+function startCooldown(seconds) {
+  cooldownSeconds = seconds;
+  btn.disabled = true;
+  btn.textContent = `Resend in ${cooldownSeconds}s`;
+
+  cooldownTimer = setInterval(() => {
+    cooldownSeconds -= 1;
+    if (cooldownSeconds <= 0) {
+      clearInterval(cooldownTimer);
+      cooldownTimer = null;
+      btn.disabled = false;
+      btn.textContent = "Send magic link";
+      return;
     }
+    btn.textContent = `Resend in ${cooldownSeconds}s`;
+  }, 1000);
+}
 
-    function slugify(s) {
-      return (s || "")
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "")
-        .slice(0, 40);
-    }
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
 
-    let project = null;
+  if (btn.disabled) return;
 
-    function render(p) {
-      project = p;
+  const email = emailInput.value.trim();
 
-      document.getElementById("noProject").style.display = p ? "none" : "block";
-      document.getElementById("hasProject").style.display = p ? "block" : "none";
+  if (!email) return alert("Please enter your SQU email.");
+  if (!isSQU(email)) return alert("Please use your SQU email: @squ.edu.om or @student.squ.edu.om");
 
-      if (!p) return;
+  btn.disabled = true;
+  btn.textContent = "Sending…";
 
-      document.getElementById("publicId").textContent = p.public_id || "";
-      document.getElementById("statusText").textContent = p.published ? "Published" : "Draft";
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: `${window.location.origin}/dashboard.html` }
+  });
 
-      const publishBtn = document.getElementById("togglePublishBtn");
-      publishBtn.textContent = p.published ? "Unpublish" : "Publish";
+  if (error) {
+    alert(error.message);
+    btn.disabled = false;
+    btn.textContent = "Send magic link";
+    return;
+  }
 
-      document.getElementById("name").value = p.name || "";
-      document.getElementById("slug").value = p.slug || "";
-      document.getElementById("image_url").value = p.image_url || "";
-      document.getElementById("description").value = p.description || "";
+  alert("Check your email!");
+  startCooldown(60);
+});
 
-      const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
-      const a = document.getElementById("publicLink");
-      a.href = link;
-      a.textContent = link;
-
-      const img = document.getElementById("imgPreview");
-      if (p.image_url && p.image_url.startsWith("http")) {
-        img.src = p.image_url;
-        img.style.display = "inline-block";
-      } else {
-        img.style.display = "none";
-      }
-    }
-
-    async function requireAuth() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) {
-        window.location.href = "/login.html";
-        return null;
-      }
-      document.getElementById("userLine").textContent = `Signed in as ${session.user.email}`;
-      return session;
-    }
-
-    async function loadMyProject() {
-      setMsg("");
-      const { data, error } = await sb
-        .from("projects")
-        .select("*")
-        .limit(1);
-
-      if (error) {
-        setMsg(error.message);
-        render(null);
-        return;
-      }
-      render(data && data[0] ? data[0] : null);
-    }
-
-    async function createProject() {
-      setMsg("");
-      const name = document.getElementById("newProjectName").value.trim();
-      if (!name) return setMsg("Please enter a project name.");
-
-      const slug = slugify(name);
-      if (!slug) return setMsg("Invalid project name.");
-
-      const { data, error } = await sb
-        .from("projects")
-        .insert({ name, slug })   // public_id auto by trigger
-        .select("*")
-        .single();
-
-      if (error) return setMsg(error.message);
-
-      render(data);
-      setMsg("Project created (draft) ✅ Now edit and publish when ready.");
-    }
-
-    async function saveProject() {
-      setMsg("");
-      if (!project) return;
-
-      const name = document.getElementById("name").value.trim();
-      const slug = slugify(document.getElementById("slug").value.trim() || name);
-      const image_url = document.getElementById("image_url").value.trim();
-      const description = document.getElementById("description").value.trim();
-
-      const { data, error } = await sb
-        .from("projects")
-        .update({
-          name,
-          slug,
-          image_url,
-          description,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", project.id)
-        .select("*")
-        .single();
-
-      if (error) return setMsg(error.message);
-
-      render(data);
-      setMsg("Saved ✅");
-    }
-
-    async function togglePublish() {
-      setMsg("");
-      if (!project) return;
-
-      const next = !project.published;
-
-      const { data, error } = await sb
-        .from("projects")
-        .update({
-          published: next,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", project.id)
-        .select("*")
-        .single();
-
-      if (error) return setMsg(error.message);
-
-      render(data);
-      setMsg(next ? "Published ✅ (will appear in Hub later)" : "Unpublished (hidden from Hub)");
-    }
-
-    async function deleteProject() {
-      if (!project) return;
-
-      const ok = confirm("Delete your project permanently? This cannot be undone.");
-      if (!ok) return;
-
-      setMsg("");
-      const { error } = await sb
-        .from("projects")
-        .delete()
-        .eq("id", project.id);
-
-      if (error) return setMsg(error.message);
-
-      render(null);
-      setMsg("Project deleted.");
-    }
-
-    async function logout() {
-      await sb.auth.signOut();
-      window.location.href = "/login.html";
-    }
-
-    document.addEventListener("DOMContentLoaded", async () => {
-      const session = await requireAuth();
-      if (!session) return;
-
-      document.getElementById("logoutBtn").addEventListener("click", logout);
-      document.getElementById("createProjectBtn").addEventListener("click", createProject);
-      document.getElementById("saveBtn").addEventListener("click", saveProject);
-      document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
-      document.getElementById("deleteBtn").addEventListener("click", deleteProject);
-
-      document.getElementById("image_url").addEventListener("input", (e) => {
-        const url = e.target.value.trim();
-        const img = document.getElementById("imgPreview");
-        if (url.startsWith("http")) {
-          img.src = url;
-          img.style.display = "inline-block";
-        } else {
-          img.style.display = "none";
-        }
-      });
-
-      await loadMyProject();
-    });
   </script>
         <script src="assets/js/cookie-consent.js" defer></script>
 </body>
