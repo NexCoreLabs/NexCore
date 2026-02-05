@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="assets/css/cookie-consent.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="NexCore Labs dashboard for teams to manage projects, updates, and resources.">
+        <meta name="description" content="NexCore Labs dashboard for teams to manage projects, and resources.">
         <meta name="author" content="NexCore Labs">
         <meta name="keywords" content="NexCore Labs, dashboard, team, projects, student projects, Sultan Qaboos University, Oman">
         <meta name="theme-color" content="#0a0b1c">
@@ -14,13 +14,13 @@
         <meta property="og:url" content="https://nexcorelabs.vercel.app/dashboard.html">
         <meta property="og:type" content="website">
         <meta property="og:title" content="NexCore Labs | Dashboard">
-        <meta property="og:description" content="Team dashboard for managing NexCore projects and updates.">
+        <meta property="og:description" content="Team dashboard for managing NexCore Labs projects.">
 
         <meta name="twitter:card" content="summary_large_image">
         <meta property="twitter:domain" content="nexcorelabs.vercel.app">
         <meta property="twitter:url" content="https://nexcorelabs.vercel.app/dashboard.html">
         <meta name="twitter:title" content="NexCore Labs | Dashboard">
-        <meta name="twitter:description" content="Team dashboard for managing NexCore projects and updates.">
+        <meta name="twitter:description" content="Team dashboard for managing NexCore Labs projects.">
 
         <title>NexCore Labs | Dashboard</title>
 
@@ -33,284 +33,281 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    </head>
-    <body>
-        <div class="background">
-            <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
-            <div id="spotLight" class="spot-light"></div>
+  <style>
+    .wrap{max-width:980px;margin:60px auto;padding:16px}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35)}
+    label{display:block;margin:10px 0 6px;opacity:.9}
+    input,textarea{
+      width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);color:#fff
+    }
+    textarea{min-height:110px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+    .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
+    .muted{opacity:.75}
+    .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
+    a{color:#6ee7f3}
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <h1>Dashboard</h1>
+    <p class="muted" id="userLine">Loading…</p>
+
+    <div class="box">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">My Project</h2>
+        <div class="row">
+          <button class="btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <!-- State: no project -->
+      <div id="noProject" style="display:none;margin-top:12px;">
+        <p>You don’t have a project yet.</p>
+        <div class="row">
+          <input id="newProjectName" placeholder="Project name (e.g., Sovlex)" />
+          <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
+        </div>
+        <p class="muted" style="margin-top:10px;">
+          A draft card/profile will be created. You can edit and publish when ready.
+        </p>
+      </div>
+
+      <!-- State: has project -->
+      <div id="hasProject" style="display:none;margin-top:12px;">
+        <p class="muted">
+          Public ID: <b id="publicId"></b> • Status: <b id="statusText"></b>
+        </p>
+        <p class="muted">
+          Public link:
+          <a id="publicLink" href="#" target="_blank" rel="noopener">open</a>
+        </p>
+
+        <label>Project name</label>
+        <input id="name" />
+
+        <label>Slug (used in link)</label>
+        <input id="slug" placeholder="sovlex" />
+
+        <label>Image URL (optional)</label>
+        <input id="image_url" placeholder="https://..." />
+        <div style="margin-top:10px;">
+          <img id="imgPreview" alt="" style="max-width:240px;border-radius:14px;display:none;border:1px solid rgba(255,255,255,.10);" />
         </div>
 
-        <header class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <h1 id="logo">NexCore <span>Labs</span></h1>
-                </div>
+        <label>Description</label>
+        <textarea id="description"></textarea>
 
-                <div class="dropdown">
-                    <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="dot" aria-hidden="true"></span>
-                        <span class="dot" aria-hidden="true"></span>
-                    </div>
-                    
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="hub.html" class="magic-signup fade" title="Back to Hub">Back to Hub</a>
-                        <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
-                        <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
-                        <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
-                        <div class="div-menu-line"></div>
-                        <a href="how-to-use.html" class="fade" title="How to Use NexCore" style="margin-top: 0;">How to Use</a>
-                        <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
-                        <div class="div-menu-line"></div>
-                        <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
-                        <a href="index.html#about" title="About NexCore Labs">About Us</a>
-                        <a href="index.html#team" title="NexCore Team">Our Team</a>
-                        <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
-                        <div class="div-menu-line"></div>
-                        <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-                        <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-                        <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <main>
-            <section class="hub-hero hero">
-                <div class="container">
-                    <div class="hub-top">
-                        <h1 class="title">Team Dashboard</h1>
-                        <p class="lead">Your command center for project updates, resources, and announcements.</p>
-                        <div class="hero-actions">
-                            <a class="btn primary" href="hub.html">Open Hub</a>
-                            <a class="btn ghost" href="#activity">Activity</a>
-                            <button class="btn ghost" id="logoutBtn" type="button">Log Out</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-orbit" aria-hidden="true"></div>
-            </section>
-
-            <section class="panel">
-                <div class="container">
-                    <h2 class="section-title">At a Glance</h2>
-                    <p class="section-lead">Quick indicators to keep your team on track.</p>
-
-                    <div class="projects-grid reveal">
-                        <div class="project-card">
-                            <strong>Projects in Hub</strong>
-                            <span class="id">Count: <span id="projectCount">0</span></span>
-                            <p>Live projects currently showcased across NexCore.</p>
-                        </div>
-                        <div class="project-card">
-                            <strong>Team Status</strong>
-                            <span class="id">Active</span>
-                            <p>All core tools are online and ready.</p>
-                        </div>
-                        <div class="project-card">
-                            <strong>Next Review</strong>
-                            <span class="id">Pending</span>
-                            <p>Schedule a review with the NexCore team if needed.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="panel dark">
-                <div class="container">
-                    <h2 class="section-title">Quick Actions</h2>
-                    <p class="section-lead">Jump to the tools your team uses most.</p>
-
-                    <div class="projects-grid reveal">
-                        <a class="project-card" href="signup.html">
-                            <strong>Access the Core</strong>
-                            <span class="id">Team Setup</span>
-                            <p>Complete your team profile or update your plan.</p>
-                        </a>
-                        <a class="project-card" href="pricing.html">
-                            <strong>Pricing Plans</strong>
-                            <span class="id">Compare</span>
-                            <p>See plan details and support windows.</p>
-                        </a>
-                        <a class="project-card" href="how-to-use.html">
-                            <strong>How to Use</strong>
-                            <span class="id">Guide</span>
-                            <p>Review the onboarding steps and best practices.</p>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <section id="activity" class="panel">
-                <div class="container">
-                    <h2 class="section-title">Recent Activity</h2>
-                    <p class="section-lead">Use this space to log milestones for your team.</p>
-
-                    <ul class="activity-list reveal">
-                        <li>✅ Added new project assets to the shared drive.</li>
-                        <li>🚧 Finalizing the first draft of the landing page.</li>
-                        <li>📣 Scheduled a review with NexCore support.</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="panel">
-                <div class="container">
-                    <div class="signup-wrapper">
-                        <div class="signup-info">
-                            <div class="info-block">
-                                <h3><i class="fa-solid fa-circle-info"></i> Team Notes</h3>
-                                <p>Keep your notes and decisions centralized. Share updates with your team lead and NexCore support.</p>
-                                <ul>
-                                    <li>Document milestones</li>
-                                    <li>Track revisions</li>
-                                    <li>Share deliverables</li>
-                                </ul>
-                            </div>
-                            <div class="info-block">
-                                <h3><i class="fa-solid fa-envelope"></i> Need Support?</h3>
-                                <p>Reach out any time — we respond quickly during active projects.</p>
-                                <p style="margin-top: 1rem;">
-                                    <a href="index.html#contact">Contact NexCore -> </a>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="signup-form-wrapper">
-                            <div class="form-container">
-                                <h2>Team Quick Note</h2>
-                                <p class="form-subtitle">A lightweight space for internal reminders.</p>
-
-                                <form id="noteForm" class="signup-form">
-                                    <label class="field">
-                                        <input name="noteTitle" placeholder="Note title" required>
-                                    </label>
-                                    <label class="field">
-                                        <textarea name="noteBody" rows="4" placeholder="Write a short update..." required></textarea>
-                                    </label>
-                                    <div class="form-actions">
-                                        <button type="submit" class="btn primary">Save Note</button>
-                                        <button type="reset" class="btn ghost">Clear</button>
-                                    </div>
-                                    <p class="form-subtitle" id="noteStatus" style="margin-top: 0.75rem;"></p>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div class="nexcore-sign">
-                <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
-            </div>
-        </main>
-
-        <footer class="site-footer">
-            <div class="container footer-inner">
-                <div class="f-left">
-                    <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
-                    <br>
-                    <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
-                        <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
-                            <i class="fa-solid fa-scale-balanced"></i> MIT License
-                        </a>
-                        <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>
-                    </small>
-                </div>
-                <div class="f-right"><small>Empowering our env. to do more</small></div>
-            </div>
-        </footer>
-
-        <script src="assets/js/script.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="version.js"></script>
-        <script>
-            console.log(`NexCore Labs version ${APP_VERSION}`);
-
-            const noteForm = document.getElementById('noteForm');
-            const noteStatus = document.getElementById('noteStatus');
-            if (noteForm) {
-                noteForm.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    if (!noteForm.reportValidity()) return;
-                    const formData = new FormData(noteForm);
-                    const note = {
-                        title: formData.get('noteTitle'),
-                        body: formData.get('noteBody'),
-                        ts: new Date().toISOString()
-                    };
-                    localStorage.setItem('nexcore_note', JSON.stringify(note));
-                    if (noteStatus) noteStatus.textContent = 'Note saved locally.';
-                    noteForm.reset();
-                });
-            }
-
-            const projectCountEl = document.getElementById('projectCount');
-            if (projectCountEl) {
-                const count = localStorage.getItem('projectCount');
-                projectCountEl.textContent = count ? count : '0';
-            }
-        </script>
-
-        <script type="module">
-            const supabaseUrl = 'https://qacupmuqeuqspfhwosfu.supabase.co'
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhY3VwbXVxZXVxc3BmaHdvc2Z1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA4ODc0MDksImV4cCI6MjA3NjQ2MzQwOX0.wg3Csls252_yP4P0-CgYrop0W1DqtlyNO2XpbdZ5Zzk'
-
-            let supabase = null
-            async function ensureSupabase() {
-                if (supabase) return supabase
-                const mod = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm')
-                const createClient = mod.createClient || (mod.default && mod.default.createClient)
-                if (!createClient) throw new Error('Supabase createClient not found in module')
-                supabase = createClient(supabaseUrl, supabaseKey)
-                return supabase
-            }
-
-            async function requireSession() {
-                try {
-                    await ensureSupabase()
-                    const { data, error } = await supabase.auth.getSession()
-                    if (error || !data || !data.session) {
-                        window.location.href = 'login.html'
-                    }
-                } catch (err) {
-                    console.error('Session check failed:', err)
-                    window.location.href = 'login.html'
-                }
-            }
-
-            await requireSession()
-
-            const logoutBtn = document.getElementById('logoutBtn')
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async () => {
-                    try {
-                        await ensureSupabase()
-                        await supabase.auth.signOut()
-                        window.location.href = 'login.html'
-                    } catch (err) {
-                        console.error('Logout failed:', err)
-                        window.location.href = 'login.html'
-                    }
-                })
-            }
-        </script>
-
-        <!-- Cookie Consent Banner + Module -->
-        <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
-            <div class="cc-inner container">
-                <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
-                <div class="cc-actions">
-                    <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
-                    <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
-                    <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
-                </div>
-            </div>
+        <div class="row" style="margin-top:12px;">
+          <button class="btn btnPrimary" id="saveBtn">Save</button>
+          <button class="btn" id="togglePublishBtn">Publish</button>
+          <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
         </div>
 
+        <p class="muted" id="msg" style="margin-top:10px;"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-client.js"></script>
+
+  <script>
+    const sb = window.supabaseClient; // matches your supabase-client.js
+
+    function setMsg(text) {
+      document.getElementById("msg").textContent = text || "";
+    }
+
+    function slugify(s) {
+      return (s || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 40);
+    }
+
+    let project = null;
+
+    function render(p) {
+      project = p;
+
+      document.getElementById("noProject").style.display = p ? "none" : "block";
+      document.getElementById("hasProject").style.display = p ? "block" : "none";
+
+      if (!p) return;
+
+      document.getElementById("publicId").textContent = p.public_id || "";
+      document.getElementById("statusText").textContent = p.published ? "Published" : "Draft";
+
+      const publishBtn = document.getElementById("togglePublishBtn");
+      publishBtn.textContent = p.published ? "Unpublish" : "Publish";
+
+      document.getElementById("name").value = p.name || "";
+      document.getElementById("slug").value = p.slug || "";
+      document.getElementById("image_url").value = p.image_url || "";
+      document.getElementById("description").value = p.description || "";
+
+      const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
+      const a = document.getElementById("publicLink");
+      a.href = link;
+      a.textContent = link;
+
+      const img = document.getElementById("imgPreview");
+      if (p.image_url && p.image_url.startsWith("http")) {
+        img.src = p.image_url;
+        img.style.display = "inline-block";
+      } else {
+        img.style.display = "none";
+      }
+    }
+
+    async function requireAuth() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        window.location.href = "/login.html";
+        return null;
+      }
+      document.getElementById("userLine").textContent = `Signed in as ${session.user.email}`;
+      return session;
+    }
+
+    async function loadMyProject() {
+      setMsg("");
+      const { data, error } = await sb
+        .from("projects")
+        .select("*")
+        .limit(1);
+
+      if (error) {
+        setMsg(error.message);
+        render(null);
+        return;
+      }
+      render(data && data[0] ? data[0] : null);
+    }
+
+    async function createProject() {
+      setMsg("");
+      const name = document.getElementById("newProjectName").value.trim();
+      if (!name) return setMsg("Please enter a project name.");
+
+      const slug = slugify(name);
+      if (!slug) return setMsg("Invalid project name.");
+
+      const { data, error } = await sb
+        .from("projects")
+        .insert({ name, slug })   // public_id auto by trigger
+        .select("*")
+        .single();
+
+      if (error) return setMsg(error.message);
+
+      render(data);
+      setMsg("Project created (draft) ✅ Now edit and publish when ready.");
+    }
+
+    async function saveProject() {
+      setMsg("");
+      if (!project) return;
+
+      const name = document.getElementById("name").value.trim();
+      const slug = slugify(document.getElementById("slug").value.trim() || name);
+      const image_url = document.getElementById("image_url").value.trim();
+      const description = document.getElementById("description").value.trim();
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          name,
+          slug,
+          image_url,
+          description,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      if (error) return setMsg(error.message);
+
+      render(data);
+      setMsg("Saved ✅");
+    }
+
+    async function togglePublish() {
+      setMsg("");
+      if (!project) return;
+
+      const next = !project.published;
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          published: next,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      if (error) return setMsg(error.message);
+
+      render(data);
+      setMsg(next ? "Published ✅ (will appear in Hub later)" : "Unpublished (hidden from Hub)");
+    }
+
+    async function deleteProject() {
+      if (!project) return;
+
+      const ok = confirm("Delete your project permanently? This cannot be undone.");
+      if (!ok) return;
+
+      setMsg("");
+      const { error } = await sb
+        .from("projects")
+        .delete()
+        .eq("id", project.id);
+
+      if (error) return setMsg(error.message);
+
+      render(null);
+      setMsg("Project deleted.");
+    }
+
+    async function logout() {
+      await sb.auth.signOut();
+      window.location.href = "/login.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const session = await requireAuth();
+      if (!session) return;
+
+      document.getElementById("logoutBtn").addEventListener("click", logout);
+      document.getElementById("createProjectBtn").addEventListener("click", createProject);
+      document.getElementById("saveBtn").addEventListener("click", saveProject);
+      document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
+      document.getElementById("deleteBtn").addEventListener("click", deleteProject);
+
+      document.getElementById("image_url").addEventListener("input", (e) => {
+        const url = e.target.value.trim();
+        const img = document.getElementById("imgPreview");
+        if (url.startsWith("http")) {
+          img.src = url;
+          img.style.display = "inline-block";
+        } else {
+          img.style.display = "none";
+        }
+      });
+
+      await loadMyProject();
+    });
+  </script>
         <script src="assets/js/cookie-consent.js" defer></script>
-    </body>
+</body>
 </html>
