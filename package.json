@@ -1,0 +1,26 @@
+{
+  "name": "nexcore",
+  "version": "1.2.0",
+  "description": "> **Bringing projects to life online — making every idea count.**",
+  "main": "service-worker.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NexCoreLabs/NexCore.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NexCoreLabs/NexCore/issues"
+  },
+  "homepage": "https://github.com/NexCoreLabs/NexCore#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.94.1"
+  }
+}
