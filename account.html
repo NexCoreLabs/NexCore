@@ -25,7 +25,8 @@
         <title>NexCore Labs | Account Settings</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/unminified-css.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,7 +54,8 @@
     .msg-success{color:#6ee7f3;margin-top:12px}
     .msg-error{color:#ff7878;margin-top:12px}
     .notice-box{margin:16px 0;padding:14px;background:rgba(110,231,243,.08);border:1px solid rgba(110,231,243,.15);border-radius:10px;font-size:.9rem;line-height:1.6}
-    .notice-box.warning{background:rgba(255,200,120,.08);border-color:rgba(255,200,120,.2);color:#ffc878}
+    .notice-box.warning{background:rgba(255,200,120,.08);border-color:rgba(255,200,120,.2);color:#ffffff}
+    .notice-box.warning strong{color: rgb(255,200,120);}
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
     hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
@@ -101,7 +103,7 @@
       <p class="muted" style="font-size:.9rem;">Delete your project data. This will remove all your project information from NexCore Labs.</p>
 
       <div class="notice-box warning">
-        <strong>⚠️ Warning:</strong> This action cannot be undone. Your project will be permanently deleted and removed from the hub.
+        <strong><i class="fa-solid fa-triangle-exclamation"></i> Warning:</strong> This action cannot be undone. Your project will be permanently deleted and removed from the hub.
       </div>
 
       <button class="btn danger" id="deleteProjectBtn">

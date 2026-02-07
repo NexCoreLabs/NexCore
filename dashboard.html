@@ -25,7 +25,8 @@
         <title>NexCore Labs | Dashboard</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/unminified-css.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,7 +105,7 @@
 
         <!-- CARD SECTION -->
         <div class="box" style="background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);">
-          <h3 style="margin-top:0;">📇 Card (Hub Display)</h3>
+          <h3 style="margin-top:0;"><i class="fa-solid fa-pager"></i> Card (Hub Display)</h3>
           <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
 
           <label>Project name *</label>
@@ -125,7 +126,7 @@
 
         <!-- PROFILE SECTION -->
         <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
-          <h3 style="margin-top:0;">👤 Profile (Full Details)</h3>
+          <h3 style="margin-top:0;"><i class="fa-solid fa-globe"></i> Profile (Full Details)</h3>
           <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
 
           <label>Image URL (optional)</label>
@@ -135,7 +136,7 @@
           </div>
 
           <details class="help-box">
-            <summary>💡 Image URL Tips</summary>
+            <summary><i class="fa-solid fa-lightbulb"></i> Image URL Tips</summary>
             <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
             
             <strong>Option A: Google Drive</strong>
@@ -191,6 +192,7 @@
     </div>
   </div>
 
+  <script src="assets/js/script.js"></script>
   <script src="assets/js/supabase-client.js"></script>
   <script src="assets/js/auth-ui.js"></script>
 
@@ -241,13 +243,13 @@
       if (!p) return;
 
       document.getElementById("publicId").textContent = p.public_id || "";
-      document.getElementById("statusText").textContent = p.published ? "Published ✅" : "Draft";
+      document.getElementById("statusText").textContent = p.published ? "Published ✓" : "Draft";
 
       const publishBtn = document.getElementById("togglePublishBtn");
       publishBtn.textContent = p.published ? "Unpublish" : "Publish";
       
       const publishStatus = document.getElementById("publishStatus");
-      publishStatus.textContent = p.published ? "✅ Live on hub" : "";
+      publishStatus.textContent = p.published ? "✓ Live on hub" : "";
 
       // Card fields
       document.getElementById("cardName").value = p.name || "";
@@ -376,7 +378,7 @@
 
       disableButtons(false);
       render(data);
-      setMsg(msgEl, "Project created (draft) ✅ Now edit and publish when ready.");
+      setMsg(msgEl, "Project created (draft) ✓ Now edit and publish when ready.");
     }
 
     async function saveCard() {
@@ -414,7 +416,7 @@
       }
 
       render(data);
-      setMsg(msgEl, "Card saved ✅");
+      setMsg(msgEl, "Card saved ✓");
     }
 
     async function saveProfile() {
@@ -451,7 +453,7 @@
       if (error) return setMsg(msgEl, error.message, true);
 
       render(data);
-      setMsg(msgEl, "Profile saved ✅");
+      setMsg(msgEl, "Profile saved ✓");
     }
 
     async function togglePublish() {
@@ -478,7 +480,7 @@
       if (error) return setMsg(msgEl, error.message, true);
 
       render(data);
-      setMsg(msgEl, next ? "Published ✅ It will appear in hub." : "Hidden from hub.");
+      setMsg(msgEl, next ? "Published ✓ It will appear in hub." : "Hidden from hub.");
     }
 
     async function deleteProject() {

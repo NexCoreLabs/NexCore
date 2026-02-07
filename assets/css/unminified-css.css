@@ -715,7 +715,7 @@ a.project-card:hover .id {
 }
 .plan-option .featured {
   color: #0a0b1c;
-  background: linear-gradient(135deg, #6ee7f3, #9f7aea);
+  background: rgba(122, 217, 234, 0.1);
   padding: 6px 8px;
   border-radius: 8px;
   color: #0a0b1c;
@@ -1069,10 +1069,7 @@ a.project-card:hover .id {
 
 .faq-item h4 {
   color: #6ee7f3;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  text-align: left;
 }
 
 .faq-item p {
@@ -2450,14 +2447,6 @@ strong {
   font-family: "Courier New", monospace;
   font-size: 0.9rem;
   color: #6ee7f3;
-}
-
-.highlight-box {
-  background: rgba(159, 122, 234, 0.1);
-  border-left: 4px solid #6ee7f3;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 4px;
 }
 
 .contact-cta {
