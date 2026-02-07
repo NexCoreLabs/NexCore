@@ -114,6 +114,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-ui.js"></script>
 
   <script>
     const sb = window.supabaseClient; // matches your supabase-client.js
@@ -169,10 +170,23 @@
     async function requireAuth() {
       const { data: { session } } = await sb.auth.getSession();
       if (!session) {
-        window.location.href = "/login.html";
+        window.location.href = "/auth.html";
         return null;
       }
-      document.getElementById("userLine").textContent = `Signed in as ${session.user.email}`;
+      
+      // Show onboarding message based on auth mode
+      const authMode = sessionStorage.getItem('auth_mode');
+      let welcomeMsg = `Signed in as ${session.user.email}`;
+      
+      if (authMode === 'signup') {
+        welcomeMsg += ' — Welcome to NexCore Labs! Create your first project below.';
+        sessionStorage.removeItem('auth_mode');
+      } else if (authMode === 'login') {
+        welcomeMsg += ' — Welcome back.';
+        sessionStorage.removeItem('auth_mode');
+      }
+      
+      document.getElementById("userLine").textContent = welcomeMsg;
       return session;
     }
 
@@ -281,7 +295,7 @@
 
     async function logout() {
       await sb.auth.signOut();
-      window.location.href = "/login.html";
+      window.location.href = "/auth.html";
     }
 
     document.addEventListener("DOMContentLoaded", async () => {

@@ -42,6 +42,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-brands/css/uicons-brands.css'>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     </head>
 <body>
   <div class="background">
@@ -66,7 +67,7 @@
      </div>
      
      <div id="myDropdown" class="dropdown-content">
-         <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
          <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
          <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
@@ -312,6 +313,8 @@
 
   <!-- <script src="assets/js/script.js"></script> -->
   <script src="assets/js/unminified-js.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-ui.js"></script>
   <script src="version.js"></script>
   <script>
     console.log(`NexCore Labs version ${APP_VERSION}`);

@@ -1104,7 +1104,7 @@ a.project-card:hover .id {
   }
 }
 
-.privacy-section{
+.privacy-section {
   max-width: 700px;
   margin: 0 auto;
   margin-top: 80px;
@@ -1118,7 +1118,7 @@ a.project-card:hover .id {
   font-size: 2rem;
 }
 
-.trustpilot-review-widget{
+.trustpilot-review-widget {
   margin-top: 40px;
   margin-bottom: 80px;
   text-align: center;
@@ -1135,7 +1135,12 @@ a.project-card:hover .id {
   border: 2px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   text-decoration: none;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   font-size: 16px;
   font-weight: 500;
 }
@@ -1163,17 +1168,121 @@ a.project-card:hover .id {
   font-weight: 600;
 }
 
+/* @media (hover: none) {
+  .trustpilot-widget:hover {
+    transform: none;
+    box-shadow: none;
+  }
+} */
+
+.auth-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+}
+
+.auth-tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.auth-tab.active {
+  color: #6ee7f3;
+  border-bottom-color: #6ee7f3;
+}
+
+.google-btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.google-btn:hover:not(:disabled) {
+  transform: scale(1.01);
+  border-color: #fff;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.25);
+}
+
+.google-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.squ-notice {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(110, 231, 243, 0.1);
+  border: 1px solid rgba(110, 231, 243, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.squ-notice i {
+  color: #6ee7f3;
+  margin-right: 0.5rem;
+}
+
+.auth-content-text h3 {
+  margin-bottom: 0.5rem;
+  color: #6ee7f3;
+}
+
+.auth-content-text p {
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
 @media (max-width: 480px) {
   .trustpilot-widget {
     font-size: 14px;
     padding: 10px 14px;
   }
-}
 
-@media (hover: none) {
-  .trustpilot-widget:hover {
-    transform: none;
-    box-shadow: none;
+  .auth-tab {
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .google-btn {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .squ-notice {
+    font-size: 0.85rem;
+    padding: 0.75rem;
   }
 }
 

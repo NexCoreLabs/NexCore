@@ -40,6 +40,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="background">
@@ -63,7 +64,7 @@
                 </div>
 
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
                     <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
                     <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
                     <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
@@ -107,7 +108,7 @@
                         <li>You can avoid setup fee of 0.500 OMR</li>
                         <li class="disabled">Independent page</li>
                     </ul>
-                    <a class="btn primary" href="signup.html">Get Started</a>
+                    <a class="btn primary" href="auth.html">Get Started</a>
                 </div>
 
                 <!-- Professional Plan -->
@@ -125,7 +126,7 @@
                         <li>You can avoid setup fee of 0.500 OMR</li>
                         <li>Independent page</li>
                     </ul>
-                    <a class="btn ghost fade" href="signup.html">Go for it!</a>
+                    <a class="btn ghost fade" href="auth.html">Go for it!</a>
                 </div>
             </div>
 
@@ -256,6 +257,8 @@
     </footer>
 
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/auth-ui.js"></script>
     <script src="version.js"></script>
     <script>
                 // FAQ toggle
