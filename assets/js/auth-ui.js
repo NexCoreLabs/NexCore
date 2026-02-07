@@ -21,6 +21,7 @@
         // Check if elements already exist
         if (document.getElementById('navAuth') && 
             document.getElementById('navDashboard') && 
+            document.getElementById('navAccount') && 
             document.getElementById('navUser') && 
             document.getElementById('navLogout')) {
             return;
@@ -37,6 +38,9 @@
                 </a>
                 <a href="dashboard.html" id="navDashboard" class="fade" title="Dashboard" style="display: none;">
                     <i class="fa-solid fa-gauge"></i> Dashboard
+                </a>
+                <a href="account.html" id="navAccount" class="fade" title="Account Settings" style="display: none;">
+                    <i class="fa-solid fa-user-gear"></i> Account Settings
                 </a>
                 <div id="navUser" style="display: none; padding: 0.75rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 0.5rem;">
                     <i class="fa-solid fa-user"></i> <span id="navUserEmail"></span>
@@ -58,6 +62,7 @@
             
             const navAuth = document.getElementById('navAuth');
             const navDashboard = document.getElementById('navDashboard');
+            const navAccount = document.getElementById('navAccount');
             const navUser = document.getElementById('navUser');
             const navUserEmail = document.getElementById('navUserEmail');
             const navLogout = document.getElementById('navLogout');
@@ -66,6 +71,7 @@
                 // User is logged in
                 if (navAuth) navAuth.style.display = 'none';
                 if (navDashboard) navDashboard.style.display = 'block';
+                if (navAccount) navAccount.style.display = 'block';
                 if (navUser) {
                     navUser.style.display = 'block';
                     if (navUserEmail) {
@@ -77,6 +83,7 @@
                 // User is logged out
                 if (navAuth) navAuth.style.display = 'block';
                 if (navDashboard) navDashboard.style.display = 'none';
+                if (navAccount) navAccount.style.display = 'none';
                 if (navUser) navUser.style.display = 'none';
                 if (navLogout) navLogout.style.display = 'none';
             }
