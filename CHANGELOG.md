@@ -1,5 +1,15 @@
 # 🧾 Changelog
 
+## v1.3.0 — 07 Feb 2026
+- Added Trustpilot review widget integration with styling and responsive design
+- Updated contact information: replaced YouTube with WhatsApp contact link
+- Standardized SEO meta tags, descriptions, and Open Graph/Twitter metadata across all pages
+- Fixed PWA manifest start_url from `/NexCore/` to `/` for proper deployment
+- Updated sitemap URLs from github.io to nexcorelabs.vercel.app domain
+- Added Privacy Policy link to hub navigation menu
+- Removed WELCOME.md documentation file
+- Improved branding consistency with 'NexCore Labs' labels site-wide
+
 ## v1.2.0 — 03 Feb 2026
 - Rewrote Service Worker for robust precaching, runtime caching, navigation preload and offline fallback (`offline.html`)
 - Added offline support and an `offline.html` fallback page
