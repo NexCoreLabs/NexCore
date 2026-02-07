@@ -13,7 +13,7 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://nexcorelabs.vercel.app/signup.html</loc>
+  <loc>https://nexcorelabs.vercel.app/auth.html</loc>
   <lastmod>2026-02-03T18:25:14+00:00</lastmod>
   <priority>0.80</priority>
 </url>
@@ -27,11 +27,11 @@
   <lastmod>2026-02-03T18:25:15+00:00</lastmod>
   <priority>0.80</priority>
 </url>
-<url>
+<!-- <url>
   <loc>https://nexcorelabs.vercel.app/pricing.html</loc>
   <lastmod>2026-02-03T18:25:15+00:00</lastmod>
   <priority>0.80</priority>
-</url>
+</url> -->
 <url>
   <loc>https://nexcorelabs.vercel.app/faq.html</loc>
   <lastmod>2026-02-03T18:25:15+00:00</lastmod>

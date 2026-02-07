@@ -1,4 +1,22 @@
-// script.js — shared for index & hub
+// script.js — all custom JS for NexCore site
+
+// Simple analytics: track page visits
+async function trackVisit() {
+  try {
+    await fetch("/api/track-visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page_path: window.location.pathname
+      })
+    });
+  } catch (e) {
+    // silent fail – analytics should never break UX
+  }
+}
+
+window.addEventListener("load", trackVisit);
+
 document.addEventListener("DOMContentLoaded", () => {
   const navList =
     document.getElementById("navList") || document.getElementById("navListHub");

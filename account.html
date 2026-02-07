@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Manage your NexCore Labs account settings.">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="NexCore Labs, account, settings, profile, Sultan Qaboos University, Oman">
+        <meta name="theme-color" content="#0a0b1c">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/account.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs | Account Settings">
+        <meta property="og:description" content="Manage your NexCore Labs account settings.">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/account.html">
+        <meta name="twitter:title" content="NexCore Labs | Account Settings">
+        <meta name="twitter:description" content="Manage your NexCore Labs account settings.">
+
+        <title>NexCore Labs | Account Settings</title>
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <link rel="manifest" href="manifest.json">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .wrap{max-width:680px;margin:60px auto;padding:16px}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;margin:14px 0;background:rgba(10,11,28,.35)}
+    .info-row{display:flex;align-items:center;gap:12px;margin:16px 0;padding:12px;background:rgba(0,0,0,.18);border-radius:10px;border:1px solid rgba(255,255,255,.08)}
+    .info-label{opacity:.7;font-size:.9rem;min-width:80px}
+    .info-value{font-weight:500;color:#6ee7f3}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;text-decoration:none;display:inline-block;font-size:.95rem;transition:all .2s}
+    .btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
+    .btnPrimary:hover{background:rgba(110,231,243,.25);border-color:rgba(110,231,243,.45)}
+    .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
+    .danger:hover{background:rgba(255,120,120,.18);border-color:rgba(255,120,120,.5)}
+    .muted{opacity:.75}
+    a{color:#6ee7f3;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .msg-success{color:#6ee7f3;margin-top:12px}
+    .msg-error{color:#ff7878;margin-top:12px}
+    .notice-box{margin:16px 0;padding:14px;background:rgba(110,231,243,.08);border:1px solid rgba(110,231,243,.15);border-radius:10px;font-size:.9rem;line-height:1.6}
+    .notice-box.warning{background:rgba(255,200,120,.08);border-color:rgba(255,200,120,.2);color:#ffffff}
+    .notice-box.warning strong{color: rgb(255,200,120);}
+    .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+    hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
+    .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
+    .back-link{display:inline-block;margin-bottom:8px;opacity:.8;transition:opacity .2s}
+    .back-link:hover{opacity:1}
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <p class="back-link"><a href="/hub.html"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
+    <h1>Account Settings <span class="beta-badge">BETA</span></h1>
+    <p class="muted"><a href="/dashboard.html">← Back to Dashboard</a></p>
+
+    <div class="box">
+      <h2 style="margin-top:0;">Account Information</h2>
+
+      <div class="info-row">
+        <span class="info-label">Email:</span>
+        <span class="info-value" id="userEmail">Loading...</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">User ID:</span>
+        <span class="info-value" id="userId" style="font-size:.85rem;font-family:monospace;">Loading...</span>
+      </div>
+
+      <div class="info-row">
+        <span class="info-label">Signed in:</span>
+        <span class="info-value" id="lastSignIn">Loading...</span>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3 class="section-title"><i class="fa-solid fa-right-from-bracket"></i> Session</h3>
+      <p class="muted" style="font-size:.9rem;">Sign out of your NexCore Labs account.</p>
+      <button class="btn btnPrimary" id="logoutBtn">
+        <i class="fa-solid fa-right-from-bracket"></i> Log Out
+      </button>
+      <p id="logoutMsg"></p>
+    </div>
+
+    <div class="box">
+      <h3 class="section-title"><i class="fa-solid fa-folder-open"></i> Project Data</h3>
+      <p class="muted" style="font-size:.9rem;">Delete your project data. This will remove all your project information from NexCore Labs.</p>
+
+      <div class="notice-box warning">
+        <strong><i class="fa-solid fa-triangle-exclamation"></i> Warning:</strong> This action cannot be undone. Your project will be permanently deleted and removed from the hub.
+      </div>
+
+      <button class="btn danger" id="deleteProjectBtn">
+        <i class="fa-solid fa-trash"></i> Delete My Project
+      </button>
+      <p id="deleteMsg"></p>
+    </div>
+
+    <div class="box">
+      <h3 class="section-title"><i class="fa-solid fa-user-xmark"></i> Account Deletion</h3>
+      <p class="muted" style="font-size:.9rem;">Permanently delete your NexCore Labs account and all associated data.</p>
+
+      <div class="notice-box">
+        <strong>Coming soon:</strong> Full account deletion will be available in a future update. For now, you can delete your project data above and log out. If you need immediate account deletion, please contact us.
+      </div>
+
+      <button class="btn danger" id="deleteAccountBtn" disabled>
+        <i class="fa-solid fa-user-slash"></i> Delete Account (Coming Soon)
+      </button>
+    </div>
+
+    <hr>
+
+    <div class="box" style="background:rgba(0,0,0,.15);">
+      <h3 class="section-title"><i class="fa-solid fa-circle-info"></i> Need Help?</h3>
+      <p class="muted" style="font-size:.9rem;margin-bottom:12px;">
+        If you have questions or need assistance with your account, please reach out to the NexCore Labs team.
+      </p>
+      <a href="/faq.html" class="btn" style="margin-right:8px;"><i class="fa-solid fa-question-circle"></i> FAQ</a>
+      <a href="/index.html#contact" class="btn"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+    </div>
+  </div>
+
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-ui.js"></script>
+
+  <script>
+    const sb = window.supabaseClient;
+
+    function setMsg(elId, text, isError = false) {
+      const el = document.getElementById(elId);
+      el.textContent = text || "";
+      el.className = isError ? "msg-error" : "msg-success";
+    }
+
+    async function requireAuth() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        window.location.href = "/auth.html";
+        return null;
+      }
+      return session;
+    }
+
+    async function loadAccountInfo(session) {
+      const user = session.user;
+      
+      document.getElementById("userEmail").textContent = user.email || "N/A";
+      document.getElementById("userId").textContent = user.id || "N/A";
+      
+      const lastSignInDate = user.last_sign_in_at 
+        ? new Date(user.last_sign_in_at).toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+        : "N/A";
+      
+      document.getElementById("lastSignIn").textContent = lastSignInDate;
+    }
+
+    async function logout() {
+      try {
+        const btn = document.getElementById("logoutBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Logging out...';
+        
+        await sb.auth.signOut();
+        setMsg("logoutMsg", "Logged out successfully. Redirecting...");
+        
+        setTimeout(() => {
+          window.location.href = "/auth.html";
+        }, 1000);
+      } catch (error) {
+        setMsg("logoutMsg", error.message, true);
+        document.getElementById("logoutBtn").disabled = false;
+        document.getElementById("logoutBtn").innerHTML = '<i class="fa-solid fa-right-from-bracket"></i> Log Out';
+      }
+    }
+
+    async function deleteProject() {
+      const ok = confirm("⚠️ Delete your project permanently?\n\nThis will remove:\n• Your project from the hub\n• All project information\n• Your public page\n\nThis action CANNOT be undone.");
+      if (!ok) return;
+
+      const doubleCheck = confirm("Are you absolutely sure? This is your final warning.");
+      if (!doubleCheck) return;
+
+      try {
+        const btn = document.getElementById("deleteProjectBtn");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+        
+        setMsg("deleteMsg", "");
+
+        // Get user's project
+        const { data: projects, error: fetchError } = await sb
+          .from("projects")
+          .select("id")
+          .limit(1);
+
+        if (fetchError) {
+          throw new Error(fetchError.message);
+        }
+
+        if (!projects || projects.length === 0) {
+          setMsg("deleteMsg", "No project found to delete.");
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete My Project';
+          return;
+        }
+
+        // Delete the project
+        const { error: deleteError } = await sb
+          .from("projects")
+          .delete()
+          .eq("id", projects[0].id);
+
+        if (deleteError) {
+          throw new Error(deleteError.message);
+        }
+
+        setMsg("deleteMsg", "✅ Project deleted successfully.");
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Deleted';
+        
+        setTimeout(() => {
+          window.location.href = "/dashboard.html";
+        }, 2000);
+      } catch (error) {
+        setMsg("deleteMsg", "Error: " + error.message, true);
+        const btn = document.getElementById("deleteProjectBtn");
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete My Project';
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const session = await requireAuth();
+      if (!session) return;
+
+      await loadAccountInfo(session);
+
+      document.getElementById("logoutBtn").addEventListener("click", logout);
+      document.getElementById("deleteProjectBtn").addEventListener("click", deleteProject);
+    });
+  </script>
+  <script src="assets/js/cookie-consent.js" defer></script>
+</body>
+</html>

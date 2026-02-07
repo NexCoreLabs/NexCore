@@ -40,6 +40,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="background">
@@ -63,13 +64,13 @@
                 </div>
 
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="signup.html" class="magic-signup fade" title="Sign-Up your team">Access the Core</a>
+                    <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
                     <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
                     <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
                     <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
                     <div class="div-menu-line"></div>
                     <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
-                    <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a>
+                    <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
                     <div class="div-menu-line"></div>
                     <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
                     <a href="index.html#about" title="About NexCore Labs">About Us</a>
@@ -145,7 +146,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Getting started is simple! <a href="hub.html#signup" style="text-decoration: underline;">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html" style="text-decoration: underline;">How to Use guide</a> for more details.
+                            Getting started is simple! <a href="auth.html" style="text-decoration: underline;">Sign up your project</a> through our Hub, fill in your project details, and our team will contact you within 48 hours to discuss your needs and timeline. Check out our <a href="how-to-use.html" style="text-decoration: underline;">How to Use guide</a> for more details.
                         </div>
                     </div>
 
@@ -187,13 +188,7 @@
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Typical project timeline is 2-10 days depending on complexity and scope:
-                            <div class="highlight-box">
-                                <strong>Day 2-3:</strong> Initial consultation<br>
-                                <strong>day 3-8:</strong> Development and implementation<br>
-                                <strong>Day 9-10:</strong> Testing, refinements, and deployment
-                            </div>
-                            We can expedite for urgent projects — contact us to discuss timeline options.
+                            Seconds.
                         </div>
                     </div>
 
@@ -313,11 +308,11 @@
 
                     <div class="faq-item">
                         <h3 class="faq-question">
-                            <span>Can I edit the code myself after launch?</span>
+                            <span>Can I edit the project myself after launch?</span>
                             <i class="faq-toggle-icon fa-solid fa-chevron-down"></i>
                         </h3>
                         <div class="faq-answer">
-                            Yes! We provide you with full access to your project's source code on GitHub. If you have developers on your team, they can make updates themselves (with our guidance). We also offer ongoing support hours for content and feature updates.
+                            Yes! We provide you with full access to your project using your dashboard, just sign in with your SQU account.
                         </div>
                     </div>
 
@@ -331,7 +326,7 @@
                             <div class="highlight-box">
                                 <strong>Hosting:</strong> High-performance servers with SSD storage<br>
                                 <strong>Monitoring:</strong> UptimeRobot 24/7 monitoring with instant alerts<br>
-                                <strong>SSL:</strong>HTTPS encryption<br>
+                                <strong>SSL:</strong> HTTPS encryption<br>
                                 <strong>Uptime:</strong> 99.9% guaranteed SLA
                             </div>
                         </div>
@@ -441,7 +436,7 @@
                         <div class="faq-answer">
                             Security is a top priority. Your website includes:
                             <ul style="color: #cbd5e0; margin-top: 10px; padding-left: 20px;">
-                                <li><strong>HTTPS Encryption:</strong>SSL certificates</li>
+                                <li><strong>HTTPS Encryption:</strong> SSL certificates</li>
                                 <li><strong>Regular Backups:</strong> Daily automated backups</li>
                                 <li><strong>Security Headers:</strong> Proper HTTP security headers</li>
                                 <li><strong>Form Security:</strong> CSRF protection and validation</li>
@@ -518,6 +513,8 @@
     </footer>
 
     <script src="assets/js/script.js"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/auth-ui.js"></script>
     <script src="version.js"></script>
     <script>
         // Set current year

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Log in to NexCore Labs to access your team dashboard and project tools.">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="NexCore Labs, login, access, team dashboard, student projects, Sultan Qaboos University, Oman, technology">
+        <meta name="theme-color" content="#0a0b1c">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/login.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs | Login">
+        <meta property="og:description" content="Log in to NexCore Labs to access your team dashboard and project tools.">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/login.html">
+        <meta name="twitter:title" content="NexCore Labs | Login">
+        <meta name="twitter:description" content="Log in to NexCore Labs to access your team dashboard and project tools.">
+
+        <title>NexCore Labs | Login</title>
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <link rel="manifest" href="manifest.json">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <div class="background">
+            <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+            <div id="spotLight" class="spot-light"></div>
+        </div>
+
+        <header class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1 id="logo">NexCore <span>Labs</span></h1>
+                </div>
+
+                <div class="dropdown">
+                    <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="dot" aria-hidden="true"></span>
+                    </div>
+                    
+                    <div id="myDropdown" class="dropdown-content">
+                        <a href="hub.html" class="magic-signup fade" title="Back to Hub">Back to Hub</a>
+                        <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                        <a href="hub.html" class="fade" title="NexCore Hub">Hub</a>
+                        <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                        <div class="div-menu-line"></div>
+                        <a href="how-to-use.html" class="fade" title="How to Use NexCore" style="margin-top: 0;">How to Use</a>
+                        <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
+                        <div class="div-menu-line"></div>
+                        <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
+                        <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                        <a href="index.html#team" title="NexCore Team">Our Team</a>
+                        <a href="index.html#contact" title="Contact NexCore">Contact Us</a>
+                        <div class="div-menu-line"></div>
+                        <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+                        <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+                        <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="panel" style="padding: 3rem 0;">
+                <div class="container">
+                    <div class="signup-wrapper">
+                        <!-- Left Column: Information -->
+                        <div class="signup-info">
+                            <div class="info-block">
+                                <h3><i class="fa-solid fa-shield-halved"></i> Secure Access</h3>
+                                <p>Log in to manage your team project, assets, and announcements. Keep your account secure and use a strong password.</p>
+                                <ul>
+                                    <li>Private project updates</li>
+                                    <li>Team-only dashboards</li>
+                                    <li>Secure data storage</li>
+                                </ul>
+                            </div>
+
+                            <div class="info-block">
+                                <h3><i class="fa-solid fa-rocket"></i> New to NexCore?</h3>
+                                <p>Access the Core to create your team profile, select a plan, and start building your online presence.</p>
+                                <p style="margin-top: 1rem;">
+                                    <a href="auth.html" target="_blank">Access the Core -> </a>
+                                </p>
+                            </div>
+
+                            <div class="info-block">
+                                <h3><i class="fa-solid fa-circle-question"></i> Need Help?</h3>
+                                <p>Check our FAQ or reach out to the NexCore team for support.</p>
+                                <p style="margin-top: 1rem;">
+                                    <a href="faq.html" target="_blank">Visit FAQ -> </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Login Form -->
+                        <div class="signup-form-wrapper">
+                            <div class="form-container">
+                                <h2>Welcome Back</h2>
+                                <p class="form-subtitle">Sign in to access your team workspace.</p>
+
+                                <form id="loginForm" class="signup-form">
+                                    <label class="field">
+                                        <input id="email" type="email" placeholder="Use your SQU email" required />
+                                    </label>
+
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn primary">Send login link</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="nexcore-sign">
+                <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container footer-inner">
+                <div class="f-left">
+                    <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+                    <br>
+                    <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                        <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                            <i class="fa-solid fa-scale-balanced"></i> MIT License
+                        </a>
+                        <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>
+                    </small>
+                </div>
+                <div class="f-right"><small>Empowering our env. to do more</small></div>
+            </div>
+        </footer>
+
+        <script src="assets/js/script.js"></script>
+        <script src="version.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script src="assets/js/supabase-client.js"></script>
+        <script src="assets/js/auth-ui.js"></script>
+        <script>
+const sb = window.supabaseClient;
+
+function isSQU(email) {
+  const e = (email || "").toLowerCase().trim();
+  return e.endsWith("@squ.edu.om") || e.endsWith("@student.squ.edu.om");
+}
+
+const form = document.getElementById("loginForm");
+const emailInput = document.getElementById("email");
+const btn = form.querySelector('button[type="submit"]');
+
+let cooldown = false;
+
+form.addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+
+  if (cooldown) return;
+
+  const email = emailInput.value.trim();
+
+  if (!email) {
+    alert("Please enter your SQU email.");
+    return;
+  }
+
+  if (!isSQU(email)) {
+    alert("Please use your SQU email: @squ.edu.om or @student.squ.edu.om");
+    return;
+  }
+
+  // lock UI (prevents double submits + rate-limit issues)
+  cooldown = true;
+  const originalText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = "Sending…";
+
+  const { error } = await sb.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: `${window.location.origin}/dashboard.html`,
+    },
+  });
+
+  if (error) {
+    alert(error.message);
+    cooldown = false;
+    btn.disabled = false;
+    btn.textContent = originalText;
+    return;
+  }
+
+  alert("Check your email!");
+
+  // cooldown timer (prevents spam-clicking)
+  let s = 60;
+  btn.textContent = `Resend in ${s}s`;
+
+  const timer = setInterval(() => {
+    s -= 1;
+    if (s <= 0) {
+      clearInterval(timer);
+      cooldown = false;
+      btn.disabled = false;
+      btn.textContent = originalText;
+      return;
+    }
+    btn.textContent = `Resend in ${s}s`;
+  }, 1000);
+});
+</script>
+
+        <script src="assets/js/cookie-consent.js" defer></script>
+    </body>
+</html>

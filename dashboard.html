@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
+        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="NexCore Labs dashboard for teams to manage projects, and resources.">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="NexCore Labs, dashboard, team, projects, student projects, Sultan Qaboos University, Oman">
+        <meta name="theme-color" content="#0a0b1c">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/dashboard.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs | Dashboard">
+        <meta property="og:description" content="Team dashboard for managing NexCore Labs projects.">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/dashboard.html">
+        <meta name="twitter:title" content="NexCore Labs | Dashboard">
+        <meta name="twitter:description" content="Team dashboard for managing NexCore Labs projects.">
+
+        <title>NexCore Labs | Dashboard</title>
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <link rel="manifest" href="manifest.json">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    .wrap{max-width:980px;margin:60px auto;padding:16px}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35)}
+    label{display:block;margin:10px 0 6px;opacity:.9}
+    input,textarea{
+      width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);color:#fff
+    }
+    textarea{min-height:110px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
+    .muted{opacity:.75}
+    .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
+    a{color:#6ee7f3}
+    .msg-success{color:#6ee7f3}
+    .msg-error{color:#ff7878}
+    .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
+    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;user-select:none}
+    .help-box summary:hover{opacity:1}
+    .help-box[open] summary{margin-bottom:10px;opacity:1}
+    .help-box code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.85rem;color:#6ee7f3}
+    .help-box ol{margin:8px 0 8px 20px;padding:0}
+    .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
+    .help-box strong{opacity:1;color:#6ee7f3}
+    .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
+    .back-link{display:inline-block;margin-bottom:8px;opacity:.8;transition:opacity .2s}
+    .back-link:hover{opacity:1}
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <p class="back-link"><a href="/hub.html"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
+    <h1>Dashboard <span class="beta-badge">BETA</span></h1>
+    <p class="muted" id="userLine">Loading…</p>
+
+    <div class="box">
+      <div class="row" style="justify-content:space-between">
+        <h2 style="margin:0">My Project</h2>
+        <div class="row">
+          <a href="/account.html" class="btn">Account Settings</a>
+          <button class="btn" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <!-- State: no project -->
+      <div id="noProject" style="display:none;margin-top:12px;">
+        <p>You don't have a project yet.</p>
+        <div class="row">
+          <input id="newProjectName" placeholder="Project name" />
+          <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
+        </div>
+        <p class="muted" style="margin-top:10px;">
+          A draft card/profile will be created. You can edit and publish when ready.
+        </p>
+      </div>
+
+      <!-- State: has project -->
+      <div id="hasProject" style="display:none;margin-top:12px;">
+        <p class="muted">
+          Public ID: <b id="publicId"></b> • Status: <b id="statusText"></b>
+        </p>
+        <p class="muted">
+          View public page:
+          <a id="publicLink" href="#" target="_blank" rel="noopener">open</a>
+        </p>
+
+        <!-- CARD SECTION -->
+        <div class="box" style="background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);">
+          <h3 style="margin-top:0;"><i class="fa-solid fa-pager"></i> Card (Hub Display)</h3>
+          <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
+
+          <label>Project name *</label>
+          <input id="cardName" />
+
+          <label>Slug (URL identifier) *</label>
+          <input id="cardSlug" placeholder="sovlex" />
+          <p class="muted" style="font-size:.85rem;margin-top:4px;">Used in your public link: /project.html?slug=<span id="slugPreview">your-slug</span></p>
+
+          <div class="row" style="margin-top:12px;align-items:center;gap:12px;">
+            <button class="btn btnPrimary" id="saveCardBtn">Save Card</button>
+            <button class="btn" id="togglePublishBtn" style="min-width:110px;">Publish</button>
+            <span id="publishStatus" class="muted" style="margin-left:8px;"></span>
+          </div>
+
+          <p id="msgCard" style="margin-top:10px;"></p>
+        </div>
+
+        <!-- PROFILE SECTION -->
+        <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
+          <h3 style="margin-top:0;"><i class="fa-solid fa-globe"></i> Profile (Full Details)</h3>
+          <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
+
+          <label>Image URL (optional)</label>
+          <input id="profileImageUrl" placeholder="https://..." />
+          <div style="margin-top:10px;">
+            <img id="imgPreview" alt="" style="max-width:240px;border-radius:14px;display:none;border:1px solid rgba(255,255,255,.10);" />
+          </div>
+
+          <details class="help-box">
+            <summary><i class="fa-solid fa-lightbulb"></i> Image URL Tips</summary>
+            <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
+            
+            <strong>Option A: Google Drive</strong>
+            <ol>
+              <li>Upload your image to Google Drive</li>
+              <li>Right-click → Share → Change to "Anyone with the link" → Viewer</li>
+              <li>Copy the share link. It looks like:<br>
+                <code>https://drive.google.com/file/d/<strong>FILE_ID</strong>/view?...</code></li>
+              <li>Extract the <strong>FILE_ID</strong> from the link</li>
+              <li>Use this direct format:<br>
+                <code>https://drive.google.com/uc?id=<strong>FILE_ID</strong></code></li>
+            </ol>
+
+            <strong>Option B: GitHub</strong>
+            <ol>
+              <li>Upload image to any public GitHub repository</li>
+              <li>Open the image file in GitHub</li>
+              <li>Right-click the image → "Copy image address"</li>
+              <li>Paste the <code>raw.githubusercontent.com</code> URL here</li>
+            </ol>
+
+            <strong>Option C: Direct URL</strong>
+            <ol>
+              <li>Use any image hosting service (Imgur, ImageBB, etc.)</li>
+              <li>Make sure the URL ends with <code>.jpg</code>, <code>.png</code>, <code>.webp</code>, etc.</li>
+              <li>Test the URL in a new browser tab to confirm it loads</li>
+            </ol>
+          </details>
+
+          <label>Full Description</label>
+          <textarea id="profileDescription" placeholder="Tell the world about your project..."></textarea>
+
+          <label>Website URL (optional)</label>
+          <input id="profileWebsite" placeholder="https://..." type="url" />
+
+          <label>X (Twitter) URL (optional)</label>
+          <input id="profileX" placeholder="https://x.com/..." type="url" />
+
+          <label>GitHub URL (optional)</label>
+          <input id="profileGithub" placeholder="https://github.com/..." type="url" />
+
+          <label>LinkedIn URL (optional)</label>
+          <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
+
+          <div class="row" style="margin-top:12px;">
+            <button class="btn btnPrimary" id="saveProfileBtn">Save Profile</button>
+            <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
+          </div>
+
+          <p id="msgProfile" style="margin-top:10px;"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/script.js"></script>
+  <script src="assets/js/supabase-client.js"></script>
+  <script src="assets/js/auth-ui.js"></script>
+
+  <script>
+    const sb = window.supabaseClient;
+
+    function setMsg(el, text, isError = false) {
+      el.textContent = text || "";
+      el.className = isError ? "msg-error" : "msg-success";
+    }
+
+    function slugify(s) {
+      return (s || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 40);
+    }
+
+    function randomSuffix() {
+      return Math.random().toString(36).substring(2, 6);
+    }
+
+    function disableButtons(disabled) {
+      const btns = ["createProjectBtn", "saveCardBtn", "saveProfileBtn", "togglePublishBtn", "deleteBtn"];
+      btns.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = disabled;
+      });
+    }
+
+    let project = null;
+
+    function render(p) {
+      project = p;
+
+      document.getElementById("noProject").style.display = p ? "none" : "block";
+      document.getElementById("hasProject").style.display = p ? "block" : "none";
+
+      // Update document title
+      if (p) {
+        document.title = `${p.name} • Dashboard | NexCore Labs`;
+      } else {
+        document.title = "Dashboard | NexCore Labs";
+      }
+
+      if (!p) return;
+
+      document.getElementById("publicId").textContent = p.public_id || "";
+      document.getElementById("statusText").textContent = p.published ? "Published ✓" : "Draft";
+
+      const publishBtn = document.getElementById("togglePublishBtn");
+      publishBtn.textContent = p.published ? "Unpublish" : "Publish";
+      
+      const publishStatus = document.getElementById("publishStatus");
+      publishStatus.textContent = p.published ? "✓ Live on hub" : "";
+
+      // Card fields
+      document.getElementById("cardName").value = p.name || "";
+      document.getElementById("cardSlug").value = p.slug || "";
+      document.getElementById("slugPreview").textContent = p.slug || "your-slug";
+
+      // Profile fields
+      document.getElementById("profileImageUrl").value = p.image_url || "";
+      document.getElementById("profileDescription").value = p.description || "";
+      document.getElementById("profileWebsite").value = p.website || "";
+      document.getElementById("profileX").value = p.x_url || "";
+      document.getElementById("profileGithub").value = p.github_url || "";
+      document.getElementById("profileLinkedin").value = p.linkedin_url || "";
+
+      const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
+      const a = document.getElementById("publicLink");
+      a.href = link;
+      a.textContent = link;
+
+      // Image preview
+      const img = document.getElementById("imgPreview");
+      if (p.image_url && p.image_url.startsWith("http")) {
+        img.src = p.image_url;
+        img.style.display = "inline-block";
+        img.onerror = () => {
+          setMsg(document.getElementById("msgProfile"), "Image URL is not accessible. Make sure it is public.", true);
+          img.style.display = "none";
+        };
+      } else {
+        img.style.display = "none";
+      }
+    }
+
+    async function requireAuth() {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        window.location.href = "/auth.html";
+        return null;
+      }
+      
+      // Show onboarding message based on auth mode
+      const authMode = sessionStorage.getItem('auth_mode');
+      let welcomeMsg = `Signed in as ${session.user.email}`;
+      
+      if (authMode === 'signup') {
+        welcomeMsg += ' — Welcome to NexCore Labs! Create your first project below.';
+        sessionStorage.removeItem('auth_mode');
+      } else if (authMode === 'login') {
+        welcomeMsg += ' — Welcome back.';
+        sessionStorage.removeItem('auth_mode');
+      }
+      
+      document.getElementById("userLine").textContent = welcomeMsg;
+      return session;
+    }
+
+    async function loadMyProject() {
+      setMsg(document.getElementById("msgCard"), "");
+      setMsg(document.getElementById("msgProfile"), "");
+      const { data, error } = await sb
+        .from("projects")
+        .select("*")
+        .limit(1);
+
+      if (error) {
+        setMsg(document.getElementById("msgCard"), error.message, true);
+        render(null);
+        return;
+      }
+      render(data && data[0] ? data[0] : null);
+    }
+
+    async function createProject() {
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
+      const name = document.getElementById("newProjectName").value.trim();
+      if (!name) return setMsg(msgEl, "Please enter a project name.", true);
+
+      const slug = slugify(name);
+      if (!slug) return setMsg(msgEl, "Invalid project name.", true);
+
+      disableButtons(true);
+
+      // Try to insert
+      let { data, error } = await sb
+        .from("projects")
+        .insert({ name, slug })
+        .select("*")
+        .single();
+
+      if (error) {
+        // Check for duplicate slug
+        if (error.code === '23505' && error.message.includes('slug')) {
+          // Retry with random suffix
+          const newSlug = slug + '-' + randomSuffix();
+          const retry = await sb
+            .from("projects")
+            .insert({ name, slug: newSlug })
+            .select("*")
+            .single();
+          
+          if (retry.error) {
+            // Check if it's the one_project_per_user constraint
+            if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
+              disableButtons(false);
+              setMsg(msgEl, "You already have a project. Loading it now...");
+              await loadMyProject();
+              return;
+            }
+            disableButtons(false);
+            return setMsg(msgEl, retry.error.message, true);
+          }
+          
+          data = retry.data;
+        } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
+          // User already has a project
+          disableButtons(false);
+          setMsg(msgEl, "You already have a project. Loading it now...");
+          await loadMyProject();
+          return;
+        } else {
+          disableButtons(false);
+          return setMsg(msgEl, error.message, true);
+        }
+      }
+
+      disableButtons(false);
+      render(data);
+      setMsg(msgEl, "Project created (draft) ✓ Now edit and publish when ready.");
+    }
+
+    async function saveCard() {
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
+      if (!project) return;
+
+      const name = document.getElementById("cardName").value.trim();
+      const slugInput = document.getElementById("cardSlug").value.trim() || name;
+      const slug = slugify(slugInput);
+
+      if (!name) return setMsg(msgEl, "Project name is required.", true);
+      if (!slug) return setMsg(msgEl, "Invalid slug.", true);
+
+      disableButtons(true);
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          name,
+          slug,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      disableButtons(false);
+
+      if (error) {
+        if (error.code === '23505' && error.message.includes('slug')) {
+          return setMsg(msgEl, "Slug already taken by another project. Please choose a different one.", true);
+        }
+        return setMsg(msgEl, error.message, true);
+      }
+
+      render(data);
+      setMsg(msgEl, "Card saved ✓");
+    }
+
+    async function saveProfile() {
+      const msgEl = document.getElementById("msgProfile");
+      setMsg(msgEl, "");
+      if (!project) return;
+
+      const image_url = document.getElementById("profileImageUrl").value.trim();
+      const description = document.getElementById("profileDescription").value.trim();
+      const website = document.getElementById("profileWebsite").value.trim();
+      const x_url = document.getElementById("profileX").value.trim();
+      const github_url = document.getElementById("profileGithub").value.trim();
+      const linkedin_url = document.getElementById("profileLinkedin").value.trim();
+
+      disableButtons(true);
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          image_url,
+          description,
+          website,
+          x_url,
+          github_url,
+          linkedin_url,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      disableButtons(false);
+
+      if (error) return setMsg(msgEl, error.message, true);
+
+      render(data);
+      setMsg(msgEl, "Profile saved ✓");
+    }
+
+    async function togglePublish() {
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
+      if (!project) return;
+
+      const next = !project.published;
+
+      disableButtons(true);
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          published: next,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      disableButtons(false);
+
+      if (error) return setMsg(msgEl, error.message, true);
+
+      render(data);
+      setMsg(msgEl, next ? "Published ✓ It will appear in hub." : "Hidden from hub.");
+    }
+
+    async function deleteProject() {
+      if (!project) return;
+
+      const ok = confirm("Delete your project permanently? This cannot be undone.");
+      if (!ok) return;
+
+      const msgEl = document.getElementById("msgProfile");
+      setMsg(msgEl, "");
+      disableButtons(true);
+
+      const { error } = await sb
+        .from("projects")
+        .delete()
+        .eq("id", project.id);
+
+      disableButtons(false);
+
+      if (error) return setMsg(msgEl, error.message, true);
+
+      render(null);
+      setMsg(document.getElementById("msgCard"), "Project deleted.");
+    }
+
+    async function logout() {
+      await sb.auth.signOut();
+      window.location.href = "/auth.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const session = await requireAuth();
+      if (!session) return;
+
+      document.getElementById("logoutBtn").addEventListener("click", logout);
+      document.getElementById("createProjectBtn").addEventListener("click", createProject);
+      document.getElementById("saveCardBtn").addEventListener("click", saveCard);
+      document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
+      document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
+      document.getElementById("deleteBtn").addEventListener("click", deleteProject);
+
+      // Update slug preview as user types
+      document.getElementById("cardSlug").addEventListener("input", (e) => {
+        const slug = slugify(e.target.value || document.getElementById("cardName").value);
+        document.getElementById("slugPreview").textContent = slug || "your-slug";
+      });
+
+      document.getElementById("cardName").addEventListener("input", () => {
+        const slugInput = document.getElementById("cardSlug");
+        if (!slugInput.value.trim()) {
+          const slug = slugify(document.getElementById("cardName").value);
+          document.getElementById("slugPreview").textContent = slug || "your-slug";
+        }
+      });
+
+      // Image preview
+      document.getElementById("profileImageUrl").addEventListener("input", (e) => {
+        const url = e.target.value.trim();
+        const img = document.getElementById("imgPreview");
+        const msgEl = document.getElementById("msgProfile");
+        if (url.startsWith("http")) {
+          img.src = url;
+          img.style.display = "inline-block";
+          img.onerror = () => {
+            setMsg(msgEl, "Image URL is not accessible. Make sure it is public.", true);
+            img.style.display = "none";
+          };
+        } else {
+          img.style.display = "none";
+        }
+      });
+
+      await loadMyProject();
+    });
+  </script>
+  <script src="assets/js/cookie-consent.js" defer></script>
+</body>
+</html>
