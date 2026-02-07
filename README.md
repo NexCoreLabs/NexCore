@@ -49,7 +49,7 @@ Install the app on your desktop or phone for quick access and seamless performan
 ## 📸 Preview
 
 Visit the live version here:  
-👉 [**NexCore Labs**](https://nexcorelabs.github.io/NexCore/)
+👉 [**NexCore Labs**](https://nexcorelabs.vercel.app/)
 
 ---
 
