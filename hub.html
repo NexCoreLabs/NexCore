@@ -171,29 +171,88 @@
       </script>
       <script>
         async function loadProjects() {
-          const response = await fetch('data/projects.json');
-          const data = await response.json();
-
+          const sb = window.supabaseClient;
           const container = document.querySelector('#projects-container');
-          container.innerHTML = ''; // clear existing
+          
+          try {
+            // Fetch published projects from Supabase
+            const { data, error } = await sb
+              .from('projects')
+              .select('public_id, name, slug, description')
+              .eq('published', true)
+              .order('created_at', { ascending: false })
+              .limit(100);
 
-          data.projects.forEach(project => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            card.setAttribute('data-id', `${project.id}`);
-            card.setAttribute('data-name', `${project.name}`);
-            card.innerHTML = `
-                <a class="project-card" href="${project.link}" target="_blank" rel="noopener"><strong>${project.name} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong><span class="id">Proj-${project.id}</span></a>
-                <p>${project.description}</p>
-            `;
-            container.appendChild(card);
-          });
+            if (error) {
+              console.error('Error loading projects:', error);
+              container.innerHTML = '<p style="text-align: center; color: #ff7878;">Failed to load projects. Please try again later.</p>';
+              return;
+            }
 
-          // update project count globally
-          localStorage.setItem('projectCount', data.projects.length);
+            if (!data || data.length === 0) {
+              container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects published yet. Be the first to create one!</p>';
+              localStorage.setItem('projectCount', '0');
+              return;
+            }
+
+            container.innerHTML = ''; // clear existing
+
+            data.forEach(project => {
+              const card = document.createElement('div');
+              card.className = 'project-card';
+              card.setAttribute('data-id', project.public_id || '');
+              card.setAttribute('data-name', project.name || '');
+              
+              const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+              
+              card.innerHTML = `
+                <a class="project-card" href="${projectLink}" rel="noopener">
+                  <strong>${project.name || 'Untitled'} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong>
+                  <span class="id">${project.public_id || ''}</span>
+                </a>
+                <p>${project.description || 'No description available.'}</p>
+              `;
+              container.appendChild(card);
+            });
+
+            // update project count globally
+            localStorage.setItem('projectCount', data.length);
+
+            // Re-initialize search functionality
+            initializeSearch();
+          } catch (err) {
+            console.error('Unexpected error:', err);
+            container.innerHTML = '<p style="text-align: center; color: #ff7878;">An unexpected error occurred.</p>';
+          }
         }
 
-        loadProjects();
+        function initializeSearch() {
+          const searchInput = document.getElementById('projectSearch');
+          if (!searchInput) return;
+
+          searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.project-card');
+
+            cards.forEach(card => {
+              const name = (card.getAttribute('data-name') || '').toLowerCase();
+              const id = (card.getAttribute('data-id') || '').toLowerCase();
+              
+              if (name.includes(query) || id.includes(query)) {
+                card.style.display = '';
+              } else {
+                card.style.display = 'none';
+              }
+            });
+          });
+        }
+
+        // Load projects when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', loadProjects);
+        } else {
+          loadProjects();
+        }
       </script>
 
   <!-- Cookie Consent Banner + Module -->

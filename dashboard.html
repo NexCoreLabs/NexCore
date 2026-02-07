@@ -44,10 +44,21 @@
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
     .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
     .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
     .muted{opacity:.75}
     .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
     a{color:#6ee7f3}
+    .msg-success{color:#6ee7f3}
+    .msg-error{color:#ff7878}
+    .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
+    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;user-select:none}
+    .help-box summary:hover{opacity:1}
+    .help-box[open] summary{margin-bottom:10px;opacity:1}
+    .help-box code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.85rem;color:#6ee7f3}
+    .help-box ol{margin:8px 0 8px 20px;padding:0}
+    .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
+    .help-box strong{opacity:1;color:#6ee7f3}
   </style>
 </head>
 <body>
@@ -98,8 +109,55 @@
           <img id="imgPreview" alt="" style="max-width:240px;border-radius:14px;display:none;border:1px solid rgba(255,255,255,.10);" />
         </div>
 
+        <details class="help-box">
+          <summary>💡 Image URL Tips</summary>
+          <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
+          
+          <strong>Option A: Google Drive</strong>
+          <ol>
+            <li>Upload your image to Google Drive</li>
+            <li>Right-click → Share → Change to "Anyone with the link" → Viewer</li>
+            <li>Copy the share link. It looks like:<br>
+              <code>https://drive.google.com/file/d/<strong>FILE_ID</strong>/view?...</code></li>
+            <li>Extract the <strong>FILE_ID</strong> from the link</li>
+            <li>Use this direct format:<br>
+              <code>https://drive.google.com/uc?id=<strong>FILE_ID</strong></code></li>
+          </ol>
+
+          <strong>Option B: GitHub</strong>
+          <ol>
+            <li>Upload image to any public GitHub repository</li>
+            <li>Open the image file in GitHub</li>
+            <li>Right-click the image → "Copy image address"</li>
+            <li>Paste the <code>raw.githubusercontent.com</code> URL here</li>
+          </ol>
+
+          <strong>Option C: Direct URL</strong>
+          <ol>
+            <li>Use any image hosting service (Imgur, ImageBB, etc.)</li>
+            <li>Make sure the URL ends with <code>.jpg</code>, <code>.png</code>, <code>.webp</code>, etc.</li>
+            <li>Test the URL in a new browser tab to confirm it loads</li>
+          </ol>
+        </details>
+
         <label>Description</label>
         <textarea id="description"></textarea>
+
+        <label>Website URL (optional)</label>
+        <input id="website" placeholder="https://..." type="url" />
+
+        <label>X (Twitter) URL (optional)</label>
+        <input id="x_url" placeholder="https://x.com/..." type="url" />
+        
+        <label>Instagram URL (optional)</label>
+        <input id="instagram_url" placeholder="https://instagram.com/..." type="url" />
+        
+        <label>GitHub URL (optional)</label>
+        <input id="github_url" placeholder="https://github.com/..." type="url" />
+        
+        <label>LinkedIn URL (optional)</label>
+        <input id="linkedin_url" placeholder="https://linkedin.com/..." type="url" />
+
 
         <div class="row" style="margin-top:12px;">
           <button class="btn btnPrimary" id="saveBtn">Save</button>
@@ -107,20 +165,21 @@
           <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
         </div>
 
-        <p class="muted" id="msg" style="margin-top:10px;"></p>
+        <p id="msg" style="margin-top:10px;"></p>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-client.js"></script>
   <script src="assets/js/auth-ui.js"></script>
 
   <script>
     const sb = window.supabaseClient; // matches your supabase-client.js
 
-    function setMsg(text) {
-      document.getElementById("msg").textContent = text || "";
+    function setMsg(text, isError = false) {
+      const msgEl = document.getElementById("msg");
+      msgEl.textContent = text || "";
+      msgEl.className = isError ? "msg-error" : "msg-success";
     }
 
     function slugify(s) {
@@ -132,6 +191,18 @@
         .slice(0, 40);
     }
 
+    function randomSuffix() {
+      return Math.random().toString(36).substring(2, 6);
+    }
+
+    function disableButtons(disabled) {
+      const btns = ["createProjectBtn", "saveBtn", "togglePublishBtn", "deleteBtn"];
+      btns.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = disabled;
+      });
+    }
+
     let project = null;
 
     function render(p) {
@@ -139,6 +210,13 @@
 
       document.getElementById("noProject").style.display = p ? "none" : "block";
       document.getElementById("hasProject").style.display = p ? "block" : "none";
+
+      // Update document title
+      if (p) {
+        document.title = `${p.name} • Dashboard | NexCore Labs`;
+      } else {
+        document.title = "Dashboard | NexCore Labs";
+      }
 
       if (!p) return;
 
@@ -152,6 +230,11 @@
       document.getElementById("slug").value = p.slug || "";
       document.getElementById("image_url").value = p.image_url || "";
       document.getElementById("description").value = p.description || "";
+      document.getElementById("website").value = p.website || "";
+      document.getElementById("x_url").value = p.x_url || "";
+      document.getElementById("instagram_url").value = p.instagram_url || "";
+      document.getElementById("github_url").value = p.github_url || "";
+      document.getElementById("linkedin_url").value = p.linkedin_url || "";
 
       const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
       const a = document.getElementById("publicLink");
@@ -162,6 +245,10 @@
       if (p.image_url && p.image_url.startsWith("http")) {
         img.src = p.image_url;
         img.style.display = "inline-block";
+        img.onerror = () => {
+          setMsg("Image URL is not accessible. Make sure it is public.", true);
+          img.style.display = "none";
+        };
       } else {
         img.style.display = "none";
       }
@@ -198,7 +285,7 @@
         .limit(1);
 
       if (error) {
-        setMsg(error.message);
+        setMsg(error.message, true);
         render(null);
         return;
       }
@@ -208,19 +295,57 @@
     async function createProject() {
       setMsg("");
       const name = document.getElementById("newProjectName").value.trim();
-      if (!name) return setMsg("Please enter a project name.");
+      if (!name) return setMsg("Please enter a project name.", true);
 
       const slug = slugify(name);
-      if (!slug) return setMsg("Invalid project name.");
+      if (!slug) return setMsg("Invalid project name.", true);
 
-      const { data, error } = await sb
+      disableButtons(true);
+
+      // Try to insert
+      let { data, error } = await sb
         .from("projects")
         .insert({ name, slug })   // public_id auto by trigger
         .select("*")
         .single();
 
-      if (error) return setMsg(error.message);
+      if (error) {
+        // Check for duplicate slug
+        if (error.code === '23505' && error.message.includes('slug')) {
+          // Retry with random suffix
+          const newSlug = slug + '-' + randomSuffix();
+          const retry = await sb
+            .from("projects")
+            .insert({ name, slug: newSlug })
+            .select("*")
+            .single();
+          
+          if (retry.error) {
+            // Check if it's the one_project_per_user constraint
+            if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
+              disableButtons(false);
+              setMsg("You already have a project. Loading it now...");
+              await loadMyProject();
+              return;
+            }
+            disableButtons(false);
+            return setMsg(retry.error.message, true);
+          }
+          
+          data = retry.data;
+        } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
+          // User already has a project
+          disableButtons(false);
+          setMsg("You already have a project. Loading it now...");
+          await loadMyProject();
+          return;
+        } else {
+          disableButtons(false);
+          return setMsg(error.message, true);
+        }
+      }
 
+      disableButtons(false);
       render(data);
       setMsg("Project created (draft) ✅ Now edit and publish when ready.");
     }
@@ -230,9 +355,20 @@
       if (!project) return;
 
       const name = document.getElementById("name").value.trim();
-      const slug = slugify(document.getElementById("slug").value.trim() || name);
+      const slugInput = document.getElementById("slug").value.trim() || name;
+      const slug = slugify(slugInput);
       const image_url = document.getElementById("image_url").value.trim();
       const description = document.getElementById("description").value.trim();
+      const website = document.getElementById("website").value.trim();
+      const x_url = document.getElementById("x_url").value.trim();
+      const instagram_url = document.getElementById("instagram_url").value.trim();
+      const github_url = document.getElementById("github_url").value.trim();
+      const linkedin_url = document.getElementById("linkedin_url").value.trim();
+
+      if (!name) return setMsg("Project name is required.", true);
+      if (!slug) return setMsg("Invalid slug.", true);
+
+      disableButtons(true);
 
       const { data, error } = await sb
         .from("projects")
@@ -241,13 +377,25 @@
           slug,
           image_url,
           description,
+          website,
+          x_url,
+          instagram_url,
+          github_url,
+          linkedin_url,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)
         .select("*")
         .single();
 
-      if (error) return setMsg(error.message);
+      disableButtons(false);
+
+      if (error) {
+        if (error.code === '23505' && error.message.includes('slug')) {
+          return setMsg("Slug already taken by another project. Please choose a different one.", true);
+        }
+        return setMsg(error.message, true);
+      }
 
       render(data);
       setMsg("Saved ✅");
@@ -259,6 +407,8 @@
 
       const next = !project.published;
 
+      disableButtons(true);
+
       const { data, error } = await sb
         .from("projects")
         .update({
@@ -269,10 +419,12 @@
         .select("*")
         .single();
 
-      if (error) return setMsg(error.message);
+      disableButtons(false);
+
+      if (error) return setMsg(error.message, true);
 
       render(data);
-      setMsg(next ? "Published ✅ (will appear in Hub later)" : "Unpublished (hidden from Hub)");
+      setMsg(next ? "Published ✅ (will appear in Hub)" : "Unpublished (hidden from Hub)");
     }
 
     async function deleteProject() {
@@ -282,12 +434,16 @@
       if (!ok) return;
 
       setMsg("");
+      disableButtons(true);
+
       const { error } = await sb
         .from("projects")
         .delete()
         .eq("id", project.id);
 
-      if (error) return setMsg(error.message);
+      disableButtons(false);
+
+      if (error) return setMsg(error.message, true);
 
       render(null);
       setMsg("Project deleted.");
@@ -314,6 +470,10 @@
         if (url.startsWith("http")) {
           img.src = url;
           img.style.display = "inline-block";
+          img.onerror = () => {
+            setMsg("Image URL is not accessible. Make sure it is public.", true);
+            img.style.display = "none";
+          };
         } else {
           img.style.display = "none";
         }
