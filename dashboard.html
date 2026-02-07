@@ -43,7 +43,7 @@
     }
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+    .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
     .btn:disabled{opacity:.5;cursor:not-allowed}
     .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
     .muted{opacity:.75}
@@ -59,27 +59,32 @@
     .help-box ol{margin:8px 0 8px 20px;padding:0}
     .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
     .help-box strong{opacity:1;color:#6ee7f3}
+    .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
+    .back-link{display:inline-block;margin-bottom:8px;opacity:.8;transition:opacity .2s}
+    .back-link:hover{opacity:1}
   </style>
 </head>
 <body>
 
   <div class="wrap">
-    <h1>Dashboard</h1>
+    <p class="back-link"><a href="/hub.html"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
+    <h1>Dashboard <span class="beta-badge">BETA</span></h1>
     <p class="muted" id="userLine">Loading…</p>
 
     <div class="box">
       <div class="row" style="justify-content:space-between">
         <h2 style="margin:0">My Project</h2>
         <div class="row">
+          <a href="/account.html" class="btn">Account Settings</a>
           <button class="btn" id="logoutBtn">Logout</button>
         </div>
       </div>
 
       <!-- State: no project -->
       <div id="noProject" style="display:none;margin-top:12px;">
-        <p>You don’t have a project yet.</p>
+        <p>You don't have a project yet.</p>
         <div class="row">
-          <input id="newProjectName" placeholder="Project name (e.g., Sovlex)" />
+          <input id="newProjectName" placeholder="Project name" />
           <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
         </div>
         <p class="muted" style="margin-top:10px;">
@@ -93,79 +98,95 @@
           Public ID: <b id="publicId"></b> • Status: <b id="statusText"></b>
         </p>
         <p class="muted">
-          Public link:
+          View public page:
           <a id="publicLink" href="#" target="_blank" rel="noopener">open</a>
         </p>
 
-        <label>Project name</label>
-        <input id="name" />
+        <!-- CARD SECTION -->
+        <div class="box" style="background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);">
+          <h3 style="margin-top:0;">📇 Card (Hub Display)</h3>
+          <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
 
-        <label>Slug (used in link)</label>
-        <input id="slug" placeholder="sovlex" />
+          <label>Project name *</label>
+          <input id="cardName" />
 
-        <label>Image URL (optional)</label>
-        <input id="image_url" placeholder="https://..." />
-        <div style="margin-top:10px;">
-          <img id="imgPreview" alt="" style="max-width:240px;border-radius:14px;display:none;border:1px solid rgba(255,255,255,.10);" />
+          <label>Slug (URL identifier) *</label>
+          <input id="cardSlug" placeholder="sovlex" />
+          <p class="muted" style="font-size:.85rem;margin-top:4px;">Used in your public link: /project.html?slug=<span id="slugPreview">your-slug</span></p>
+
+          <div class="row" style="margin-top:12px;align-items:center;gap:12px;">
+            <button class="btn btnPrimary" id="saveCardBtn">Save Card</button>
+            <button class="btn" id="togglePublishBtn" style="min-width:110px;">Publish</button>
+            <span id="publishStatus" class="muted" style="margin-left:8px;"></span>
+          </div>
+
+          <p id="msgCard" style="margin-top:10px;"></p>
         </div>
 
-        <details class="help-box">
-          <summary>💡 Image URL Tips</summary>
-          <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
-          
-          <strong>Option A: Google Drive</strong>
-          <ol>
-            <li>Upload your image to Google Drive</li>
-            <li>Right-click → Share → Change to "Anyone with the link" → Viewer</li>
-            <li>Copy the share link. It looks like:<br>
-              <code>https://drive.google.com/file/d/<strong>FILE_ID</strong>/view?...</code></li>
-            <li>Extract the <strong>FILE_ID</strong> from the link</li>
-            <li>Use this direct format:<br>
-              <code>https://drive.google.com/uc?id=<strong>FILE_ID</strong></code></li>
-          </ol>
+        <!-- PROFILE SECTION -->
+        <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
+          <h3 style="margin-top:0;">👤 Profile (Full Details)</h3>
+          <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
 
-          <strong>Option B: GitHub</strong>
-          <ol>
-            <li>Upload image to any public GitHub repository</li>
-            <li>Open the image file in GitHub</li>
-            <li>Right-click the image → "Copy image address"</li>
-            <li>Paste the <code>raw.githubusercontent.com</code> URL here</li>
-          </ol>
+          <label>Image URL (optional)</label>
+          <input id="profileImageUrl" placeholder="https://..." />
+          <div style="margin-top:10px;">
+            <img id="imgPreview" alt="" style="max-width:240px;border-radius:14px;display:none;border:1px solid rgba(255,255,255,.10);" />
+          </div>
 
-          <strong>Option C: Direct URL</strong>
-          <ol>
-            <li>Use any image hosting service (Imgur, ImageBB, etc.)</li>
-            <li>Make sure the URL ends with <code>.jpg</code>, <code>.png</code>, <code>.webp</code>, etc.</li>
-            <li>Test the URL in a new browser tab to confirm it loads</li>
-          </ol>
-        </details>
+          <details class="help-box">
+            <summary>💡 Image URL Tips</summary>
+            <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
+            
+            <strong>Option A: Google Drive</strong>
+            <ol>
+              <li>Upload your image to Google Drive</li>
+              <li>Right-click → Share → Change to "Anyone with the link" → Viewer</li>
+              <li>Copy the share link. It looks like:<br>
+                <code>https://drive.google.com/file/d/<strong>FILE_ID</strong>/view?...</code></li>
+              <li>Extract the <strong>FILE_ID</strong> from the link</li>
+              <li>Use this direct format:<br>
+                <code>https://drive.google.com/uc?id=<strong>FILE_ID</strong></code></li>
+            </ol>
 
-        <label>Description</label>
-        <textarea id="description"></textarea>
+            <strong>Option B: GitHub</strong>
+            <ol>
+              <li>Upload image to any public GitHub repository</li>
+              <li>Open the image file in GitHub</li>
+              <li>Right-click the image → "Copy image address"</li>
+              <li>Paste the <code>raw.githubusercontent.com</code> URL here</li>
+            </ol>
 
-        <label>Website URL (optional)</label>
-        <input id="website" placeholder="https://..." type="url" />
+            <strong>Option C: Direct URL</strong>
+            <ol>
+              <li>Use any image hosting service (Imgur, ImageBB, etc.)</li>
+              <li>Make sure the URL ends with <code>.jpg</code>, <code>.png</code>, <code>.webp</code>, etc.</li>
+              <li>Test the URL in a new browser tab to confirm it loads</li>
+            </ol>
+          </details>
 
-        <label>X (Twitter) URL (optional)</label>
-        <input id="x_url" placeholder="https://x.com/..." type="url" />
-        
-        <label>Instagram URL (optional)</label>
-        <input id="instagram_url" placeholder="https://instagram.com/..." type="url" />
-        
-        <label>GitHub URL (optional)</label>
-        <input id="github_url" placeholder="https://github.com/..." type="url" />
-        
-        <label>LinkedIn URL (optional)</label>
-        <input id="linkedin_url" placeholder="https://linkedin.com/..." type="url" />
+          <label>Full Description</label>
+          <textarea id="profileDescription" placeholder="Tell the world about your project..."></textarea>
 
+          <label>Website URL (optional)</label>
+          <input id="profileWebsite" placeholder="https://..." type="url" />
 
-        <div class="row" style="margin-top:12px;">
-          <button class="btn btnPrimary" id="saveBtn">Save</button>
-          <button class="btn" id="togglePublishBtn">Publish</button>
-          <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
+          <label>X (Twitter) URL (optional)</label>
+          <input id="profileX" placeholder="https://x.com/..." type="url" />
+
+          <label>GitHub URL (optional)</label>
+          <input id="profileGithub" placeholder="https://github.com/..." type="url" />
+
+          <label>LinkedIn URL (optional)</label>
+          <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
+
+          <div class="row" style="margin-top:12px;">
+            <button class="btn btnPrimary" id="saveProfileBtn">Save Profile</button>
+            <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
+          </div>
+
+          <p id="msgProfile" style="margin-top:10px;"></p>
         </div>
-
-        <p id="msg" style="margin-top:10px;"></p>
       </div>
     </div>
   </div>
@@ -174,12 +195,11 @@
   <script src="assets/js/auth-ui.js"></script>
 
   <script>
-    const sb = window.supabaseClient; // matches your supabase-client.js
+    const sb = window.supabaseClient;
 
-    function setMsg(text, isError = false) {
-      const msgEl = document.getElementById("msg");
-      msgEl.textContent = text || "";
-      msgEl.className = isError ? "msg-error" : "msg-success";
+    function setMsg(el, text, isError = false) {
+      el.textContent = text || "";
+      el.className = isError ? "msg-error" : "msg-success";
     }
 
     function slugify(s) {
@@ -196,7 +216,7 @@
     }
 
     function disableButtons(disabled) {
-      const btns = ["createProjectBtn", "saveBtn", "togglePublishBtn", "deleteBtn"];
+      const btns = ["createProjectBtn", "saveCardBtn", "saveProfileBtn", "togglePublishBtn", "deleteBtn"];
       btns.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.disabled = disabled;
@@ -221,32 +241,39 @@
       if (!p) return;
 
       document.getElementById("publicId").textContent = p.public_id || "";
-      document.getElementById("statusText").textContent = p.published ? "Published" : "Draft";
+      document.getElementById("statusText").textContent = p.published ? "Published ✅" : "Draft";
 
       const publishBtn = document.getElementById("togglePublishBtn");
       publishBtn.textContent = p.published ? "Unpublish" : "Publish";
+      
+      const publishStatus = document.getElementById("publishStatus");
+      publishStatus.textContent = p.published ? "✅ Live on hub" : "";
 
-      document.getElementById("name").value = p.name || "";
-      document.getElementById("slug").value = p.slug || "";
-      document.getElementById("image_url").value = p.image_url || "";
-      document.getElementById("description").value = p.description || "";
-      document.getElementById("website").value = p.website || "";
-      document.getElementById("x_url").value = p.x_url || "";
-      document.getElementById("instagram_url").value = p.instagram_url || "";
-      document.getElementById("github_url").value = p.github_url || "";
-      document.getElementById("linkedin_url").value = p.linkedin_url || "";
+      // Card fields
+      document.getElementById("cardName").value = p.name || "";
+      document.getElementById("cardSlug").value = p.slug || "";
+      document.getElementById("slugPreview").textContent = p.slug || "your-slug";
+
+      // Profile fields
+      document.getElementById("profileImageUrl").value = p.image_url || "";
+      document.getElementById("profileDescription").value = p.description || "";
+      document.getElementById("profileWebsite").value = p.website || "";
+      document.getElementById("profileX").value = p.x_url || "";
+      document.getElementById("profileGithub").value = p.github_url || "";
+      document.getElementById("profileLinkedin").value = p.linkedin_url || "";
 
       const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
       const a = document.getElementById("publicLink");
       a.href = link;
       a.textContent = link;
 
+      // Image preview
       const img = document.getElementById("imgPreview");
       if (p.image_url && p.image_url.startsWith("http")) {
         img.src = p.image_url;
         img.style.display = "inline-block";
         img.onerror = () => {
-          setMsg("Image URL is not accessible. Make sure it is public.", true);
+          setMsg(document.getElementById("msgProfile"), "Image URL is not accessible. Make sure it is public.", true);
           img.style.display = "none";
         };
       } else {
@@ -278,14 +305,15 @@
     }
 
     async function loadMyProject() {
-      setMsg("");
+      setMsg(document.getElementById("msgCard"), "");
+      setMsg(document.getElementById("msgProfile"), "");
       const { data, error } = await sb
         .from("projects")
         .select("*")
         .limit(1);
 
       if (error) {
-        setMsg(error.message, true);
+        setMsg(document.getElementById("msgCard"), error.message, true);
         render(null);
         return;
       }
@@ -293,19 +321,20 @@
     }
 
     async function createProject() {
-      setMsg("");
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
       const name = document.getElementById("newProjectName").value.trim();
-      if (!name) return setMsg("Please enter a project name.", true);
+      if (!name) return setMsg(msgEl, "Please enter a project name.", true);
 
       const slug = slugify(name);
-      if (!slug) return setMsg("Invalid project name.", true);
+      if (!slug) return setMsg(msgEl, "Invalid project name.", true);
 
       disableButtons(true);
 
       // Try to insert
       let { data, error } = await sb
         .from("projects")
-        .insert({ name, slug })   // public_id auto by trigger
+        .insert({ name, slug })
         .select("*")
         .single();
 
@@ -324,49 +353,43 @@
             // Check if it's the one_project_per_user constraint
             if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
               disableButtons(false);
-              setMsg("You already have a project. Loading it now...");
+              setMsg(msgEl, "You already have a project. Loading it now...");
               await loadMyProject();
               return;
             }
             disableButtons(false);
-            return setMsg(retry.error.message, true);
+            return setMsg(msgEl, retry.error.message, true);
           }
           
           data = retry.data;
         } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
           // User already has a project
           disableButtons(false);
-          setMsg("You already have a project. Loading it now...");
+          setMsg(msgEl, "You already have a project. Loading it now...");
           await loadMyProject();
           return;
         } else {
           disableButtons(false);
-          return setMsg(error.message, true);
+          return setMsg(msgEl, error.message, true);
         }
       }
 
       disableButtons(false);
       render(data);
-      setMsg("Project created (draft) ✅ Now edit and publish when ready.");
+      setMsg(msgEl, "Project created (draft) ✅ Now edit and publish when ready.");
     }
 
-    async function saveProject() {
-      setMsg("");
+    async function saveCard() {
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
       if (!project) return;
 
-      const name = document.getElementById("name").value.trim();
-      const slugInput = document.getElementById("slug").value.trim() || name;
+      const name = document.getElementById("cardName").value.trim();
+      const slugInput = document.getElementById("cardSlug").value.trim() || name;
       const slug = slugify(slugInput);
-      const image_url = document.getElementById("image_url").value.trim();
-      const description = document.getElementById("description").value.trim();
-      const website = document.getElementById("website").value.trim();
-      const x_url = document.getElementById("x_url").value.trim();
-      const instagram_url = document.getElementById("instagram_url").value.trim();
-      const github_url = document.getElementById("github_url").value.trim();
-      const linkedin_url = document.getElementById("linkedin_url").value.trim();
 
-      if (!name) return setMsg("Project name is required.", true);
-      if (!slug) return setMsg("Invalid slug.", true);
+      if (!name) return setMsg(msgEl, "Project name is required.", true);
+      if (!slug) return setMsg(msgEl, "Invalid slug.", true);
 
       disableButtons(true);
 
@@ -375,13 +398,6 @@
         .update({
           name,
           slug,
-          image_url,
-          description,
-          website,
-          x_url,
-          instagram_url,
-          github_url,
-          linkedin_url,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)
@@ -392,17 +408,55 @@
 
       if (error) {
         if (error.code === '23505' && error.message.includes('slug')) {
-          return setMsg("Slug already taken by another project. Please choose a different one.", true);
+          return setMsg(msgEl, "Slug already taken by another project. Please choose a different one.", true);
         }
-        return setMsg(error.message, true);
+        return setMsg(msgEl, error.message, true);
       }
 
       render(data);
-      setMsg("Saved ✅");
+      setMsg(msgEl, "Card saved ✅");
+    }
+
+    async function saveProfile() {
+      const msgEl = document.getElementById("msgProfile");
+      setMsg(msgEl, "");
+      if (!project) return;
+
+      const image_url = document.getElementById("profileImageUrl").value.trim();
+      const description = document.getElementById("profileDescription").value.trim();
+      const website = document.getElementById("profileWebsite").value.trim();
+      const x_url = document.getElementById("profileX").value.trim();
+      const github_url = document.getElementById("profileGithub").value.trim();
+      const linkedin_url = document.getElementById("profileLinkedin").value.trim();
+
+      disableButtons(true);
+
+      const { data, error } = await sb
+        .from("projects")
+        .update({
+          image_url,
+          description,
+          website,
+          x_url,
+          github_url,
+          linkedin_url,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", project.id)
+        .select("*")
+        .single();
+
+      disableButtons(false);
+
+      if (error) return setMsg(msgEl, error.message, true);
+
+      render(data);
+      setMsg(msgEl, "Profile saved ✅");
     }
 
     async function togglePublish() {
-      setMsg("");
+      const msgEl = document.getElementById("msgCard");
+      setMsg(msgEl, "");
       if (!project) return;
 
       const next = !project.published;
@@ -421,10 +475,10 @@
 
       disableButtons(false);
 
-      if (error) return setMsg(error.message, true);
+      if (error) return setMsg(msgEl, error.message, true);
 
       render(data);
-      setMsg(next ? "Published ✅ (will appear in Hub)" : "Unpublished (hidden from Hub)");
+      setMsg(msgEl, next ? "Published ✅ It will appear in hub." : "Hidden from hub.");
     }
 
     async function deleteProject() {
@@ -433,7 +487,8 @@
       const ok = confirm("Delete your project permanently? This cannot be undone.");
       if (!ok) return;
 
-      setMsg("");
+      const msgEl = document.getElementById("msgProfile");
+      setMsg(msgEl, "");
       disableButtons(true);
 
       const { error } = await sb
@@ -443,10 +498,10 @@
 
       disableButtons(false);
 
-      if (error) return setMsg(error.message, true);
+      if (error) return setMsg(msgEl, error.message, true);
 
       render(null);
-      setMsg("Project deleted.");
+      setMsg(document.getElementById("msgCard"), "Project deleted.");
     }
 
     async function logout() {
@@ -460,18 +515,35 @@
 
       document.getElementById("logoutBtn").addEventListener("click", logout);
       document.getElementById("createProjectBtn").addEventListener("click", createProject);
-      document.getElementById("saveBtn").addEventListener("click", saveProject);
+      document.getElementById("saveCardBtn").addEventListener("click", saveCard);
+      document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
       document.getElementById("deleteBtn").addEventListener("click", deleteProject);
 
-      document.getElementById("image_url").addEventListener("input", (e) => {
+      // Update slug preview as user types
+      document.getElementById("cardSlug").addEventListener("input", (e) => {
+        const slug = slugify(e.target.value || document.getElementById("cardName").value);
+        document.getElementById("slugPreview").textContent = slug || "your-slug";
+      });
+
+      document.getElementById("cardName").addEventListener("input", () => {
+        const slugInput = document.getElementById("cardSlug");
+        if (!slugInput.value.trim()) {
+          const slug = slugify(document.getElementById("cardName").value);
+          document.getElementById("slugPreview").textContent = slug || "your-slug";
+        }
+      });
+
+      // Image preview
+      document.getElementById("profileImageUrl").addEventListener("input", (e) => {
         const url = e.target.value.trim();
         const img = document.getElementById("imgPreview");
+        const msgEl = document.getElementById("msgProfile");
         if (url.startsWith("http")) {
           img.src = url;
           img.style.display = "inline-block";
           img.onerror = () => {
-            setMsg("Image URL is not accessible. Make sure it is public.", true);
+            setMsg(msgEl, "Image URL is not accessible. Make sure it is public.", true);
             img.style.display = "none";
           };
         } else {
@@ -482,6 +554,6 @@
       await loadMyProject();
     });
   </script>
-        <script src="assets/js/cookie-consent.js" defer></script>
+  <script src="assets/js/cookie-consent.js" defer></script>
 </body>
 </html>

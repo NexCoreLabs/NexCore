@@ -63,6 +63,27 @@
             font-size: 0.9rem;
             margin-bottom: 20px;
         }
+        .project-stats {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            opacity: 0.85;
+        }
+        .stat-badge i {
+            color: #6ee7f3;
+        }
         .project-image {
             max-width: 400px;
             width: 100%;
@@ -162,10 +183,22 @@
         #qr {
             display: inline-block;
         }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 16px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+            color: #6ee7f3;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="project-wrap">
+        <p class="back-link"><a href="/hub.html" style="color: #6ee7f3; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
         <div id="loading" style="text-align: center; padding: 100px 20px;">
             <p style="opacity: 0.7;">Loading project...</p>
         </div>
@@ -184,6 +217,12 @@
             <div class="project-hero">
                 <div class="project-id" id="projectId">Proj-#</div>
                 <h1 id="projectName">Project Name</h1>
+                <div class="project-stats">
+                    <div class="stat-badge">
+                        <i class="fas fa-eye"></i>
+                        <span id="viewCount">-</span> views
+                    </div>
+                </div>
                 <img id="projectImage" class="project-image" alt="" style="display: none;" />
             </div>
 
@@ -391,6 +430,47 @@
             document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
         }
 
+        async function trackVisit(slug) {
+            try {
+                const response = await fetch('/api/track-visit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        page_path: `/project/${slug}`
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.visits || 0;
+                }
+            } catch (err) {
+                console.warn('Failed to track visit:', err);
+            }
+            return null;
+        }
+
+        async function getTotalViews(slug) {
+            try {
+                const { data, error } = await sb
+                    .from('page_visits_daily')
+                    .select('visits')
+                    .eq('page_path', `/project/${slug}`);
+                
+                if (error) throw error;
+                
+                if (data && data.length > 0) {
+                    const total = data.reduce((sum, row) => sum + (row.visits || 0), 0);
+                    return total;
+                }
+            } catch (err) {
+                console.warn('Failed to get total views:', err);
+            }
+            return 0;
+        }
+
         async function loadProject() {
             const slug = getSlugFromUrl();
             
@@ -435,6 +515,11 @@
             }
 
             renderProject(data, isOwner);
+            
+            // Track visit and get total views
+            trackVisit(slug);
+            const totalViews = await getTotalViews(slug);
+            document.getElementById('viewCount').textContent = totalViews.toLocaleString();
             
             // Setup share/copy buttons
             const currentUrl = window.location.href;

@@ -62,6 +62,7 @@
                     
                     <div id="myDropdown" class="dropdown-content">
                         <a href="hub.html" class="magic-signup fade" title="Back to Hub">Back to Hub</a>
+                        <a href="account.html" class="fade" title="Account Settings">Account Settings</a>
                         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
                         <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
                         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
@@ -133,6 +134,10 @@
                                     <!-- Messages will be displayed here -->
                                 </div>
 
+                                <div id="authNote" class="auth-note" style="display: none; padding: 0.875rem; background: rgba(255, 120, 120, 0.12); border: 1px solid rgba(255, 120, 120, 0.3); border-radius: 8px; margin-bottom: 1rem; color: #ff8888; font-size: 0.9rem; line-height: 1.5;">
+                                    <!-- Error notes will be displayed here -->
+                                </div>
+
                                 <button class="google-btn" id="googleSignInBtn">
                                     <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -194,6 +199,7 @@
             const googleBtn = document.getElementById('googleSignInBtn');
             const btnText = document.getElementById('btnText');
             const authMessage = document.getElementById('authMessage');
+            const authNote = document.getElementById('authNote');
 
             // Check if user is already logged in
             async function checkExistingSession() {
@@ -201,8 +207,43 @@
                 if (session) {
                     // User is already logged in, redirect to dashboard
                     window.location.href = '/dashboard.html';
+                    return true;
                 }
+                return false;
             }
+
+            // Check for errors in URL (OAuth redirect errors)
+            function checkURLForErrors() {
+                const params = new URLSearchParams(window.location.search);
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                
+                const error = params.get('error') || hashParams.get('error');
+                const errorDescription = params.get('error_description') || hashParams.get('error_description');
+                
+                if (error || errorDescription) {
+                    showNote('⚠️ Only SQU emails are allowed: @squ.edu.om or @student.squ.edu.om\n\nPlease sign in with your Sultan Qaboos University Google account.', true);
+                    
+                    // Clean URL without reloading
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, '', cleanUrl);
+                    return true;
+                }
+                return false;
+            }
+
+            // Listen to auth state changes
+            sb.auth.onAuthStateChange((event, session) => {
+                if (event === 'SIGNED_IN' && session) {
+                    // Successful sign-in, redirect to dashboard
+                    sessionStorage.setItem('auth_mode', currentMode);
+                    window.location.href = '/dashboard.html';
+                } else if (event === 'SIGNED_OUT') {
+                    // User signed out or failed authentication
+                    showNote('⚠️ Authentication failed. Only SQU emails are allowed: @squ.edu.om or @student.squ.edu.om', true);
+                } else if (event === 'USER_DELETED') {
+                    showNote('⚠️ Account access denied. Only SQU emails are allowed.', true);
+                }
+            });
 
             // Switch between signup and login modes
             function switchMode(mode) {
@@ -232,6 +273,26 @@
                 authMessage.style.background = isError ? 'rgba(255, 120, 120, 0.15)' : 'rgba(110, 231, 243, 0.1)';
                 authMessage.style.color = isError ? '#ff8888' : '#6EE7F3';
                 authMessage.style.borderColor = isError ? 'rgba(255, 120, 120, 0.3)' : 'rgba(110, 231, 243, 0.3)';
+            }
+
+            // Show error note
+            function showNote(text, isError = false) {
+                authNote.textContent = text;
+                authNote.style.display = 'block';
+                
+                if (isError) {
+                    authNote.style.background = 'rgba(255, 120, 120, 0.12)';
+                    authNote.style.borderColor = 'rgba(255, 120, 120, 0.3)';
+                    authNote.style.color = '#ff8888';
+                } else {
+                    authNote.style.background = 'rgba(110, 231, 243, 0.1)';
+                    authNote.style.borderColor = 'rgba(110, 231, 243, 0.3)';
+                    authNote.style.color = '#6EE7F3';
+                }
+                
+                // Re-enable button if it was disabled
+                googleBtn.disabled = false;
+                btnText.textContent = 'Continue with Google';
             }
 
             // Google Sign In
@@ -271,7 +332,16 @@
             googleBtn.addEventListener('click', signInWithGoogle);
 
             // Initialize
-            checkExistingSession();
+            async function init() {
+                // Check for existing session first
+                const hasSession = await checkExistingSession();
+                if (hasSession) return;
+                
+                // Check for OAuth errors in URL
+                checkURLForErrors();
+            }
+            
+            init();
         </script>
         
         <!-- Cookie consent script -->
