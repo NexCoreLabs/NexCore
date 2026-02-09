@@ -415,7 +415,7 @@
           }
         }
 
-        setMsg("deleteMsg", "✅ Project deleted successfully.");
+        setMsg("deleteMsg", "✓ Project deleted successfully.");
         btn.innerHTML = '<i class="fa-solid fa-check"></i> Deleted';
         
         setTimeout(() => {
@@ -505,12 +505,12 @@ End of Export
 
         setMsg("exportMsg", "✓ Account data exported (JSON + TXT).");
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-file-export"></i> Export My Account Data (JSON)';
+        btn.innerHTML = '<i class="fa-solid fa-file-export"></i> Export My Account Data';
       } catch (error) {
         setMsg("exportMsg", "Error: " + error.message, true);
         const btn = document.getElementById("exportAccountBtn");
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-file-export"></i> Export My Account Data (JSON)';
+        btn.innerHTML = '<i class="fa-solid fa-file-export"></i> Export My Account Data';
       }
     }
 
@@ -628,12 +628,12 @@ Total Projects: ${projectCount}
 
         setMsg("exportMsg", `✓ ${projectCount} project(s) exported (JSON + TXT).`);
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects (JSON)';
+        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects';
       } catch (error) {
         setMsg("exportMsg", "Error: " + error.message, true);
         const btn = document.getElementById("exportProjectsBtn");
         btn.disabled = false;
-        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects (JSON)';
+        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects';
       }
     }
 
