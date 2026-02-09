@@ -49,6 +49,8 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
             margin-bottom: 30px;
+            backdrop-filter:blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
         .project-hero h1 {
             font-size: 2.5rem;
@@ -99,6 +101,8 @@
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 20px;
+            backdrop-filter:blur(3px);
+            -webkit-backdrop-filter: blur(3px);
         }
         .project-section h2 {
             margin: 0 0 16px;
@@ -198,6 +202,50 @@
     </style>
 </head>
 <body>
+      <div class="background">
+      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+      <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h1 id="logo">NexCore <span>Labs</span></h1>
+        </div>
+
+        <div class="dropdown">
+        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+        </div>
+        
+     <div id="myDropdown" class="dropdown-content">
+         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
+         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+         <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
+         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+         <div class="div-menu-line"></div>
+         <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
+         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
+         <div class="div-menu-line"></div>
+         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
+         <a href="index.html#about" title="About NexCore Labs">About Us</a>
+         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
+         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
+         <div class="div-menu-line"></div>
+         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+     </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
     <div class="project-wrap">
         <p class="back-link"><a href="/hub.html" style="color: #6ee7f3; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
         <div id="loading" style="text-align: center; padding: 100px 20px;">
@@ -262,10 +310,12 @@
             </div>
         </div>
     </div>
+    </main>
 
     <script src="assets/js/script.js"></script>
     <script src="assets/js/supabase-client.js"></script>
-
+    <script src="assets/js/auth-ui.js"></script>
+    
     <script>
         const sb = window.supabaseClient;
 

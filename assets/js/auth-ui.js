@@ -34,7 +34,7 @@
             // Create auth elements HTML
             const authHTML = `
                 <a href="auth.html" id="navAuth" class="magic-signup fade" title="Sign In" style="display: none;">
-                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Access the core
                 </a>
                 <a href="dashboard.html" id="navDashboard" class="fade" title="Dashboard" style="display: none;">
                     <i class="fa-solid fa-gauge"></i> Dashboard
