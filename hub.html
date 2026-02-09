@@ -104,7 +104,7 @@
         <section id="projects" class="panel">
           <div class="container">
             <h2 class="section-title">Projects<span style="display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.65rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle;position:relative;top:-2px;">BETA</span></h2>
-            <p class="section-lead">Tap a card and see what teams are building.</p>
+            <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
             
                 <!-- 🔍 Search Bar -->
             <div class="search-bar">
@@ -170,6 +170,84 @@
         console.log(`NexCore Labs version ${APP_VERSION}`);
       </script>
       <script>
+        /**
+         * Fetch and update the published projects count from Supabase
+         * Uses a lightweight count query without fetching rows
+         * @param {string} filterType - 'published' (default), 'all', or 'draft'
+         */
+        async function updateProjectsCount(filterType = 'published') {
+          const sb = window.supabaseClient;
+          const countElement = document.getElementById('projectsCount');
+          
+          if (!countElement) {
+            console.error('projectsCount element not found');
+            return;
+          }
+
+          try {
+            let query = sb.from('projects').select('*', { count: 'exact', head: true });
+            
+            // Apply filter based on type
+            if (filterType === 'published') {
+              query = query.eq('published', true);
+            } else if (filterType === 'draft') {
+              query = query.eq('published', false);
+            }
+            // 'all' means no filter
+
+            const { count, error } = await query;
+
+            if (error) {
+              console.error('Error fetching projects count:', error);
+              countElement.textContent = '--';
+              return;
+            }
+
+            const finalCount = count || 0;
+            
+            // Animate count from 0 to finalCount
+            animateCount(countElement, 0, finalCount, 1000);
+            
+          } catch (err) {
+            console.error('Unexpected error fetching projects count:', err);
+            countElement.textContent = '--';
+          }
+        }
+
+        /**
+         * Animate the count with a smooth counting effect
+         * @param {HTMLElement} element - The element to update
+         * @param {number} start - Starting number
+         * @param {number} end - Ending number
+         * @param {number} duration - Animation duration in ms
+         */
+        function animateCount(element, start, end, duration) {
+          const startTime = performance.now();
+          const range = end - start;
+
+          function updateCount(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            // Ease-out animation
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(start + range * easeOut);
+            
+            // Format with leading zero and + sign
+            const formatted = current.toString().padStart(2, '0') + '+';
+            element.textContent = formatted;
+
+            if (progress < 1) {
+              requestAnimationFrame(updateCount);
+            } else {
+              // Ensure final value is set
+              element.textContent = end.toString().padStart(2, '0') + '+';
+            }
+          }
+
+          requestAnimationFrame(updateCount);
+        }
+
         async function loadProjects() {
           const sb = window.supabaseClient;
           const container = document.querySelector('#projects-container');
@@ -247,10 +325,14 @@
           });
         }
 
-        // Load projects when DOM is ready
+        // Load projects and count when DOM is ready
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', loadProjects);
+          document.addEventListener('DOMContentLoaded', () => {
+            updateProjectsCount('published');
+            loadProjects();
+          });
         } else {
+          updateProjectsCount('published');
           loadProjects();
         }
       </script>
