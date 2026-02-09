@@ -671,7 +671,7 @@ Total Projects: ${projectCount}
           throw new Error("No access token available");
         }
 
-        // Call server-side delete account API
+        // Call server-side delete account API with Bearer token
         const response = await fetch("/api/delete-account", {
           method: "POST",
           headers: {
@@ -681,20 +681,69 @@ Total Projects: ${projectCount}
           body: JSON.stringify({})
         });
 
-        const result = await response.json();
+        // Log raw response for diagnosis
+        const raw = await response.text();
+        console.log("delete-account raw:", raw);
 
+        // Parse the response safely
+        let result = {};
+        try {
+          result = JSON.parse(raw);
+        } catch (parseError) {
+          console.error("Failed to parse response as JSON:", parseError);
+          result = { error: raw || "Unknown error from server" };
+        }
+
+        // Check if response is not ok
         if (!response.ok) {
           // If we're on GitHub Pages (API not available), show helpful message
           if (response.status === 404) {
             throw new Error("Delete account API is only available on Vercel deployment. For GitHub Pages, please contact support.");
           }
-          throw new Error(result.error || result.details || "Failed to delete account");
+          
+          // Build error message with full details from server
+          let errorMsg = "";
+          
+          // Priority: details > error > message > fallback
+          if (result.details) {
+            errorMsg = result.details;
+          } else if (result.error) {
+            errorMsg = result.error;
+          } else if (result.message) {
+            errorMsg = result.message;
+          } else {
+            errorMsg = `HTTP ${response.status}: ${raw || "Unknown error"}`;
+          }
+          
+          // Add step if present
+          if (result.step) {
+            errorMsg = `[${result.step}] ${errorMsg}`;
+          }
+          
+          // Add code if present
+          if (result.code) {
+            errorMsg += ` (code: ${result.code})`;
+          }
+          
+          // Add hint if present
+          if (result.hint) {
+            errorMsg += `\nHint: ${result.hint}`;
+          }
+          
+          throw new Error(errorMsg);
         }
 
+        // Check if the response indicates success
         if (!result.ok) {
-          throw new Error("Account deletion failed");
+          // Even if response.ok, the result might indicate failure
+          let errorMsg = result.details || result.error || result.message || "Account deletion failed";
+          if (result.step) {
+            errorMsg = `[${result.step}] ${errorMsg}`;
+          }
+          throw new Error(errorMsg);
         }
 
+        // Success
         setMsg("modalMsg", "✓ Account deleted successfully. Redirecting...");
         
         // Sign out locally
