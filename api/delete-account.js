@@ -15,7 +15,7 @@
 const { createClient } = require("@supabase/supabase-js");
 
 // Owner column in projects table (no explicit owner column usage found; user_id is used in exports)
-const OWNER_COL = "id";
+const OWNER_COL = "owner_user_id";
 
 /**
  * Helper to safely return a JSON response
