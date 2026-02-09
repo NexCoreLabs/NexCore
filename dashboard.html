@@ -175,9 +175,12 @@
           <label>X (Twitter) URL (optional)</label>
           <input id="profileX" placeholder="https://x.com/..." type="url" />
 
+          <label>Instagram URL (optional)</label>
+          <input id="profileInstagram" placeholder="https://instagram.com/..." type="url" />
+
           <label>GitHub URL (optional)</label>
           <input id="profileGithub" placeholder="https://github.com/..." type="url" />
-
+          
           <label>LinkedIn URL (optional)</label>
           <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
 
@@ -263,6 +266,7 @@
       document.getElementById("profileX").value = p.x_url || "";
       document.getElementById("profileGithub").value = p.github_url || "";
       document.getElementById("profileLinkedin").value = p.linkedin_url || "";
+      document.getElementById("profileInstagram").value = p.instagram_url || "";
 
       const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
       const a = document.getElementById("publicLink");
@@ -430,6 +434,7 @@
       const x_url = document.getElementById("profileX").value.trim();
       const github_url = document.getElementById("profileGithub").value.trim();
       const linkedin_url = document.getElementById("profileLinkedin").value.trim();
+      const instagram_url = document.getElementById("profileInstagram").value.trim();
 
       disableButtons(true);
 
@@ -442,6 +447,7 @@
           x_url,
           github_url,
           linkedin_url,
+          instagram_url,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)

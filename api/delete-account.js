@@ -14,36 +14,28 @@
 
 const { createClient } = require("@supabase/supabase-js");
 
-// Owner column in projects table (detected from codebase - account.html uses user_id)
+// Owner column in projects table (no explicit owner column usage found; user_id is used in exports)
 const OWNER_COL = "user_id";
 
 /**
- * Helper to safely return a JSON error response
+ * Helper to safely return a JSON response
  */
-function returnError(res, statusCode, step, errorObj, details = null) {
-  return res.status(statusCode).json({
-    ok: false,
-    step,
-    error: errorObj.message || String(errorObj),
-    message: errorObj.message || String(errorObj),
-    code: errorObj.code || null,
-    hint: errorObj.hint || null,
-    details: details || null
-  });
+function sendJson(res, statusCode, payload) {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  return res.status(statusCode).end(JSON.stringify(payload));
 }
 
 module.exports = async (req, res) => {
-  // Only allow POST
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      ok: false,
-      step: "method_not_allowed",
-      error: "Method not allowed",
-      message: "Only POST requests are supported"
-    });
-  }
-
   try {
+    // Only allow POST
+    if (req.method !== "POST") {
+      return sendJson(res, 405, {
+        ok: false,
+        step: "method",
+        error: "Method not allowed"
+      });
+    }
+
     // STEP 1: Validate environment variables
     const supabaseUrl = process.env.SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -53,12 +45,14 @@ module.exports = async (req, res) => {
         hasUrl: !!supabaseUrl,
         hasKey: !!serviceRoleKey
       });
-      return res.status(500).json({
+      return sendJson(res, 500, {
         ok: false,
         step: "env",
-        error: "Missing environment variables",
-        message: "SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not configured",
-        code: "env_missing"
+        error: "Missing env vars",
+        details: {
+          SUPABASE_URL: !!supabaseUrl,
+          SUPABASE_SERVICE_ROLE_KEY: !!serviceRoleKey
+        }
       });
     }
 
@@ -70,36 +64,24 @@ module.exports = async (req, res) => {
       });
     } catch (error) {
       console.error("Failed to create Supabase admin client:", error);
-      return returnError(res, 500, "admin_client", error);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "admin_client",
+        error: error.message || String(error)
+      });
     }
 
-    // STEP 3: Parse token from multiple sources (robust handling)
-    let token = null;
-
-    // Try Authorization header first (case-insensitive)
+    // STEP 3: Parse token ONLY from Authorization header (case-insensitive)
     const authHeader = req.headers.authorization || req.headers.Authorization || "";
-    if (authHeader.startsWith("Bearer ")) {
-      token = authHeader.slice(7);
-    }
-
-    // Fallback: try to parse from body if no header token
-    if (!token && req.body) {
-      try {
-        const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-        token = body?.access_token || body?.token || null;
-      } catch (parseErr) {
-        console.log("Could not parse body for token:", parseErr.message);
-      }
-    }
+    console.log("AUTH HEADER:", req.headers.authorization ? "present" : "missing");
+    const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
 
     if (!token) {
       console.error("No token found in request");
-      return res.status(401).json({
+      return sendJson(res, 401, {
         ok: false,
         step: "getUser",
         error: "Auth session missing!",
-        message: "Auth session missing!",
-        code: null
       });
     }
 
@@ -113,7 +95,12 @@ module.exports = async (req, res) => {
       userError = result.error;
     } catch (error) {
       console.error("Error calling admin.auth.getUser:", error);
-      return returnError(res, 500, "getUser", error);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "getUser",
+        error: error.message || String(error),
+        code: error.code || null
+      });
     }
 
     if (userError || !userData?.user) {
@@ -122,13 +109,11 @@ module.exports = async (req, res) => {
         hasUserData: !!userData,
         hasUser: !!userData?.user
       });
-      return res.status(401).json({
+      return sendJson(res, 401, {
         ok: false,
         step: "getUser",
         error: userError?.message || "Auth session missing!",
-        message: userError?.message || "Auth session missing!",
-        code: userError?.code || null,
-        hint: userError?.hint || "Token may be invalid or expired. Please log in again."
+        code: userError?.code || null
       });
     }
 
@@ -140,18 +125,32 @@ module.exports = async (req, res) => {
     try {
       const result = await admin
         .from("projects")
-        .delete()
+        .delete({ count: "exact" })
         .eq(OWNER_COL, uid);
       
       projectsDeleteError = result.error;
     } catch (error) {
       console.error("Exception during projects delete:", error);
-      return returnError(res, 500, "delete_projects", error);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "delete_projects",
+        error: error.message || String(error),
+        details: error.details || null,
+        code: error.code || null,
+        hint: error.hint || null
+      });
     }
 
     if (projectsDeleteError) {
       console.error(`Failed to delete projects for user ${uid}:`, projectsDeleteError);
-      return returnError(res, 500, "delete_projects", projectsDeleteError);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "delete_projects",
+        error: projectsDeleteError.message || String(projectsDeleteError),
+        details: projectsDeleteError.details || projectsDeleteError.message || String(projectsDeleteError),
+        code: projectsDeleteError.code || null,
+        hint: projectsDeleteError.hint || null
+      });
     }
 
     // STEP 6: Delete auth user (LAST - after all data is cleaned)
@@ -161,30 +160,39 @@ module.exports = async (req, res) => {
       deleteUserError = result.error;
     } catch (error) {
       console.error("Exception during delete auth user:", error);
-      return returnError(res, 500, "delete_auth_user", error);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "delete_auth_user",
+        error: error.message || String(error),
+        details: error.details || null,
+        code: error.code || null
+      });
     }
 
     if (deleteUserError) {
       console.error(`Failed to delete auth user ${uid}:`, deleteUserError);
-      return returnError(res, 500, "delete_auth_user", deleteUserError);
+      return sendJson(res, 500, {
+        ok: false,
+        step: "delete_auth_user",
+        error: deleteUserError.message || String(deleteUserError),
+        details: deleteUserError.details || deleteUserError.message || String(deleteUserError),
+        code: deleteUserError.code || null
+      });
     }
 
     // Success
     console.log(`[delete-account] Successfully deleted user: ${uid}`);
-    return res.status(200).json({
+    return sendJson(res, 200, {
       ok: true,
       uid,
-      message: "Account and all associated data deleted successfully"
     });
 
   } catch (error) {
     console.error("Unexpected error in delete-account:", error);
-    return res.status(500).json({
+    return sendJson(res, 500, {
       ok: false,
       step: "unexpected_error",
       error: error.message || "Internal server error",
-      message: error.message || "An unexpected error occurred",
-      code: error.code || "internal_error",
       details: error.stack || null
     });
   }

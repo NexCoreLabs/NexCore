@@ -611,10 +611,13 @@ Total Projects: ${projectCount}
             if (project.x_url) {
               txtContent += `X (Twitter): ${project.x_url}\n`;
             }
+            if (project.instagram_url) {
+              txtContent += `Instagram: ${project.instagram_url}\n`;
+            }
             if (project.linkedin_url) {
               txtContent += `LinkedIn: ${project.linkedin_url}\n`;
             }
-            
+
             txtContent += `\n`;
           });
         }
@@ -668,33 +671,31 @@ Total Projects: ${projectCount}
         setMsg("modalMsg", "Deleting account...");
 
         // Retrieve session using Supabase v2 API
-        const { data: sessionData, error: sessionErr } = await sb.auth.getSession();
-        if (sessionErr) {
-          throw new Error("Failed to read session: " + sessionErr.message);
+        const { data, error } = await sb.auth.getSession();
+        if (error) {
+          throw new Error("Failed to read session: " + error.message);
         }
 
-        const session = sessionData?.session;
-        if (!session) {
-          throw new Error("No active session. Please log in again.");
-        }
-
-        const token = session.access_token;
+        const token = data?.session?.access_token;
         if (!token) {
-          throw new Error("No access token available. Please log in again.");
+          throw new Error("No active session, please log in again.");
         }
 
-        console.log("[delete-account] Sending request with token length:", token.length);
+        console.log("Delete token length:", token?.length);
 
         // Call server-side delete account API with Bearer token
         const response = await fetch("/api/delete-account", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
             "Accept": "application/json"
-          }
+          },
+          body: JSON.stringify({})
         });
 
         // Log raw response for diagnosis
+        console.log("delete-account status:", response.status);
         const raw = await response.text();
         console.log("delete-account raw:", raw);
 
@@ -709,41 +710,8 @@ Total Projects: ${projectCount}
 
         // Check if response is not ok
         if (!response.ok) {
-          // If we're on GitHub Pages (API not available), show helpful message
-          if (response.status === 404) {
-            throw new Error("Delete account API is only available on Vercel deployment. For GitHub Pages, please contact support.");
-          }
-          
-          // Build error message with full details from server
-          let errorMsg = "";
-          
-          // Priority: details > error > message > fallback
-          if (result.details) {
-            errorMsg = result.details;
-          } else if (result.error) {
-            errorMsg = result.error;
-          } else if (result.message) {
-            errorMsg = result.message;
-          } else {
-            errorMsg = `HTTP ${response.status}: ${raw || "Unknown error"}`;
-          }
-          
-          // Add step if present
-          if (result.step) {
-            errorMsg = `[${result.step}] ${errorMsg}`;
-          }
-          
-          // Add code if present
-          if (result.code) {
-            errorMsg += ` (code: ${result.code})`;
-          }
-          
-          // Add hint if present
-          if (result.hint) {
-            errorMsg += `\nHint: ${result.hint}`;
-          }
-          
-          throw new Error(errorMsg);
+          const fallback = raw || `HTTP ${response.status}`;
+          throw new Error(result.details || result.error || fallback);
         }
 
         // Check if the response indicates success
