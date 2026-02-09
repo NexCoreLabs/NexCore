@@ -73,26 +73,37 @@ module.exports = async (req, res) => {
       return returnError(res, 500, "admin_client", error);
     }
 
-    // STEP 3: Read and validate Authorization header
-    const authHeader = req.headers.authorization || "";
-    if (!authHeader.startsWith("Bearer ")) {
+    // STEP 3: Parse token from multiple sources (robust handling)
+    let token = null;
+
+    // Try Authorization header first (case-insensitive)
+    const authHeader = req.headers.authorization || req.headers.Authorization || "";
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.slice(7);
+    }
+
+    // Fallback: try to parse from body if no header token
+    if (!token && req.body) {
+      try {
+        const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
+        token = body?.access_token || body?.token || null;
+      } catch (parseErr) {
+        console.log("Could not parse body for token:", parseErr.message);
+      }
+    }
+
+    if (!token) {
+      console.error("No token found in request");
       return res.status(401).json({
         ok: false,
-        step: "auth_header",
-        error: "Missing or invalid Authorization header",
-        message: "Expected 'Authorization: Bearer <token>'"
+        step: "getUser",
+        error: "Auth session missing!",
+        message: "Auth session missing!",
+        code: null
       });
     }
 
-    const token = authHeader.substring(7); // Remove "Bearer "
-    if (!token || token.length === 0) {
-      return res.status(401).json({
-        ok: false,
-        step: "auth_header",
-        error: "No access token provided",
-        message: "Token is empty"
-      });
-    }
+    console.log(`[delete-account] Received token, length: ${token.length}`);
 
     // STEP 4: Verify token and get user
     let userData, userError;
@@ -106,13 +117,18 @@ module.exports = async (req, res) => {
     }
 
     if (userError || !userData?.user) {
-      console.error("Invalid token or getUser failed:", userError);
+      console.error("Invalid token or getUser failed:", {
+        error: userError,
+        hasUserData: !!userData,
+        hasUser: !!userData?.user
+      });
       return res.status(401).json({
         ok: false,
         step: "getUser",
-        error: userError?.message || "Invalid or expired token",
-        message: userError?.message || "Token validation failed",
-        code: userError?.code || null
+        error: userError?.message || "Auth session missing!",
+        message: userError?.message || "Auth session missing!",
+        code: userError?.code || null,
+        hint: userError?.hint || "Token may be invalid or expired. Please log in again."
       });
     }
 

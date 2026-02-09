@@ -303,7 +303,13 @@
     }
 
     async function requireAuth() {
-      const { data: { session } } = await sb.auth.getSession();
+      const { data: sessionData, error: sessionErr } = await sb.auth.getSession();
+      if (sessionErr) {
+        console.error("Session error:", sessionErr);
+        window.location.href = "/auth.html";
+        return null;
+      }
+      const session = sessionData?.session;
       if (!session) {
         window.location.href = "/auth.html";
         return null;
@@ -661,24 +667,31 @@ Total Projects: ${projectCount}
         
         setMsg("modalMsg", "Deleting account...");
 
-        const { data: { session } } = await sb.auth.getSession();
+        // Retrieve session using Supabase v2 API
+        const { data: sessionData, error: sessionErr } = await sb.auth.getSession();
+        if (sessionErr) {
+          throw new Error("Failed to read session: " + sessionErr.message);
+        }
+
+        const session = sessionData?.session;
         if (!session) {
-          throw new Error("Not authenticated");
+          throw new Error("No active session. Please log in again.");
         }
 
         const token = session.access_token;
         if (!token) {
-          throw new Error("No access token available");
+          throw new Error("No access token available. Please log in again.");
         }
+
+        console.log("[delete-account] Sending request with token length:", token.length);
 
         // Call server-side delete account API with Bearer token
         const response = await fetch("/api/delete-account", {
           method: "POST",
           headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({})
+            "Accept": "application/json"
+          }
         });
 
         // Log raw response for diagnosis
@@ -791,6 +804,14 @@ Total Projects: ${projectCount}
     document.addEventListener("DOMContentLoaded", async () => {
       const session = await requireAuth();
       if (!session) return;
+
+      // Monitor for session loss
+      sb.auth.onAuthStateChange((_event, session) => {
+        if (!session) {
+          console.log("Session lost, redirecting to auth page");
+          window.location.href = "/auth.html";
+        }
+      });
 
       await loadAccountInfo(session);
 
