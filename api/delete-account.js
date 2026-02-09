@@ -14,7 +14,7 @@
 
 const { createClient } = require("@supabase/supabase-js");
 
-// Owner column in projects table (no explicit owner column usage found; user_id is used in exports)
+// Owner column in projects table (confirmed)
 const OWNER_COL = "owner_user_id";
 
 /**
@@ -125,7 +125,7 @@ module.exports = async (req, res) => {
     try {
       const result = await admin
         .from("projects")
-        .delete({ count: "exact" })
+        .delete()
         .eq(OWNER_COL, uid);
       
       projectsDeleteError = result.error;

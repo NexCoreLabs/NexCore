@@ -659,6 +659,20 @@ Total Projects: ${projectCount}
       btn.disabled = !(input === "DELETE" && checkbox);
     }
 
+    function buildDeleteError(result, fallback) {
+      let msg = result?.details || result?.error || result?.message || fallback || "Account deletion failed";
+      if (result?.step) {
+        msg = `[${result.step}] ${msg}`;
+      }
+      if (result?.code) {
+        msg += ` (code: ${result.code})`;
+      }
+      if (result?.hint) {
+        msg += `\nHint: ${result.hint}`;
+      }
+      return msg;
+    }
+
     async function confirmDeleteAccount() {
       const btn = document.getElementById("confirmDeleteBtn");
       const cancelBtn = document.getElementById("cancelDeleteBtn");
@@ -711,17 +725,13 @@ Total Projects: ${projectCount}
         // Check if response is not ok
         if (!response.ok) {
           const fallback = raw || `HTTP ${response.status}`;
-          throw new Error(result.details || result.error || fallback);
+          throw new Error(buildDeleteError(result, fallback));
         }
 
         // Check if the response indicates success
         if (!result.ok) {
           // Even if response.ok, the result might indicate failure
-          let errorMsg = result.details || result.error || result.message || "Account deletion failed";
-          if (result.step) {
-            errorMsg = `[${result.step}] ${errorMsg}`;
-          }
-          throw new Error(errorMsg);
+          throw new Error(buildDeleteError(result));
         }
 
         // Success
