@@ -21,7 +21,7 @@
 - Improved auth client architecture
 
 
-## v2.0.0-beta - 8 Feb 2026
+## v2.0.0-beta - 7 Feb 2026
 ### 1. Complete Authentication System (Supabase-based)
 
 - New auth.html - Sign-in page with Google OAuth
