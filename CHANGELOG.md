@@ -1,99 +1,103 @@
 # 🧾 Changelog
 
-## v2.0.0-beta — 07 Feb 2026
+## v2.0.0 — 10 Feb 2026
+**Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
+### ✨ New Features (from beta)
+- Complete Supabase integration for auth and database
+- Account settings page with profile management
+- Project management system (hub, dashboard, project pages)
+- Dynamic navigation system
+- Backend visit tracking
+- Trustpilot review integration
+- Added unified header/navbar across all pages
+- Added site footer with support and license links
+- Applied backdrop-filter blur effects to cards
+- Updated auth UI messaging
+- Removed standalone signup.html and login.html (use auth.html)
+- New authentication flow using Supabase
+- Requires Supabase configuration for backend functionality
+- Refactored dashboard to Supabase project editor
+- Added admin utilities for Supabase
+- Improved auth client architecture
 
-### 🎉 Major Release - Complete Platform Overhaul
 
-**This is a BETA RELEASE introducing authentication, database integration, and dynamic project management.**
+## v2.0.0-beta - 7 Feb 2026
+### 1. Complete Authentication System (Supabase-based)
 
-#### 🚀 Major Features
+- New auth.html - Sign-in page with Google OAuth
+- New dashboard.html - User dashboard for managing projects
+- New account.html - Account settings and management
+- New project.html - Individual project display page
+- Authentication UI components (assets/js/auth-ui.js, assets/js/supabase-client.js)
 
-**🔐 Authentication System**
-- Supabase-based authentication with Google OAuth
-- Email restrictions - Only @squ.edu.om and @student.squ.edu.om addresses
-- New Sign-in page (`auth.html`)
-- User Dashboard (`dashboard.html`) for project management
-- Account Settings (`account.html`) for profile management
 
-**🗄️ Database Integration**
-- Supabase backend replacing static JSON files
-- Dynamic project loading from database
-- Real-time project data across the hub
-- User-specific project management
+### 2. Database Integration
 
-**📊 Project Management**
-- Create and edit projects with rich metadata
-- Publish/Unpublish toggle for project visibility
-- QR code generation for easy project sharing
-- Project slugs for clean URLs (`/project.html?slug=project-name`)
-- Image uploads with preview
-- Social media links (X/Twitter, GitHub, LinkedIn, Instagram, YouTube, Website)
-- Tags and categories for better organization
+- Integrated Supabase for backend data storage
+- Projects now stored in database instead of data/projects.json
+- Dynamic project loading from Supabase in hub
+- User authentication with SQU email (@squ.edu.om, @student.squ.edu.om)
 
-**📈 Analytics**
-- Page visit tracking via serverless function (`api/track-visit.js`)
-- Daily analytics stored in Supabase
-- Foundation for future analytics dashboard
 
-#### 🔄 Breaking Changes
+### 3. Analytics & Tracking
 
-⚠️ **Major version with breaking changes:**
-1. Removed `signup.html` - Replaced with new `auth.html` authentication flow
-2. Removed `data/projects.json` - Projects now stored in Supabase database
-3. Disabled `pricing.html` - Platform is free during beta (file renamed to `pricing.html.disabled`)
-4. Navigation links updated - "Access the Core" now points to authentication page
+- New serverless function api/track-visit.js for page visit tracking
+- Daily page visit analytics stored in Supabase
 
-#### ✨ Improvements
 
-**UI/UX Updates**
-- Enhanced authentication UI with tabbed interface
-- Google Sign-in button with official branding
-- Dynamic navigation showing Dashboard/Account when logged in
-- BETA badges across new features
-- Improved featured plan styling with subtle backgrounds
+### 4. Project Management
+
+- Users can create, edit, publish/unpublish their projects
+- Project slug-based URLs (/project.html?slug=project-name)
+- QR code generation for projects
+- Project image support with preview
+- Social media links (X/Twitter, GitHub, LinkedIn, etc.)
+
+
+### 🗑️ Major Removals
+
+- Removed signup.html - Replaced with new authentication system
+- Removed data/projects.json - Moved to Supabase database
+- Disabled pricing.html - Moved to pricing.html.disabled (currently free during beta)
+
+
+### 🔄 Major Updates
+
+_Navigation Changes_
+- "Access the Core" now links to auth.html instead of signup.html
+- Dynamic nav menu showing Dashboard/Account Settings when logged in
+- Pricing link commented out (service is free during beta)
+
+_Hub Improvements_
+- Projects now load dynamically from Supabase
+- Added "BETA" badge to projects section
+- Real-time project data instead of static JSON
+
+_Styling Updates_
+- New authentication UI styles (tabs, Google sign-in button)
+- Updated featured plan styling (gradient → subtle background)
 - Fixed FAQ heading alignment
+- Minor CSS refinements across pages
 
-**Technical Infrastructure**
-- Added `package.json` with `@supabase/supabase-js` dependency
-- New `lib/supabaseAdmin.js` for server-side operations
-- Vercel serverless functions for analytics
-- Added `.gitignore` for `node_modules` and `.env.local`
-- Repository structure documentation
 
-**Hub Improvements**
-- Projects load dynamically from Supabase
-- Real-time project updates
-- Better project discovery
+### 🔧 Technical Infrastructure
 
-#### 📦 New Files
-- `auth.html`, `dashboard.html`, `account.html`, `project.html`
-- `assets/js/auth-ui.js`, `assets/js/supabase-client.js`
-- `api/track-visit.js`, `lib/supabaseAdmin.js`
-- `package.json`, `package-lock.json`
+_Dependencies_
 
-#### 🗑️ Removed Files
-- `signup.html` (replaced by `auth.html`)
-- `data/projects.json` (migrated to Supabase)
+- Added @supabase/supabase-js package
+- Added package.json and package-lock.json
+- Added .gitignore for node_modules and .env.local
 
-#### 🔧 Configuration Requirements
-- Supabase project with appropriate tables
-- Environment variables configured (`.env.local`)
-- Vercel deployment for serverless functions
+_Backend Functions_
 
-#### 🐛 Known Issues (Beta)
-- This is a beta release - expect ongoing improvements
-- Analytics dashboard UI not yet implemented
-- Some features may be refined based on user feedback
+- New lib/supabaseAdmin.js for server-side Supabase operations
+- Vercel serverless function for analytics
 
-## v1.3.0 — 07 Feb 2026
-- Added Trustpilot review widget integration with styling and responsive design
-- Updated contact information: replaced YouTube with WhatsApp contact link
-- Standardized SEO meta tags, descriptions, and Open Graph/Twitter metadata across all pages
-- Fixed PWA manifest start_url from `/NexCore/` to `/` for proper deployment
-- Updated sitemap URLs from github.io to nexcorelabs.vercel.app domain
-- Added Privacy Policy link to hub navigation menu
-- Removed WELCOME.md documentation file
-- Improved branding consistency with 'NexCore Labs' labels site-wide
+_Documentation_
+
+- Added repository structure document
+- Updated README with new Vercel deployment URL
+
 
 ## v1.2.0 — 03 Feb 2026
 - Rewrote Service Worker for robust precaching, runtime caching, navigation preload and offline fallback (`offline.html`)
@@ -108,15 +112,18 @@
 - Added full documentation suite (implementation notes, quick reference, delivery summary, completion checklist and welcome docs)
 - Misc: stylesheet, script, and content updates across `faq.html`, `how-to-use.html`, `hub.html`, `index.html`, `pricing.html`, `terms.html`, `signup.html`, `thanks.html`
 
+
 ## v1.1.1 — 02 Nov 2025
 - Fixing broken pictures path in service-worker.js
 - Deleted mobile-preview.html
+
 
 ## v1.1.0 — 01 Nov 2025
 - Enabled image compression (WebP)
 - Adding research.html
 - More UI improvement
 - Begin with Git VCS
+
 
 ## v1.0.0 — 27 Oct 2025 (Initial Release)
 - NexCore Labs website launched
