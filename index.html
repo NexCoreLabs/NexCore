@@ -111,7 +111,7 @@
               <h4>Current Initiatives</h4>
               <p class="muted">Planning · Development · Monitoring</p>
               <div class="kpis">
-                <a href="hub.html#projects"><div class="stat"><strong id="team-number">00+</strong><span><i class="fa-solid fa-diagram-project"></i> projects</span><div class="tooltip">All ongoing projects currently active</div></div></a>
+                <a href="hub.html#projects"><div class="stat"><strong id="projectCount">00+</strong><span><i class="fa-solid fa-diagram-project"></i> projects</span><div class="tooltip">All ongoing projects currently active</div></div></a>
                 <div class="stat"><strong id="tasks">120+</strong><span><i class="fa-solid fa-bars-progress"></i> tasks</span><div class="tooltip">We’ve completed 120+ small actionable items</div></div>
                 <div class="stat"><strong id="support">48h</strong><span><i class="fa-solid fa-headset"></i> support</span><div class="tooltip">Our support responds within 48-hours</div></div>
               </div>
@@ -130,19 +130,19 @@
         
         <div class="cards-grid">
           <article class="info-card reveal">
-            <div class="ic-ico">🎯</div>
+            <div class="ic-ico"><i class="fa-solid fa-bullseye" style="color: #6ee7f3;"></i></div>
             <h3>Focus</h3>
             <p>We distill the core idea and create a concise online narrative.</p>
           </article>
 
           <article class="info-card reveal">
-            <div class="ic-ico">⚡</div>
+            <div class="ic-ico"><i class="fa-solid fa-bolt" style="color: #6ee7f3;"></i></div>
             <h3>Speed</h3>
             <p>Prototype quickly, iterate fast and ship stable static pages.</p>
           </article>
 
           <article class="info-card reveal">
-            <div class="ic-ico">🔒</div>
+            <div class="ic-ico"><i class="fa-solid fa-hand-holding-hand" style="color: #6ee7f3;"></i></div>
             <h3>Care</h3>
             <p>Security basics, performance checks and simple documentation.</p>
           </article>
@@ -320,21 +320,83 @@
     console.log(`NexCore Labs version ${APP_VERSION}`);
   </script>
   <script>
+    /**
+     * Fetch and update the published projects count from Supabase
+     * Uses a lightweight count query without fetching rows
+     */
     async function updateProjectCount() {
+      const sb = window.supabaseClient;
+      const countElement = document.getElementById('projectCount');
+      
+      if (!countElement) {
+        console.error('projectCount element not found');
+        return;
+      }
+
       try {
-        const response = await fetch('data/projects.json');
-        const data = await response.json();
-        const projectCount = data.projects.length;
+        // Fetch only the count of published projects
+        const { count, error } = await sb
+          .from('projects')
+          .select('*', { count: 'exact', head: true })
+          .eq('published', true);
 
+        if (error) {
+          console.error('Error fetching projects count:', error);
+          countElement.textContent = '--';
+          return;
+        }
 
-        const teamNumberElement = document.querySelector('.stat #team-number');
-        if (teamNumberElement) teamNumberElement.textContent = projectCount + '+';
-      } catch (error) {
-        console.error('Error loading project count:', error);
+        const finalCount = count || 0;
+        
+        // Animate count from 0 to finalCount
+        animateCount(countElement, 0, finalCount, 1000);
+        
+      } catch (err) {
+        console.error('Unexpected error fetching projects count:', err);
+        countElement.textContent = '--';
       }
     }
 
-    updateProjectCount();
+    /**
+     * Animate the count with a smooth counting effect
+     * @param {HTMLElement} element - The element to update
+     * @param {number} start - Starting number
+     * @param {number} end - Ending number
+     * @param {number} duration - Animation duration in ms
+     */
+    function animateCount(element, start, end, duration) {
+      const startTime = performance.now();
+      const range = end - start;
+
+      function updateCount(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Ease-out animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(start + range * easeOut);
+        
+        // Format with leading zero and + sign
+        const formatted = current.toString().padStart(2, '0') + '+';
+        element.textContent = formatted;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        } else {
+          // Ensure final value is set
+          element.textContent = end.toString().padStart(2, '0') + '+';
+        }
+      }
+
+      requestAnimationFrame(updateCount);
+    }
+
+    // Load project count when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', updateProjectCount);
+    } else {
+      updateProjectCount();
+    }
 
     // Register Service Worker (resilient, cross-page registration)
     if ('serviceWorker' in navigator) {

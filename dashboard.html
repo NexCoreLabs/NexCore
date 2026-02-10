@@ -36,7 +36,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
-    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35)}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
     label{display:block;margin:10px 0 6px;opacity:.9}
     input,textarea{
       width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
@@ -49,7 +49,6 @@
     .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
     .muted{opacity:.75}
     .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
-    a{color:#6ee7f3}
     .msg-success{color:#6ee7f3}
     .msg-error{color:#ff7878}
     .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
@@ -66,9 +65,51 @@
   </style>
 </head>
 <body>
+      <div class="background">
+      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+      <div id="spotLight" class="spot-light"></div>
+    </div>
 
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h1 id="logo">NexCore <span>Labs</span></h1>
+        </div>
+
+        <div class="dropdown">
+        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+        </div>
+        
+     <div id="myDropdown" class="dropdown-content">
+         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
+         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+         <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
+         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+         <div class="div-menu-line"></div>
+         <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
+         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
+         <div class="div-menu-line"></div>
+         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
+         <a href="index.html#about" title="About NexCore Labs">About Us</a>
+         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
+         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
+         <div class="div-menu-line"></div>
+         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+     </div>
+        </div>
+      </div>
+    </header>
+
+  <main>
   <div class="wrap">
-    <p class="back-link"><a href="/hub.html"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
     <h1>Dashboard <span class="beta-badge">BETA</span></h1>
     <p class="muted" id="userLine">Loading…</p>
 
@@ -175,9 +216,12 @@
           <label>X (Twitter) URL (optional)</label>
           <input id="profileX" placeholder="https://x.com/..." type="url" />
 
+          <label>Instagram URL (optional)</label>
+          <input id="profileInstagram" placeholder="https://instagram.com/..." type="url" />
+
           <label>GitHub URL (optional)</label>
           <input id="profileGithub" placeholder="https://github.com/..." type="url" />
-
+          
           <label>LinkedIn URL (optional)</label>
           <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
 
@@ -191,6 +235,25 @@
       </div>
     </div>
   </div>
+
+          <div class="nexcore-sign">
+          <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div class="f-left">
+            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+            <br>
+            <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                <i class="fa-solid fa-scale-balanced"></i> MIT License
+              </a>                <span class="footer-links"> | <a href="privacy-policy.html">Privacy Policy</a></span>            </small>
+          </div>
+          <div class="f-right footer-line"></div>
+        </div>
+      </footer>
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/supabase-client.js"></script>
@@ -263,6 +326,7 @@
       document.getElementById("profileX").value = p.x_url || "";
       document.getElementById("profileGithub").value = p.github_url || "";
       document.getElementById("profileLinkedin").value = p.linkedin_url || "";
+      document.getElementById("profileInstagram").value = p.instagram_url || "";
 
       const link = `/project.html?slug=${encodeURIComponent(p.slug || "")}`;
       const a = document.getElementById("publicLink");
@@ -430,6 +494,7 @@
       const x_url = document.getElementById("profileX").value.trim();
       const github_url = document.getElementById("profileGithub").value.trim();
       const linkedin_url = document.getElementById("profileLinkedin").value.trim();
+      const instagram_url = document.getElementById("profileInstagram").value.trim();
 
       disableButtons(true);
 
@@ -442,6 +507,7 @@
           x_url,
           github_url,
           linkedin_url,
+          instagram_url,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)

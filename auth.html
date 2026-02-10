@@ -150,8 +150,7 @@
 
                                 <div class="squ-notice">
                                     <i class="fa-solid fa-info-circle"></i>
-                                    <strong>Only SQU accounts are supported:</strong><br>
-                                    @squ.edu.om & @student.squ.edu.om
+                                    Allowed emails: SQU staff, SQU students, or approved NexCore users.
                                 </div>
                             </div>
                         </div>
@@ -189,6 +188,7 @@
             
             const sb = window.supabaseClient;
             let currentMode = 'signup'; // default mode
+            let suppressSignedOutNote = false;
             
             // DOM elements
             const signupTab = document.getElementById('signupTab');
@@ -222,7 +222,9 @@
                 const errorDescription = params.get('error_description') || hashParams.get('error_description');
                 
                 if (error || errorDescription) {
-                    showNote('⚠️ Only SQU emails are allowed: @squ.edu.om or @student.squ.edu.om\n\nPlease sign in with your Sultan Qaboos University Google account.', true);
+                    // Show backend error message directly
+                    const message = errorDescription || error || 'Authentication failed';
+                    showNote(message, true);
                     
                     // Clean URL without reloading
                     const cleanUrl = window.location.pathname;
@@ -233,16 +235,19 @@
             }
 
             // Listen to auth state changes
-            sb.auth.onAuthStateChange((event, session) => {
+            sb.auth.onAuthStateChange(async (event, session) => {
                 if (event === 'SIGNED_IN' && session) {
                     // Successful sign-in, redirect to dashboard
                     sessionStorage.setItem('auth_mode', currentMode);
                     window.location.href = '/dashboard.html';
                 } else if (event === 'SIGNED_OUT') {
-                    // User signed out or failed authentication
-                    showNote('⚠️ Authentication failed. Only SQU emails are allowed: @squ.edu.om or @student.squ.edu.om', true);
+                    if (suppressSignedOutNote) {
+                        suppressSignedOutNote = false;
+                        return;
+                    }
+                    // User signed out - no message needed
                 } else if (event === 'USER_DELETED') {
-                    showNote('⚠️ Account access denied. Only SQU emails are allowed.', true);
+                    showNote('Account access has been removed.', true);
                 }
             });
 
@@ -321,7 +326,8 @@
                     // OAuth redirect will happen automatically
                 } catch (error) {
                     console.error('Sign in error:', error);
-                    showMessage(error.message || 'Failed to sign in. Please try again.', true);
+                    // Show backend error message directly
+                    showNote(error.message || 'Failed to sign in. Please try again.', true);
                     googleBtn.disabled = false;
                     btnText.textContent = 'Continue with Google';
                 }
