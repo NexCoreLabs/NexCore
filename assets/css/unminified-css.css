@@ -320,6 +320,47 @@ button,
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 0 6px rgba(115, 189, 215, 0.2);
 }
+
+.btn.danger {
+  background: transparent;
+  border: 2px solid rgba(255, 120, 120, 0.4);
+  color: #ff7878;
+}
+
+.btn.danger:hover {
+  background: rgba(255, 120, 120, 0.15);
+  box-shadow: 0 0 12px rgba(255, 120, 120, 0.4);
+  border-color: rgba(255, 120, 120, 0.8);
+}
+
+.btn.danger:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 6px rgba(255, 120, 120, 0.2);
+}
+
+.btn.logout {
+  background: transparent;
+  border: 2px solid rgba(255, 210, 120, 0.4);
+  color: #ffd278;
+}
+
+.btn.logout:hover {
+  background: rgba(255, 210, 120, 0.15);
+  box-shadow: 0 0 12px rgba(255, 210, 120, 0.4);
+  border-color: rgba(255, 210, 120, 0.8);
+}
+
+.btn.logout:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 0 6px rgba(255, 210, 120, 0.2);
+}
+
+    .btn.copy{padding:6px 12px;border-radius:6px;border:1px solid rgba(110,231,243,.35);background:rgba(110,231,243,.12);color:#6ee7f3;cursor:pointer;font-size:.85rem;transition:all .2s;margin-left:8px;white-space:nowrap}
+    .btn.copy:hover{background:rgba(110,231,243,.2);border-color:rgba(110,231,243,.5)}
+    .btn.copy:active{transform:scale(.95)}
+    .btn.copy.copied{background:rgba(120,255,120,.15);border-color:rgba(120,255,120,.4);color:#7fff7f}
+
+
 .tiny {
   color: var(--muted);
   font-size: 13px;
@@ -2481,6 +2522,8 @@ strong {
   margin-bottom: 15px;
   display: block;
 }
+
+
 
 @media (max-width: 768px) {
   .faq-header h1 {

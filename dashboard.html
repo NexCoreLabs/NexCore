@@ -25,8 +25,8 @@
         <title>NexCore Labs | Dashboard</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+        <link rel="stylesheet" href="assets/css/unminified-css.css">
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,17 +38,10 @@
     .wrap{max-width:980px;margin:60px auto;padding:16px}
     .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
     label{display:block;margin:10px 0 6px;opacity:.9}
-    input,textarea{
-      width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.18);color:#fff
-    }
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
     .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
     .muted{opacity:.75}
-    .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
     .msg-success{color:#6ee7f3}
     .msg-error{color:#ff7878}
     .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
@@ -60,8 +53,6 @@
     .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
     .help-box strong{opacity:1;color:#6ee7f3}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
-    .back-link{display:inline-block;margin-bottom:8px;opacity:.8;transition:opacity .2s}
-    .back-link:hover{opacity:1}
   </style>
 </head>
 <body>
@@ -117,8 +108,8 @@
       <div class="row" style="justify-content:space-between">
         <h2 style="margin:0">My Project</h2>
         <div class="row">
-          <a href="/account.html" class="btn">Account Settings</a>
-          <button class="btn" id="logoutBtn">Logout</button>
+          <a href="/account.html" class="btn"><i class="fa-solid fa-user-gear"></i> Account Settings</a>
+          <button class="btn logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
         </div>
       </div>
 
@@ -141,7 +132,7 @@
         </p>
         <p class="muted">
           View public page:
-          <a id="publicLink" href="#" target="_blank" rel="noopener">open</a>
+          <a id="publicLink" href="#" target="_blank" rel="noopener" style="color: #6EE7F3;">open</a>
         </p>
 
         <!-- CARD SECTION -->
@@ -156,9 +147,13 @@
           <input id="cardSlug" placeholder="sovlex" />
           <p class="muted" style="font-size:.85rem;margin-top:4px;">Used in your public link: /project.html?slug=<span id="slugPreview">your-slug</span></p>
 
+          <label>Short Description</label>
+          <input id="cardDescription" placeholder="A brief one-phrase description..." />
+          <p class="muted" style="font-size:.85rem;margin-top:4px;">One phrase that appears on hub cards</p>
+
           <div class="row" style="margin-top:12px;align-items:center;gap:12px;">
-            <button class="btn btnPrimary" id="saveCardBtn">Save Card</button>
-            <button class="btn" id="togglePublishBtn" style="min-width:110px;">Publish</button>
+            <button class="btn primary ghost" id="saveCardBtn">Save Card</button>
+            <button class="btn primary" id="togglePublishBtn" style="min-width:110px;">Publish</button>
             <span id="publishStatus" class="muted" style="margin-left:8px;"></span>
           </div>
 
@@ -168,8 +163,12 @@
         <!-- PROFILE SECTION -->
         <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
           <h3 style="margin-top:0;"><i class="fa-solid fa-globe"></i> Profile (Full Details)</h3>
-          <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
+          <button class="btn copy" id="copyProjectPageLink" title="Copy public page link">
+            <i class="fa-solid fa-copy"></i> Copy Page Link
+          </button>
 
+          <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
+        
           <label>Image URL (optional)</label>
           <input id="profileImageUrl" placeholder="https://..." />
           <div style="margin-top:10px;">
@@ -207,8 +206,9 @@
             </ol>
           </details>
 
-          <label>Full Description</label>
-          <textarea id="profileDescription" placeholder="Tell the world about your project..."></textarea>
+          <label>Detailed Description (Page)</label>
+          <textarea id="pageDescription" placeholder="Tell the world about your project in detail..."></textarea>
+          <p class="muted" style="font-size:.85rem;margin-top:4px;">Detailed information displayed on the full project page</p>
 
           <label>Website URL (optional)</label>
           <input id="profileWebsite" placeholder="https://..." type="url" />
@@ -226,8 +226,8 @@
           <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
 
           <div class="row" style="margin-top:12px;">
-            <button class="btn btnPrimary" id="saveProfileBtn">Save Profile</button>
-            <button class="btn danger" id="deleteBtn" style="margin-left:auto;">Delete Project</button>
+            <button class="btn primary ghost" id="saveProfileBtn">Save Profile</button>
+            <button class="btn danger" id="deleteBtn" style="margin-left:auto;"><i class="fa-solid fa-trash"></i> Delete Project</button>
           </div>
 
           <p id="msgProfile" style="margin-top:10px;"></p>
@@ -318,10 +318,11 @@
       document.getElementById("cardName").value = p.name || "";
       document.getElementById("cardSlug").value = p.slug || "";
       document.getElementById("slugPreview").textContent = p.slug || "your-slug";
+      document.getElementById("cardDescription").value = p.card_description || "";
 
       // Profile fields
       document.getElementById("profileImageUrl").value = p.image_url || "";
-      document.getElementById("profileDescription").value = p.description || "";
+      document.getElementById("pageDescription").value = p.page_description || "";
       document.getElementById("profileWebsite").value = p.website || "";
       document.getElementById("profileX").value = p.x_url || "";
       document.getElementById("profileGithub").value = p.github_url || "";
@@ -453,6 +454,7 @@
       const name = document.getElementById("cardName").value.trim();
       const slugInput = document.getElementById("cardSlug").value.trim() || name;
       const slug = slugify(slugInput);
+      const card_description = document.getElementById("cardDescription").value.trim();
 
       if (!name) return setMsg(msgEl, "Project name is required.", true);
       if (!slug) return setMsg(msgEl, "Invalid slug.", true);
@@ -464,6 +466,7 @@
         .update({
           name,
           slug,
+          card_description,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)
@@ -489,7 +492,7 @@
       if (!project) return;
 
       const image_url = document.getElementById("profileImageUrl").value.trim();
-      const description = document.getElementById("profileDescription").value.trim();
+      const page_description = document.getElementById("pageDescription").value.trim();
       const website = document.getElementById("profileWebsite").value.trim();
       const x_url = document.getElementById("profileX").value.trim();
       const github_url = document.getElementById("profileGithub").value.trim();
@@ -502,7 +505,7 @@
         .from("projects")
         .update({
           image_url,
-          description,
+          page_description,
           website,
           x_url,
           github_url,
@@ -583,6 +586,7 @@
 
       document.getElementById("logoutBtn").addEventListener("click", logout);
       document.getElementById("createProjectBtn").addEventListener("click", createProject);
+      document.getElementById("copyProjectPageLink").addEventListener("click", copyProjectPageLink);
       document.getElementById("saveCardBtn").addEventListener("click", saveCard);
       document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
@@ -621,6 +625,35 @@
 
       await loadMyProject();
     });
+
+    async function copyProjectPageLink() {
+      const publicLinkEl = document.getElementById("publicLink");
+      const copyBtn = document.getElementById("copyProjectPageLink");
+      
+      if (!publicLinkEl.href || publicLinkEl.href === "#") return;
+      
+      try {
+        // Get the full URL from href
+        const fullUrl = new URL(publicLinkEl.href, window.location.origin).href;
+        await navigator.clipboard.writeText(fullUrl);
+        
+        // Visual feedback
+        const originalHTML = copyBtn.innerHTML;
+        copyBtn.classList.add("copied");
+        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        
+        setTimeout(() => {
+          copyBtn.classList.remove("copied");
+          copyBtn.innerHTML = originalHTML;
+        }, 2000);
+      } catch (error) {
+        console.error("Failed to copy:", error);
+        copyBtn.innerHTML = '<i class="fa-solid fa-xmark"></i> Failed';
+        setTimeout(() => {
+          copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Page Link';
+        }, 2000);
+      }
+    }
   </script>
   <script src="assets/js/cookie-consent.js" defer></script>
 </body>
