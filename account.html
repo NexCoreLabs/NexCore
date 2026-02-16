@@ -25,8 +25,8 @@
         <title>NexCore Labs | Account Settings</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+        <link rel="stylesheet" href="assets/css/unminified-css.css">
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,23 +42,13 @@
     .info-label{opacity:.7;font-size:.9rem;min-width:80px}
     .info-value{font-weight:500;color:#6ee7f3; font-size:.95rem;word-break:break-all; font-family: monospace;}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn{padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;text-decoration:none;display:inline-block;font-size:.95rem;transition:all .2s}
-    .btn:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18)}
     .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btnPrimary{background:rgba(110,231,243,.18);border-color:rgba(110,231,243,.35)}
-    .btnPrimary:hover{background:rgba(110,231,243,.25);border-color:rgba(110,231,243,.45)}
-    .danger{border-color:rgba(255,120,120,.4);background:rgba(255,120,120,.12)}
-    .danger:hover{background:rgba(255,120,120,.18);border-color:rgba(255,120,120,.5)}
     .msg-success{color:#6ee7f3;margin-top:12px}
     .msg-error{color:#ff7878;margin-top:12px}
     .notice-box{margin:16px 0;padding:14px;background:rgba(110,231,243,.08);border:1px solid rgba(110,231,243,.15);border-radius:10px;font-size:.9rem;line-height:1.6}
     .notice-box.warning{background:rgba(255,200,120,.08);border-color:rgba(255,200,120,.2);color:#ffffff}
     .notice-box.warning strong{color: rgb(255,200,120);}
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
-    .copy-btn{padding:6px 12px;border-radius:6px;border:1px solid rgba(110,231,243,.35);background:rgba(110,231,243,.12);color:#6ee7f3;cursor:pointer;font-size:.85rem;transition:all .2s;margin-left:8px;white-space:nowrap}
-    .copy-btn:hover{background:rgba(110,231,243,.2);border-color:rgba(110,231,243,.5)}
-    .copy-btn:active{transform:scale(.95)}
-    .copy-btn.copied{background:rgba(120,255,120,.15);border-color:rgba(120,255,120,.4);color:#7fff7f}
     hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
     .modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -71,8 +61,7 @@
     .modal input[type="text"]{width:100%;padding:12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:1rem;font-family:monospace}
     .modal input[type="text"]:focus{outline:none;border-color:rgba(255,120,120,.5);background:rgba(0,0,0,.4)}
     .checkbox-row{display:flex;align-items:center;gap:10px;margin:16px 0;padding:12px;background:rgba(0,0,0,.2);border-radius:8px}
-    .checkbox-row input[type="checkbox"]{width:20px;height:20px;cursor:pointer}
-    .checkbox-row label{cursor:pointer;font-size:.95rem}
+    .checkbox-row label{cursor:pointer;font-size:.8rem}
     .modal-actions{display:flex;gap:10px;margin-top:24px}
     .modal-actions .btn{flex:1}
   </style>
@@ -136,7 +125,7 @@
           <div class="info-row">
             <span class="info-label">User ID:</span>
             <span class="info-value" id="userId">Loading...</span>
-            <button class="copy-btn" id="copyUserIdBtn" title="Copy User ID">
+            <button class="btn copy" id="copyUserIdBtn" title="Copy User ID">
               <i class="fa-solid fa-copy"></i> Copy
             </button>
           </div>
@@ -157,10 +146,10 @@
           <p class="muted" style="font-size:.9rem;">Download your account information and project data in JSON format.</p>
           
           <div class="row">
-            <button class="btn btnPrimary" id="exportAccountBtn">
+            <button class="btn primary ghost" id="exportAccountBtn">
               <i class="fa-solid fa-file-export"></i> Export My Account Data
             </button>
-            <button class="btn btnPrimary" id="exportProjectsBtn">
+            <button class="btn primary ghost" id="exportProjectsBtn">
               <i class="fa-solid fa-folder-open"></i> Export My Projects
             </button>
           </div>
@@ -170,7 +159,7 @@
         <div class="box">
           <h3 class="section-title"><i class="fa-solid fa-right-from-bracket"></i> Session</h3>
           <p class="muted" style="font-size:.9rem;">Sign out of your NexCore Labs account.</p>
-          <button class="btn btnPrimary" id="logoutBtn">
+          <button class="btn logout" id="logoutBtn">
             <i class="fa-solid fa-right-from-bracket"></i> Log Out
           </button>
           <p id="logoutMsg"></p>
@@ -215,8 +204,8 @@
           <p class="muted" style="font-size:.9rem;margin-bottom:12px;">
             If you have questions or need assistance with your account, please reach out to the NexCore Labs team.
           </p>
-          <a href="/faq.html" class="btn" style="margin-right:8px;"><i class="fa-solid fa-question-circle"></i> FAQ</a>
-          <a href="/index.html#contact" class="btn"><i class="fa-solid fa-envelope"></i> Contact Us</a>
+          <a href="/faq.html" class="btn primary ghost" style="margin-right:8px;"><i class="fa-solid fa-question-circle"></i> FAQ</a>
+          <a href="/index.html#contact" class="btn primary ghost"><i class="fa-solid fa-envelope"></i> Contact Us</a>
         </div>
       </div>
 
@@ -243,7 +232,7 @@
           <input type="text" id="confirmDeleteInput" placeholder="DELETE" autocomplete="off">
           
           <div class="checkbox-row">
-            <input type="checkbox" id="confirmCheckbox">
+            <input type="checkbox" class="checkbox" id="confirmCheckbox">
             <label for="confirmCheckbox">I understand this action is irreversible and all my data will be permanently deleted</label>
           </div>
           

@@ -144,27 +144,6 @@
             margin-top: 20px;
             justify-content: center;
         }
-        .btn {
-            padding: 12px 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            background: rgba(255, 255, 255, 0.06);
-            color: #fff;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-        .btn:hover {
-            background: rgba(110, 231, 243, 0.15);
-            border-color: rgba(110, 231, 243, 0.35);
-        }
-        .btn-primary {
-            background: rgba(110, 231, 243, 0.18);
-            border-color: rgba(110, 231, 243, 0.35);
-        }
         .not-found {
             text-align: center;
             padding: 80px 20px;
@@ -187,17 +166,6 @@
         }
         #qr {
             display: inline-block;
-        }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 16px;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-            color: #6ee7f3;
-            text-decoration: none;
-        }
-        .back-link:hover {
-            opacity: 1;
         }
     </style>
 </head>
@@ -247,7 +215,6 @@
 
     <main>
     <div class="project-wrap">
-        <p class="back-link"><a href="/hub.html" style="color: #6ee7f3; text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Back to Hub</a></p>
         <div id="loading" style="text-align: center; padding: 100px 20px;">
             <p style="opacity: 0.7;">Loading project...</p>
         </div>
@@ -256,7 +223,7 @@
             <h1>404</h1>
             <p>Project not found</p>
             <div class="actions">
-                <a href="hub.html" class="btn btn-primary">
+                <a href="hub.html" class="btn primary ghost">
                     <i class="fas fa-home"></i> Back to Hub
                 </a>
             </div>
@@ -277,7 +244,7 @@
 
             <div class="project-section">
                 <h2>About</h2>
-                <div class="project-description" id="projectDescription">
+                <div class="project-description" id="pageDescription">
                     No description available.
                 </div>
             </div>
@@ -345,13 +312,13 @@
                     if (ogTitle) ogTitle.content = `${project.name} • NexCore Labs`;
                     if (twitterTitle) twitterTitle.content = `${project.name} • NexCore Labs`;
                     
-                    if (project.description) {
+                    if (project.page_description) {
                         const desc = document.querySelector('meta[name="description"]');
                         const ogDesc = document.querySelector('meta[property="og:description"]');
                         const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-                        if (desc) desc.content = project.description;
-                        if (ogDesc) ogDesc.content = project.description;
-                        if (twitterDesc) twitterDesc.content = project.description;
+                        if (desc) desc.content = project.card_description;
+                        if (ogDesc) ogDesc.content = project.card_description;
+                        if (twitterDesc) twitterDesc.content = project.card_description;
                     }
                 } catch (e) {
                     console.warn('Failed to update meta tags:', e);
@@ -360,7 +327,7 @@
                 // Populate content
                 document.getElementById('projectId').textContent = project.public_id || 'Proj-#';
                 document.getElementById('projectName').textContent = project.name || 'Untitled Project';
-                document.getElementById('projectDescription').textContent = project.description || 'No description available.';
+                document.getElementById('pageDescription').textContent = project.page_description || 'No description available.';
 
             // Show image if available
             if (project.image_url && project.image_url.startsWith('http')) {

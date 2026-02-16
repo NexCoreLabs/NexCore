@@ -103,8 +103,8 @@
 
         <section id="projects" class="panel">
           <div class="container">
-            <h2 class="section-title">Projects<span style="display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.65rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle;position:relative;top:-2px;">BETA</span></h2>
-            <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
+            <h2 class="section-title">Projects<span style="display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.65rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle;position:relative;top:-2px;">BETA</span></h2>
+            <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
             
                 <!-- 🔍 Search Bar -->
             <div class="search-bar">
@@ -256,7 +256,7 @@
             // Fetch published projects from Supabase
             const { data, error } = await sb
               .from('projects')
-              .select('public_id, name, slug, description')
+              .select('public_id, name, slug, card_description')
               .eq('published', true)
               .order('created_at', { ascending: false })
               .limit(100);
@@ -288,7 +288,7 @@
                   <strong>${project.name || 'Untitled'} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong>
                   <span class="id">${project.public_id || ''}</span>
                 </a>
-                <p>${project.description || 'No description available.'}</p>
+                <p>${project.card_description || 'No description available.'}</p>
               `;
               container.appendChild(card);
             });
