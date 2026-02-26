@@ -518,6 +518,7 @@
                         .from('projects')
                         .select('*')
                         .eq('slug', slug)
+                        .eq('owner_user_id', session.user.id)
                         .single();
                     
                     if (ownerQuery.data) {

@@ -289,6 +289,7 @@
     }
 
     let project = null;
+    let currentUserId = null;
 
     function render(p) {
       project = p;
@@ -371,20 +372,32 @@
       return session;
     }
 
-    async function loadMyProject() {
+    async function loadMyProject(userId = currentUserId) {
       setMsg(document.getElementById("msgCard"), "");
       setMsg(document.getElementById("msgProfile"), "");
+
+      if (!userId) {
+        render(null);
+        setMsg(document.getElementById("msgCard"), "Unable to determine current user session.", true);
+        return;
+      }
+
       const { data, error } = await sb
         .from("projects")
         .select("*")
-        .limit(1);
+        .eq("owner_user_id", userId)
+        .maybeSingle();
 
       if (error) {
         setMsg(document.getElementById("msgCard"), error.message, true);
         render(null);
         return;
       }
-      render(data && data[0] ? data[0] : null);
+
+      console.log("Current user:", userId);
+      console.log("Project loaded:", data ? data.owner_user_id : null);
+
+      render(data || null);
     }
 
     async function createProject() {
@@ -421,7 +434,7 @@
             if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
               disableButtons(false);
               setMsg(msgEl, "You already have a project. Loading it now...");
-              await loadMyProject();
+              await loadMyProject(currentUserId);
               return;
             }
             disableButtons(false);
@@ -433,7 +446,7 @@
           // User already has a project
           disableButtons(false);
           setMsg(msgEl, "You already have a project. Loading it now...");
-          await loadMyProject();
+          await loadMyProject(currentUserId);
           return;
         } else {
           disableButtons(false);
@@ -584,6 +597,9 @@
       const session = await requireAuth();
       if (!session) return;
 
+      currentUserId = session.user.id;
+      console.log("Current user:", currentUserId);
+
       document.getElementById("logoutBtn").addEventListener("click", logout);
       document.getElementById("createProjectBtn").addEventListener("click", createProject);
       document.getElementById("copyProjectPageLink").addEventListener("click", copyProjectPageLink);
@@ -623,7 +639,7 @@
         }
       });
 
-      await loadMyProject();
+      await loadMyProject(currentUserId);
     });
 
     async function copyProjectPageLink() {
