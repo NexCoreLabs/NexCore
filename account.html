@@ -380,7 +380,8 @@
         // Get user's project(s) - RLS ensures only user's projects are returned
         const { data: projects, error: fetchError } = await sb
           .from("projects")
-          .select("*");
+          .select("*")
+          .eq("owner_user_id", session.user.id);
 
         if (fetchError) {
           throw new Error(fetchError.message);
@@ -518,7 +519,8 @@ End of Export
         // Get user's project(s) - RLS ensures only user's projects are returned
         const { data: projects, error } = await sb
           .from("projects")
-          .select("*");
+          .select("*")
+          .eq("owner_user_id", session.user.id);
 
         if (error) {
           throw new Error(error.message);

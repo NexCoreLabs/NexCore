@@ -312,16 +312,16 @@
             const query = this.value.toLowerCase().trim();
             const cards = document.querySelectorAll('.project-card');
 
-            cards.forEach(card => {
-              const name = (card.getAttribute('data-name') || '').toLowerCase();
-              const id = (card.getAttribute('data-id') || '').toLowerCase();
+            // cards.forEach(card => {
+            //   const name = (card.getAttribute('data-name') || '').toLowerCase();
+            //   const id = (card.getAttribute('data-id') || '').toLowerCase();
               
-              if (name.includes(query) || id.includes(query)) {
-                card.style.display = '';
-              } else {
-                card.style.display = 'none';
-              }
-            });
+            //   if (name.includes(query) || id.includes(query)) {
+            //     card.style.display = '';
+            //   } else {
+            //     card.style.display = 'none';
+            //   }
+            // });
           });
         }
 

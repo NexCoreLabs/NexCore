@@ -24,8 +24,8 @@
     <meta name="twitter:description" content="View project details on NexCore Labs">
 
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+    <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
+    <link rel="stylesheet" href="assets/css/unminified-css.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@
         }
         .project-hero {
             text-align: center;
-            padding: 40px 20px;
+            padding: 20px;
             background: rgba(10, 11, 28, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 20px;
@@ -54,7 +54,7 @@
         }
         .project-hero h1 {
             font-size: 2.5rem;
-            margin: 0 0 10px;
+            margin: 0;
             font-weight: 700;
         }
         .project-id {
@@ -89,11 +89,12 @@
         }
         .project-image {
             max-width: 400px;
-            width: 100%;
+            width: 90%;
             border-radius: 16px;
-            margin: 20px auto;
+            margin: 0px auto 20px;
             display: block;
-            border: 1px solid rgba(255, 255, 255, 0.10);
+            border: 2px solid rgba(255, 255, 255, 0.06);
+            padding: 10px;
         }
         .project-section {
             background: rgba(10, 11, 28, 0.25);
@@ -153,13 +154,12 @@
             margin-bottom: 16px;
         }
         .qr-container {
-            display: flex;
+            display: inline-flex;
             justify-content: center;
             margin-top: 24px;
-            padding: 20px;
+            padding: 12px;
             background: #fff;
             border-radius: 12px;
-            display: inline-block;
         }
         .qr-section {
             text-align: center;
@@ -233,13 +233,13 @@
             <div class="project-hero">
                 <div class="project-id" id="projectId">Proj-#</div>
                 <h1 id="projectName">Project Name</h1>
+                <img id="projectImage" class="project-image" alt="" style="display: none;" />
                 <div class="project-stats">
                     <div class="stat-badge">
                         <i class="fas fa-eye"></i>
                         <span id="viewCount">-</span> views
                     </div>
                 </div>
-                <img id="projectImage" class="project-image" alt="" style="display: none;" />
             </div>
 
             <div class="project-section">
@@ -257,10 +257,10 @@
             <div class="project-section qr-section">
                 <h2>Share This Project</h2>
                 <div class="actions">
-                    <button class="btn" id="shareBtn">
+                    <button class="btn primary ghost" id="shareBtn">
                         <i class="fas fa-share-alt"></i> Share Link
                     </button>
-                    <button class="btn" id="copyBtn">
+                    <button class="btn primary ghost" id="copyBtn">
                         <i class="fas fa-copy"></i> Copy Link
                     </button>
                 </div>
@@ -271,7 +271,7 @@
             </div>
 
             <div id="ownerActions" class="project-section" style="display: none; text-align: center;">
-                <a href="dashboard.html" class="btn btn-primary">
+                <a href="dashboard.html" class="btn primary ghost">
                     <i class="fas fa-edit"></i> Edit in Dashboard
                 </a>
             </div>
@@ -518,6 +518,7 @@
                         .from('projects')
                         .select('*')
                         .eq('slug', slug)
+                        .eq('owner_user_id', session.user.id)
                         .single();
                     
                     if (ownerQuery.data) {

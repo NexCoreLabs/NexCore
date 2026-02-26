@@ -1332,7 +1332,7 @@ textarea {
   font-size: 14px;
   padding: 14px 20px 12px 20px;
   border: none;
-  color: #eaf6fb;
+  color: var(--muted);
   border-bottom: 1px solid #6bd3c9;
   background: linear-gradient(
     135deg,
@@ -1354,7 +1354,7 @@ textarea {
 
 input:hover,
 textarea:hover {
-  color: var(--muted);
+  color: #eaf6fb;
   border-bottom-color: #6ee7f3;
   transform: scale(0.99);
 }
@@ -1818,7 +1818,7 @@ textarea:focus {
   padding: 14px 20px 12px 20px;
   margin-top: 8px;
   border: none;
-  color: #eaf6fb;
+  color: var(--muted);
   border-bottom: 1px solid #6bd3c9;
   background: linear-gradient(
     135deg,
@@ -1833,9 +1833,9 @@ textarea:focus {
 }
 
 #myInput:hover {
-  color: var(--muted);
+  color: #eaf6fb;
   border-bottom-color: #6ee7f3;
-  transform: translateY(-2px);
+  transform: scale(0.99);
 }
 
 #myInput:focus {
