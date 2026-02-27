@@ -141,15 +141,41 @@
           <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
 
           <label>Project name *</label>
-          <input id="cardName" />
+          <input id="cardName" placeholder="e.x NexCore Labs"/>
 
           <label>Slug (URL identifier) *</label>
-          <input id="cardSlug" placeholder="sovlex" />
+          <input id="cardSlug" placeholder="e.x nexcore-labs" />
           <p class="muted" style="font-size:.85rem;margin-top:4px;">Used in your public link: /project.html?slug=<span id="slugPreview">your-slug</span></p>
 
           <label>Short Description</label>
-          <input id="cardDescription" placeholder="A brief one-phrase description..." />
+          <textarea id="cardDescription" placeholder="A brief one-phrase description..."></textarea>
           <p class="muted" style="font-size:.85rem;margin-top:4px;">One phrase that appears on hub cards</p>
+
+          <!-- AI Card Summary Generator -->
+          <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Card Summary<span class="beta-badge">BETA</span></h4>
+            <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
+            
+            <button class="btn primary ghost" id="aiCardBtn" style="width:100%;max-width:320px;">
+              <i class="fa-solid fa-sparkles"></i> Generate from page description
+            </button>
+            
+            <div id="aiCardOutput" style="display:none;margin-top:12px;">
+              <label>AI Generated Summary</label>
+              <textarea id="aiOutputCard" readonly style="background:rgba(0,0,0,.2);cursor:default;min-height:80px;"></textarea>
+              <div class="row" style="margin-top:10px;gap:8px;">
+                <button class="btn primary" id="aiReplaceCardBtn">
+                  <i class="fa-solid fa-arrow-up"></i> Replace card description
+                </button>
+                <button class="btn copy" id="aiCopyCardBtn">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+            </div>
+            
+            <p id="aiCardStatus" style="margin-top:10px;font-size:.9rem;"></p>
+            <p id="aiCardRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
+          </div>
 
           <div class="row" style="margin-top:12px;align-items:center;gap:12px;">
             <button class="btn primary ghost" id="saveCardBtn">Save Card</button>
@@ -209,6 +235,41 @@
           <label>Detailed Description (Page)</label>
           <textarea id="pageDescription" placeholder="Tell the world about your project in detail..."></textarea>
           <p class="muted" style="font-size:.85rem;margin-top:4px;">Detailed information displayed on the full project page</p>
+
+          <!-- AI Improve Page Description -->
+          <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Improve Page Description<span class="beta-badge">BETA</span></h4>
+            <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Use AI to refine and enhance your page description</p>
+            
+            <div class="row" style="margin-bottom:12px;gap:10px;align-items:center;">
+              <label style="margin:0;">Style:</label>
+              <select id="aiStyle" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.3);color:#fff;cursor:pointer;">
+                <option value="Professional">Professional</option>
+                <option value="Shorter">Shorter</option>
+                <option value="Technical">Technical</option>
+                <option value="Inspiring">Inspiring</option>
+              </select>
+              <button class="btn primary ghost" id="aiImproveBtn">
+                <i class="fa-solid fa-sparkles"></i> Generate
+              </button>
+            </div>
+            
+            <div id="aiPageOutput" style="display:none;">
+              <label>AI Generated Description</label>
+              <textarea id="aiOutputPage" readonly style="background:rgba(0,0,0,.2);cursor:default;min-height:140px;"></textarea>
+              <div class="row" style="margin-top:10px;gap:8px;">
+                <button class="btn primary" id="aiReplacePageBtn">
+                  <i class="fa-solid fa-arrow-up"></i> Replace page description
+                </button>
+                <button class="btn copy" id="aiCopyPageBtn">
+                  <i class="fa-solid fa-copy"></i> Copy
+                </button>
+              </div>
+            </div>
+            
+            <p id="aiStatus" style="margin-top:10px;font-size:.9rem;"></p>
+            <p id="aiRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
+          </div>
 
           <label>Website URL (optional)</label>
           <input id="profileWebsite" placeholder="https://..." type="url" />
@@ -435,6 +496,211 @@
               disableButtons(false);
               setMsg(msgEl, "You already have a project. Loading it now...");
               await loadMyProject(currentUserId);
+
+                  // ========================================
+                  // AI ASSIST HANDLERS
+                  // ========================================
+                  let aiHandlersInitialized = false;
+
+                  function initAIHandlers() {
+                    if (aiHandlersInitialized) return;
+                    aiHandlersInitialized = true;
+
+                    // AI Improve Page Description
+                    document.getElementById("aiImproveBtn").addEventListener("click", async () => {
+                      const btn = document.getElementById("aiImproveBtn");
+                      const statusEl = document.getElementById("aiStatus");
+                      const remainingEl = document.getElementById("aiRemaining");
+                      const outputDiv = document.getElementById("aiPageOutput");
+                      const outputTextarea = document.getElementById("aiOutputPage");
+                      const pageDesc = document.getElementById("pageDescription").value.trim();
+                      const style = document.getElementById("aiStyle").value;
+
+                      setMsg(statusEl, "");
+                      outputDiv.style.display = "none";
+
+                      if (!pageDesc) {
+                        return setMsg(statusEl, "Please enter a page description first.", true);
+                      }
+
+                      btn.disabled = true;
+                      setMsg(statusEl, "Generating with AI...");
+
+                      try {
+                        const { data: { session } } = await sb.auth.getSession();
+                        if (!session) {
+                          btn.disabled = false;
+                          return setMsg(statusEl, "You must be signed in.", true);
+                        }
+
+                        const response = await fetch('/api/ai', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${session.access_token}`
+                          },
+                          body: JSON.stringify({
+                            action: 'improve_page',
+                            style: style,
+                            text: pageDesc
+                          })
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                          btn.disabled = false;
+                          if (response.status === 429) {
+                            remainingEl.textContent = `AI uses left today: 0/3`;
+                            return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+                          }
+                          return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+                        }
+
+                        // Success
+                        outputTextarea.value = data.result || "";
+                        outputDiv.style.display = "block";
+                        remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+                        setMsg(statusEl, "✓ Generated successfully!");
+
+                      } catch (error) {
+                        console.error("AI error:", error);
+                        setMsg(statusEl, "Network error. Please try again.", true);
+                      } finally {
+                        btn.disabled = false;
+                      }
+                    });
+
+                    // Replace page description
+                    document.getElementById("aiReplacePageBtn").addEventListener("click", () => {
+                      const aiOutput = document.getElementById("aiOutputPage").value;
+                      const pageDescTextarea = document.getElementById("pageDescription");
+        
+                      if (aiOutput) {
+                        pageDescTextarea.value = aiOutput;
+                        setMsg(document.getElementById("aiStatus"), "✓ Replaced! Remember to save your changes.");
+                      }
+                    });
+
+                    // Copy page AI output
+                    document.getElementById("aiCopyPageBtn").addEventListener("click", async () => {
+                      const btn = document.getElementById("aiCopyPageBtn");
+                      const aiOutput = document.getElementById("aiOutputPage").value;
+        
+                      if (!aiOutput) return;
+        
+                      try {
+                        await navigator.clipboard.writeText(aiOutput);
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        setTimeout(() => {
+                          btn.innerHTML = originalHTML;
+                        }, 2000);
+                      } catch (error) {
+                        console.error("Copy failed:", error);
+                      }
+                    });
+
+                    // AI Generate Card Summary
+                    document.getElementById("aiCardBtn").addEventListener("click", async () => {
+                      const btn = document.getElementById("aiCardBtn");
+                      const statusEl = document.getElementById("aiCardStatus");
+                      const remainingEl = document.getElementById("aiCardRemaining");
+                      const outputDiv = document.getElementById("aiCardOutput");
+                      const outputTextarea = document.getElementById("aiOutputCard");
+                      const pageDesc = document.getElementById("pageDescription").value.trim();
+
+                      setMsg(statusEl, "");
+                      outputDiv.style.display = "none";
+
+                      if (!pageDesc) {
+                        return setMsg(statusEl, "Please enter a page description first.", true);
+                      }
+
+                      btn.disabled = true;
+                      setMsg(statusEl, "Generating with AI...");
+
+                      try {
+                        const { data: { session } } = await sb.auth.getSession();
+                        if (!session) {
+                          btn.disabled = false;
+                          return setMsg(statusEl, "You must be signed in.", true);
+                        }
+
+                        const response = await fetch('/api/ai', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${session.access_token}`
+                          },
+                          body: JSON.stringify({
+                            action: 'card_summary',
+                            text: pageDesc
+                          })
+                        });
+
+                        const data = await response.json();
+
+                        if (!response.ok) {
+                          btn.disabled = false;
+                          if (response.status === 429) {
+                            remainingEl.textContent = `AI uses left today: 0/3`;
+                            return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+                          }
+                          return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+                        }
+
+                        // Success
+                        outputTextarea.value = data.result || "";
+                        outputDiv.style.display = "block";
+                        remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+                        setMsg(statusEl, "✓ Generated successfully!");
+
+                      } catch (error) {
+                        console.error("AI error:", error);
+                        setMsg(statusEl, "Network error. Please try again.", true);
+                      } finally {
+                        btn.disabled = false;
+                      }
+                    });
+
+                    // Replace card description
+                    document.getElementById("aiReplaceCardBtn").addEventListener("click", () => {
+                      const aiOutput = document.getElementById("aiOutputCard").value;
+                      const cardDescInput = document.getElementById("cardDescription");
+        
+                      if (aiOutput) {
+                        cardDescInput.value = aiOutput;
+                        setMsg(document.getElementById("aiCardStatus"), "✓ Replaced! Remember to save your changes.");
+                      }
+                    });
+
+                    // Copy card AI output
+                    document.getElementById("aiCopyCardBtn").addEventListener("click", async () => {
+                      const btn = document.getElementById("aiCopyCardBtn");
+                      const aiOutput = document.getElementById("aiOutputCard").value;
+        
+                      if (!aiOutput) return;
+        
+                      try {
+                        await navigator.clipboard.writeText(aiOutput);
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        setTimeout(() => {
+                          btn.innerHTML = originalHTML;
+                        }, 2000);
+                      } catch (error) {
+                        console.error("Copy failed:", error);
+                      }
+                    });
+                  }
+
+                  // Initialize AI handlers on page load
+                  if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initAIHandlers);
+                  } else {
+                    initAIHandlers();
+                  }
               return;
             }
             disableButtons(false);
