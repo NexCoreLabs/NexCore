@@ -7,7 +7,7 @@ const { GoogleGenAI } = require('@google/genai');
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'models/gemini-2.5-flash';
 
 module.exports = async (req, res) => {
   // Top-level try/catch to ensure we always return JSON
@@ -151,22 +151,43 @@ ${text}`;
       apiKey: GEMINI_API_KEY
     });
 
-    console.log('Using Gemini model:', GEMINI_MODEL);
+    console.log('Using model:', GEMINI_MODEL);
 
     // Call Gemini API using SDK
-    const result = await ai.models.generateContent({
-      model: GEMINI_MODEL,
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }]
+    let result;
+    try {
+      result = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: prompt }]
+          }
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: action === 'card_summary' ? 150 : 500
         }
-      ],
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: action === 'card_summary' ? 150 : 500
+      });
+    } catch (geminiErr) {
+      console.error('Gemini API error:', geminiErr?.message || geminiErr);
+      
+      // Check for quota exceeded (429)
+      if (geminiErr?.message?.includes('429') || geminiErr?.message?.includes('quota')) {
+        return res.status(503).json({
+          error: 'AI temporarily unavailable',
+          details: 'Quota exceeded. Try later.',
+          model: GEMINI_MODEL
+        });
       }
-    });
+      
+      // Other Gemini errors
+      return res.status(500).json({
+        error: 'Gemini API failed',
+        details: geminiErr?.message || String(geminiErr),
+        model: GEMINI_MODEL
+      });
+    }
 
     // Extract generated text safely
     const generatedText = result?.text || '';
@@ -186,6 +207,15 @@ ${text}`;
   } catch (err) {
     // Top-level error handler - ensures we always return JSON
     console.error('AI endpoint crash:', err);
+    
+    // Handle quota exceeded at top level
+    if (err?.message?.includes('429') || err?.message?.includes('quota')) {
+      return res.status(503).json({
+        error: 'AI temporarily unavailable',
+        details: 'Quota exceeded. Try later.'
+      });
+    }
+    
     return res.status(500).json({
       error: 'Gemini API failed',
       details: err?.message || String(err)

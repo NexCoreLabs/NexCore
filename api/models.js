@@ -1,8 +1,9 @@
 // Temporary endpoint to discover available Gemini models
 // GET /api/models
 // Lists all available models from Google Gemini API
+// DELETE after confirming working model in /api/ai.js
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -88,4 +89,4 @@ export default async function handler(req, res) {
       details: String(error?.message || error)
     });
   }
-}
+};
