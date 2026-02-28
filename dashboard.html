@@ -496,211 +496,6 @@
               disableButtons(false);
               setMsg(msgEl, "You already have a project. Loading it now...");
               await loadMyProject(currentUserId);
-
-                  // ========================================
-                  // AI ASSIST HANDLERS
-                  // ========================================
-                  let aiHandlersInitialized = false;
-
-                  function initAIHandlers() {
-                    if (aiHandlersInitialized) return;
-                    aiHandlersInitialized = true;
-
-                    // AI Improve Page Description
-                    document.getElementById("aiImproveBtn").addEventListener("click", async () => {
-                      const btn = document.getElementById("aiImproveBtn");
-                      const statusEl = document.getElementById("aiStatus");
-                      const remainingEl = document.getElementById("aiRemaining");
-                      const outputDiv = document.getElementById("aiPageOutput");
-                      const outputTextarea = document.getElementById("aiOutputPage");
-                      const pageDesc = document.getElementById("pageDescription").value.trim();
-                      const style = document.getElementById("aiStyle").value;
-
-                      setMsg(statusEl, "");
-                      outputDiv.style.display = "none";
-
-                      if (!pageDesc) {
-                        return setMsg(statusEl, "Please enter a page description first.", true);
-                      }
-
-                      btn.disabled = true;
-                      setMsg(statusEl, "Generating with AI...");
-
-                      try {
-                        const { data: { session } } = await sb.auth.getSession();
-                        if (!session) {
-                          btn.disabled = false;
-                          return setMsg(statusEl, "You must be signed in.", true);
-                        }
-
-                        const response = await fetch('/api/ai', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${session.access_token}`
-                          },
-                          body: JSON.stringify({
-                            action: 'improve_page',
-                            style: style,
-                            text: pageDesc
-                          })
-                        });
-
-                        const data = await response.json();
-
-                        if (!response.ok) {
-                          btn.disabled = false;
-                          if (response.status === 429) {
-                            remainingEl.textContent = `AI uses left today: 0/3`;
-                            return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
-                          }
-                          return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
-                        }
-
-                        // Success
-                        outputTextarea.value = data.result || "";
-                        outputDiv.style.display = "block";
-                        remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-                        setMsg(statusEl, "✓ Generated successfully!");
-
-                      } catch (error) {
-                        console.error("AI error:", error);
-                        setMsg(statusEl, "Network error. Please try again.", true);
-                      } finally {
-                        btn.disabled = false;
-                      }
-                    });
-
-                    // Replace page description
-                    document.getElementById("aiReplacePageBtn").addEventListener("click", () => {
-                      const aiOutput = document.getElementById("aiOutputPage").value;
-                      const pageDescTextarea = document.getElementById("pageDescription");
-        
-                      if (aiOutput) {
-                        pageDescTextarea.value = aiOutput;
-                        setMsg(document.getElementById("aiStatus"), "✓ Replaced! Remember to save your changes.");
-                      }
-                    });
-
-                    // Copy page AI output
-                    document.getElementById("aiCopyPageBtn").addEventListener("click", async () => {
-                      const btn = document.getElementById("aiCopyPageBtn");
-                      const aiOutput = document.getElementById("aiOutputPage").value;
-        
-                      if (!aiOutput) return;
-        
-                      try {
-                        await navigator.clipboard.writeText(aiOutput);
-                        const originalHTML = btn.innerHTML;
-                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                        setTimeout(() => {
-                          btn.innerHTML = originalHTML;
-                        }, 2000);
-                      } catch (error) {
-                        console.error("Copy failed:", error);
-                      }
-                    });
-
-                    // AI Generate Card Summary
-                    document.getElementById("aiCardBtn").addEventListener("click", async () => {
-                      const btn = document.getElementById("aiCardBtn");
-                      const statusEl = document.getElementById("aiCardStatus");
-                      const remainingEl = document.getElementById("aiCardRemaining");
-                      const outputDiv = document.getElementById("aiCardOutput");
-                      const outputTextarea = document.getElementById("aiOutputCard");
-                      const pageDesc = document.getElementById("pageDescription").value.trim();
-
-                      setMsg(statusEl, "");
-                      outputDiv.style.display = "none";
-
-                      if (!pageDesc) {
-                        return setMsg(statusEl, "Please enter a page description first.", true);
-                      }
-
-                      btn.disabled = true;
-                      setMsg(statusEl, "Generating with AI...");
-
-                      try {
-                        const { data: { session } } = await sb.auth.getSession();
-                        if (!session) {
-                          btn.disabled = false;
-                          return setMsg(statusEl, "You must be signed in.", true);
-                        }
-
-                        const response = await fetch('/api/ai', {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${session.access_token}`
-                          },
-                          body: JSON.stringify({
-                            action: 'card_summary',
-                            text: pageDesc
-                          })
-                        });
-
-                        const data = await response.json();
-
-                        if (!response.ok) {
-                          btn.disabled = false;
-                          if (response.status === 429) {
-                            remainingEl.textContent = `AI uses left today: 0/3`;
-                            return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
-                          }
-                          return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
-                        }
-
-                        // Success
-                        outputTextarea.value = data.result || "";
-                        outputDiv.style.display = "block";
-                        remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-                        setMsg(statusEl, "✓ Generated successfully!");
-
-                      } catch (error) {
-                        console.error("AI error:", error);
-                        setMsg(statusEl, "Network error. Please try again.", true);
-                      } finally {
-                        btn.disabled = false;
-                      }
-                    });
-
-                    // Replace card description
-                    document.getElementById("aiReplaceCardBtn").addEventListener("click", () => {
-                      const aiOutput = document.getElementById("aiOutputCard").value;
-                      const cardDescInput = document.getElementById("cardDescription");
-        
-                      if (aiOutput) {
-                        cardDescInput.value = aiOutput;
-                        setMsg(document.getElementById("aiCardStatus"), "✓ Replaced! Remember to save your changes.");
-                      }
-                    });
-
-                    // Copy card AI output
-                    document.getElementById("aiCopyCardBtn").addEventListener("click", async () => {
-                      const btn = document.getElementById("aiCopyCardBtn");
-                      const aiOutput = document.getElementById("aiOutputCard").value;
-        
-                      if (!aiOutput) return;
-        
-                      try {
-                        await navigator.clipboard.writeText(aiOutput);
-                        const originalHTML = btn.innerHTML;
-                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-                        setTimeout(() => {
-                          btn.innerHTML = originalHTML;
-                        }, 2000);
-                      } catch (error) {
-                        console.error("Copy failed:", error);
-                      }
-                    });
-                  }
-
-                  // Initialize AI handlers on page load
-                  if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', initAIHandlers);
-                  } else {
-                    initAIHandlers();
-                  }
               return;
             }
             disableButtons(false);
@@ -906,6 +701,272 @@
       });
 
       await loadMyProject(currentUserId);
+
+      // ========================================
+      // AI ASSIST HANDLERS (with debug logs)
+      // ========================================
+      if (window.__aiInitDone) {
+        console.warn("AI handlers already initialized, skipping.");
+        return;
+      }
+      window.__aiInitDone = true;
+      console.log("✅ AI init OK");
+
+      // Verify all required elements exist
+      const aiElements = {
+        aiImproveBtn: document.getElementById("aiImproveBtn"),
+        aiCardBtn: document.getElementById("aiCardBtn"),
+        pageDescription: document.getElementById("pageDescription"),
+        cardDescription: document.getElementById("cardDescription"),
+        aiStatus: document.getElementById("aiStatus"),
+        aiCardStatus: document.getElementById("aiCardStatus")
+      };
+
+      for (const [key, element] of Object.entries(aiElements)) {
+        if (!element) {
+          console.error(`❌ Missing element: #${key}`);
+        } else {
+          console.log(`✅ Found element: #${key}`);
+        }
+      }
+
+      // AI Improve Page Description Handler
+      if (aiElements.aiImproveBtn) {
+        aiElements.aiImproveBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          console.log("🔵 AI click fired: improve page");
+
+          const btn = aiElements.aiImproveBtn;
+          const statusEl = aiElements.aiStatus;
+          const remainingEl = document.getElementById("aiRemaining");
+          const outputDiv = document.getElementById("aiPageOutput");
+          const outputTextarea = document.getElementById("aiOutputPage");
+          const pageDesc = aiElements.pageDescription.value.trim();
+          const style = document.getElementById("aiStyle").value;
+
+          // Clear previous status
+          setMsg(statusEl, "");
+          if (outputDiv) outputDiv.style.display = "none";
+
+          // Validate input
+          if (!pageDesc) {
+            console.log("⚠️ No page description entered");
+            return setMsg(statusEl, "Please enter a page description first.", true);
+          }
+
+          // Disable button and show loading
+          btn.disabled = true;
+          setMsg(statusEl, "Calling AI...");
+          console.log("📡 Fetching AI response...");
+
+          try {
+            // Get session token
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+              console.error("❌ No session found");
+              btn.disabled = false;
+              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
+            }
+
+            console.log("🔑 Session token obtained");
+
+            // Call API
+            const response = await fetch('/api/ai', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+              },
+              body: JSON.stringify({
+                action: 'improve_page',
+                style: style,
+                text: pageDesc
+              })
+            });
+
+            console.log(`📊 AI fetch status: ${response.status}`);
+
+            const data = await response.json();
+            console.log("📦 AI response data:", data);
+
+            if (!response.ok) {
+              btn.disabled = false;
+              if (response.status === 429) {
+                if (remainingEl) remainingEl.textContent = `AI uses left today: 0/3`;
+                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+              }
+              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+            }
+
+            // Success
+            if (outputTextarea) outputTextarea.value = data.result || "";
+            if (outputDiv) outputDiv.style.display = "block";
+            if (remainingEl) remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+            setMsg(statusEl, "✓ Generated successfully!");
+            console.log("✅ AI generation successful");
+
+          } catch (error) {
+            console.error("❌ AI error:", error);
+            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+          } finally {
+            btn.disabled = false;
+          }
+        });
+        console.log("✅ aiImproveBtn listener attached");
+      }
+
+      // Replace page description button
+      const aiReplacePageBtn = document.getElementById("aiReplacePageBtn");
+      if (aiReplacePageBtn) {
+        aiReplacePageBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const aiOutput = document.getElementById("aiOutputPage").value;
+          if (aiOutput && aiElements.pageDescription) {
+            aiElements.pageDescription.value = aiOutput;
+            setMsg(aiElements.aiStatus, "✓ Replaced! Remember to save your changes.");
+          }
+        });
+      }
+
+      // Copy page AI output button
+      const aiCopyPageBtn = document.getElementById("aiCopyPageBtn");
+      if (aiCopyPageBtn) {
+        aiCopyPageBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const aiOutput = document.getElementById("aiOutputPage").value;
+          if (!aiOutput) return;
+
+          try {
+            await navigator.clipboard.writeText(aiOutput);
+            const originalHTML = aiCopyPageBtn.innerHTML;
+            aiCopyPageBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+              aiCopyPageBtn.innerHTML = originalHTML;
+            }, 2000);
+          } catch (error) {
+            console.error("Copy failed:", error);
+          }
+        });
+      }
+
+      // AI Generate Card Summary Handler
+      if (aiElements.aiCardBtn) {
+        aiElements.aiCardBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          console.log("🔵 AI click fired: generate card summary");
+
+          const btn = aiElements.aiCardBtn;
+          const statusEl = aiElements.aiCardStatus;
+          const remainingEl = document.getElementById("aiCardRemaining");
+          const outputDiv = document.getElementById("aiCardOutput");
+          const outputTextarea = document.getElementById("aiOutputCard");
+          const pageDesc = aiElements.pageDescription.value.trim();
+
+          // Clear previous status
+          setMsg(statusEl, "");
+          if (outputDiv) outputDiv.style.display = "none";
+
+          // Validate input
+          if (!pageDesc) {
+            console.log("⚠️ No page description entered");
+            return setMsg(statusEl, "Please enter a page description first.", true);
+          }
+
+          // Disable button and show loading
+          btn.disabled = true;
+          setMsg(statusEl, "Calling AI...");
+          console.log("📡 Fetching AI card summary...");
+
+          try {
+            // Get session token
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+              console.error("❌ No session found");
+              btn.disabled = false;
+              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
+            }
+
+            console.log("🔑 Session token obtained");
+
+            // Call API
+            const response = await fetch('/api/ai', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.access_token}`
+              },
+              body: JSON.stringify({
+                action: 'card_summary',
+                text: pageDesc
+              })
+            });
+
+            console.log(`📊 AI fetch status: ${response.status}`);
+
+            const data = await response.json();
+            console.log("📦 AI response data:", data);
+
+            if (!response.ok) {
+              btn.disabled = false;
+              if (response.status === 429) {
+                if (remainingEl) remainingEl.textContent = `AI uses left today: 0/3`;
+                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+              }
+              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+            }
+
+            // Success
+            if (outputTextarea) outputTextarea.value = data.result || "";
+            if (outputDiv) outputDiv.style.display = "block";
+            if (remainingEl) remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+            setMsg(statusEl, "✓ Generated successfully!");
+            console.log("✅ AI generation successful");
+
+          } catch (error) {
+            console.error("❌ AI error:", error);
+            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+          } finally {
+            btn.disabled = false;
+          }
+        });
+        console.log("✅ aiCardBtn listener attached");
+      }
+
+      // Replace card description button
+      const aiReplaceCardBtn = document.getElementById("aiReplaceCardBtn");
+      if (aiReplaceCardBtn) {
+        aiReplaceCardBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const aiOutput = document.getElementById("aiOutputCard").value;
+          if (aiOutput && aiElements.cardDescription) {
+            aiElements.cardDescription.value = aiOutput;
+            setMsg(aiElements.aiCardStatus, "✓ Replaced! Remember to save your changes.");
+          }
+        });
+      }
+
+      // Copy card AI output button
+      const aiCopyCardBtn = document.getElementById("aiCopyCardBtn");
+      if (aiCopyCardBtn) {
+        aiCopyCardBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const aiOutput = document.getElementById("aiOutputCard").value;
+          if (!aiOutput) return;
+
+          try {
+            await navigator.clipboard.writeText(aiOutput);
+            const originalHTML = aiCopyCardBtn.innerHTML;
+            aiCopyCardBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+              aiCopyCardBtn.innerHTML = originalHTML;
+            }, 2000);
+          } catch (error) {
+            console.error("Copy failed:", error);
+          }
+        });
+      }
+
+      console.log("✅ All AI handlers initialized");
     });
 
     async function copyProjectPageLink() {
