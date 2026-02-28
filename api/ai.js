@@ -6,9 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-// Gemini API endpoint
-const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
 
 export default async function handler(req, res) {
   // Top-level try/catch to ensure we always return JSON
@@ -152,6 +150,11 @@ ${text}`;
       return res.status(500).json({ error: 'Gemini API key missing' });
     }
 
+    // Build Gemini API endpoint with model
+    const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+    console.log(`🤖 Using Gemini model: ${GEMINI_MODEL}`);
+    console.log(`📍 Gemini endpoint: ${GEMINI_ENDPOINT}`);
+
     // Call Gemini API
     const geminiResponse = await fetch(GEMINI_ENDPOINT, {
       method: 'POST',
@@ -174,10 +177,16 @@ ${text}`;
 
     if (!geminiResponse.ok) {
       const errText = await geminiResponse.text();
-      console.error('Gemini error:', errText);
+      console.error('Gemini error:', {
+        status: geminiResponse.status,
+        model: GEMINI_MODEL,
+        endpoint: GEMINI_ENDPOINT,
+        error: errText.substring(0, 300)
+      });
       return res.status(500).json({ 
         error: 'Gemini API failed',
-        details: errText.substring(0, 200) // Truncate for safety
+        details: `Model: ${GEMINI_MODEL}, Status: ${geminiResponse.status}, Error: ${errText.substring(0, 150)}`,
+        endpoint: GEMINI_ENDPOINT
       });
     }
 
