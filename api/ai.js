@@ -1,14 +1,15 @@
 // Vercel serverless endpoint for AI Assist powered by Google Gemini
 // Enforces 3 AI actions per user per day via Supabase RPC
 
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
+const { GoogleGenAI } = require('@google/genai');
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // Top-level try/catch to ensure we always return JSON
   try {
     // CORS headers
@@ -145,64 +146,39 @@ Source text:
 ${text}`;
     }
 
-    // Validate Gemini API key before calling
-    if (!GEMINI_API_KEY) {
-      return res.status(500).json({ error: 'Gemini API key missing' });
-    }
-
-    // Build Gemini API endpoint with model
-    const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
-    console.log(`🤖 Using Gemini model: ${GEMINI_MODEL}`);
-    console.log(`📍 Gemini endpoint: ${GEMINI_ENDPOINT}`);
-
-    // Call Gemini API
-    const geminiResponse = await fetch(GEMINI_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-goog-api-key': GEMINI_API_KEY
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: prompt
-          }]
-        }],
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: action === 'card_summary' ? 150 : 500
-        }
-      })
+    // Initialize GoogleGenAI client
+    const ai = new GoogleGenAI({
+      apiKey: GEMINI_API_KEY
     });
 
-    if (!geminiResponse.ok) {
-      const errText = await geminiResponse.text();
-      console.error('Gemini error:', {
-        status: geminiResponse.status,
-        model: GEMINI_MODEL,
-        endpoint: GEMINI_ENDPOINT,
-        error: errText.substring(0, 300)
-      });
-      return res.status(500).json({ 
-        error: 'Gemini API failed',
-        details: `Model: ${GEMINI_MODEL}, Status: ${geminiResponse.status}, Error: ${errText.substring(0, 150)}`,
-        endpoint: GEMINI_ENDPOINT
-      });
-    }
+    console.log('Using Gemini model:', GEMINI_MODEL);
 
-    const geminiData = await geminiResponse.json();
-    
-    // Extract generated text
-    const result = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Call Gemini API using SDK
+    const result = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: prompt }]
+        }
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: action === 'card_summary' ? 150 : 500
+      }
+    });
 
-    if (!result) {
-      console.error('No result from Gemini:', geminiData);
+    // Extract generated text safely
+    const generatedText = result?.text || '';
+
+    if (!generatedText) {
+      console.error('No result from Gemini');
       return res.status(500).json({ error: 'No response generated from AI' });
     }
 
     // Return success with usage stats
     return res.status(200).json({
-      result: result.trim(),
+      text: generatedText.trim(),
       used,
       remaining
     });
@@ -211,8 +187,8 @@ ${text}`;
     // Top-level error handler - ensures we always return JSON
     console.error('AI endpoint crash:', err);
     return res.status(500).json({
-      error: 'Internal server error',
-      details: String(err?.message || err)
+      error: 'Gemini API failed',
+      details: err?.message || String(err)
     });
   }
-}
+};
