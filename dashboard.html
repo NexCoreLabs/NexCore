@@ -811,9 +811,6 @@
             setMsg(statusEl, "✓ Generated successfully!");
             console.log("✅ AI generation successful");
 
-            // Update all usage counters
-            await fetchAndDisplayAIUsage();
-
           } catch (error) {
             console.error("❌ AI error:", error);
             setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
@@ -937,9 +934,6 @@
             setMsg(statusEl, "✓ Generated successfully!");
             console.log("✅ AI generation successful");
 
-            // Update all usage counters
-            await fetchAndDisplayAIUsage();
-
           } catch (error) {
             console.error("❌ AI error:", error);
             setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
@@ -985,57 +979,7 @@
       }
 
       console.log("✅ All AI handlers initialized");
-
-      // Fetch and display initial AI usage limits
-      await fetchAndDisplayAIUsage();
     });
-
-    // Function to fetch current AI usage and update all counters
-    async function fetchAndDisplayAIUsage() {
-      try {
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-          console.log("⚠️ No session, skipping AI usage check");
-          return;
-        }
-
-        console.log("📊 Fetching AI usage limits...");
-
-        const response = await fetch('/api/ai', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log("📊 AI usage data:", data);
-
-          const { used, remaining } = data;
-
-          // Update both counters
-          const aiRemaining = document.getElementById("aiRemaining");
-          const aiCardRemaining = document.getElementById("aiCardRemaining");
-
-          if (aiRemaining) {
-            aiRemaining.textContent = `AI uses left today: ${remaining}/3`;
-            aiRemaining.style.color = remaining === 0 ? '#ff7878' : (remaining === 1 ? '#ffaa00' : '#6ee7f3');
-          }
-
-          if (aiCardRemaining) {
-            aiCardRemaining.textContent = `AI uses left today: ${remaining}/3`;
-            aiCardRemaining.style.color = remaining === 0 ? '#ff7878' : (remaining === 1 ? '#ffaa00' : '#6ee7f3');
-          }
-
-          console.log(`✅ AI usage displayed: ${used} used, ${remaining} remaining`);
-        } else {
-          console.error("❌ Failed to fetch AI usage:", response.status);
-        }
-      } catch (error) {
-        console.error("❌ Error fetching AI usage:", error);
-      }
-    }
 
     async function copyProjectPageLink() {
       const publicLinkEl = document.getElementById("publicLink");

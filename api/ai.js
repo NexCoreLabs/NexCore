@@ -11,24 +11,45 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
 
 export default async function handler(req, res) {
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+  // Top-level try/catch to ensure we always return JSON
+  try {
+    // CORS headers
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+    res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+    if (req.method === 'OPTIONS') {
+      return res.status(200).end();
+    }
 
-  // GET method to check current usage without consuming
-  if (req.method === 'GET') {
+    // Validate environment variables
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !GEMINI_API_KEY) {
+      console.error('Missing env vars:', {
+        hasSupabaseUrl: !!SUPABASE_URL,
+        hasSupabaseKey: !!SUPABASE_ANON_KEY,
+        hasGeminiKey: !!GEMINI_API_KEY
+      });
+      return res.status(500).json({
+        error: 'Server misconfigured',
+        details: 'Missing SUPABASE_URL, SUPABASE_ANON_KEY, or GEMINI_API_KEY'
+      });
+    }
+
+    // Only POST method is supported
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    // Extract JWT from Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: 'Missing or invalid authorization token' });
     }
 
     const token = authHeader.split(' ')[1];
+
+    // Initialize Supabase client
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: {
         headers: {
@@ -37,75 +58,36 @@ export default async function handler(req, res) {
       }
     });
 
+    // Verify user token
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    
     if (authError || !user) {
+      console.error('Auth error:', authError?.message);
       return res.status(401).json({ error: 'Invalid or expired token' });
     }
 
-    try {
-      const { data: rpcData, error: rpcError } = await supabase.rpc('get_ai_usage', {
-        max_uses: 3
-      });
+    console.log('AI user:', user.id);
 
-      if (rpcError) {
-        console.error('RPC error:', rpcError);
-        return res.status(500).json({ error: 'Failed to check AI usage' });
-      }
+    // Parse request body
+    const { action, text, style } = req.body;
 
-      return res.status(200).json(rpcData || { used: 0, remaining: 3 });
-    } catch (error) {
-      console.error('Error checking usage:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+    if (!action || !text) {
+      return res.status(400).json({ error: 'Missing required fields: action, text' });
     }
-  }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  // Extract JWT from Authorization header
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Missing or invalid authorization token' });
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  // Initialize Supabase client
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    global: {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+    // Validate action
+    if (!['improve_page', 'card_summary'].includes(action)) {
+      return res.status(400).json({ error: 'Invalid action. Must be improve_page or card_summary' });
     }
-  });
 
-  // Verify user token
-  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-  
-  if (authError || !user) {
-    return res.status(401).json({ error: 'Invalid or expired token' });
-  }
-
-  // Parse request body
-  const { action, text, style } = req.body;
-
-  if (!action || !text) {
-    return res.status(400).json({ error: 'Missing required fields: action, text' });
-  }
-
-  // Validate action
-  if (!['improve_page', 'card_summary'].includes(action)) {
-    return res.status(400).json({ error: 'Invalid action. Must be improve_page or card_summary' });
-  }
-
-  // Consume AI usage (enforces 3/day limit)
-  try {
+    // Consume AI usage (enforces 3/day limit)
     const { data: rpcData, error: rpcError } = await supabase.rpc('consume_ai_use', {
       max_uses: 3
     });
 
     if (rpcError) {
+      console.error('RPC error:', rpcError);
+      
       // Check if it's the daily limit error
       if (rpcError.message && rpcError.message.includes('AI daily limit reached')) {
         return res.status(429).json({ 
@@ -115,12 +97,17 @@ export default async function handler(req, res) {
         });
       }
       
-      console.error('RPC error:', rpcError);
-      return res.status(500).json({ error: 'Failed to check AI usage limit' });
+      return res.status(500).json({ 
+        error: 'Failed to check AI usage limit',
+        details: rpcError.message 
+      });
     }
 
-    // rpcData contains { used: number, remaining: number }
-    const { used, remaining } = rpcData || { used: 0, remaining: 3 };
+    // RPC returns integer count of uses, calculate remaining
+    const used = Number(rpcData || 0);
+    const remaining = Math.max(0, 3 - used);
+
+    console.log('AI used:', used, 'remaining:', remaining);
 
     // Build prompt based on action
     let prompt = '';
@@ -160,6 +147,11 @@ Source text:
 ${text}`;
     }
 
+    // Validate Gemini API key before calling
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Gemini API key missing' });
+    }
+
     // Call Gemini API
     const geminiResponse = await fetch(GEMINI_ENDPOINT, {
       method: 'POST',
@@ -181,11 +173,11 @@ ${text}`;
     });
 
     if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text();
-      console.error('Gemini API error:', errorText);
+      const errText = await geminiResponse.text();
+      console.error('Gemini error:', errText);
       return res.status(500).json({ 
-        error: 'Failed to generate AI response',
-        details: 'The AI service is temporarily unavailable'
+        error: 'Gemini API failed',
+        details: errText.substring(0, 200) // Truncate for safety
       });
     }
 
@@ -195,6 +187,7 @@ ${text}`;
     const result = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     if (!result) {
+      console.error('No result from Gemini:', geminiData);
       return res.status(500).json({ error: 'No response generated from AI' });
     }
 
@@ -205,11 +198,12 @@ ${text}`;
       remaining
     });
 
-  } catch (error) {
-    console.error('AI endpoint error:', error);
-    return res.status(500).json({ 
+  } catch (err) {
+    // Top-level error handler - ensures we always return JSON
+    console.error('AI endpoint crash:', err);
+    return res.status(500).json({
       error: 'Internal server error',
-      details: error.message 
+      details: String(err?.message || err)
     });
   }
 }
