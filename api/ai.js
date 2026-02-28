@@ -21,6 +21,44 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
+  // GET method to check current usage without consuming
+  if (req.method === 'GET') {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Missing or invalid authorization token' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      global: {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    });
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    if (authError || !user) {
+      return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    try {
+      const { data: rpcData, error: rpcError } = await supabase.rpc('get_ai_usage', {
+        max_uses: 3
+      });
+
+      if (rpcError) {
+        console.error('RPC error:', rpcError);
+        return res.status(500).json({ error: 'Failed to check AI usage' });
+      }
+
+      return res.status(200).json(rpcData || { used: 0, remaining: 3 });
+    } catch (error) {
+      console.error('Error checking usage:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
