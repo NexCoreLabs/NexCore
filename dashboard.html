@@ -787,7 +787,7 @@
             console.log(`📊 AI fetch status: ${response.status}`);
 
             const data = await response.json();
-            console.log("📦 AI response data:", data);
+            console.log("📦 AI raw response:", data);
 
             if (!response.ok) {
               btn.disabled = false;
@@ -801,14 +801,18 @@
               return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
             }
 
+            // Extract generated text with fallback for multiple field names
+            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+            console.log("📊 AI generated length:", generated.length);
+
             // Success
-            if (outputTextarea) outputTextarea.value = data.result || "";
+            if (outputTextarea) outputTextarea.value = generated;
             if (outputDiv) outputDiv.style.display = "block";
             if (remainingEl) {
               remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
               remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
             }
-            setMsg(statusEl, "✓ Generated successfully!");
+            setMsg(statusEl, "Generated successfully!");
             console.log("✅ AI generation successful");
 
           } catch (error) {
@@ -826,10 +830,13 @@
       if (aiReplacePageBtn) {
         aiReplacePageBtn.addEventListener("click", (e) => {
           e.preventDefault();
-          const aiOutput = document.getElementById("aiOutputPage").value;
-          if (aiOutput && aiElements.pageDescription) {
+          const aiOutput = document.getElementById("aiOutputPage").value.trim();
+          if (!aiOutput) {
+            return setMsg(aiElements.aiStatus, "Nothing to replace.", true);
+          }
+          if (aiElements.pageDescription) {
             aiElements.pageDescription.value = aiOutput;
-            setMsg(aiElements.aiStatus, "✓ Replaced! Remember to save your changes.");
+            setMsg(aiElements.aiStatus, "Replaced successfully!");
           }
         });
       }
@@ -839,11 +846,27 @@
       if (aiCopyPageBtn) {
         aiCopyPageBtn.addEventListener("click", async (e) => {
           e.preventDefault();
-          const aiOutput = document.getElementById("aiOutputPage").value;
-          if (!aiOutput) return;
+          const aiOutput = document.getElementById("aiOutputPage").value.trim();
+          if (!aiOutput) {
+            return setMsg(aiElements.aiStatus, "Nothing to copy.", true);
+          }
 
           try {
-            await navigator.clipboard.writeText(aiOutput);
+            // Try modern clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(aiOutput);
+            } else {
+              // Fallback for older browsers
+              const textarea = document.createElement('textarea');
+              textarea.value = aiOutput;
+              textarea.style.position = 'fixed';
+              textarea.style.opacity = '0';
+              document.body.appendChild(textarea);
+              textarea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textarea);
+            }
+            
             const originalHTML = aiCopyPageBtn.innerHTML;
             aiCopyPageBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
             setTimeout(() => {
@@ -851,6 +874,7 @@
             }, 2000);
           } catch (error) {
             console.error("Copy failed:", error);
+            setMsg(aiElements.aiStatus, "Copy failed. Please try again.", true);
           }
         });
       }
@@ -910,7 +934,7 @@
             console.log(`📊 AI fetch status: ${response.status}`);
 
             const data = await response.json();
-            console.log("📦 AI response data:", data);
+            console.log("📦 AI raw response:", data);
 
             if (!response.ok) {
               btn.disabled = false;
@@ -924,14 +948,18 @@
               return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
             }
 
+            // Extract generated text with fallback for multiple field names
+            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+            console.log("📊 AI generated length:", generated.length);
+
             // Success
-            if (outputTextarea) outputTextarea.value = data.result || "";
+            if (outputTextarea) outputTextarea.value = generated;
             if (outputDiv) outputDiv.style.display = "block";
             if (remainingEl) {
               remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
               remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
             }
-            setMsg(statusEl, "✓ Generated successfully!");
+            setMsg(statusEl, "Generated successfully!");
             console.log("✅ AI generation successful");
 
           } catch (error) {
@@ -949,10 +977,13 @@
       if (aiReplaceCardBtn) {
         aiReplaceCardBtn.addEventListener("click", (e) => {
           e.preventDefault();
-          const aiOutput = document.getElementById("aiOutputCard").value;
-          if (aiOutput && aiElements.cardDescription) {
+          const aiOutput = document.getElementById("aiOutputCard").value.trim();
+          if (!aiOutput) {
+            return setMsg(aiElements.aiCardStatus, "Nothing to replace.", true);
+          }
+          if (aiElements.cardDescription) {
             aiElements.cardDescription.value = aiOutput;
-            setMsg(aiElements.aiCardStatus, "✓ Replaced! Remember to save your changes.");
+            setMsg(aiElements.aiCardStatus, "Replaced successfully!");
           }
         });
       }
@@ -962,11 +993,27 @@
       if (aiCopyCardBtn) {
         aiCopyCardBtn.addEventListener("click", async (e) => {
           e.preventDefault();
-          const aiOutput = document.getElementById("aiOutputCard").value;
-          if (!aiOutput) return;
+          const aiOutput = document.getElementById("aiOutputCard").value.trim();
+          if (!aiOutput) {
+            return setMsg(aiElements.aiCardStatus, "Nothing to copy.", true);
+          }
 
           try {
-            await navigator.clipboard.writeText(aiOutput);
+            // Try modern clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(aiOutput);
+            } else {
+              // Fallback for older browsers
+              const textarea = document.createElement('textarea');
+              textarea.value = aiOutput;
+              textarea.style.position = 'fixed';
+              textarea.style.opacity = '0';
+              document.body.appendChild(textarea);
+              textarea.select();
+              document.execCommand('copy');
+              document.body.removeChild(textarea);
+            }
+            
             const originalHTML = aiCopyCardBtn.innerHTML;
             aiCopyCardBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
             setTimeout(() => {
@@ -974,6 +1021,7 @@
             }, 2000);
           } catch (error) {
             console.error("Copy failed:", error);
+            setMsg(aiElements.aiCardStatus, "Copy failed. Please try again.", true);
           }
         });
       }
