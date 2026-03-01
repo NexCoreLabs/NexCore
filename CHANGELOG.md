@@ -2,7 +2,7 @@
 
 ## v2.0.0 — 10 Feb 2026
 **Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
-### ✨ New Features (from beta)
+###  New Features (from beta)
 - Complete Supabase integration for auth and database
 - Account settings page with profile management
 - Project management system (hub, dashboard, project pages)
@@ -20,6 +20,7 @@
 - Added admin utilities for Supabase
 - Improved auth client architecture
 
+---
 
 ## v2.0.0-beta - 7 Feb 2026
 ### 1. Complete Authentication System (Supabase-based)
@@ -98,6 +99,7 @@ _Documentation_
 - Added repository structure document
 - Updated README with new Vercel deployment URL
 
+---
 
 ## v1.2.0 — 03 Feb 2026
 - Rewrote Service Worker for robust precaching, runtime caching, navigation preload and offline fallback (`offline.html`)
@@ -112,11 +114,13 @@ _Documentation_
 - Added full documentation suite (implementation notes, quick reference, delivery summary, completion checklist and welcome docs)
 - Misc: stylesheet, script, and content updates across `faq.html`, `how-to-use.html`, `hub.html`, `index.html`, `pricing.html`, `terms.html`, `signup.html`, `thanks.html`
 
+---
 
 ## v1.1.1 — 02 Nov 2025
 - Fixing broken pictures path in service-worker.js
 - Deleted mobile-preview.html
 
+---
 
 ## v1.1.0 — 01 Nov 2025
 - Enabled image compression (WebP)
@@ -124,6 +128,7 @@ _Documentation_
 - More UI improvement
 - Begin with Git VCS
 
+---
 
 ## v1.0.0 — 27 Oct 2025 (Initial Release)
 - NexCore Labs website launched
