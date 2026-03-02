@@ -55,6 +55,12 @@
     .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
     .help-box strong{opacity:1;color:#6ee7f3}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
+    .mod-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid rgba(255,255,255,.18)}
+    .mod-approved{color:#6ee7f3;border-color:rgba(110,231,243,.45);background:rgba(110,231,243,.12)}
+    .mod-blocked{color:#ff7878;border-color:rgba(255,120,120,.45);background:rgba(255,120,120,.12)}
+    .mod-review{color:#ffcc66;border-color:rgba(255,204,102,.45);background:rgba(255,204,102,.12)}
+    .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
+    .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:help;border-bottom:1px dashed rgba(255,255,255,.35)}
   </style>
 </head>
 <body>
@@ -131,6 +137,11 @@
       <div id="hasProject" style="display:none;margin-top:12px;">
         <p class="muted">
           Public ID: <b id="publicId"></b> • Status: <b id="statusText"></b>
+        </p>
+        <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          Moderation status:
+          <span id="moderationBadge" class="mod-badge mod-unmoderated">Unmoderated</span>
+          <span id="moderationWhy" class="mod-why" title="No moderation reason available">Why?</span>
         </p>
         <p class="muted">
           View public page:
@@ -354,6 +365,79 @@
     let project = null;
     let currentUserId = null;
 
+    function isProjectPublished(p) {
+      if (!p) return false;
+      if (typeof p.is_published === "boolean") return p.is_published;
+      return !!p.published;
+    }
+
+    function normalizeModerationStatus(status) {
+      const normalized = (status || "").toLowerCase();
+      if (["approved", "blocked", "review"].includes(normalized)) return normalized;
+      return "unmoderated";
+    }
+
+    function renderModerationStatus(p) {
+      const badge = document.getElementById("moderationBadge");
+      const why = document.getElementById("moderationWhy");
+      if (!badge || !why) return;
+
+      const status = normalizeModerationStatus(p?.moderation_status);
+      const reason = (p?.moderation_reason || "No moderation reason available").trim();
+
+      badge.className = `mod-badge mod-${status}`;
+
+      if (status === "approved") badge.textContent = "Approved";
+      else if (status === "blocked") badge.textContent = "Blocked";
+      else if (status === "review") badge.textContent = "Review";
+      else badge.textContent = "Unmoderated";
+
+      why.title = reason;
+    }
+
+    function setPublishStatus(text, tone = "neutral") {
+      const publishStatus = document.getElementById("publishStatus");
+      if (!publishStatus) return;
+      publishStatus.textContent = text || "";
+      publishStatus.style.color = tone === "error" ? "#ff7878" : (tone === "warn" ? "#ffcc66" : "");
+    }
+
+    async function moderateProject(action, requestPublish = true) {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        return { ok: false, error: "You must be signed in." };
+      }
+
+      const response = await fetch('/api/moderate-project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          project_id: project?.id,
+          action,
+          request_publish: !!requestPublish
+        })
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = { error: "Invalid server response" };
+      }
+
+      if (!response.ok) {
+        return {
+          ok: false,
+          error: data?.error || data?.details || "Moderation failed"
+        };
+      }
+
+      return { ok: true, data };
+    }
+
     function render(p) {
       project = p;
 
@@ -370,13 +454,14 @@
       if (!p) return;
 
       document.getElementById("publicId").textContent = p.public_id || "";
-      document.getElementById("statusText").textContent = p.published ? "Published ✓" : "Draft";
+  const published = isProjectPublished(p);
+  document.getElementById("statusText").textContent = published ? "Published ✓" : "Draft";
 
       const publishBtn = document.getElementById("togglePublishBtn");
-      publishBtn.textContent = p.published ? "Unpublish" : "Publish";
-      
-      const publishStatus = document.getElementById("publishStatus");
-      publishStatus.textContent = p.published ? "✓ Live on hub" : "";
+  publishBtn.textContent = published ? "Unpublish" : "Publish";
+
+  setPublishStatus(published ? "✓ Live on hub" : "");
+  renderModerationStatus(p);
 
       // Card fields
       document.getElementById("cardName").value = p.name || "";
@@ -526,6 +611,7 @@
       const msgEl = document.getElementById("msgCard");
       setMsg(msgEl, "");
       if (!project) return;
+      const wasPublished = isProjectPublished(project);
 
       const name = document.getElementById("cardName").value.trim();
       const slugInput = document.getElementById("cardSlug").value.trim() || name;
@@ -559,6 +645,31 @@
       }
 
       render(data);
+
+      if (wasPublished) {
+        setPublishStatus("Checking moderation after edit...");
+        const moderation = await moderateProject("edit_check", true);
+        if (!moderation.ok) {
+          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
+          setMsg(msgEl, "Card saved, but moderation check failed. Try again.", true);
+          return;
+        }
+
+        await loadMyProject(currentUserId);
+
+        if (moderation.data.decision === "approved") {
+          setPublishStatus("Published ✅");
+          setMsg(msgEl, "Card saved ✓ Moderation approved.");
+        } else if (moderation.data.decision === "blocked") {
+          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+          setMsg(msgEl, "Card saved, but project was auto-unpublished (blocked).", true);
+        } else {
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          setMsg(msgEl, "Card saved, but project was auto-unpublished (needs review).", true);
+        }
+        return;
+      }
+
       setMsg(msgEl, "Card saved ✓");
     }
 
@@ -566,6 +677,7 @@
       const msgEl = document.getElementById("msgProfile");
       setMsg(msgEl, "");
       if (!project) return;
+      const wasPublished = isProjectPublished(project);
 
       const image_url = document.getElementById("profileImageUrl").value.trim();
       const page_description = document.getElementById("pageDescription").value.trim();
@@ -598,6 +710,31 @@
       if (error) return setMsg(msgEl, error.message, true);
 
       render(data);
+
+      if (wasPublished) {
+        setPublishStatus("Checking moderation after edit...");
+        const moderation = await moderateProject("edit_check", true);
+        if (!moderation.ok) {
+          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
+          setMsg(msgEl, "Profile saved, but moderation check failed. Try again.", true);
+          return;
+        }
+
+        await loadMyProject(currentUserId);
+
+        if (moderation.data.decision === "approved") {
+          setPublishStatus("Published ✅");
+          setMsg(msgEl, "Profile saved ✓ Moderation approved.");
+        } else if (moderation.data.decision === "blocked") {
+          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+          setMsg(msgEl, "Profile saved, but project was auto-unpublished (blocked).", true);
+        } else {
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          setMsg(msgEl, "Profile saved, but project was auto-unpublished (needs review).", true);
+        }
+        return;
+      }
+
       setMsg(msgEl, "Profile saved ✓");
     }
 
@@ -606,26 +743,53 @@
       setMsg(msgEl, "");
       if (!project) return;
 
-      const next = !project.published;
+      const currentlyPublished = isProjectPublished(project);
+      const next = !currentlyPublished;
 
       disableButtons(true);
 
-      const { data, error } = await sb
-        .from("projects")
-        .update({
-          published: next,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", project.id)
-        .select("*")
-        .single();
+      if (!next) {
+        const { data, error } = await sb
+          .from("projects")
+          .update({
+            is_published: false,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", project.id)
+          .select("*")
+          .single();
 
+        disableButtons(false);
+
+        if (error) return setMsg(msgEl, error.message, true);
+
+        render(data);
+        setPublishStatus("Hidden from hub.");
+        setMsg(msgEl, "Hidden from hub.");
+        return;
+      }
+
+      setPublishStatus("Running moderation check...");
+      const moderation = await moderateProject("publish_check", true);
       disableButtons(false);
 
-      if (error) return setMsg(msgEl, error.message, true);
+      if (!moderation.ok) {
+        setPublishStatus(`Moderation failed: ${moderation.error}`, "warn");
+        return setMsg(msgEl, `Publish failed: ${moderation.error}`, true);
+      }
 
-      render(data);
-      setMsg(msgEl, next ? "Published ✓ It will appear in hub." : "Hidden from hub.");
+      await loadMyProject(currentUserId);
+
+      if (moderation.data.decision === "approved") {
+        setPublishStatus("Published ✅");
+        setMsg(msgEl, "Published ✅");
+      } else if (moderation.data.decision === "blocked") {
+        setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+        setMsg(msgEl, `Blocked: ${moderation.data.reason || "Policy violation."}`, true);
+      } else {
+        setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+        setMsg(msgEl, `Needs review: ${moderation.data.reason || "Manual review required."}`, true);
+      }
     }
 
     async function deleteProject() {
