@@ -133,6 +133,29 @@
         transform: scale(1.6) translateY(-20px);
       }
     }
+    .ai-core-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.7rem;
+      font-weight:600;
+      letter-spacing:1px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#6EE7F3,#3B82F6);
+      color:#0b1120;
+      margin-right:8px;
+      box-shadow:0 0 12px rgba(110,231,243,.4);
+      animation:aiPulse 2.5s ease-in-out infinite;
+      vertical-align:middle;
+      line-height:1;
+      white-space:nowrap;
+    }
+    @keyframes aiPulse{
+      0%{ box-shadow:0 0 8px rgba(110,231,243,.25); }
+      50%{ box-shadow:0 0 18px rgba(110,231,243,.65); }
+      100%{ box-shadow:0 0 8px rgba(110,231,243,.25); }
+    }
   </style>
 </head>
 <body>
@@ -235,7 +258,7 @@
 
           <!-- AI Card Summary Generator -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><i class="fi fi-sr-ai-technology"></i> AI Card Brief</h4>
+            <h4 style="margin:0 0 12px 0;"><span class="ai-core-badge">AI</span>AI Card Brief</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
             
             <button class="btn primary ai-btn" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
@@ -319,7 +342,7 @@
 
           <!-- AI Improve Page Description -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><i class="fi fi-sr-ai-technology"></i> Enhance Content with AI</h4>
+            <h4 style="margin:0 0 12px 0;"><span class="ai-core-badge">AI</span>Enhance Content with AI</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate, refine, and optimise your page content using AI</p>
             
             <div class="row" style="margin-bottom:12px;gap:10px;align-items:center;">
@@ -1084,7 +1107,7 @@
           return setMsg(statusEl, "Please enter a page description first.", true);
         }
 
-        setMsg(statusEl, "Calling AI...");
+        setMsg(statusEl, "Let AI work its magic...");
         console.log("📡 Fetching AI response...");
 
         try {
@@ -1214,7 +1237,7 @@
           return setMsg(statusEl, "Please enter a page description first.", true);
         }
 
-        setMsg(statusEl, "Calling AI...");
+        setMsg(statusEl, "Let AI work its magic...");
         console.log("📡 Fetching AI card summary...");
 
         try {
