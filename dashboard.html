@@ -63,6 +63,70 @@
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
     .mod-popup{position:fixed;z-index:9999;max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
     .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .ai-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .ai-btn.loading {
+      box-shadow:
+        0 0 20px rgba(110, 231, 243, 0.6),
+        0 0 40px rgba(110, 231, 243, 0.3);
+      transform: translateY(-1px);
+    }
+    .ai-btn.loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,0.4),
+        transparent 80%
+      );
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .ai-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .ai-sparkles::before,
+    .ai-sparkles::after {
+      content: "✦";
+      position: absolute;
+      font-size: 14px;
+      opacity: 0;
+      color: #6EE7F3;
+    }
+    .ai-btn.loading .ai-sparkles::before {
+      top: 15%;
+      left: 25%;
+      animation: sparkle 1s ease forwards;
+    }
+    .ai-btn.loading .ai-sparkles::after {
+      bottom: 20%;
+      right: 20%;
+      animation: sparkle 1.2s ease forwards;
+    }
+    @keyframes sparkle {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.5) rotate(360deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -140,7 +204,7 @@
         <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           Moderation status:
           <span id="moderationBadge" class="mod-badge mod-unmoderated">Unmoderated</span>
-          <span id="moderationWhy" class="mod-why" title="No moderation reason available" role="button" tabindex="0"><i class="fi fi-rr-exclamation"></i></span>
+          <span id="moderationWhy" class="mod-why" title="No moderation reason available" role="button" tabindex="0"><i class="fi fi-rr-info"></i></span>
         </p>
         <div id="moderationPopup" class="mod-popup" role="status" aria-live="polite"></div>
         <p class="muted">
@@ -169,8 +233,9 @@
             <h4 style="margin:0 0 12px 0;"><i class="fi fi-sr-ai-technology"></i> AI Card Brief</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
             
-            <button class="btn primary" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
-              <!-- <i class="fi fi-dc-sparkles"></i> -->Generate
+            <button class="btn primary ai-btn" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+              <span class="ai-btn-text">Generate</span>
+              <span class="ai-sparkles"></span>
             </button>
             
             <div id="aiCardOutput" style="display:none;margin-top:12px;">
@@ -260,8 +325,9 @@
                 <option value="Technical">Technical</option>
                 <option value="Inspiring">Inspiring</option>
               </select>
-              <button class="btn primary" id="aiImproveBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
-                <!-- <i class="fi fi-dc-sparkles"></i> -->Generate
+              <button class="btn primary ai-btn" id="aiPageBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+                <span class="ai-btn-text">Generate</span>
+                <span class="ai-sparkles"></span>
               </button>
             </div>
             
@@ -436,6 +502,32 @@
         clearTimeout(moderationPopupTimer);
         moderationPopupTimer = null;
       }
+    }
+
+    function attachAiMagic(buttonId, asyncHandler) {
+      const btn = document.getElementById(buttonId);
+      if (!btn || typeof asyncHandler !== "function") return;
+      if (btn.dataset.aiMagicBound === "1") return;
+
+      btn.dataset.aiMagicBound = "1";
+      const textEl = btn.querySelector(".ai-btn-text");
+
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        if (btn.classList.contains("loading")) return;
+
+        btn.classList.add("loading");
+        if (textEl) textEl.textContent = "Generating...";
+
+        try {
+          await asyncHandler();
+        } catch (err) {
+          console.error("AI generation failed:", err);
+        } finally {
+          btn.classList.remove("loading");
+          if (textEl) textEl.textContent = "Generate";
+        }
+      });
     }
 
     async function moderateProject(action, requestPublish = true) {
@@ -932,7 +1024,7 @@
 
       // Verify all required elements exist
       const aiElements = {
-        aiImproveBtn: document.getElementById("aiImproveBtn"),
+        aiPageBtn: document.getElementById("aiPageBtn"),
         aiCardBtn: document.getElementById("aiCardBtn"),
         pageDescription: document.getElementById("pageDescription"),
         cardDescription: document.getElementById("cardDescription"),
@@ -948,99 +1040,81 @@
         }
       }
 
-      // AI Improve Page Description Handler
-      if (aiElements.aiImproveBtn) {
-        aiElements.aiImproveBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          console.log("🔵 AI click fired: improve page");
+      async function generatePageAI() {
+        console.log("🔵 AI click fired: improve page");
 
-          const btn = aiElements.aiImproveBtn;
-          const statusEl = aiElements.aiStatus;
-          const remainingEl = document.getElementById("aiRemaining");
-          const outputDiv = document.getElementById("aiPageOutput");
-          const outputTextarea = document.getElementById("aiOutputPage");
-          const pageDesc = aiElements.pageDescription.value.trim();
-          const style = document.getElementById("aiStyle").value;
+        const statusEl = aiElements.aiStatus;
+        const remainingEl = document.getElementById("aiRemaining");
+        const outputDiv = document.getElementById("aiPageOutput");
+        const outputTextarea = document.getElementById("aiOutputPage");
+        const pageDesc = aiElements.pageDescription.value.trim();
+        const style = document.getElementById("aiStyle").value;
 
-          // Clear previous status
-          setMsg(statusEl, "");
-          if (outputDiv) outputDiv.style.display = "none";
+        setMsg(statusEl, "");
+        if (outputDiv) outputDiv.style.display = "none";
 
-          // Validate input
-          if (!pageDesc) {
-            console.log("⚠️ No page description entered");
-            return setMsg(statusEl, "Please enter a page description first.", true);
+        if (!pageDesc) {
+          console.log("⚠️ No page description entered");
+          return setMsg(statusEl, "Please enter a page description first.", true);
+        }
+
+        setMsg(statusEl, "Calling AI...");
+        console.log("📡 Fetching AI response...");
+
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          if (!session) {
+            console.error("❌ No session found");
+            return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
           }
 
-          // Disable button and show loading
-          btn.disabled = true;
-          setMsg(statusEl, "Calling AI...");
-          console.log("📡 Fetching AI response...");
+          console.log("🔑 Session token obtained");
 
-          try {
-            // Get session token
-            const { data: { session } } = await sb.auth.getSession();
-            if (!session) {
-              console.error("❌ No session found");
-              btn.disabled = false;
-              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
-            }
+          const response = await fetch('/api/ai', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              action: 'improve_page',
+              style: style,
+              text: pageDesc
+            })
+          });
 
-            console.log("🔑 Session token obtained");
+          console.log(`📊 AI fetch status: ${response.status}`);
 
-            // Call API
-            const response = await fetch('/api/ai', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-              },
-              body: JSON.stringify({
-                action: 'improve_page',
-                style: style,
-                text: pageDesc
-              })
-            });
+          const data = await response.json();
+          console.log("📦 AI raw response:", data);
 
-            console.log(`📊 AI fetch status: ${response.status}`);
-
-            const data = await response.json();
-            console.log("📦 AI raw response:", data);
-
-            if (!response.ok) {
-              btn.disabled = false;
-              if (response.status === 429) {
-                if (remainingEl) {
-                  remainingEl.textContent = `AI uses left today: 0/3`;
-                  remainingEl.style.color = '#ff7878';
-                }
-                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+          if (!response.ok) {
+            if (response.status === 429) {
+              if (remainingEl) {
+                remainingEl.textContent = `AI uses left today: 0/3`;
+                remainingEl.style.color = '#ff7878';
               }
-              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+              return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
-
-            // Extract generated text with fallback for multiple field names
-            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
-            console.log("📊 AI generated length:", generated.length);
-
-            // Success
-            if (outputTextarea) outputTextarea.value = generated;
-            if (outputDiv) outputDiv.style.display = "block";
-            if (remainingEl) {
-              remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-              remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-            }
-            setMsg(statusEl, "Generated successfully!");
-            console.log("✅ AI generation successful");
-
-          } catch (error) {
-            console.error("❌ AI error:", error);
-            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
-          } finally {
-            btn.disabled = false;
+            return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
           }
-        });
-        console.log("✅ aiImproveBtn listener attached");
+
+          const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+          console.log("📊 AI generated length:", generated.length);
+
+          if (outputTextarea) outputTextarea.value = generated;
+          if (outputDiv) outputDiv.style.display = "block";
+          if (remainingEl) {
+            remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+            remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
+          }
+          setMsg(statusEl, "Generated successfully!");
+          console.log("✅ AI generation successful");
+
+        } catch (error) {
+          console.error("❌ AI error:", error);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+        }
       }
 
       // Replace page description button
@@ -1097,98 +1171,84 @@
         });
       }
 
-      // AI Generate Card Summary Handler
-      if (aiElements.aiCardBtn) {
-        aiElements.aiCardBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          console.log("🔵 AI click fired: generate card summary");
+      async function generateCardAI() {
+        console.log("🔵 AI click fired: generate card summary");
 
-          const btn = aiElements.aiCardBtn;
-          const statusEl = aiElements.aiCardStatus;
-          const remainingEl = document.getElementById("aiCardRemaining");
-          const outputDiv = document.getElementById("aiCardOutput");
-          const outputTextarea = document.getElementById("aiOutputCard");
-          const pageDesc = aiElements.pageDescription.value.trim();
+        const statusEl = aiElements.aiCardStatus;
+        const remainingEl = document.getElementById("aiCardRemaining");
+        const outputDiv = document.getElementById("aiCardOutput");
+        const outputTextarea = document.getElementById("aiOutputCard");
+        const pageDesc = aiElements.pageDescription.value.trim();
 
-          // Clear previous status
-          setMsg(statusEl, "");
-          if (outputDiv) outputDiv.style.display = "none";
+        setMsg(statusEl, "");
+        if (outputDiv) outputDiv.style.display = "none";
 
-          // Validate input
-          if (!pageDesc) {
-            console.log("⚠️ No page description entered");
-            return setMsg(statusEl, "Please enter a page description first.", true);
+        if (!pageDesc) {
+          console.log("⚠️ No page description entered");
+          return setMsg(statusEl, "Please enter a page description first.", true);
+        }
+
+        setMsg(statusEl, "Calling AI...");
+        console.log("📡 Fetching AI card summary...");
+
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          if (!session) {
+            console.error("❌ No session found");
+            return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
           }
 
-          // Disable button and show loading
-          btn.disabled = true;
-          setMsg(statusEl, "Calling AI...");
-          console.log("📡 Fetching AI card summary...");
+          console.log("🔑 Session token obtained");
 
-          try {
-            // Get session token
-            const { data: { session } } = await sb.auth.getSession();
-            if (!session) {
-              console.error("❌ No session found");
-              btn.disabled = false;
-              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
-            }
+          const response = await fetch('/api/ai', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              action: 'card_summary',
+              text: pageDesc
+            })
+          });
 
-            console.log("🔑 Session token obtained");
+          console.log(`📊 AI fetch status: ${response.status}`);
 
-            // Call API
-            const response = await fetch('/api/ai', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-              },
-              body: JSON.stringify({
-                action: 'card_summary',
-                text: pageDesc
-              })
-            });
+          const data = await response.json();
+          console.log("📦 AI raw response:", data);
 
-            console.log(`📊 AI fetch status: ${response.status}`);
-
-            const data = await response.json();
-            console.log("📦 AI raw response:", data);
-
-            if (!response.ok) {
-              btn.disabled = false;
-              if (response.status === 429) {
-                if (remainingEl) {
-                  remainingEl.textContent = `AI uses left today: 0/3`;
-                  remainingEl.style.color = '#ff7878';
-                }
-                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
+          if (!response.ok) {
+            if (response.status === 429) {
+              if (remainingEl) {
+                remainingEl.textContent = `AI uses left today: 0/3`;
+                remainingEl.style.color = '#ff7878';
               }
-              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
+              return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
-
-            // Extract generated text with fallback for multiple field names
-            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
-            console.log("📊 AI generated length:", generated.length);
-
-            // Success
-            if (outputTextarea) outputTextarea.value = generated;
-            if (outputDiv) outputDiv.style.display = "block";
-            if (remainingEl) {
-              remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-              remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-            }
-            setMsg(statusEl, "Generated successfully!");
-            console.log("✅ AI generation successful");
-
-          } catch (error) {
-            console.error("❌ AI error:", error);
-            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
-          } finally {
-            btn.disabled = false;
+            return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
           }
-        });
-        console.log("✅ aiCardBtn listener attached");
+
+          const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+          console.log("📊 AI generated length:", generated.length);
+
+          if (outputTextarea) outputTextarea.value = generated;
+          if (outputDiv) outputDiv.style.display = "block";
+          if (remainingEl) {
+            remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
+            remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
+          }
+          setMsg(statusEl, "Generated successfully!");
+          console.log("✅ AI generation successful");
+
+        } catch (error) {
+          console.error("❌ AI error:", error);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+        }
       }
+
+      attachAiMagic("aiCardBtn", generateCardAI);
+      attachAiMagic("aiPageBtn", generatePageAI);
+      console.log("✅ AI magic handlers attached");
 
       // Replace card description button
       const aiReplaceCardBtn = document.getElementById("aiReplaceCardBtn");
