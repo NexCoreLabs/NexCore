@@ -203,8 +203,7 @@
         </p>
         <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           Moderation status:
-          <span id="moderationBadge" class="mod-badge mod-unmoderated">Unmoderated</span>
-          <span id="moderationWhy" class="mod-why" title="No moderation reason available" role="button" tabindex="0"><i class="fi fi-rr-info"></i></span>
+          <span id="moderationBadge" class="mod-badge mod-unmoderated" role="button" tabindex="0">Unmoderated</span>
         </p>
         <div id="moderationPopup" class="mod-popup" role="status" aria-live="polite"></div>
         <p class="muted">
@@ -443,8 +442,7 @@
 
     function renderModerationStatus(p) {
       const badge = document.getElementById("moderationBadge");
-      const why = document.getElementById("moderationWhy");
-      if (!badge || !why) return;
+      if (!badge) return;
 
       const status = normalizeModerationStatus(p?.moderation_status);
       const reason = (p?.moderation_reason || "No moderation reason available").trim();
@@ -456,9 +454,9 @@
       else if (status === "review") badge.textContent = "Review";
       else badge.textContent = "Unmoderated";
 
-      why.title = reason;
-      why.setAttribute("aria-label", reason);
-      why.dataset.reason = reason;
+      badge.title = reason;
+      badge.setAttribute("aria-label", reason);
+      badge.dataset.reason = reason;
     }
 
     function setPublishStatus(text, tone = "neutral") {
@@ -469,7 +467,7 @@
     }
 
     function showModerationWhy() {
-      const why = document.getElementById("moderationWhy");
+      const why = document.getElementById("moderationBadge");
       const popup = document.getElementById("moderationPopup");
       if (!why || !popup) return;
       const reason = (why.dataset.reason || why.title || "No moderation reason available").trim();
@@ -946,7 +944,7 @@
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
       document.getElementById("deleteBtn").addEventListener("click", deleteProject);
 
-      const moderationWhyEl = document.getElementById("moderationWhy");
+      const moderationWhyEl = document.getElementById("moderationBadge");
       if (moderationWhyEl) {
         moderationWhyEl.addEventListener("click", (e) => {
           e.preventDefault();
@@ -968,7 +966,7 @@
       }
 
       document.addEventListener("click", (e) => {
-        const whyEl = document.getElementById("moderationWhy");
+        const whyEl = document.getElementById("moderationBadge");
         const popup = document.getElementById("moderationPopup");
         if (!whyEl || !popup) return;
         if (!whyEl.contains(e.target) && !popup.contains(e.target)) {
