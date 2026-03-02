@@ -141,7 +141,7 @@
         <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           Moderation status:
           <span id="moderationBadge" class="mod-badge mod-unmoderated">Unmoderated</span>
-          <span id="moderationWhy" class="mod-why" title="No moderation reason available">Why?</span>
+          <span id="moderationWhy" class="mod-why" title="No moderation reason available" role="button" tabindex="0">Why?</span>
         </p>
         <p class="muted">
           View public page:
@@ -367,7 +367,6 @@
 
     function isProjectPublished(p) {
       if (!p) return false;
-      if (typeof p.is_published === "boolean") return p.is_published;
       return !!p.published;
     }
 
@@ -393,6 +392,8 @@
       else badge.textContent = "Unmoderated";
 
       why.title = reason;
+      why.setAttribute("aria-label", reason);
+      why.dataset.reason = reason;
     }
 
     function setPublishStatus(text, tone = "neutral") {
@@ -400,6 +401,13 @@
       if (!publishStatus) return;
       publishStatus.textContent = text || "";
       publishStatus.style.color = tone === "error" ? "#ff7878" : (tone === "warn" ? "#ffcc66" : "");
+    }
+
+    function showModerationWhy() {
+      const why = document.getElementById("moderationWhy");
+      if (!why) return;
+      const reason = (why.dataset.reason || why.title || "No moderation reason available").trim();
+      setPublishStatus(`Why: ${reason}`, "warn");
     }
 
     async function moderateProject(action, requestPublish = true) {
@@ -752,7 +760,7 @@
         const { data, error } = await sb
           .from("projects")
           .update({
-            is_published: false,
+            published: false,
             updated_at: new Date().toISOString()
           })
           .eq("id", project.id)
@@ -834,6 +842,17 @@
       document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
       document.getElementById("deleteBtn").addEventListener("click", deleteProject);
+
+      const moderationWhyEl = document.getElementById("moderationWhy");
+      if (moderationWhyEl) {
+        moderationWhyEl.addEventListener("click", showModerationWhy);
+        moderationWhyEl.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            showModerationWhy();
+          }
+        });
+      }
 
       // Update slug preview as user types
       document.getElementById("cardSlug").addEventListener("input", (e) => {
