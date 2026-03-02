@@ -306,7 +306,7 @@ module.exports = async (req, res) => {
       const approvedPublished = resolvePublishState({
         requestPublish: !!request_publish,
         decision: 'approved',
-        currentPublished: project.is_published
+        currentPublished: project.published
       });
 
       const { data: updatedEmpty, error: updateEmptyErr } = await supabase
@@ -315,7 +315,7 @@ module.exports = async (req, res) => {
           moderation_status: 'approved',
           moderation_reason: 'No content provided; approved by default.',
           last_moderated_at: nowIso,
-          is_published: approvedPublished,
+          published: approvedPublished,
           updated_at: nowIso
         })
         .eq('id', project.id)
@@ -332,7 +332,7 @@ module.exports = async (req, res) => {
         categories: [],
         confidence: 0.7,
         reason: 'No content provided; approved by default.',
-        is_published: updatedEmpty.is_published,
+        published: updatedEmpty.published,
         moderation_status: updatedEmpty.moderation_status,
         moderation_reason: updatedEmpty.moderation_reason
       });
@@ -373,7 +373,7 @@ module.exports = async (req, res) => {
     const nextIsPublished = resolvePublishState({
       requestPublish: !!request_publish,
       decision: finalResult.decision,
-      currentPublished: project.is_published
+      currentPublished: project.published
     });
 
     const { data: updatedProject, error: updateError } = await supabase
@@ -382,7 +382,7 @@ module.exports = async (req, res) => {
         moderation_status: finalResult.decision,
         moderation_reason: finalResult.reason,
         last_moderated_at: nowIso,
-        is_published: nextIsPublished,
+        published: nextIsPublished,
         updated_at: nowIso
       })
       .eq('id', project.id)
@@ -420,7 +420,7 @@ module.exports = async (req, res) => {
       categories: finalResult.categories,
       confidence: finalResult.confidence,
       reason: finalResult.reason,
-      is_published: updatedProject.is_published,
+      published: updatedProject.published,
       moderation_status: updatedProject.moderation_status,
       moderation_reason: updatedProject.moderation_reason,
       last_moderated_at: updatedProject.last_moderated_at
