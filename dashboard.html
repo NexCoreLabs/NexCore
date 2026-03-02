@@ -61,7 +61,7 @@
     .mod-review{color:#ffcc66;border-color:rgba(255,204,102,.45);background:rgba(255,204,102,.12)}
     .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.35)}
-    .mod-popup{position:fixed;z-index:9999;max-width:360px;padding:10px 12px;border-radius:10px;border:1px solid rgba(110,231,243,.25);background:rgba(10,11,28,.96);color:#d9e5f4;font-size:.86rem;line-height:1.45;box-shadow:0 8px 30px rgba(0,0,0,.35);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
+    .mod-popup{position:fixed;z-index:9999;max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.4); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#d9e5f4;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
     .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
   </style>
 </head>
@@ -407,8 +407,6 @@
       const popup = document.getElementById("moderationPopup");
       if (!why || !popup) return;
       const reason = (why.dataset.reason || why.title || "No moderation reason available").trim();
-
-      setPublishStatus(`Why: ${reason}`, "warn");
 
       popup.textContent = reason;
       popup.classList.remove("show");
