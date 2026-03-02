@@ -35,11 +35,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    // Only POST method is supported
-    if (req.method !== 'POST') {
-      return res.status(405).json({ error: 'Method not allowed' });
-    }
-
     // Extract JWT from Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -63,6 +58,42 @@ module.exports = async (req, res) => {
     if (authError || !user) {
       console.error('Auth error:', authError?.message);
       return res.status(401).json({ error: 'Invalid or expired token' });
+    }
+
+    const usageQuery = String(req.query?.usage || '').trim();
+    if (req.method === 'GET' && usageQuery === '1') {
+      const { data: usageData, error: usageError } = await supabase.rpc('get_ai_usage', {
+        max_uses: 3
+      });
+
+      if (usageError) {
+        console.error('Usage RPC error:', usageError);
+        return res.status(500).json({
+          error: 'Failed to fetch AI usage',
+          details: usageError.message
+        });
+      }
+
+      const used = Number(
+        usageData?.used ??
+        usageData?.use_count ??
+        0
+      );
+      const remaining = Number(
+        usageData?.remaining ??
+        Math.max(0, 3 - used)
+      );
+
+      return res.status(200).json({
+        used: Number.isNaN(used) ? 0 : used,
+        remaining: Number.isNaN(remaining) ? 0 : remaining,
+        max: 3
+      });
+    }
+
+    // Only POST method is supported for generation
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method not allowed' });
     }
 
     console.log('AI user:', user.id);

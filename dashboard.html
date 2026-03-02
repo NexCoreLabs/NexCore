@@ -133,6 +133,11 @@
         transform: scale(1.6) translateY(-20px);
       }
     }
+    .ai-remaining { font-size:.85rem; margin-top:6px; font-weight:600; }
+    .ai-remaining.ok3 { color: #22c55e; }
+    .ai-remaining.ok2 { color: #a3e635; }
+    .ai-remaining.ok1 { color: #f59e0b; }
+    .ai-remaining.ok0 { color: #ef4444; }
     .ai-core-badge{
       display:inline-flex;
       align-items:center;
@@ -373,7 +378,7 @@
             </div>
             
             <p id="aiStatus" style="margin-top:10px;font-size:.9rem;"></p>
-            <p id="aiRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
+            <p id="aiPageRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
           </div>
 
           <label>Website URL (optional)</label>
@@ -528,6 +533,59 @@
       if (moderationPopupTimer) {
         clearTimeout(moderationPopupTimer);
         moderationPopupTimer = null;
+      }
+    }
+
+    function setRemainingUI(el, remaining, max = 3) {
+      if (!el) return;
+      el.classList.add("ai-remaining");
+      el.classList.remove("ok3", "ok2", "ok1", "ok0");
+      const r = Math.max(0, Math.min(max, Number(remaining)));
+      el.textContent = `AI uses left today: ${r}/${max}`;
+      el.classList.add(r === 3 ? "ok3" : r === 2 ? "ok2" : r === 1 ? "ok1" : "ok0");
+    }
+
+    function setBothRemainingUI(remaining, max = 3) {
+      setRemainingUI(document.getElementById("aiCardRemaining"), remaining, max);
+      setRemainingUI(document.getElementById("aiPageRemaining"), remaining, max);
+    }
+
+    async function initAiRemainingUI() {
+      if (window.__aiRemainingInitDone) return;
+      window.__aiRemainingInitDone = true;
+
+      const cardEl = document.getElementById("aiCardRemaining");
+      const pageEl = document.getElementById("aiPageRemaining");
+
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        if (cardEl) {
+          cardEl.classList.add("ai-remaining");
+          cardEl.textContent = "Sign in to use AI";
+        }
+        if (pageEl) {
+          pageEl.classList.add("ai-remaining");
+          pageEl.textContent = "Sign in to use AI";
+        }
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/ai?usage=1', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || 'Failed to fetch AI usage');
+        }
+
+        setBothRemainingUI(data.remaining, data.max || 3);
+      } catch (error) {
+        console.error('Failed to initialize AI remaining UI:', error);
       }
     }
 
@@ -1028,6 +1086,8 @@
       window.addEventListener("scroll", hideModerationPopup, { passive: true });
       window.addEventListener("resize", hideModerationPopup);
 
+      await initAiRemainingUI();
+
       // Update slug preview as user types
       document.getElementById("cardSlug").addEventListener("input", (e) => {
         const slug = slugify(e.target.value || document.getElementById("cardName").value);
@@ -1093,7 +1153,6 @@
         console.log("🔵 AI click fired: improve page");
 
         const statusEl = aiElements.aiStatus;
-        const remainingEl = document.getElementById("aiRemaining");
         const outputDiv = document.getElementById("aiPageOutput");
         const outputTextarea = document.getElementById("aiOutputPage");
         const pageDesc = aiElements.pageDescription.value.trim();
@@ -1139,10 +1198,7 @@
 
           if (!response.ok) {
             if (response.status === 429) {
-              if (remainingEl) {
-                remainingEl.textContent = `AI uses left today: 0/3`;
-                remainingEl.style.color = '#ff7878';
-              }
+              setBothRemainingUI(0, 3);
               return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
             return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
@@ -1153,10 +1209,7 @@
 
           if (outputTextarea) outputTextarea.value = generated;
           if (outputDiv) outputDiv.style.display = "block";
-          if (remainingEl) {
-            remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-            remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-          }
+          setBothRemainingUI(data.remaining, 3);
           setMsg(statusEl, "Generated successfully!");
           console.log("✅ AI generation successful");
 
@@ -1224,7 +1277,6 @@
         console.log("🔵 AI click fired: generate card summary");
 
         const statusEl = aiElements.aiCardStatus;
-        const remainingEl = document.getElementById("aiCardRemaining");
         const outputDiv = document.getElementById("aiCardOutput");
         const outputTextarea = document.getElementById("aiOutputCard");
         const pageDesc = aiElements.pageDescription.value.trim();
@@ -1268,10 +1320,7 @@
 
           if (!response.ok) {
             if (response.status === 429) {
-              if (remainingEl) {
-                remainingEl.textContent = `AI uses left today: 0/3`;
-                remainingEl.style.color = '#ff7878';
-              }
+              setBothRemainingUI(0, 3);
               return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
             return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
@@ -1282,10 +1331,7 @@
 
           if (outputTextarea) outputTextarea.value = generated;
           if (outputDiv) outputDiv.style.display = "block";
-          if (remainingEl) {
-            remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-            remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-          }
+          setBothRemainingUI(data.remaining, 3);
           setMsg(statusEl, "Generated successfully!");
           console.log("✅ AI generation successful");
 
