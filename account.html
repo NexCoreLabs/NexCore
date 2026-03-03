@@ -51,8 +51,12 @@
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
     hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
-    .modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .modal-content{background:rgba(20,21,40,.98);margin:8% auto;padding:32px;border:1px solid rgba(255,120,120,.3);border-radius:16px;max-width:520px;box-shadow:0 8px 32px rgba(255,120,120,.15)}
+    .modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0, 0, 0, 0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .modal-content{margin:0 auto;padding: 18px 12px; border: 2px solid rgba(255, 255, 255, 0.06);
+  background: rgba(10, 11, 28, 0.4);
+  color: #fff;
+  padding: 18px 12px;
+  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);border-radius:12px;max-width:520px;}
     .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
     .modal-header h2{margin:0;color:#ff7878;display:flex;align-items:center;gap:10px}
     .close{color:#aaa;font-size:28px;font-weight:bold;cursor:pointer;line-height:1}
@@ -228,7 +232,7 @@
             </ul>
           </div>
           
-          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type <strong>DELETE</strong> to confirm:</label>
+          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type <strong class="code-block">DELETE</strong> to confirm:</label>
           <input type="text" id="confirmDeleteInput" placeholder="DELETE" autocomplete="off">
           
           <div class="checkbox-row">
@@ -237,7 +241,7 @@
           </div>
           
           <div class="modal-actions">
-            <button class="btn" id="cancelDeleteBtn">
+            <button class="btn primary ghost" id="cancelDeleteBtn">
               <i class="fa-solid fa-xmark"></i> Cancel
             </button>
             <button class="btn danger" id="confirmDeleteBtn" disabled>
