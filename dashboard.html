@@ -39,6 +39,9 @@
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
     .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    .box:focus{
+      background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);
+    }
     label{display:block;margin:10px 0 6px;opacity:.9}
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -246,7 +249,7 @@
         </p>
 
         <!-- CARD SECTION -->
-        <div class="box" style="background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);">
+        <div class="box">
           <h3 style="margin-top:0;"><i class="fa-solid fa-pager"></i> Card (Hub Display)</h3>
           <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
 
@@ -296,7 +299,7 @@
         </div>
 
         <!-- PROFILE SECTION -->
-        <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
+        <div class="box" style="margin-top:16px;">
           <h3 style="margin-top:0;"><i class="fa-solid fa-globe"></i> Profile (Full Details)</h3>
           <button class="btn copy" id="copyProjectPageLink" title="Copy public page link">
             <i class="fa-solid fa-copy"></i> Copy Page Link
