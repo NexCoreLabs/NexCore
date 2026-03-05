@@ -655,7 +655,9 @@
         body: JSON.stringify({
           project_id: project?.id,
           action,
-          request_publish: !!requestPublish
+          request_publish: !!requestPublish,
+          title: project?.name || '',
+          description: project?.page_description || project?.card_description || ''
         })
       });
 
