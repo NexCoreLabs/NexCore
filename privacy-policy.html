@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
-        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <!-- Cookie Consent Manager v2 -->
+        <link rel="stylesheet" href="assets/css/cookies.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="NexCore Labs">
@@ -133,7 +133,7 @@
     </div>
 
     <div class="privacy-section" style="text-align: center; margin-bottom: 60px; margin-top: 40px;">
-        <button id="withdraw-consent" class="btn ghost">Withdraw Analytics Consent (Clear)</button>
+        <button id="withdraw-consent" class="btn ghost">Withdraw cookies (Clear)</button>
         <small style="display:block;margin-top:8px;color:#666">This will remove stored consent and clear common analytics cookies; the page will reload.</small>
     </div>
 
@@ -167,27 +167,15 @@
   </script>
   <script>
   document.getElementById('withdraw-consent')?.addEventListener('click', () => {
-    if (window.nexcoreConsent && typeof window.nexcoreConsent.remove === 'function') {
-      window.nexcoreConsent.remove();
+    if (window.nexcoreConsent && typeof window.nexcoreConsent.reset === 'function') {
+      window.nexcoreConsent.reset();
     } else {
-      localStorage.removeItem('nexcore_cookie_consent_v1');
+      localStorage.removeItem('nexcore_cookie_preferences');
       location.reload();
     }
   });
   </script>
 
-  <!-- Cookie banner and module included from other pages when present -->
-  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
-    <div class="cc-inner container">
-      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
-      <div class="cc-actions">
-        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
-        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
-        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
-      </div>
-    </div>
-  </div>
-
-  <script src="assets/js/cookie-consent.js" defer></script>
+  <script src="assets/js/cookies.js" defer></script>
 </body>
 </html>

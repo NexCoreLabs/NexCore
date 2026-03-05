@@ -1,0 +1,500 @@
+/* ============================================
+   NexCore Labs — Cookie Consent Manager v2
+   Granular category-based consent system
+   ============================================ */
+
+/* Local variables (inherit site design tokens) */
+:root {
+  --ncc-bg: rgba(8, 10, 22, 0.93);
+  --ncc-border: rgba(255, 255, 255, 0.07);
+  --ncc-primary: #6ee7f3;
+  --ncc-primary-dark: #3ac5c0;
+  --ncc-surface: rgba(255, 255, 255, 0.03);
+  --ncc-surface-hover: rgba(255, 255, 255, 0.06);
+  --ncc-muted: #9aa3b2;
+  --ncc-text: #e6eef3;
+  --ncc-radius: 16px;
+  --ncc-toggle-w: 44px;
+  --ncc-toggle-h: 24px;
+  --ncc-shadow: 0 24px 72px rgba(2, 6, 23, 0.85),
+                0 0 0 1px rgba(110, 231, 243, 0.06);
+  --ncc-ease: cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+
+/* Hide old cookie banner if present on any page */
+#cookie-consent-banner {
+  display: none !important;
+}
+
+/* ── Overlay ──────────────────────────────── */
+.ncc-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(2, 6, 23, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+
+.ncc-overlay.ncc-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+@media (min-width: 600px) {
+  .ncc-overlay {
+    align-items: center;
+  }
+}
+
+/* ── Panel ────────────────────────────────── */
+.ncc-panel {
+  background: var(--ncc-bg);
+  border: 1px solid var(--ncc-border);
+  border-radius: var(--ncc-radius);
+  box-shadow: var(--ncc-shadow);
+  padding: 28px 24px 20px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90dvh;
+  overflow-y: auto;
+  color: var(--ncc-text);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  transform: translateY(28px) scale(0.97);
+  transition: transform 0.32s var(--ncc-ease), opacity 0.28s ease;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ncc-primary) transparent;
+}
+
+/* Top accent line */
+.ncc-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ncc-primary), transparent);
+  opacity: 0.45;
+  border-radius: var(--ncc-radius) var(--ncc-radius) 0 0;
+  pointer-events: none;
+}
+
+.ncc-overlay.ncc-visible .ncc-panel {
+  transform: translateY(0) scale(1);
+}
+
+/* ── Header ───────────────────────────────── */
+.ncc-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.ncc-icon {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.ncc-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #eaf6fb;
+  margin: 0 0 8px;
+  letter-spacing: -0.3px;
+}
+
+.ncc-desc {
+  font-size: 13.5px;
+  color: var(--ncc-muted);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+/* ── Top action buttons ───────────────────── */
+.ncc-actions-top {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ── Base button ──────────────────────────── */
+.ncc-btn {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.4px;
+  transition: all 0.22s var(--ncc-ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: inherit;
+  line-height: 1.2;
+}
+
+/* Accept all */
+.ncc-btn-primary {
+  background: linear-gradient(65deg, #6ee7f3, #acd9e5 50%, #6bd3c9);
+  background-size: 200% 100%;
+  background-position: 0 50%;
+  color: #031017;
+  border-color: transparent;
+  box-shadow: 0 8px 28px rgba(110, 231, 243, 0.18);
+}
+
+.ncc-btn-primary:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 0 20px rgba(115, 189, 215, 0.55);
+}
+
+.ncc-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.ncc-btn-primary:focus-visible {
+  outline: 2px solid var(--ncc-primary);
+  outline-offset: 2px;
+}
+
+/* Reject optional */
+.ncc-btn-ghost {
+  background: transparent;
+  border-color: rgba(110, 231, 243, 0.28);
+  color: var(--ncc-text);
+}
+
+.ncc-btn-ghost:hover {
+  background: var(--ncc-surface-hover);
+  border-color: var(--ncc-primary);
+  color: var(--ncc-primary);
+}
+
+.ncc-btn-ghost:active {
+  transform: scale(0.98);
+}
+
+.ncc-btn-ghost:focus-visible {
+  outline: 2px solid var(--ncc-primary);
+  outline-offset: 2px;
+}
+
+/* ── Customize accordion ──────────────────── */
+.ncc-customize {
+  border-top: 1px solid var(--ncc-border);
+  padding-top: 16px;
+}
+
+.ncc-customize > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ncc-primary);
+  padding: 5px 2px;
+  user-select: none;
+  outline: none;
+  transition: opacity 0.2s ease;
+}
+
+.ncc-customize > summary::-webkit-details-marker { display: none; }
+
+.ncc-customize > summary:focus-visible {
+  outline: 2px solid var(--ncc-primary);
+  border-radius: 4px;
+  outline-offset: 2px;
+}
+
+.ncc-customize > summary:hover { opacity: 0.8; }
+
+.ncc-chevron {
+  font-style: normal;
+  font-size: 16px;
+  display: inline-block;
+  transition: transform 0.3s var(--ncc-ease);
+}
+
+.ncc-customize[open] > summary .ncc-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Categories ───────────────────────────── */
+.ncc-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.ncc-category {
+  background: var(--ncc-surface);
+  border: 1px solid var(--ncc-border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.ncc-category:hover {
+  background: var(--ncc-surface-hover);
+  border-color: rgba(110, 231, 243, 0.12);
+}
+
+.ncc-cat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.ncc-cat-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ncc-cat-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #eaf6fb;
+}
+
+.ncc-cat-always {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ncc-primary);
+  background: rgba(110, 231, 243, 0.1);
+  border: 1px solid rgba(110, 231, 243, 0.22);
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.2px;
+}
+
+.ncc-cat-badge {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ncc-muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.ncc-cat-desc {
+  font-size: 12.5px;
+  color: var(--ncc-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── Toggle switch ────────────────────────── */
+.ncc-toggle {
+  position: relative;
+  display: inline-block;
+  width: var(--ncc-toggle-w);
+  height: var(--ncc-toggle-h);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.ncc-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.ncc-slider {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background 0.28s ease, border-color 0.28s ease;
+}
+
+.ncc-slider::before {
+  content: '';
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transition: transform 0.3s var(--ncc-ease),
+              background 0.28s ease,
+              box-shadow 0.28s ease;
+}
+
+/* ON state */
+.ncc-toggle input:checked + .ncc-slider {
+  background: linear-gradient(90deg, #3ac5c0, #6ee7f3);
+  border-color: rgba(110, 231, 243, 0.4);
+}
+
+.ncc-toggle input:checked + .ncc-slider::before {
+  transform: translateX(20px);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(110, 231, 243, 0.45);
+}
+
+/* Locked toggle (Necessary) */
+.ncc-toggle-locked {
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.ncc-toggle-locked input:checked + .ncc-slider {
+  background: linear-gradient(90deg, #3ac5c0, #6ee7f3);
+  opacity: 0.65;
+}
+
+/* Focus ring on keyboard navigation */
+.ncc-toggle input:focus-visible + .ncc-slider {
+  outline: 2px solid var(--ncc-primary);
+  outline-offset: 2px;
+}
+
+/* ── Save preferences button ──────────────── */
+.ncc-actions-bottom {
+  margin-top: 14px;
+}
+
+.ncc-btn-save {
+  width: 100%;
+  flex: none;
+  background: transparent;
+  border-color: rgba(110, 231, 243, 0.25);
+  color: var(--ncc-primary);
+}
+
+.ncc-btn-save:hover {
+  background: rgba(110, 231, 243, 0.07);
+  border-color: var(--ncc-primary);
+  box-shadow: 0 4px 18px rgba(110, 231, 243, 0.12);
+}
+
+.ncc-btn-save:focus-visible {
+  outline: 2px solid var(--ncc-primary);
+  outline-offset: 2px;
+}
+
+/* ── Footer (privacy link) ────────────────── */
+.ncc-modal-footer {
+  margin-top: 14px;
+  text-align: center;
+  border-top: 1px solid var(--ncc-border);
+  padding-top: 12px;
+}
+
+.ncc-link {
+  font-size: 12px;
+  color: var(--ncc-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ncc-link:hover {
+  color: var(--ncc-primary);
+}
+
+/* ── Floating Cookie Settings button ─────── */
+.ncc-floating-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9998;
+  background: rgba(8, 10, 22, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  padding: 7px 14px 7px 10px;
+  color: var(--ncc-muted);
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 24px rgba(2, 6, 23, 0.55);
+  transition: all 0.24s var(--ncc-ease);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+}
+
+/* Visible state: applied once consent is stored */
+.ncc-floating-btn.ncc-btn-visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+.ncc-floating-btn:hover {
+  border-color: var(--ncc-primary);
+  color: var(--ncc-primary);
+  box-shadow: 0 6px 28px rgba(110, 231, 243, 0.18);
+  transform: translateY(-2px);
+}
+
+.ncc-floating-btn:active { transform: scale(0.97); }
+
+.ncc-floating-btn:focus-visible {
+  outline: 2px solid var(--ncc-primary);
+  outline-offset: 2px;
+}
+
+.ncc-cookie-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ── Responsive ───────────────────────────── */
+@media (max-width: 480px) {
+  .ncc-panel {
+    padding: 22px 16px 16px;
+    border-radius: 14px;
+  }
+
+  .ncc-title { font-size: 18px; }
+  .ncc-desc  { font-size: 13px; }
+
+  .ncc-actions-top {
+    flex-direction: column;
+  }
+
+  .ncc-btn { font-size: 13px; }
+
+  .ncc-floating-btn {
+    bottom: 12px;
+    right: 12px;
+    font-size: 11px;
+    padding: 7px 12px 7px 8px;
+  }
+}

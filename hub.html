@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
-        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <!-- Cookie Consent Manager v2 -->
+        <link rel="stylesheet" href="assets/css/cookies.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="NexCore Labs">
@@ -103,7 +103,7 @@
 
         <section id="projects" class="panel">
           <div class="container">
-            <h2 class="section-title">Projects<span style="display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.65rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle;position:relative;top:-2px;">BETA</span></h2>
+            <h2 class="section-title">Projects</h2>
             <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
             
                 <!-- 🔍 Search Bar -->
@@ -258,7 +258,7 @@
               .from('projects')
               .select('public_id, name, slug, card_description')
               .eq('published', true)
-              .order('created_at', { ascending: false })
+              .order('created_at', { ascending: true })
               .limit(100);
 
             if (error) {
@@ -337,18 +337,6 @@
         }
       </script>
 
-  <!-- Cookie Consent Banner + Module -->
-  <div id="cookie-consent-banner" class="cookie-consent" aria-hidden="true">
-    <div class="cc-inner container">
-      <p class="cc-text">We use cookies to improve the site. You can accept analytics cookies or reject non-essential cookies.</p>
-      <div class="cc-actions">
-        <button id="cc-accept" class="btn primary">Accept analytics cookies</button>
-        <button id="cc-reject" class="btn ghost">Reject non-essential cookies</button>
-        <a class="btn small" href="privacy-policy.html">Privacy Policy</a>
-      </div>
-    </div>
-  </div>
-
-  <script src="assets/js/cookie-consent.js" defer></script>
+  <script src="assets/js/cookies.js" defer></script>
   </body>
 </html>
