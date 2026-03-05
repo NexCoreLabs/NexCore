@@ -1,0 +1,118 @@
+<div id="nc-cookie-root" class="nc-cookie" aria-hidden="true">
+  <div class="nc-cookie__backdrop" data-cookie-close></div>
+  <section
+    class="nc-cookie__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="nc-cookie-title"
+    aria-describedby="nc-cookie-description"
+    tabindex="-1"
+  >
+    <header class="nc-cookie__header">
+      <h2 id="nc-cookie-title">Privacy &amp; Cookies</h2>
+      <p id="nc-cookie-description">We use cookies to enhance your experience, ensure security, and improve our services.</p>
+    </header>
+
+    <div class="nc-cookie__customize">
+      <button
+        type="button"
+        class="nc-cookie__customize-toggle"
+        id="nc-cookie-customize-toggle"
+        aria-expanded="false"
+        aria-controls="nc-cookie-categories"
+      >
+        Customize settings
+        <span class="nc-cookie__chevron" aria-hidden="true"></span>
+      </button>
+
+      <div class="nc-cookie__categories" id="nc-cookie-categories" hidden>
+        <article class="nc-cookie__category" data-category="necessary">
+          <button
+            type="button"
+            class="nc-cookie__category-head"
+            aria-expanded="false"
+            aria-controls="nc-cookie-panel-necessary"
+          >
+            <span>Necessary</span>
+            <label class="nc-switch" aria-label="Necessary cookies are always enabled">
+              <input type="checkbox" data-consent="necessary" checked disabled aria-label="Necessary cookies enabled" />
+              <span class="nc-switch__track"></span>
+            </label>
+          </button>
+          <div id="nc-cookie-panel-necessary" class="nc-cookie__category-panel" hidden>
+            <p>Required for login, Supabase authentication, and core functionality.</p>
+          </div>
+        </article>
+
+        <article class="nc-cookie__category" data-category="external_media">
+          <button
+            type="button"
+            class="nc-cookie__category-head"
+            aria-expanded="false"
+            aria-controls="nc-cookie-panel-external-media"
+          >
+            <span>External Media</span>
+            <label class="nc-switch" aria-label="Enable external media cookies">
+              <input type="checkbox" data-consent="external_media" aria-label="External media consent" />
+              <span class="nc-switch__track"></span>
+            </label>
+          </button>
+          <div id="nc-cookie-panel-external-media" class="nc-cookie__category-panel" hidden>
+            <p>Allows content from external platforms such as LinkedIn or YouTube.</p>
+          </div>
+        </article>
+
+        <article class="nc-cookie__category" data-category="analytics">
+          <button
+            type="button"
+            class="nc-cookie__category-head"
+            aria-expanded="false"
+            aria-controls="nc-cookie-panel-analytics"
+          >
+            <span>Analytics</span>
+            <label class="nc-switch" aria-label="Enable analytics cookies">
+              <input type="checkbox" data-consent="analytics" aria-label="Analytics consent" />
+              <span class="nc-switch__track"></span>
+            </label>
+          </button>
+          <div id="nc-cookie-panel-analytics" class="nc-cookie__category-panel" hidden>
+            <p>Allows anonymous usage analytics to help improve the platform.</p>
+          </div>
+        </article>
+
+        <article class="nc-cookie__category" data-category="ai_services">
+          <button
+            type="button"
+            class="nc-cookie__category-head"
+            aria-expanded="false"
+            aria-controls="nc-cookie-panel-ai-services"
+          >
+            <span>AI Services</span>
+            <label class="nc-switch" aria-label="Enable AI services tracking">
+              <input type="checkbox" data-consent="ai_services" aria-label="AI services consent" />
+              <span class="nc-switch__track"></span>
+            </label>
+          </button>
+          <div id="nc-cookie-panel-ai-services" class="nc-cookie__category-panel" hidden>
+            <p>Allows AI usage tracking and feature improvements.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <footer class="nc-cookie__actions">
+      <button type="button" id="nc-cookie-accept-all" class="nc-btn nc-btn--primary" aria-label="Accept all cookie categories">Accept all</button>
+      <button type="button" id="nc-cookie-reject-optional" class="nc-btn nc-btn--ghost" aria-label="Reject all optional cookies">Reject optional</button>
+      <button type="button" id="nc-cookie-save" class="nc-btn nc-btn--soft" aria-label="Save selected cookie preferences">Save preferences</button>
+    </footer>
+  </section>
+</div>
+
+<button
+  type="button"
+  id="nc-cookie-settings-btn"
+  class="nc-cookie-settings-btn"
+  aria-label="Open cookie settings"
+>
+  Cookie Settings
+</button>
