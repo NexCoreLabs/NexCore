@@ -4,7 +4,31 @@ const { GoogleGenAI } = require('@google/genai');
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const MODERATION_MODEL = process.env.GEMINI_MODEL || 'models/gemini-2.5-flash';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'models/gemini-2.5-flash';
+
+const ALLOWED_CATEGORIES = [
+  'hate',
+  'harassment',
+  'sexual',
+  'self_harm',
+  'violence',
+  'illegal',
+  'extremism',
+  'spam',
+  'other'
+];
+
+const BLOCK_WORDS = [
+  'fuck',
+  'shit',
+  'bitch',
+  'asshole',
+  'bastard',
+  'slut',
+  'whore',
+  'nigger',
+  'faggot'
+];
 
 function setCors(res) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -16,8 +40,20 @@ function setCors(res) {
   );
 }
 
+function normalizeText(value) {
+  return String(value || '').toLowerCase();
+}
+
+function clampConfidence(value) {
+  const num = Number(value);
+  if (Number.isNaN(num)) return 0;
+  if (num < 0) return 0;
+  if (num > 1) return 1;
+  return num;
+}
+
 function parseJsonSafe(raw) {
-  if (typeof raw !== 'string') return null;
+  if (!raw || typeof raw !== 'string') return null;
 
   const cleaned = raw
     .trim()
@@ -32,110 +68,173 @@ function parseJsonSafe(raw) {
   }
 }
 
-function clampRiskScore(value) {
-  const numeric = Number(value);
-  if (Number.isNaN(numeric)) return 0;
-  if (numeric < 0) return 0;
-  if (numeric > 1) return 1;
-  return numeric;
+function collectProjectText(project) {
+  return [
+    project?.name,
+    project?.slug,
+    project?.card_description,
+    project?.page_description,
+    project?.website,
+    project?.x_url,
+    project?.instagram_url,
+    project?.github_url,
+    project?.linkedin_url
+  ]
+    .filter(Boolean)
+    .join('\n');
 }
 
-function normalizeModerationResult(rawResult) {
-  const safe = Boolean(rawResult?.safe);
-  const riskScore = clampRiskScore(rawResult?.risk_score);
-  const reason = String(rawResult?.reason || (safe ? 'clean academic project' : 'contains content that may violate guidelines'));
+function runRuleModeration(projectText) {
+  const normalized = normalizeText(projectText);
+  const hitWords = BLOCK_WORDS.filter((word) => {
+    const re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}\\b`, 'i');
+    return re.test(normalized);
+  });
+
+  const urlMatches = normalized.match(/https?:\/\//g) || [];
+  const repeatedPunct = /(.)\1{7,}/.test(normalized);
+  const repeatedWords = /\b(\w+)\b(?:\W+\1\b){5,}/i.test(normalized);
+  const excessiveCaps = (projectText || '').replace(/[^A-Z]/g, '').length > 80;
+
+  const spamSignals = [];
+  if (urlMatches.length >= 5) spamSignals.push('too_many_urls');
+  if (repeatedPunct) spamSignals.push('repeated_characters');
+  if (repeatedWords) spamSignals.push('repeated_words');
+  if (excessiveCaps) spamSignals.push('excessive_caps');
+
+  if (hitWords.length > 0) {
+    return {
+      decision: 'blocked',
+      categories: ['other'],
+      confidence: 0.99,
+      reason: `Blocked by rules: prohibited language detected (${hitWords.slice(0, 5).join(', ')}).`,
+      layer: 'rules',
+      rule_hits: {
+        bad_words: hitWords,
+        spam_signals: spamSignals
+      }
+    };
+  }
+
+  if (spamSignals.length > 0) {
+    return {
+      decision: 'blocked',
+      categories: ['spam'],
+      confidence: 0.95,
+      reason: `Blocked by rules: spam patterns detected (${spamSignals.join(', ')}).`,
+      layer: 'rules',
+      rule_hits: {
+        bad_words: hitWords,
+        spam_signals: spamSignals
+      }
+    };
+  }
 
   return {
-    safe,
-    risk_score: riskScore,
-    reason: reason.slice(0, 500)
+    decision: 'approved',
+    categories: [],
+    confidence: 0.5,
+    reason: 'No rule violations detected.',
+    layer: 'rules',
+    rule_hits: {
+      bad_words: [],
+      spam_signals: []
+    }
   };
 }
 
-function buildModerationPrompt({ title, description }) {
-  return `You are a strict content moderation AI for a university innovation platform.
+function buildGeminiPrompt(project, action) {
+  const payload = {
+    action,
+    project: {
+      id: project?.id,
+      name: project?.name || '',
+      slug: project?.slug || '',
+      card_description: project?.card_description || '',
+      page_description: project?.page_description || '',
+      website: project?.website || '',
+      x_url: project?.x_url || '',
+      instagram_url: project?.instagram_url || '',
+      github_url: project?.github_url || '',
+      linkedin_url: project?.linkedin_url || ''
+    },
+    allowed_categories: ALLOWED_CATEGORIES,
+    output_contract: {
+      decision: 'approved|blocked|review',
+      categories: 'array of categories',
+      confidence: 'number between 0 and 1',
+      reason: 'short, user-facing reason'
+    }
+  };
 
-Analyze the following project content and determine if it contains:
-
-- hate speech
-- harassment
-- sexual content
-- illegal activity
-- unethical instructions
-- dangerous activities
-- spam or promotional abuse
-
-Return ONLY JSON in this format:
-
-{
- "safe": true,
- "risk_score": 0.0,
- "reason": "clean academic project"
+  return [
+    'You are a strict content moderation classifier for a public project platform.',
+    'Evaluate safety/compliance risk and decide if this content should be publicly published.',
+    'Return JSON ONLY. Do not include markdown, code fences, commentary, or extra keys.',
+    'The response must be a single JSON object with exactly these keys:',
+    '{"decision":"approved|blocked|review","categories":["hate|harassment|sexual|self_harm|violence|illegal|extremism|spam|other"],"confidence":0.0,"reason":"..."}',
+    'Guidelines:',
+    '- Use "blocked" for clearly disallowed harmful content.',
+    '- Use "review" for borderline, ambiguous, or context-sensitive cases (including educational context around sensitive topics).',
+    '- Use "approved" for benign content.',
+    '- Keep reason concise and plain language.',
+    '- confidence must be numeric from 0 to 1.',
+    '',
+    'Input:',
+    JSON.stringify(payload)
+  ].join('\n');
 }
 
-If the content is inappropriate return:
-
-{
- "safe": false,
- "risk_score": 0.8,
- "reason": "contains harassment or unethical instructions"
-}
-
-PROJECT TITLE:
-${title}
-
-PROJECT DESCRIPTION:
-${description}`;
-}
-
-async function moderateWithGemini({ title, description }) {
+async function runGeminiModeration(project, action) {
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const prompt = buildGeminiPrompt(project, action);
 
-  const response = await ai.models.generateContent({
-    model: MODERATION_MODEL,
-    contents: [{ role: 'user', parts: [{ text: buildModerationPrompt({ title, description }) }] }],
+  const result = await ai.models.generateContent({
+    model: GEMINI_MODEL,
+    contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: {
       temperature: 0,
-      maxOutputTokens: 200,
+      maxOutputTokens: 250,
       responseMimeType: 'application/json'
     }
   });
 
-  const rawText = (response?.text || '').trim();
+  const rawText = (result?.text || '').trim();
   const parsed = parseJsonSafe(rawText);
 
   if (!parsed || typeof parsed !== 'object') {
     return {
-      safe: false,
-      risk_score: 1,
-      reason: 'Malformed moderation response from AI'
+      decision: 'review',
+      categories: ['other'],
+      confidence: 0.3,
+      reason: 'AI moderation response could not be parsed. Sent to review.',
+      raw: rawText
     };
   }
 
-  return normalizeModerationResult(parsed);
+  const decision = ['approved', 'blocked', 'review'].includes(parsed.decision)
+    ? parsed.decision
+    : 'review';
+
+  const categories = Array.isArray(parsed.categories)
+    ? parsed.categories.filter((c) => ALLOWED_CATEGORIES.includes(c))
+    : [];
+
+  return {
+    decision,
+    categories,
+    confidence: clampConfidence(parsed.confidence),
+    reason: String(parsed.reason || 'Reviewed by AI moderation.'),
+    raw: rawText
+  };
 }
 
-function validateModerationInput(body) {
-  const title = String(body?.title || '').trim();
-  const description = String(body?.description || '').trim();
-
-  if (!title) {
-    return { ok: false, error: 'missing_title' };
+function resolvePublishState({ requestPublish, decision, currentPublished }) {
+  if (!requestPublish) {
+    return !!currentPublished;
   }
 
-  if (!description) {
-    return { ok: false, error: 'missing_description' };
-  }
-
-  if (title.length > 200) {
-    return { ok: false, error: 'title_too_long' };
-  }
-
-  if (description.length > 5000) {
-    return { ok: false, error: 'description_too_long' };
-  }
-
-  return { ok: true, title, description };
+  return decision === 'approved';
 }
 
 module.exports = async (req, res) => {
@@ -146,10 +245,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !GEMINI_API_KEY) {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !GEMINI_API_KEY || !GEMINI_MODEL) {
       return res.status(500).json({
         error: 'server_misconfigured',
-        details: 'Missing SUPABASE_URL, SUPABASE_ANON_KEY, or GEMINI_API_KEY'
+        details: 'Missing one of: SUPABASE_URL, SUPABASE_ANON_KEY, GEMINI_API_KEY, GEMINI_MODEL'
       });
     }
 
@@ -163,6 +262,7 @@ module.exports = async (req, res) => {
     }
 
     const token = authHeader.slice('Bearer '.length).trim();
+
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       global: {
         headers: {
@@ -180,81 +280,150 @@ module.exports = async (req, res) => {
       return res.status(401).json({ error: 'invalid_or_expired_token' });
     }
 
-    const validated = validateModerationInput(req.body || {});
-    if (!validated.ok) {
-      return res.status(400).json({ error: validated.error });
+    const { project_id, action = 'publish_check', request_publish = false } = req.body || {};
+
+    if (!project_id) {
+      return res.status(400).json({ error: 'missing_project_id' });
     }
 
-    const { title, description } = validated;
-    const projectId = req.body?.project_id || null;
-    const requestPublish = Boolean(req.body?.request_publish);
-    const nowIso = new Date().toISOString();
-
-    let moderation;
-    try {
-      moderation = await moderateWithGemini({ title, description });
-    } catch (geminiError) {
-      console.error('Gemini moderation error:', geminiError?.message || geminiError);
-      moderation = {
-        safe: false,
-        risk_score: 1,
-        reason: 'Moderation service unavailable'
-      };
+    if (!['publish_check', 'edit_check'].includes(action)) {
+      return res.status(400).json({ error: 'invalid_action' });
     }
 
-    const moderationStatus = moderation.safe ? 'approved' : 'flagged';
+    const { data: project, error: projectError } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('id', project_id)
+      .single();
 
-    if (projectId) {
-      const { data: project, error: projectError } = await supabase
-        .from('projects')
-        .select('id, owner_user_id, published')
-        .eq('id', projectId)
-        .single();
+    if (projectError || !project) {
+      return res.status(404).json({ error: 'project_not_found_or_forbidden' });
+    }
 
-      if (projectError || !project || project.owner_user_id !== user.id) {
-        return res.status(404).json({ error: 'project_not_found_or_forbidden' });
-      }
-
-      const nextPublished = requestPublish ? moderation.safe : Boolean(project.published);
-
-      const { error: projectUpdateError } = await supabase
-        .from('projects')
-        .update({
-          moderation_status: moderationStatus,
-          moderation_reason: moderation.reason,
-          last_moderated_at: nowIso,
-          published: nextPublished,
-          updated_at: nowIso
-        })
-        .eq('id', projectId);
-
-      if (projectUpdateError) {
-        return res.status(500).json({
-          error: 'failed_to_update_project',
-          details: projectUpdateError.message
-        });
-      }
-
-      const { error: moderationInsertError } = await supabase.from('project_moderation').insert({
-        project_id: projectId,
-        moderation_status: moderationStatus,
-        flagged_reason: moderation.reason,
-        ai_score: moderation.risk_score,
-        created_at: nowIso
+    const projectText = collectProjectText(project);
+    if (!projectText.trim()) {
+      const nowIso = new Date().toISOString();
+      const approvedPublished = resolvePublishState({
+        requestPublish: !!request_publish,
+        decision: 'approved',
+        currentPublished: project.published
       });
 
-      if (moderationInsertError) {
-        return res.status(500).json({
-          error: 'failed_to_save_moderation',
-          details: moderationInsertError.message
-        });
+      const { data: updatedEmpty, error: updateEmptyErr } = await supabase
+        .from('projects')
+        .update({
+          moderation_status: 'approved',
+          moderation_reason: 'No content provided; approved by default.',
+          last_moderated_at: nowIso,
+          published: approvedPublished,
+          updated_at: nowIso
+        })
+        .eq('id', project.id)
+        .select('*')
+        .single();
+
+      if (updateEmptyErr) {
+        return res.status(500).json({ error: 'failed_to_update_project', details: updateEmptyErr.message });
       }
+
+      return res.status(200).json({
+        ok: true,
+        decision: 'approved',
+        categories: [],
+        confidence: 0.7,
+        reason: 'No content provided; approved by default.',
+        published: updatedEmpty.published,
+        moderation_status: updatedEmpty.moderation_status,
+        moderation_reason: updatedEmpty.moderation_reason
+      });
+    }
+
+    const ruleResult = runRuleModeration(projectText);
+
+    let finalResult;
+    let aiResult = null;
+
+    if (ruleResult.decision === 'blocked') {
+      finalResult = {
+        decision: 'blocked',
+        categories: ruleResult.categories,
+        confidence: ruleResult.confidence,
+        reason: ruleResult.reason
+      };
+    } else {
+      try {
+        aiResult = await runGeminiModeration(project, action);
+        finalResult = {
+          decision: aiResult.decision,
+          categories: aiResult.categories,
+          confidence: aiResult.confidence,
+          reason: aiResult.reason
+        };
+      } catch (aiError) {
+        finalResult = {
+          decision: 'review',
+          categories: ['other'],
+          confidence: 0.2,
+          reason: 'AI moderation unavailable. Sent to review.'
+        };
+      }
+    }
+
+    const nowIso = new Date().toISOString();
+    const nextIsPublished = resolvePublishState({
+      requestPublish: !!request_publish,
+      decision: finalResult.decision,
+      currentPublished: project.published
+    });
+
+    const { data: updatedProject, error: updateError } = await supabase
+      .from('projects')
+      .update({
+        moderation_status: finalResult.decision,
+        moderation_reason: finalResult.reason,
+        last_moderated_at: nowIso,
+        published: nextIsPublished,
+        updated_at: nowIso
+      })
+      .eq('id', project.id)
+      .select('*')
+      .single();
+
+    if (updateError || !updatedProject) {
+      return res.status(500).json({
+        error: 'failed_to_update_project',
+        details: updateError?.message || 'Unknown update error'
+      });
+    }
+
+    try {
+      await supabase.from('moderation_logs').insert({
+        project_id: project.id,
+        user_id: user.id,
+        action,
+        decision: finalResult.decision,
+        categories: finalResult.categories,
+        confidence: finalResult.confidence,
+        reason: finalResult.reason,
+        request_publish: !!request_publish,
+        rule_hits: ruleResult.rule_hits,
+        ai_raw: aiResult?.raw || null,
+        created_at: nowIso
+      });
+    } catch (logErr) {
+      console.warn('moderation log insert failed:', logErr?.message || logErr);
     }
 
     return res.status(200).json({
-      safe: moderation.safe,
-      risk_score: moderation.risk_score,
-      reason: moderation.reason
+      ok: true,
+      decision: finalResult.decision,
+      categories: finalResult.categories,
+      confidence: finalResult.confidence,
+      reason: finalResult.reason,
+      published: updatedProject.published,
+      moderation_status: updatedProject.moderation_status,
+      moderation_reason: updatedProject.moderation_reason,
+      last_moderated_at: updatedProject.last_moderated_at
     });
   } catch (err) {
     return res.status(500).json({
