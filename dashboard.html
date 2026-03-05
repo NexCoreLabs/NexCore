@@ -38,10 +38,10 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
-    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
-    .box:hover{
-      background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);
-    }
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    /* .box:hover{
+      border:2px solid rgba(255,255,255,.08);
+    } */
     label{display:block;margin:10px 0 6px;opacity:.9}
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -64,7 +64,8 @@
     .mod-review{color:#ffcc66;border-color:rgba(255,204,102,.45);background:rgba(255,204,102,.12)}
     .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
-    .mod-popup{position:fixed;z-index:9999;max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
+    .mod-popup{position:fixed;z-index:9999;
+      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
     .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
     .ai-btn {
       position: relative;
@@ -141,28 +142,144 @@
     .ai-remaining.ok2 { color: #a3e635; }
     .ai-remaining.ok1 { color: #f59e0b; }
     .ai-remaining.ok0 { color: #ef4444; }
-    .ai-core-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      font-size:.7rem;
-      font-weight:600;
-      letter-spacing:1px;
-      padding:4px 8px;
-      border-radius:999px;
-      background:linear-gradient(135deg,#6EE7F3,#3B82F6);
-      color:#0b1120;
-      margin-right:8px;
-      box-shadow:0 0 12px rgba(110,231,243,.4);
-      animation:aiPulse 2.5s ease-in-out infinite;
-      vertical-align:middle;
-      line-height:1;
+
+    /* ── Delete Project Modal ── */
+    .del-modal{
+      display:flex;position:fixed;inset:0;z-index:9999;
+      align-items:flex-end;justify-content:center;
+      padding:16px;box-sizing:border-box;
+      background:rgba(2,6,23,.55);
+      backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+      opacity:0;pointer-events:none;
+      transition:opacity .28s ease;
+    }
+    .del-modal.open{opacity:1;pointer-events:all;}
+    @media(min-width:600px){.del-modal{align-items:center;}}
+    .del-modal-content{
+      position:relative;
+      width:100%;max-width:520px;
+      max-height:90dvh;overflow-y:auto;
+      background:rgba(8,10,22,.93);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      padding:28px 24px 22px;box-sizing:border-box;
+      box-shadow:0 24px 72px rgba(2,6,23,.85),0 0 0 1px rgba(255,120,120,.06);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      color:#e6eef3;font-size:14px;line-height:1.5;
+      transform:translateY(28px) scale(.97);opacity:0;
+      transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .28s ease;
+      scrollbar-width:thin;scrollbar-color:#ff7878 transparent;
+    }
+    .del-modal.open .del-modal-content{transform:translateY(0) scale(1);opacity:1;}
+    .del-modal-content::before{
+      content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+      background:linear-gradient(90deg,transparent,#ff7878,transparent);
+      opacity:.45;border-radius:16px 16px 0 0;pointer-events:none;
+    }
+    .del-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+    .del-modal-header h2{margin:0;color:#ff7878;display:flex;align-items:center;gap:10px;font-size:1.15rem;}
+    .del-modal-close{
+      display:flex;align-items:center;justify-content:center;
+      width:32px;height:32px;border-radius:8px;
+      color:rgba(255,255,255,.45);font-size:22px;font-weight:bold;
+      cursor:pointer;line-height:1;flex-shrink:0;
+      transition:background .18s,color .18s;
+    }
+    .del-modal-close:hover{background:rgba(255,255,255,.08);color:#fff;}
+    .del-modal-actions{display:flex;gap:10px;margin-top:24px;}
+    .del-modal-actions .btn{flex:1;}
+    @media(max-width:480px){
+      .del-modal-content{padding:22px 16px 18px;}
+      .del-modal-actions{flex-direction:column;}
+      .del-modal-actions .btn{width:100%;}
+    }
+    /* ── AI Style Custom Dropdown ── */
+    .ai-select-wrap{
+      position:relative;
+      display:inline-block;
+      flex-shrink:0;
+      min-width:145px;
+    }
+    /* hidden native select keeps .value accessible for JS */
+    #aiStyle{
+      position:absolute;opacity:0;pointer-events:none;width:0;height:0;
+    }
+    .ai-select-trigger{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:9px 14px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(110,231,243,.22);
+      border-radius:10px;
+      color:#e6eef3;
+      font-size:.875rem;font-family:inherit;font-weight:500;
+      cursor:pointer;
+      user-select:none;
+      transition:border-color .2s,background .2s,box-shadow .2s;
+    }
+    .ai-select-trigger:hover{
+      background:rgba(110,231,243,.06);
+      border-color:rgba(110,231,243,.45);
+    }
+    .ai-select-wrap.open .ai-select-trigger{
+      border-color:#6ee7f3;
+      box-shadow:0 0 0 3px rgba(110,231,243,.15);
+      background:rgba(110,231,243,.06);
+    }
+    .ai-select-chevron{
+      width:0;height:0;
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:5px solid rgba(110,231,243,.75);
+      transition:transform .22s cubic-bezier(.2,.9,.3,1),border-top-color .18s;
+      flex-shrink:0;
+    }
+    .ai-select-wrap.open .ai-select-chevron{
+      transform:rotate(180deg);
+      border-top-color:#6ee7f3;
+    }
+    .ai-select-panel{
+      position:fixed;
+      background:rgba(8,10,22,.5);
+      backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);
+      border:1px solid rgba(110,231,243,.6);
+      border-radius:12px;
+      padding:6px;
+      box-shadow:0 16px 40px rgba(2,6,23,.8),0 0 0 1px rgba(110,231,243,.08);
+      z-index:99999;
+      opacity:0;pointer-events:none;
+      transform:translateY(-6px) scale(.97);
+      transform-origin:top left;
+      transition:opacity .2s ease,transform .22s cubic-bezier(.2,.9,.3,1);
+    }
+    .ai-select-panel.open{
+      opacity:1;pointer-events:all;
+      transform:translateY(0) scale(1);
+    }
+    .ai-select-option{
+      display:flex;align-items:center;gap:10px;
+      padding:9px 12px;
+      border-radius:8px;
+      font-size:.875rem;font-family:inherit;font-weight:500;
+      color:rgba(230,238,243,.8);
+      cursor:pointer;
+      transition:background .15s,color .15s;
       white-space:nowrap;
     }
-    @keyframes aiPulse{
-      0%{ box-shadow:0 0 8px rgba(110,231,243,.25); }
-      50%{ box-shadow:0 0 18px rgba(110,231,243,.65); }
-      100%{ box-shadow:0 0 8px rgba(110,231,243,.25); }
+    .ai-select-option:hover{
+      background:rgba(110,231,243,.08);
+      color:#e6eef3;
+    }
+    .ai-select-option.selected{
+      color:#6ee7f3;
+      background:rgba(110,231,243,.1);
+    }
+    .ai-select-option .opt-icon{
+      font-size:.8rem;
+      opacity:.7;
+      width:14px;text-align:center;
+    }
+    .ai-select-option.selected .opt-icon{
+      opacity:1;
     }
   </style>
 </head>
@@ -218,7 +335,6 @@
     <div class="box">
       <div class="row" style="justify-content:space-between">
         <h2 style="margin:0">My Project</h2>
-
       </div>
 
       <!-- State: no project -->
@@ -266,7 +382,7 @@
 
           <!-- AI Card Summary Generator -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><span class="ai-core-badge">AI</span>AI Card Brief</h4>
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>AI Card Brief</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
             
             <button class="btn primary ai-btn" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
@@ -350,17 +466,38 @@
 
           <!-- AI Improve Page Description -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><span class="ai-core-badge">AI</span>Enhance Content with AI</h4>
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>Enhance Content with AI</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate, refine, and optimise your page content using AI</p>
             
             <div class="row" style="margin-bottom:12px;gap:10px;align-items:center;">
               <label style="margin:0;">Style:</label>
-              <select id="aiStyle" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.3);color:#fff;cursor:pointer;">
-                <option value="Professional">Professional</option>
-                <option value="Shorter">Shorter</option>
-                <option value="Technical">Technical</option>
-                <option value="Inspiring">Inspiring</option>
-              </select>
+              <div class="ai-select-wrap" id="aiStyleWrap">
+                <!-- hidden native select keeps .value for JS -->
+                <select id="aiStyle" aria-hidden="true" tabindex="-1">
+                  <option value="Professional">Professional</option>
+                  <option value="Shorter">Shorter</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Inspiring">Inspiring</option>
+                </select>
+                <div class="ai-select-trigger" id="aiStyleTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="aiStyleLabel">Professional</span>
+                  <span class="ai-select-chevron"></span>
+                </div>
+                <div class="ai-select-panel" role="listbox" id="aiStylePanel">
+                  <div class="ai-select-option selected" role="option" data-value="Professional">
+                    <i class="fa-solid fa-briefcase opt-icon"></i> Professional
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Shorter">
+                    <i class="fa-solid fa-minimize opt-icon"></i> Shorter
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Technical">
+                    <i class="fa-solid fa-code opt-icon"></i> Technical
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Inspiring">
+                    <i class="fa-solid fa-star opt-icon"></i> Inspiring
+                  </div>
+                </div>
+              </div>
               <button class="btn primary ai-btn" id="aiPageBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
                 <span class="ai-btn-text">Generate</span>
                 <span class="ai-sparkle-layer"></span>
@@ -414,6 +551,38 @@
           <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
         </div>
       </main>
+
+      <!-- Delete Project Confirmation Modal -->
+      <div id="deleteProjectModal" class="del-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="delProjModalTitle">
+        <div class="del-modal-content">
+          <div class="del-modal-header">
+            <h2 id="delProjModalTitle"><i class="fa-solid fa-triangle-exclamation"></i> Delete Project</h2>
+            <span class="del-modal-close" id="closeDelProjModal">&times;</span>
+          </div>
+
+          <p style="margin-bottom:16px;">This action is <strong>permanent and irreversible</strong>. Your project will be removed from the hub.</p>
+
+          <div style="margin:0 0 20px;padding:14px;background:rgba(255,200,120,.08);border:1px solid rgba(255,200,120,.2);border-radius:10px;font-size:.9rem;line-height:1.6;color:#fff;">
+            <strong style="color:rgb(255,200,120);"><i class="fa-solid fa-triangle-exclamation"></i> This will delete:</strong>
+            <ul style="margin:8px 0 0 20px;line-height:1.8">
+              <li>Your project listing on the hub</li>
+              <li>All project information &amp; metadata</li>
+              <li>Your public project page</li>
+            </ul>
+          </div>
+
+          <div class="del-modal-actions">
+            <button class="btn primary ghost" id="cancelDelProjBtn">
+              <i class="fa-solid fa-xmark"></i> Cancel
+            </button>
+            <button class="btn danger" id="confirmDelProjBtn">
+              <i class="fa-solid fa-trash"></i> Delete Project
+            </button>
+          </div>
+
+          <p id="delProjModalMsg" style="margin-top:16px;"></p>
+        </div>
+      </div>
 
       <footer class="site-footer">
         <div class="container footer-inner">
@@ -1021,11 +1190,28 @@
       }
     }
 
+    function openDeleteProjectModal() {
+      if (!project) return;
+      const modal = document.getElementById("deleteProjectModal");
+      const confirmBtn = document.getElementById("confirmDelProjBtn");
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete Project';
+      document.getElementById("delProjModalMsg").textContent = "";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => modal.classList.add("open"));
+    }
+
+    function closeDeleteProjectModal() {
+      const modal = document.getElementById("deleteProjectModal");
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
     async function deleteProject() {
       if (!project) return;
-
-      const ok = confirm("Delete your project permanently? This cannot be undone.");
-      if (!ok) return;
+      closeDeleteProjectModal();
 
       const msgEl = document.getElementById("msgProfile");
       setMsg(msgEl, "");
@@ -1056,7 +1242,18 @@
       document.getElementById("saveCardBtn").addEventListener("click", saveCard);
       document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
-      document.getElementById("deleteBtn").addEventListener("click", deleteProject);
+      document.getElementById("deleteBtn").addEventListener("click", openDeleteProjectModal);
+
+      // Delete project modal listeners
+      document.getElementById("closeDelProjModal").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("cancelDelProjBtn").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("confirmDelProjBtn").addEventListener("click", deleteProject);
+      window.addEventListener("click", (e) => {
+        if (e.target === document.getElementById("deleteProjectModal")) closeDeleteProjectModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDeleteProjectModal();
+      });
 
       const moderationWhyEl = document.getElementById("moderationBadge");
       if (moderationWhyEl) {
@@ -1435,6 +1632,66 @@
         }, 2000);
       }
     }
+  </script>
+  <script>
+    // ── AI Style custom dropdown (portalled to body) ──────
+    (function () {
+      const wrap    = document.getElementById('aiStyleWrap');
+      const trigger = document.getElementById('aiStyleTrigger');
+      const panel   = document.getElementById('aiStylePanel');
+      const label   = document.getElementById('aiStyleLabel');
+      const native  = document.getElementById('aiStyle');
+      const options = panel.querySelectorAll('.ai-select-option');
+
+      // Move panel to <body> so it escapes all parent stacking contexts
+      document.body.appendChild(panel);
+
+      function reposition() {
+        const rect = trigger.getBoundingClientRect();
+        panel.style.top      = (rect.bottom + 6) + 'px';
+        panel.style.left     = rect.left + 'px';
+        panel.style.minWidth = rect.width + 'px';
+      }
+      function openPanel() {
+        reposition();
+        wrap.classList.add('open');
+        panel.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+      function closePanel() {
+        wrap.classList.remove('open');
+        panel.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+      function selectOption(val) {
+        native.value = val;
+        label.textContent = val;
+        options.forEach(o => o.classList.toggle('selected', o.dataset.value === val));
+        closePanel();
+      }
+
+      trigger.addEventListener('click', () =>
+        panel.classList.contains('open') ? closePanel() : openPanel()
+      );
+      trigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+        if (e.key === 'Escape') closePanel();
+      });
+      options.forEach(o => {
+        o.addEventListener('click', () => selectOption(o.dataset.value));
+        o.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(o.dataset.value); }
+        });
+      });
+      document.addEventListener('click', e => {
+        if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closePanel();
+      });
+      window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
+      window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
+    })();
   </script>
   <script src="assets/js/cookies.js" defer></script>
 </body>
