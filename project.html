@@ -170,17 +170,19 @@
 
         /* ------ Creator Section ------ */
         .creators-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 16px;
+            display: flex;
             margin-top: 4px;
         }
         .creator-card {
+            width: 100%;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(110, 231, 243, 0.12);
             border-radius: 14px;
-            padding: 22px 18px;
-            text-align: center;
+            padding: 16px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             transition: all 0.25s ease;
         }
         .creator-card:hover {
@@ -192,17 +194,18 @@
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            margin: 0 auto 12px;
+            margin: 0;
             display: block;
             object-fit: cover;
             border: 2px solid rgba(110, 231, 243, 0.35);
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
         }
         .creator-avatar-placeholder {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            margin: 0 auto 12px;
+            margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,40 +215,13 @@
             color: #6ee7f3;
             font-weight: 700;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
         }
         .creator-name {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin: 0 0 3px;
+            margin: 0;
             line-height: 1.3;
-        }
-        .creator-role {
-            font-size: 0.8rem;
-            opacity: 0.55;
-            margin: 0 0 12px;
-        }
-        .creator-socials {
-            display: flex;
-            gap: 7px;
-            justify-content: center;
-        }
-        .creator-social-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #6ee7f3;
-            text-decoration: none;
-            font-size: 0.82rem;
-            transition: all 0.2s;
-        }
-        .creator-social-icon:hover {
-            background: rgba(110, 231, 243, 0.12);
-            border-color: rgba(110, 231, 243, 0.35);
         }
 
         /* ------ AI Insights Section ------ */
@@ -501,7 +477,7 @@
 
             <!-- Creators Section -->
             <div class="project-section" id="creatorsSection" style="display: none;">
-                <h2>Creators</h2>
+                <h2>Creator</h2>
                 <div class="creators-grid" id="creatorsGrid"></div>
             </div>
 
@@ -569,7 +545,7 @@
             document.getElementById('projectContent').style.display = 'none';
         }
 
-        function renderProject(project, isOwner) {
+        async function renderProject(project, isOwner) {
             try {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('projectContent').style.display = 'block';
@@ -659,9 +635,9 @@
                 document.getElementById('ownerActions').style.display = 'block';
             }
 
-            // Render AI insights and creators (renderCreators is now sync)
+            // Render AI insights and creator section
             renderAiInsights(project);
-            renderCreators(project);
+            await renderCreators(project);
             } catch (error) {
                 console.error('Error rendering project:', error);
                 // Show error message but don't break the page
@@ -810,7 +786,7 @@
                 }
             }
 
-            renderProject(data, isOwner);
+            await renderProject(data, isOwner);
             
             // Track visit and get total views
             trackVisit(slug);
@@ -970,29 +946,63 @@
         }
 
         /* ---- Creators ---- */
-        function renderCreators(project) {
+        function getMetadataDisplayName(metadata) {
+            const candidate = metadata?.full_name || metadata?.name || metadata?.user_name || metadata?.preferred_username;
+            return typeof candidate === 'string' && candidate.trim() ? candidate.trim() : '';
+        }
+
+        async function fetchCreatorProfile(project) {
+            const creatorFromProject = (project.creator_name || '').trim();
+            const avatarFromProject = (project.creator_avatar_url || '').trim();
+            if (creatorFromProject || avatarFromProject) {
+                return {
+                    display_name: creatorFromProject || 'Project Creator',
+                    avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null
+                };
+            }
+
+            if (project.owner_user_id) {
+                try {
+                    const { data: publicProfile, error } = await sb
+                        .from('user_public_profiles')
+                        .select('name, avatar_url')
+                        .eq('id', project.owner_user_id)
+                        .maybeSingle();
+
+                    if (!error && publicProfile) {
+                        return {
+                            display_name: (publicProfile.name || '').trim() || 'Project Creator',
+                            avatar_url: publicProfile.avatar_url || null
+                        };
+                    }
+                } catch (error) {
+                    console.warn('Could not load creator profile from user_public_profiles:', error?.message || error);
+                }
+            }
+
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                const sessionUser = sessionData?.session?.user;
+                if (sessionUser && sessionUser.id === project.owner_user_id) {
+                    const metadataName = getMetadataDisplayName(sessionUser.user_metadata || {});
+                    const metadataAvatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null;
+                    return {
+                        display_name: metadataName || 'Project Creator',
+                        avatar_url: metadataAvatar
+                    };
+                }
+            } catch (error) {
+                console.warn('Session fallback for creator profile failed:', error?.message || error);
+            }
+
+            return { display_name: 'Project Creator', avatar_url: null };
+        }
+
+        async function renderCreators(project) {
             const section = document.getElementById('creatorsSection');
             const grid = document.getElementById('creatorsGrid');
             if (!section || !grid) return;
-
-            // Build creator profile from project's own data (no separate user_profiles table needed)
-            const hasSocials = project.github_url || project.linkedin_url || project.x_url;
-
-            // Derive a display name: extract GitHub username if URL is present
-            let creatorName = 'Project Creator';
-            if (project.github_url) {
-                const match = String(project.github_url).match(/github\.com\/([^\/\?#]+)/);
-                if (match && match[1]) creatorName = match[1];
-            }
-
-            const profile = {
-                display_name: creatorName,
-                role: 'Creator',
-                avatar_url: null,           // project image is a cover, not a portrait
-                github_url:   project.github_url   || null,
-                linkedin_url: project.linkedin_url || null,
-                x_url:        project.x_url        || null
-            };
+            const profile = await fetchCreatorProfile(project);
 
             grid.innerHTML = '';
             grid.appendChild(buildCreatorCard(profile));
@@ -1004,7 +1014,6 @@
             card.className = 'creator-card';
 
             const name = profile.display_name || 'Creator';
-            const role = profile.role || 'Creator';
             const initial = name.charAt(0).toUpperCase();
 
             let avatarHtml;
@@ -1017,22 +1026,9 @@
                 avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
             }
 
-            const socials = [];
-            if (profile.github_url && /^https?:\/\//i.test(profile.github_url)) {
-                socials.push(`<a href="${escapeAttr(profile.github_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>`);
-            }
-            if (profile.linkedin_url && /^https?:\/\//i.test(profile.linkedin_url)) {
-                socials.push(`<a href="${escapeAttr(profile.linkedin_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>`);
-            }
-            if (profile.x_url && /^https?:\/\//i.test(profile.x_url)) {
-                socials.push(`<a href="${escapeAttr(profile.x_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>`);
-            }
-
             card.innerHTML = `
                 ${avatarHtml}
                 <p class="creator-name">${escapeHtml(name)}</p>
-                <p class="creator-role">${escapeHtml(role)}</p>
-                ${socials.length ? `<div class="creator-socials">${socials.join('')}</div>` : ''}
             `;
             return card;
         }
