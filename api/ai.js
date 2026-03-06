@@ -106,8 +106,8 @@ module.exports = async (req, res) => {
     }
 
     // Validate action
-    if (!['improve_page', 'card_summary'].includes(action)) {
-      return res.status(400).json({ error: 'Invalid action. Must be improve_page or card_summary' });
+    if (!['improve_page', 'card_summary', 'project_insights'].includes(action)) {
+      return res.status(400).json({ error: 'Invalid action. Must be improve_page, card_summary, or project_insights' });
     }
 
     // Consume AI usage (enforces 3/day limit)
@@ -175,6 +175,19 @@ RULES:
 
 Source text:
 ${text}`;
+    } else if (action === 'project_insights') {
+      prompt = `Analyze the following project and return a JSON object with two fields:
+1. "summary": A 2-3 sentence paragraph summarizing what this project is about (80-120 words).
+2. "insights": An array of 3-5 short bullet strings, each starting with a label like "Focus area:", "Category:", "Potential impact:", "Tech stack:", or "Target audience:".
+
+RULES:
+- Do NOT invent information or facts not present in the description
+- Be concise and informative
+- Output ONLY valid JSON, no markdown, no code fences, no extra text
+
+Project name: ${req.body.project_name || ''}
+Project description:
+${text}`;
     }
 
     // Initialize GoogleGenAI client
@@ -226,6 +239,24 @@ ${text}`;
     if (!generatedText) {
       console.error('No result from Gemini');
       return res.status(500).json({ error: 'No response generated from AI' });
+    }
+
+    // For project_insights, parse and return structured JSON
+    if (action === 'project_insights') {
+      try {
+        // Strip possible markdown code fences
+        const cleaned = generatedText.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '');
+        const parsed = JSON.parse(cleaned);
+        return res.status(200).json({
+          summary: parsed.summary || '',
+          insights: Array.isArray(parsed.insights) ? parsed.insights : [],
+          used,
+          remaining
+        });
+      } catch (parseErr) {
+        console.error('Failed to parse project_insights JSON:', parseErr, generatedText);
+        return res.status(500).json({ error: 'AI returned invalid JSON for project insights' });
+      }
     }
 
     // Return success with usage stats

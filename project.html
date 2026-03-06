@@ -167,6 +167,241 @@
         #qr {
             display: inline-block;
         }
+
+        /* ------ Creator Section ------ */
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 4px;
+        }
+        .creator-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(110, 231, 243, 0.12);
+            border-radius: 14px;
+            padding: 22px 18px;
+            text-align: center;
+            transition: all 0.25s ease;
+        }
+        .creator-card:hover {
+            border-color: rgba(110, 231, 243, 0.35);
+            box-shadow: 0 0 20px rgba(110, 231, 243, 0.08);
+            transform: translateY(-2px);
+        }
+        .creator-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: block;
+            object-fit: cover;
+            border: 2px solid rgba(110, 231, 243, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+        .creator-avatar-placeholder {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(110, 231, 243, 0.1);
+            border: 2px solid rgba(110, 231, 243, 0.35);
+            font-size: 1.5rem;
+            color: #6ee7f3;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+        .creator-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 0 0 3px;
+            line-height: 1.3;
+        }
+        .creator-role {
+            font-size: 0.8rem;
+            opacity: 0.55;
+            margin: 0 0 12px;
+        }
+        .creator-socials {
+            display: flex;
+            gap: 7px;
+            justify-content: center;
+        }
+        .creator-social-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #6ee7f3;
+            text-decoration: none;
+            font-size: 0.82rem;
+            transition: all 0.2s;
+        }
+        .creator-social-icon:hover {
+            background: rgba(110, 231, 243, 0.12);
+            border-color: rgba(110, 231, 243, 0.35);
+        }
+
+        /* ------ AI Insights Section ------ */
+        .ai-insights-section {
+            border-color: rgba(110, 231, 243, 0.22) !important;
+            box-shadow: 0 0 28px rgba(110, 231, 243, 0.06), inset 0 0 24px rgba(110, 231, 243, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-insights-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(110, 231, 243, 0.5), transparent);
+            border-radius: 16px 16px 0 0;
+        }
+        .ai-insights-section h2 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .ai-icon {
+            color: #6ee7f3;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .ai-insights-summary {
+            line-height: 1.7;
+            opacity: 0.85;
+            margin: 0 0 16px;
+            font-size: 0.94rem;
+        }
+        .ai-insights-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .ai-insights-bullets li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 0.88rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        .ai-insights-bullets li::before {
+            content: '▸';
+            color: #6ee7f3;
+            flex-shrink: 0;
+            line-height: 1.5;
+        }
+        .ai-insights-placeholder {
+            text-align: center;
+            padding: 8px 0;
+            opacity: 0.65;
+            font-size: 0.9rem;
+        }
+        .ai-gen-btn {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+        }
+        .ai-loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 16px 0;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* ------ Share Section Improvements ------ */
+        .share-social-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+            margin-bottom: 20px;
+        }
+        .share-social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1px solid;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: transparent;
+            color: #fff;
+            font-family: inherit;
+        }
+        .share-social-btn.x-twitter {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .share-social-btn.x-twitter:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+        .share-social-btn.linkedin {
+            border-color: rgba(10, 102, 194, 0.4);
+            color: #78b8d8;
+        }
+        .share-social-btn.linkedin:hover {
+            background: rgba(10, 102, 194, 0.1);
+            border-color: rgba(10, 102, 194, 0.65);
+        }
+        .share-social-btn.whatsapp {
+            border-color: rgba(37, 211, 102, 0.3);
+            color: #7de8b0;
+        }
+        .share-social-btn.whatsapp:hover {
+            background: rgba(37, 211, 102, 0.07);
+            border-color: rgba(37, 211, 102, 0.55);
+        }
+        .qr-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .qr-scan-label {
+            opacity: 0.55;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        .download-qr-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .download-qr-btn:hover {
+            background: rgba(110, 231, 243, 0.08);
+            border-color: rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
     </style>
 </head>
 <body>
@@ -249,6 +484,27 @@
                 </div>
             </div>
 
+            <!-- AI Project Insights -->
+            <div class="project-section ai-insights-section" id="aiInsightsSection">
+                <h2><i class="fas fa-microchip ai-icon"></i> AI Project Insights</h2>
+                <div id="aiInsightsContent">
+                    <p class="ai-insights-summary" id="aiSummaryText"></p>
+                    <ul class="ai-insights-bullets" id="aiInsightsBullets"></ul>
+                </div>
+                <div id="aiInsightsPlaceholder" class="ai-insights-placeholder" style="display: none;">
+                    <p>AI-generated insights are not yet available for this project.</p>
+                    <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
+                        <i class="fas fa-wand-magic-sparkles"></i> Generate Insights
+                    </button>
+                </div>
+            </div>
+
+            <!-- Creators Section -->
+            <div class="project-section" id="creatorsSection" style="display: none;">
+                <h2>Creators</h2>
+                <div class="creators-grid" id="creatorsGrid"></div>
+            </div>
+
             <div class="project-section" id="socialSection" style="display: none;">
                 <h2>Links</h2>
                 <div class="social-links" id="socialLinks"></div>
@@ -264,10 +520,26 @@
                         <i class="fas fa-copy"></i> Copy Link
                     </button>
                 </div>
-                <div class="qr-container">
-                    <div id="qr"></div>
+                <div class="share-social-row">
+                    <button class="share-social-btn x-twitter" id="shareXBtn">
+                        <i class="fab fa-x-twitter"></i> X (Twitter)
+                    </button>
+                    <button class="share-social-btn linkedin" id="shareLinkedinBtn">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </button>
+                    <button class="share-social-btn whatsapp" id="shareWhatsappBtn">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </button>
                 </div>
-                <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 12px;">Scan to view this project</p>
+                <div class="qr-wrapper">
+                    <div class="qr-container">
+                        <div id="qr"></div>
+                    </div>
+                    <p class="qr-scan-label">Scan to view this project</p>
+                    <button class="download-qr-btn" id="downloadQrBtn">
+                        <i class="fas fa-download"></i> Download QR
+                    </button>
+                </div>
             </div>
 
             <div id="ownerActions" class="project-section" style="display: none; text-align: center;">
@@ -386,6 +658,10 @@
             if (isOwner) {
                 document.getElementById('ownerActions').style.display = 'block';
             }
+
+            // Render AI insights and creators (renderCreators is now sync)
+            renderAiInsights(project);
+            renderCreators(project);
             } catch (error) {
                 console.error('Error rendering project:', error);
                 // Show error message but don't break the page
@@ -548,6 +824,13 @@
             } catch (e) {
                 console.error('Failed to setup share buttons:', e);
             }
+
+            // Setup social share buttons
+            try {
+                setupSocialShare(data, currentUrl);
+            } catch (e) {
+                console.error('Failed to setup social share:', e);
+            }
             
             // Generate QR code after rendering
             const qrContainer = document.getElementById('qr');
@@ -566,7 +849,262 @@
                     console.error('Failed to generate QR code:', e);
                     qrContainer.innerHTML = '<p style="color: #ff7878; font-size: 0.9rem;">QR code unavailable</p>';
                 }
+
+                // Setup QR download after QR code renders
+                setTimeout(() => {
+                    try { setupQrDownload(); } catch (e) { console.error('Failed to setup QR download:', e); }
+                }, 300);
             }
+        }
+
+        /* ---- AI Insights ---- */
+        function renderAiInsights(project) {
+            const contentDiv = document.getElementById('aiInsightsContent');
+            const placeholder = document.getElementById('aiInsightsPlaceholder');
+            const summaryEl = document.getElementById('aiSummaryText');
+            const bulletsEl = document.getElementById('aiInsightsBullets');
+
+            if (!contentDiv || !placeholder) return;
+
+            if (project.ai_summary) {
+                summaryEl.textContent = project.ai_summary;
+                bulletsEl.innerHTML = '';
+                const insights = Array.isArray(project.ai_insights) ? project.ai_insights : [];
+                insights.forEach(insight => {
+                    const li = document.createElement('li');
+                    li.textContent = insight;
+                    bulletsEl.appendChild(li);
+                });
+                contentDiv.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                contentDiv.style.display = 'none';
+                placeholder.style.display = 'block';
+                const generateBtn = document.getElementById('generateInsightsBtn');
+                if (generateBtn) {
+                    generateBtn.addEventListener('click', () => generateAiInsights(project));
+                }
+            }
+        }
+
+        async function generateAiInsights(project) {
+            const contentDiv = document.getElementById('aiInsightsContent');
+            const placeholder = document.getElementById('aiInsightsPlaceholder');
+            const summaryEl = document.getElementById('aiSummaryText');
+            const bulletsEl = document.getElementById('aiInsightsBullets');
+
+            placeholder.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Generating insights...</div>';
+
+            // Require auth — AI endpoint needs a Bearer token
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                placeholder.innerHTML = `
+                    <p>Sign in to generate AI insights for this project.</p>
+                    <a href="auth.html" class="btn primary ghost ai-gen-btn">
+                        <i class="fas fa-arrow-right-to-bracket"></i> Sign In
+                    </a>`;
+                return;
+            }
+
+            const descriptionText = (project.page_description || project.card_description || '').trim();
+            if (!descriptionText) {
+                placeholder.innerHTML = '<p style="opacity:0.6;">No project description available to generate insights from.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${session.access_token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'project_insights',
+                        project_name: project.name || '',
+                        text: descriptionText
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const msg = data?.error || 'AI generation failed';
+                    placeholder.innerHTML = `
+                        <p style="opacity:0.7;">${escapeHtml(msg)}</p>
+                        <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>`;
+                    const retryBtn = document.getElementById('generateInsightsBtn');
+                    if (retryBtn) retryBtn.addEventListener('click', () => generateAiInsights(project));
+                    return;
+                }
+
+                summaryEl.textContent = data.summary || '';
+                bulletsEl.innerHTML = '';
+                (data.insights || []).forEach(insight => {
+                    const li = document.createElement('li');
+                    li.textContent = insight;
+                    bulletsEl.appendChild(li);
+                });
+
+                contentDiv.style.display = 'block';
+                placeholder.style.display = 'none';
+
+                // Show remaining usage hint
+                if (typeof data.remaining === 'number') {
+                    const hint = document.createElement('p');
+                    hint.style.cssText = 'opacity:0.45; font-size:0.78rem; margin-top:14px;';
+                    hint.textContent = `AI actions remaining today: ${data.remaining}`;
+                    contentDiv.appendChild(hint);
+                }
+            } catch (err) {
+                placeholder.innerHTML = `
+                    <p>Could not generate insights at this time.</p>
+                    <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>`;
+                const retryBtn = document.getElementById('generateInsightsBtn');
+                if (retryBtn) retryBtn.addEventListener('click', () => generateAiInsights(project));
+            }
+        }
+
+        /* ---- Creators ---- */
+        function renderCreators(project) {
+            const section = document.getElementById('creatorsSection');
+            const grid = document.getElementById('creatorsGrid');
+            if (!section || !grid) return;
+
+            // Build creator profile from project's own data (no separate user_profiles table needed)
+            const hasSocials = project.github_url || project.linkedin_url || project.x_url;
+
+            // Derive a display name: extract GitHub username if URL is present
+            let creatorName = 'Project Creator';
+            if (project.github_url) {
+                const match = String(project.github_url).match(/github\.com\/([^\/\?#]+)/);
+                if (match && match[1]) creatorName = match[1];
+            }
+
+            const profile = {
+                display_name: creatorName,
+                role: 'Creator',
+                avatar_url: null,           // project image is a cover, not a portrait
+                github_url:   project.github_url   || null,
+                linkedin_url: project.linkedin_url || null,
+                x_url:        project.x_url        || null
+            };
+
+            grid.innerHTML = '';
+            grid.appendChild(buildCreatorCard(profile));
+            section.style.display = 'block';
+        }
+
+        function buildCreatorCard(profile) {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+
+            const name = profile.display_name || 'Creator';
+            const role = profile.role || 'Creator';
+            const initial = name.charAt(0).toUpperCase();
+
+            let avatarHtml;
+            if (profile.avatar_url && /^https?:\/\//i.test(profile.avatar_url)) {
+                const safeAvatar = escapeAttr(profile.avatar_url);
+                avatarHtml = `<img class="creator-avatar" src="${safeAvatar}" alt="${escapeAttr(name)}" loading="lazy"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="creator-avatar-placeholder" style="display:none;">${escapeHtml(initial)}</div>`;
+            } else {
+                avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
+            }
+
+            const socials = [];
+            if (profile.github_url && /^https?:\/\//i.test(profile.github_url)) {
+                socials.push(`<a href="${escapeAttr(profile.github_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fab fa-github"></i></a>`);
+            }
+            if (profile.linkedin_url && /^https?:\/\//i.test(profile.linkedin_url)) {
+                socials.push(`<a href="${escapeAttr(profile.linkedin_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fab fa-linkedin"></i></a>`);
+            }
+            if (profile.x_url && /^https?:\/\//i.test(profile.x_url)) {
+                socials.push(`<a href="${escapeAttr(profile.x_url)}" class="creator-social-icon" target="_blank" rel="noopener noreferrer" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>`);
+            }
+
+            card.innerHTML = `
+                ${avatarHtml}
+                <p class="creator-name">${escapeHtml(name)}</p>
+                <p class="creator-role">${escapeHtml(role)}</p>
+                ${socials.length ? `<div class="creator-socials">${socials.join('')}</div>` : ''}
+            `;
+            return card;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(String(text || '')));
+            return div.innerHTML;
+        }
+
+        function escapeAttr(value) {
+            return String(value || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        /* ---- Social Share ---- */
+        function setupSocialShare(project, currentUrl) {
+            const projectTitle = encodeURIComponent((project.name || 'Check out this project on NexCore Labs') + ' — NexCore Labs');
+            const encodedUrl = encodeURIComponent(currentUrl);
+
+            const shareXBtn = document.getElementById('shareXBtn');
+            const shareLinkedinBtn = document.getElementById('shareLinkedinBtn');
+            const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
+
+            if (shareXBtn) {
+                shareXBtn.addEventListener('click', () => {
+                    window.open(`https://twitter.com/intent/tweet?text=${projectTitle}&url=${encodedUrl}`, '_blank', 'noopener,noreferrer,width=600,height=400');
+                });
+            }
+            if (shareLinkedinBtn) {
+                shareLinkedinBtn.addEventListener('click', () => {
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '_blank', 'noopener,noreferrer,width=600,height=500');
+                });
+            }
+            if (shareWhatsappBtn) {
+                shareWhatsappBtn.addEventListener('click', () => {
+                    window.open(`https://wa.me/?text=${projectTitle}%20${encodedUrl}`, '_blank', 'noopener,noreferrer');
+                });
+            }
+        }
+
+        /* ---- QR Download ---- */
+        function setupQrDownload() {
+            const downloadBtn = document.getElementById('downloadQrBtn');
+            if (!downloadBtn) return;
+
+            downloadBtn.addEventListener('click', () => {
+                let dataUrl;
+                const qrCanvas = document.querySelector('#qr canvas');
+                const qrImg = document.querySelector('#qr img');
+
+                if (qrCanvas) {
+                    dataUrl = qrCanvas.toDataURL('image/png');
+                } else if (qrImg) {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = qrImg.naturalWidth || 200;
+                        canvas.height = qrImg.naturalHeight || 200;
+                        canvas.getContext('2d').drawImage(qrImg, 0, 0);
+                        dataUrl = canvas.toDataURL('image/png');
+                    } catch (e) {
+                        console.warn('Could not export QR image:', e);
+                        return;
+                    }
+                } else {
+                    return;
+                }
+
+                const a = document.createElement('a');
+                a.download = 'project-qr.png';
+                a.href = dataUrl;
+                a.click();
+            });
         }
 
         document.addEventListener('DOMContentLoaded', loadProject);
