@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
-        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <!-- Cookie Consent Manager v2 -->
+        <link rel="stylesheet" href="assets/css/cookies.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="NexCore Labs dashboard for teams to manage projects, and resources.">
@@ -38,7 +38,10 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
-    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(10,11,28,.35); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    /* .box:hover{
+      border:2px solid rgba(255,255,255,.08);
+    } */
     label{display:block;margin:10px 0 6px;opacity:.9}
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
@@ -55,6 +58,229 @@
     .help-box li{margin:6px 0;line-height:1.5;opacity:.8}
     .help-box strong{opacity:1;color:#6ee7f3}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
+    .mod-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.78rem;font-weight:600;border:1px solid rgba(255,255,255,.18)}
+    .mod-approved{color:#6ee7f3;border-color:rgba(110,231,243,.45);background:rgba(110,231,243,.12)}
+    .mod-blocked{color:#ff7878;border-color:rgba(255,120,120,.45);background:rgba(255,120,120,.12)}
+    .mod-review{color:#ffcc66;border-color:rgba(255,204,102,.45);background:rgba(255,204,102,.12)}
+    .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
+    .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
+    .mod-popup{position:fixed;z-index:9999;
+      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
+    .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+    .ai-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .ai-btn.loading {
+      box-shadow:
+        0 0 20px rgba(110, 231, 243, 0.6),
+        0 0 40px rgba(110, 231, 243, 0.3);
+      transform: translateY(-1px);
+    }
+    .ai-btn.loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,0.4),
+        transparent 80%
+      );
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .ai-sparkle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .ai-btn .ai-sparkle-layer::before,
+    .ai-btn .ai-sparkle-layer::after {
+      content: "✦";
+      position: absolute;
+      font-size: 10px;
+      opacity: 0.4;
+      color: #6EE7F3;
+      animation: floatSparkle 3s ease-in-out infinite;
+    }
+    .ai-btn .ai-sparkle-layer::before {
+      top: 20%;
+      left: 30%;
+    }
+    .ai-btn .ai-sparkle-layer::after {
+      bottom: 25%;
+      right: 35%;
+    }
+    @keyframes floatSparkle {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
+      50% { transform: translateY(-4px) rotate(180deg); opacity: 0.8; }
+      100% { transform: translateY(0px) rotate(360deg); opacity: 0.4; }
+    }
+    .ai-burst-sparkle {
+      position: absolute;
+      font-size: 12px;
+      color: #6EE7F3;
+      animation: burstSparkle 0.8s ease-out forwards;
+    }
+    @keyframes burstSparkle {
+      0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.6) translateY(-20px);
+      }
+    }
+    .ai-remaining { font-size:.85rem; margin-top:6px; font-weight:600; }
+    .ai-remaining.ok3 { color: #22c55e; }
+    .ai-remaining.ok2 { color: #a3e635; }
+    .ai-remaining.ok1 { color: #f59e0b; }
+    .ai-remaining.ok0 { color: #ef4444; }
+
+    /* ── Delete Project Modal ── */
+    .del-modal{
+      display:flex;position:fixed;inset:0;z-index:9999;
+      align-items:flex-end;justify-content:center;
+      padding:16px;box-sizing:border-box;
+      background:rgba(2,6,23,.55);
+      backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+      opacity:0;pointer-events:none;
+      transition:opacity .28s ease;
+    }
+    .del-modal.open{opacity:1;pointer-events:all;}
+    @media(min-width:600px){.del-modal{align-items:center;}}
+    .del-modal-content{
+      position:relative;
+      width:100%;max-width:520px;
+      max-height:90dvh;overflow-y:auto;
+      background:rgba(8,10,22,.93);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      padding:28px 24px 22px;box-sizing:border-box;
+      box-shadow:0 24px 72px rgba(2,6,23,.85),0 0 0 1px rgba(255,120,120,.06);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      color:#e6eef3;font-size:14px;line-height:1.5;
+      transform:translateY(28px) scale(.97);opacity:0;
+      transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .28s ease;
+      scrollbar-width:thin;scrollbar-color:#ff7878 transparent;
+    }
+    .del-modal.open .del-modal-content{transform:translateY(0) scale(1);opacity:1;}
+    .del-modal-content::before{
+      content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+      background:linear-gradient(90deg,transparent,#ff7878,transparent);
+      opacity:.45;border-radius:16px 16px 0 0;pointer-events:none;
+    }
+    .del-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+    .del-modal-header h2{margin:0;color:#ff7878;display:flex;align-items:center;gap:10px;font-size:1.15rem;}
+    .del-modal-close{
+      display:flex;align-items:center;justify-content:center;
+      width:32px;height:32px;border-radius:8px;
+      color:rgba(255,255,255,.45);font-size:22px;font-weight:bold;
+      cursor:pointer;line-height:1;flex-shrink:0;
+      transition:background .18s,color .18s;
+    }
+    .del-modal-close:hover{background:rgba(255,255,255,.08);color:#fff;}
+    .del-modal-actions{display:flex;gap:10px;margin-top:24px;}
+    .del-modal-actions .btn{flex:1;}
+    @media(max-width:480px){
+      .del-modal-content{padding:22px 16px 18px;}
+      .del-modal-actions{flex-direction:column;}
+      .del-modal-actions .btn{width:100%;}
+    }
+    /* ── AI Style Custom Dropdown ── */
+    .ai-select-wrap{
+      position:relative;
+      display:inline-block;
+      flex-shrink:0;
+      min-width:145px;
+    }
+    /* hidden native select keeps .value accessible for JS */
+    #aiStyle{
+      position:absolute;opacity:0;pointer-events:none;width:0;height:0;
+    }
+    .ai-select-trigger{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:9px 14px;
+      background:rgba(0,0,0,.35);
+      border:1px solid rgba(110,231,243,.22);
+      border-radius:10px;
+      color:#e6eef3;
+      font-size:.875rem;font-family:inherit;font-weight:500;
+      cursor:pointer;
+      user-select:none;
+      transition:border-color .2s,background .2s,box-shadow .2s;
+    }
+    .ai-select-trigger:hover{
+      background:rgba(110,231,243,.06);
+      border-color:rgba(110,231,243,.45);
+    }
+    .ai-select-wrap.open .ai-select-trigger{
+      border-color:#6ee7f3;
+      box-shadow:0 0 0 3px rgba(110,231,243,.15);
+      background:rgba(110,231,243,.06);
+    }
+    .ai-select-chevron{
+      width:0;height:0;
+      border-left:5px solid transparent;
+      border-right:5px solid transparent;
+      border-top:5px solid rgba(110,231,243,.75);
+      transition:transform .22s cubic-bezier(.2,.9,.3,1),border-top-color .18s;
+      flex-shrink:0;
+    }
+    .ai-select-wrap.open .ai-select-chevron{
+      transform:rotate(180deg);
+      border-top-color:#6ee7f3;
+    }
+    .ai-select-panel{
+      position:fixed;
+      background:rgba(8,10,22,.5);
+      backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);
+      border:1px solid rgba(110,231,243,.6);
+      border-radius:12px;
+      padding:6px;
+      box-shadow:0 16px 40px rgba(2,6,23,.8),0 0 0 1px rgba(110,231,243,.08);
+      z-index:99999;
+      opacity:0;pointer-events:none;
+      transform:translateY(-6px) scale(.97);
+      transform-origin:top left;
+      transition:opacity .2s ease,transform .22s cubic-bezier(.2,.9,.3,1);
+    }
+    .ai-select-panel.open{
+      opacity:1;pointer-events:all;
+      transform:translateY(0) scale(1);
+    }
+    .ai-select-option{
+      display:flex;align-items:center;gap:10px;
+      padding:9px 12px;
+      border-radius:8px;
+      font-size:.875rem;font-family:inherit;font-weight:500;
+      color:rgba(230,238,243,.8);
+      cursor:pointer;
+      transition:background .15s,color .15s;
+      white-space:nowrap;
+    }
+    .ai-select-option:hover{
+      background:rgba(110,231,243,.08);
+      color:#e6eef3;
+    }
+    .ai-select-option.selected{
+      color:#6ee7f3;
+      background:rgba(110,231,243,.1);
+    }
+    .ai-select-option .opt-icon{
+      font-size:.8rem;
+      opacity:.7;
+      width:14px;text-align:center;
+    }
+    .ai-select-option.selected .opt-icon{
+      opacity:1;
+    }
   </style>
   <!-- Vercel Web Analytics -->
   <script>
@@ -108,16 +334,12 @@
 
   <main>
   <div class="wrap">
-    <h1>Dashboard <span class="beta-badge">BETA</span></h1>
+    <h1>Dashboard</h1>
     <p class="muted" id="userLine">Loading…</p>
 
     <div class="box">
       <div class="row" style="justify-content:space-between">
         <h2 style="margin:0">My Project</h2>
-        <div class="row">
-          <a href="/account.html" class="btn"><i class="fa-solid fa-user-gear"></i> Account Settings</a>
-          <button class="btn logout" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
-        </div>
       </div>
 
       <!-- State: no project -->
@@ -137,13 +359,18 @@
         <p class="muted">
           Public ID: <b id="publicId"></b> • Status: <b id="statusText"></b>
         </p>
+        <p class="muted" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          Moderation status:
+          <span id="moderationBadge" class="mod-badge mod-unmoderated" role="button" tabindex="0">Unmoderated</span>
+        </p>
+        <div id="moderationPopup" class="mod-popup" role="status" aria-live="polite"></div>
         <p class="muted">
           View public page:
           <a id="publicLink" href="#" target="_blank" rel="noopener" style="color: #6EE7F3;">open</a>
         </p>
 
         <!-- CARD SECTION -->
-        <div class="box" style="background:rgba(110,231,243,.08);border-color:rgba(110,231,243,.15);">
+        <div class="box">
           <h3 style="margin-top:0;"><i class="fa-solid fa-pager"></i> Card (Hub Display)</h3>
           <p class="muted" style="font-size:.9rem;">This information appears on hub cards.</p>
 
@@ -160,11 +387,12 @@
 
           <!-- AI Card Summary Generator -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><i class="fi fi-sr-ai-technology"></i> AI Card Brief</h4>
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>AI Card Brief</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
             
-            <button class="btn primary" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
-              <!-- <i class="fi fi-dc-sparkles"></i> -->Generate
+            <button class="btn primary ai-btn" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+              <span class="ai-btn-text">Generate</span>
+              <span class="ai-sparkle-layer"></span>
             </button>
             
             <div id="aiCardOutput" style="display:none;margin-top:12px;">
@@ -189,12 +417,10 @@
             <button class="btn primary" id="togglePublishBtn" style="min-width:110px;">Publish</button>
             <span id="publishStatus" class="muted" style="margin-left:8px;"></span>
           </div>
-
-          <p id="msgCard" style="margin-top:10px;"></p>
         </div>
 
         <!-- PROFILE SECTION -->
-        <div class="box" style="background:rgba(10,11,28,.35);margin-top:16px;">
+        <div class="box" style="margin-top:16px;">
           <h3 style="margin-top:0;"><i class="fa-solid fa-globe"></i> Profile (Full Details)</h3>
           <button class="btn copy" id="copyProjectPageLink" title="Copy public page link">
             <i class="fa-solid fa-copy"></i> Copy Page Link
@@ -245,19 +471,41 @@
 
           <!-- AI Improve Page Description -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
-            <h4 style="margin:0 0 12px 0;"><i class="fi fi-sr-ai-technology"></i> Enhance Content with AI</h4>
+            <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>Enhance Content with AI</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate, refine, and optimise your page content using AI</p>
             
             <div class="row" style="margin-bottom:12px;gap:10px;align-items:center;">
               <label style="margin:0;">Style:</label>
-              <select id="aiStyle" style="padding:8px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.3);color:#fff;cursor:pointer;">
-                <option value="Professional">Professional</option>
-                <option value="Shorter">Shorter</option>
-                <option value="Technical">Technical</option>
-                <option value="Inspiring">Inspiring</option>
-              </select>
-              <button class="btn primary" id="aiImproveBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
-                <!-- <i class="fi fi-dc-sparkles"></i> -->Generate
+              <div class="ai-select-wrap" id="aiStyleWrap">
+                <!-- hidden native select keeps .value for JS -->
+                <select id="aiStyle" aria-hidden="true" tabindex="-1">
+                  <option value="Professional">Professional</option>
+                  <option value="Shorter">Shorter</option>
+                  <option value="Technical">Technical</option>
+                  <option value="Inspiring">Inspiring</option>
+                </select>
+                <div class="ai-select-trigger" id="aiStyleTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="aiStyleLabel">Professional</span>
+                  <span class="ai-select-chevron"></span>
+                </div>
+                <div class="ai-select-panel" role="listbox" id="aiStylePanel">
+                  <div class="ai-select-option selected" role="option" data-value="Professional">
+                    <i class="fa-solid fa-briefcase opt-icon"></i> Professional
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Shorter">
+                    <i class="fa-solid fa-minimize opt-icon"></i> Shorter
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Technical">
+                    <i class="fa-solid fa-code opt-icon"></i> Technical
+                  </div>
+                  <div class="ai-select-option" role="option" data-value="Inspiring">
+                    <i class="fa-solid fa-star opt-icon"></i> Inspiring
+                  </div>
+                </div>
+              </div>
+              <button class="btn primary ai-btn" id="aiPageBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+                <span class="ai-btn-text">Generate</span>
+                <span class="ai-sparkle-layer"></span>
               </button>
             </div>
             
@@ -275,7 +523,7 @@
             </div>
             
             <p id="aiStatus" style="margin-top:10px;font-size:.9rem;"></p>
-            <p id="aiRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
+            <p id="aiPageRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
           </div>
 
           <label>Website URL (optional)</label>
@@ -309,10 +557,42 @@
         </div>
       </main>
 
+      <!-- Delete Project Confirmation Modal -->
+      <div id="deleteProjectModal" class="del-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="delProjModalTitle">
+        <div class="del-modal-content">
+          <div class="del-modal-header">
+            <h2 id="delProjModalTitle"><i class="fa-solid fa-triangle-exclamation"></i> Delete Project</h2>
+            <span class="del-modal-close" id="closeDelProjModal">&times;</span>
+          </div>
+
+          <p style="margin-bottom:16px;">This action is <strong>permanent and irreversible</strong>. Your project will be removed from the hub.</p>
+
+          <div style="margin:0 0 20px;padding:14px;background:rgba(255,200,120,.08);border:1px solid rgba(255,200,120,.2);border-radius:10px;font-size:.9rem;line-height:1.6;color:#fff;">
+            <strong style="color:rgb(255,200,120);"><i class="fa-solid fa-triangle-exclamation"></i> This will delete:</strong>
+            <ul style="margin:8px 0 0 20px;line-height:1.8">
+              <li>Your project listing on the hub</li>
+              <li>All project information &amp; metadata</li>
+              <li>Your public project page</li>
+            </ul>
+          </div>
+
+          <div class="del-modal-actions">
+            <button class="btn primary ghost" id="cancelDelProjBtn">
+              <i class="fa-solid fa-xmark"></i> Cancel
+            </button>
+            <button class="btn danger" id="confirmDelProjBtn">
+              <i class="fa-solid fa-trash"></i> Delete Project
+            </button>
+          </div>
+
+          <p id="delProjModalMsg" style="margin-top:16px;"></p>
+        </div>
+      </div>
+
       <footer class="site-footer">
         <div class="container footer-inner">
           <div class="f-left">
-            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
             <br>
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
               <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
@@ -358,6 +638,219 @@
 
     let project = null;
     let currentUserId = null;
+    let moderationPopupTimer = null;
+
+    function isProjectPublished(p) {
+      if (!p) return false;
+      return !!p.published;
+    }
+
+    function normalizeModerationStatus(status) {
+      const normalized = (status || "").toLowerCase();
+      if (["approved", "blocked", "review"].includes(normalized)) return normalized;
+      return "unmoderated";
+    }
+
+    function renderModerationStatus(p) {
+      const badge = document.getElementById("moderationBadge");
+      if (!badge) return;
+
+      const status = normalizeModerationStatus(p?.moderation_status);
+      const reason = (p?.moderation_reason || "No moderation reason available").trim();
+
+      badge.className = `mod-badge mod-${status}`;
+
+      if (status === "approved") badge.textContent = "Approved";
+      else if (status === "blocked") badge.textContent = "Blocked";
+      else if (status === "review") badge.textContent = "Review";
+      else badge.textContent = "Unmoderated";
+
+      badge.title = reason;
+      badge.setAttribute("aria-label", reason);
+      badge.dataset.reason = reason;
+    }
+
+    function setPublishStatus(text, tone = "neutral") {
+      const publishStatus = document.getElementById("publishStatus");
+      if (!publishStatus) return;
+      publishStatus.textContent = text || "";
+      publishStatus.style.color = tone === "error" ? "#ff7878" : (tone === "warn" ? "#ffcc66" : "");
+    }
+
+    function showModerationWhy() {
+      const why = document.getElementById("moderationBadge");
+      const popup = document.getElementById("moderationPopup");
+      if (!why || !popup) return;
+      const reason = (why.dataset.reason || why.title || "No moderation reason available").trim();
+
+      popup.textContent = reason;
+      popup.classList.remove("show");
+
+      const rect = why.getBoundingClientRect();
+      const popupWidth = 360;
+      const margin = 12;
+      const left = Math.max(margin, Math.min(rect.left, window.innerWidth - popupWidth - margin));
+      const top = Math.min(window.innerHeight - 70, rect.bottom + 10);
+
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+
+      setTimeout(() => popup.classList.add("show"), 0);
+
+      if (moderationPopupTimer) clearTimeout(moderationPopupTimer);
+      moderationPopupTimer = setTimeout(() => {
+        popup.classList.remove("show");
+      }, 3500);
+    }
+
+    function hideModerationPopup() {
+      const popup = document.getElementById("moderationPopup");
+      if (!popup) return;
+      popup.classList.remove("show");
+      if (moderationPopupTimer) {
+        clearTimeout(moderationPopupTimer);
+        moderationPopupTimer = null;
+      }
+    }
+
+    function setRemainingUI(el, remaining, max = 3) {
+      if (!el) return;
+      el.classList.add("ai-remaining");
+      el.classList.remove("ok3", "ok2", "ok1", "ok0");
+      const r = Math.max(0, Math.min(max, Number(remaining)));
+      el.textContent = `AI uses left today: ${r}/${max}`;
+      el.classList.add(r === 3 ? "ok3" : r === 2 ? "ok2" : r === 1 ? "ok1" : "ok0");
+    }
+
+    function setBothRemainingUI(remaining, max = 3) {
+      setRemainingUI(document.getElementById("aiCardRemaining"), remaining, max);
+      setRemainingUI(document.getElementById("aiPageRemaining"), remaining, max);
+    }
+
+    async function initAiRemainingUI() {
+      if (window.__aiRemainingInitDone) return;
+      window.__aiRemainingInitDone = true;
+
+      const cardEl = document.getElementById("aiCardRemaining");
+      const pageEl = document.getElementById("aiPageRemaining");
+
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        if (cardEl) {
+          cardEl.classList.add("ai-remaining");
+          cardEl.textContent = "Sign in to use AI";
+        }
+        if (pageEl) {
+          pageEl.classList.add("ai-remaining");
+          pageEl.textContent = "Sign in to use AI";
+        }
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/ai?usage=1', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`
+          }
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data?.error || 'Failed to fetch AI usage');
+        }
+
+        setBothRemainingUI(data.remaining, data.max || 3);
+      } catch (error) {
+        console.error('Failed to initialize AI remaining UI:', error);
+      }
+    }
+
+    function createSparkleBurst(button) {
+      const layer = button.querySelector(".ai-sparkle-layer");
+      if (!layer) return;
+
+      for (let i = 0; i < 8; i++) {
+        const sparkle = document.createElement("span");
+        sparkle.textContent = "✦";
+        sparkle.className = "ai-burst-sparkle";
+
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+
+        sparkle.style.left = x + "%";
+        sparkle.style.top = y + "%";
+
+        layer.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 800);
+      }
+    }
+
+    function attachAiMagic(buttonId, asyncHandler) {
+      const btn = document.getElementById(buttonId);
+      if (!btn || typeof asyncHandler !== "function") return;
+      if (btn.dataset.aiMagicBound === "1") return;
+
+      btn.dataset.aiMagicBound = "1";
+      const textEl = btn.querySelector(".ai-btn-text");
+
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        if (btn.classList.contains("loading")) return;
+
+        createSparkleBurst(btn);
+        btn.classList.add("loading");
+        if (textEl) textEl.textContent = "Generating...";
+
+        try {
+          await asyncHandler();
+        } catch (err) {
+          console.error("AI generation failed:", err);
+        } finally {
+          btn.classList.remove("loading");
+          if (textEl) textEl.textContent = "Generate";
+        }
+      });
+    }
+
+    async function moderateProject(action, requestPublish = true) {
+      const { data: { session } } = await sb.auth.getSession();
+      if (!session) {
+        return { ok: false, error: "You must be signed in." };
+      }
+
+      const response = await fetch('/api/moderate-project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          project_id: project?.id,
+          action,
+          request_publish: !!requestPublish,
+          title: project?.name || '',
+          description: project?.page_description || project?.card_description || ''
+        })
+      });
+
+      let data = null;
+      try {
+        data = await response.json();
+      } catch {
+        data = { error: "Invalid server response" };
+      }
+
+      if (!response.ok) {
+        return {
+          ok: false,
+          error: data?.error || data?.details || "Moderation failed"
+        };
+      }
+
+      return { ok: true, data };
+    }
 
     function render(p) {
       project = p;
@@ -375,13 +868,14 @@
       if (!p) return;
 
       document.getElementById("publicId").textContent = p.public_id || "";
-      document.getElementById("statusText").textContent = p.published ? "Published ✓" : "Draft";
+  const published = isProjectPublished(p);
+  document.getElementById("statusText").textContent = published ? "Published ✓" : "Draft";
 
       const publishBtn = document.getElementById("togglePublishBtn");
-      publishBtn.textContent = p.published ? "Unpublish" : "Publish";
-      
-      const publishStatus = document.getElementById("publishStatus");
-      publishStatus.textContent = p.published ? "✓ Live on hub" : "";
+  publishBtn.textContent = published ? "Unpublish" : "Publish";
+
+  setPublishStatus(published ? "✓ Live on hub" : "");
+  renderModerationStatus(p);
 
       // Card fields
       document.getElementById("cardName").value = p.name || "";
@@ -441,12 +935,12 @@
     }
 
     async function loadMyProject(userId = currentUserId) {
-      setMsg(document.getElementById("msgCard"), "");
+      setPublishStatus("");
       setMsg(document.getElementById("msgProfile"), "");
 
       if (!userId) {
         render(null);
-        setMsg(document.getElementById("msgCard"), "Unable to determine current user session.", true);
+        setPublishStatus("Unable to determine current user session.", "error");
         return;
       }
 
@@ -457,7 +951,7 @@
         .maybeSingle();
 
       if (error) {
-        setMsg(document.getElementById("msgCard"), error.message, true);
+        setPublishStatus(error.message, "error");
         render(null);
         return;
       }
@@ -469,13 +963,12 @@
     }
 
     async function createProject() {
-      const msgEl = document.getElementById("msgCard");
-      setMsg(msgEl, "");
+      setPublishStatus("");
       const name = document.getElementById("newProjectName").value.trim();
-      if (!name) return setMsg(msgEl, "Please enter a project name.", true);
+      if (!name) return setPublishStatus("Please enter a project name.", "error");
 
       const slug = slugify(name);
-      if (!slug) return setMsg(msgEl, "Invalid project name.", true);
+      if (!slug) return setPublishStatus("Invalid project name.", "error");
 
       disableButtons(true);
 
@@ -501,44 +994,44 @@
             // Check if it's the one_project_per_user constraint
             if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
               disableButtons(false);
-              setMsg(msgEl, "You already have a project. Loading it now...");
+              setPublishStatus("You already have a project. Loading it now...");
               await loadMyProject(currentUserId);
               return;
             }
             disableButtons(false);
-            return setMsg(msgEl, retry.error.message, true);
+            return setPublishStatus(retry.error.message, "error");
           }
           
           data = retry.data;
         } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
           // User already has a project
           disableButtons(false);
-          setMsg(msgEl, "You already have a project. Loading it now...");
+          setPublishStatus("You already have a project. Loading it now...");
           await loadMyProject(currentUserId);
           return;
         } else {
           disableButtons(false);
-          return setMsg(msgEl, error.message, true);
+          return setPublishStatus(error.message, "error");
         }
       }
 
       disableButtons(false);
       render(data);
-      setMsg(msgEl, "Project created (draft) ✓ Now edit and publish when ready.");
+      setPublishStatus("Project created (draft) ✓ Now edit and publish when ready.");
     }
 
     async function saveCard() {
-      const msgEl = document.getElementById("msgCard");
-      setMsg(msgEl, "");
+      setPublishStatus("");
       if (!project) return;
+      const wasPublished = isProjectPublished(project);
 
       const name = document.getElementById("cardName").value.trim();
       const slugInput = document.getElementById("cardSlug").value.trim() || name;
       const slug = slugify(slugInput);
       const card_description = document.getElementById("cardDescription").value.trim();
 
-      if (!name) return setMsg(msgEl, "Project name is required.", true);
-      if (!slug) return setMsg(msgEl, "Invalid slug.", true);
+      if (!name) return setPublishStatus("Project name is required.", "error");
+      if (!slug) return setPublishStatus("Invalid slug.", "error");
 
       disableButtons(true);
 
@@ -558,19 +1051,41 @@
 
       if (error) {
         if (error.code === '23505' && error.message.includes('slug')) {
-          return setMsg(msgEl, "Slug already taken by another project. Please choose a different one.", true);
+          return setPublishStatus("Slug already taken by another project. Please choose a different one.", "error");
         }
-        return setMsg(msgEl, error.message, true);
+        return setPublishStatus(error.message, "error");
       }
 
       render(data);
-      setMsg(msgEl, "Card saved ✓");
+
+      if (wasPublished) {
+        setPublishStatus("Checking moderation after edit...");
+        const moderation = await moderateProject("edit_check", true);
+        if (!moderation.ok) {
+          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
+          return;
+        }
+
+        await loadMyProject(currentUserId);
+
+        if (moderation.data.decision === "approved") {
+          setPublishStatus("Published ✅");
+        } else if (moderation.data.decision === "blocked") {
+          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+        } else {
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+        }
+        return;
+      }
+
+      setPublishStatus("Card saved ✓");
     }
 
     async function saveProfile() {
       const msgEl = document.getElementById("msgProfile");
       setMsg(msgEl, "");
       if (!project) return;
+      const wasPublished = isProjectPublished(project);
 
       const image_url = document.getElementById("profileImageUrl").value.trim();
       const page_description = document.getElementById("pageDescription").value.trim();
@@ -603,41 +1118,105 @@
       if (error) return setMsg(msgEl, error.message, true);
 
       render(data);
+
+      if (wasPublished) {
+        setPublishStatus("Checking moderation after edit...");
+        const moderation = await moderateProject("edit_check", true);
+        if (!moderation.ok) {
+          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
+          setMsg(msgEl, "Profile saved, but moderation check failed. Try again.", true);
+          return;
+        }
+
+        await loadMyProject(currentUserId);
+
+        if (moderation.data.decision === "approved") {
+          setPublishStatus("Published ✅");
+          setMsg(msgEl, "Profile saved ✓ Moderation approved.");
+        } else if (moderation.data.decision === "blocked") {
+          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+          setMsg(msgEl, "Profile saved, but project was auto-unpublished (blocked).", true);
+        } else {
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          setMsg(msgEl, "Profile saved, but project was auto-unpublished (needs review).", true);
+        }
+        return;
+      }
+
       setMsg(msgEl, "Profile saved ✓");
     }
 
     async function togglePublish() {
-      const msgEl = document.getElementById("msgCard");
-      setMsg(msgEl, "");
+      setPublishStatus("");
       if (!project) return;
 
-      const next = !project.published;
+      const currentlyPublished = isProjectPublished(project);
+      const next = !currentlyPublished;
 
       disableButtons(true);
 
-      const { data, error } = await sb
-        .from("projects")
-        .update({
-          published: next,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", project.id)
-        .select("*")
-        .single();
+      if (!next) {
+        const { data, error } = await sb
+          .from("projects")
+          .update({
+            published: false,
+            updated_at: new Date().toISOString()
+          })
+          .eq("id", project.id)
+          .select("*")
+          .single();
 
+        disableButtons(false);
+
+        if (error) return setPublishStatus(error.message, "error");
+
+        render(data);
+        setPublishStatus("Hidden from hub.");
+        return;
+      }
+
+      setPublishStatus("Running moderation check...");
+      const moderation = await moderateProject("publish_check", true);
       disableButtons(false);
 
-      if (error) return setMsg(msgEl, error.message, true);
+      if (!moderation.ok) {
+        setPublishStatus(`Moderation failed: ${moderation.error}`, "warn");
+        return;
+      }
 
-      render(data);
-      setMsg(msgEl, next ? "Published ✓ It will appear in hub." : "Hidden from hub.");
+      await loadMyProject(currentUserId);
+
+      if (moderation.data.decision === "approved") {
+        setPublishStatus("Published ✅");
+      } else if (moderation.data.decision === "blocked") {
+        setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+      } else {
+        setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+      }
+    }
+
+    function openDeleteProjectModal() {
+      if (!project) return;
+      const modal = document.getElementById("deleteProjectModal");
+      const confirmBtn = document.getElementById("confirmDelProjBtn");
+      confirmBtn.disabled = false;
+      confirmBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete Project';
+      document.getElementById("delProjModalMsg").textContent = "";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => modal.classList.add("open"));
+    }
+
+    function closeDeleteProjectModal() {
+      const modal = document.getElementById("deleteProjectModal");
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
     }
 
     async function deleteProject() {
       if (!project) return;
-
-      const ok = confirm("Delete your project permanently? This cannot be undone.");
-      if (!ok) return;
+      closeDeleteProjectModal();
 
       const msgEl = document.getElementById("msgProfile");
       setMsg(msgEl, "");
@@ -653,12 +1232,7 @@
       if (error) return setMsg(msgEl, error.message, true);
 
       render(null);
-      setMsg(document.getElementById("msgCard"), "Project deleted.");
-    }
-
-    async function logout() {
-      await sb.auth.signOut();
-      window.location.href = "/auth.html";
+      setPublishStatus("Project deleted.");
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -668,13 +1242,58 @@
       currentUserId = session.user.id;
       console.log("Current user:", currentUserId);
 
-      document.getElementById("logoutBtn").addEventListener("click", logout);
       document.getElementById("createProjectBtn").addEventListener("click", createProject);
       document.getElementById("copyProjectPageLink").addEventListener("click", copyProjectPageLink);
       document.getElementById("saveCardBtn").addEventListener("click", saveCard);
       document.getElementById("saveProfileBtn").addEventListener("click", saveProfile);
       document.getElementById("togglePublishBtn").addEventListener("click", togglePublish);
-      document.getElementById("deleteBtn").addEventListener("click", deleteProject);
+      document.getElementById("deleteBtn").addEventListener("click", openDeleteProjectModal);
+
+      // Delete project modal listeners
+      document.getElementById("closeDelProjModal").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("cancelDelProjBtn").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("confirmDelProjBtn").addEventListener("click", deleteProject);
+      window.addEventListener("click", (e) => {
+        if (e.target === document.getElementById("deleteProjectModal")) closeDeleteProjectModal();
+      });
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDeleteProjectModal();
+      });
+
+      const moderationWhyEl = document.getElementById("moderationBadge");
+      if (moderationWhyEl) {
+        moderationWhyEl.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showModerationWhy();
+        });
+        moderationWhyEl.addEventListener("touchstart", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showModerationWhy();
+        }, { passive: false });
+        moderationWhyEl.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.stopPropagation();
+            showModerationWhy();
+          }
+        });
+      }
+
+      document.addEventListener("click", (e) => {
+        const whyEl = document.getElementById("moderationBadge");
+        const popup = document.getElementById("moderationPopup");
+        if (!whyEl || !popup) return;
+        if (!whyEl.contains(e.target) && !popup.contains(e.target)) {
+          hideModerationPopup();
+        }
+      });
+
+      window.addEventListener("scroll", hideModerationPopup, { passive: true });
+      window.addEventListener("resize", hideModerationPopup);
+
+      await initAiRemainingUI();
 
       // Update slug preview as user types
       document.getElementById("cardSlug").addEventListener("input", (e) => {
@@ -721,7 +1340,7 @@
 
       // Verify all required elements exist
       const aiElements = {
-        aiImproveBtn: document.getElementById("aiImproveBtn"),
+        aiPageBtn: document.getElementById("aiPageBtn"),
         aiCardBtn: document.getElementById("aiCardBtn"),
         pageDescription: document.getElementById("pageDescription"),
         cardDescription: document.getElementById("cardDescription"),
@@ -737,99 +1356,74 @@
         }
       }
 
-      // AI Improve Page Description Handler
-      if (aiElements.aiImproveBtn) {
-        aiElements.aiImproveBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          console.log("🔵 AI click fired: improve page");
+      async function generatePageAI() {
+        console.log("🔵 AI click fired: improve page");
 
-          const btn = aiElements.aiImproveBtn;
-          const statusEl = aiElements.aiStatus;
-          const remainingEl = document.getElementById("aiRemaining");
-          const outputDiv = document.getElementById("aiPageOutput");
-          const outputTextarea = document.getElementById("aiOutputPage");
-          const pageDesc = aiElements.pageDescription.value.trim();
-          const style = document.getElementById("aiStyle").value;
+        const statusEl = aiElements.aiStatus;
+        const outputDiv = document.getElementById("aiPageOutput");
+        const outputTextarea = document.getElementById("aiOutputPage");
+        const pageDesc = aiElements.pageDescription.value.trim();
+        const style = document.getElementById("aiStyle").value;
 
-          // Clear previous status
-          setMsg(statusEl, "");
-          if (outputDiv) outputDiv.style.display = "none";
+        setMsg(statusEl, "");
+        if (outputDiv) outputDiv.style.display = "none";
 
-          // Validate input
-          if (!pageDesc) {
-            console.log("⚠️ No page description entered");
-            return setMsg(statusEl, "Please enter a page description first.", true);
+        if (!pageDesc) {
+          console.log("⚠️ No page description entered");
+          return setMsg(statusEl, "Please enter a page description first.", true);
+        }
+
+        setMsg(statusEl, "Let AI work its magic...");
+        console.log("📡 Fetching AI response...");
+
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          if (!session) {
+            console.error("❌ No session found");
+            return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
           }
 
-          // Disable button and show loading
-          btn.disabled = true;
-          setMsg(statusEl, "Calling AI...");
-          console.log("📡 Fetching AI response...");
+          console.log("🔑 Session token obtained");
 
-          try {
-            // Get session token
-            const { data: { session } } = await sb.auth.getSession();
-            if (!session) {
-              console.error("❌ No session found");
-              btn.disabled = false;
-              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
+          const response = await fetch('/api/ai', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              action: 'improve_page',
+              style: style,
+              text: pageDesc
+            })
+          });
+
+          console.log(`📊 AI fetch status: ${response.status}`);
+
+          const data = await response.json();
+          console.log("📦 AI raw response:", data);
+
+          if (!response.ok) {
+            if (response.status === 429) {
+              setBothRemainingUI(0, 3);
+              return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
-
-            console.log("🔑 Session token obtained");
-
-            // Call API
-            const response = await fetch('/api/ai', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-              },
-              body: JSON.stringify({
-                action: 'improve_page',
-                style: style,
-                text: pageDesc
-              })
-            });
-
-            console.log(`📊 AI fetch status: ${response.status}`);
-
-            const data = await response.json();
-            console.log("📦 AI raw response:", data);
-
-            if (!response.ok) {
-              btn.disabled = false;
-              if (response.status === 429) {
-                if (remainingEl) {
-                  remainingEl.textContent = `AI uses left today: 0/3`;
-                  remainingEl.style.color = '#ff7878';
-                }
-                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
-              }
-              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
-            }
-
-            // Extract generated text with fallback for multiple field names
-            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
-            console.log("📊 AI generated length:", generated.length);
-
-            // Success
-            if (outputTextarea) outputTextarea.value = generated;
-            if (outputDiv) outputDiv.style.display = "block";
-            if (remainingEl) {
-              remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-              remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-            }
-            setMsg(statusEl, "Generated successfully!");
-            console.log("✅ AI generation successful");
-
-          } catch (error) {
-            console.error("❌ AI error:", error);
-            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
-          } finally {
-            btn.disabled = false;
+            return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
           }
-        });
-        console.log("✅ aiImproveBtn listener attached");
+
+          const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+          console.log("📊 AI generated length:", generated.length);
+
+          if (outputTextarea) outputTextarea.value = generated;
+          if (outputDiv) outputDiv.style.display = "block";
+          setBothRemainingUI(data.remaining, 3);
+          setMsg(statusEl, "Generated successfully!");
+          console.log("✅ AI generation successful");
+
+        } catch (error) {
+          console.error("❌ AI error:", error);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+        }
       }
 
       // Replace page description button
@@ -886,98 +1480,77 @@
         });
       }
 
-      // AI Generate Card Summary Handler
-      if (aiElements.aiCardBtn) {
-        aiElements.aiCardBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-          console.log("🔵 AI click fired: generate card summary");
+      async function generateCardAI() {
+        console.log("🔵 AI click fired: generate card summary");
 
-          const btn = aiElements.aiCardBtn;
-          const statusEl = aiElements.aiCardStatus;
-          const remainingEl = document.getElementById("aiCardRemaining");
-          const outputDiv = document.getElementById("aiCardOutput");
-          const outputTextarea = document.getElementById("aiOutputCard");
-          const pageDesc = aiElements.pageDescription.value.trim();
+        const statusEl = aiElements.aiCardStatus;
+        const outputDiv = document.getElementById("aiCardOutput");
+        const outputTextarea = document.getElementById("aiOutputCard");
+        const pageDesc = aiElements.pageDescription.value.trim();
 
-          // Clear previous status
-          setMsg(statusEl, "");
-          if (outputDiv) outputDiv.style.display = "none";
+        setMsg(statusEl, "");
+        if (outputDiv) outputDiv.style.display = "none";
 
-          // Validate input
-          if (!pageDesc) {
-            console.log("⚠️ No page description entered");
-            return setMsg(statusEl, "Please enter a page description first.", true);
+        if (!pageDesc) {
+          console.log("⚠️ No page description entered");
+          return setMsg(statusEl, "Please enter a page description first.", true);
+        }
+
+        setMsg(statusEl, "Let AI work its magic...");
+        console.log("📡 Fetching AI card summary...");
+
+        try {
+          const { data: { session } } = await sb.auth.getSession();
+          if (!session) {
+            console.error("❌ No session found");
+            return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
           }
 
-          // Disable button and show loading
-          btn.disabled = true;
-          setMsg(statusEl, "Calling AI...");
-          console.log("📡 Fetching AI card summary...");
+          console.log("🔑 Session token obtained");
 
-          try {
-            // Get session token
-            const { data: { session } } = await sb.auth.getSession();
-            if (!session) {
-              console.error("❌ No session found");
-              btn.disabled = false;
-              return setMsg(statusEl, "You must be signed in to use AI Assist.", true);
+          const response = await fetch('/api/ai', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+              action: 'card_summary',
+              text: pageDesc
+            })
+          });
+
+          console.log(`📊 AI fetch status: ${response.status}`);
+
+          const data = await response.json();
+          console.log("📦 AI raw response:", data);
+
+          if (!response.ok) {
+            if (response.status === 429) {
+              setBothRemainingUI(0, 3);
+              return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
             }
-
-            console.log("🔑 Session token obtained");
-
-            // Call API
-            const response = await fetch('/api/ai', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${session.access_token}`
-              },
-              body: JSON.stringify({
-                action: 'card_summary',
-                text: pageDesc
-              })
-            });
-
-            console.log(`📊 AI fetch status: ${response.status}`);
-
-            const data = await response.json();
-            console.log("📦 AI raw response:", data);
-
-            if (!response.ok) {
-              btn.disabled = false;
-              if (response.status === 429) {
-                if (remainingEl) {
-                  remainingEl.textContent = `AI uses left today: 0/3`;
-                  remainingEl.style.color = '#ff7878';
-                }
-                return setMsg(statusEl, data.error || "Daily limit reached. Try again tomorrow.", true);
-              }
-              return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
-            }
-
-            // Extract generated text with fallback for multiple field names
-            const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
-            console.log("📊 AI generated length:", generated.length);
-
-            // Success
-            if (outputTextarea) outputTextarea.value = generated;
-            if (outputDiv) outputDiv.style.display = "block";
-            if (remainingEl) {
-              remainingEl.textContent = `AI uses left today: ${data.remaining}/3`;
-              remainingEl.style.color = data.remaining === 0 ? '#ff7878' : (data.remaining === 1 ? '#ffaa00' : '#6ee7f3');
-            }
-            setMsg(statusEl, "Generated successfully!");
-            console.log("✅ AI generation successful");
-
-          } catch (error) {
-            console.error("❌ AI error:", error);
-            setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
-          } finally {
-            btn.disabled = false;
+            return setMsg(statusEl, data.error || "Failed to generate AI response.", true);
           }
-        });
-        console.log("✅ aiCardBtn listener attached");
+
+          const generated = (data?.result ?? data?.text ?? data?.output ?? "").trim();
+          console.log("📊 AI generated length:", generated.length);
+
+          if (outputTextarea) outputTextarea.value = generated;
+          if (outputDiv) outputDiv.style.display = "block";
+          setBothRemainingUI(data.remaining, 3);
+          setMsg(statusEl, "Generated successfully!");
+          console.log("✅ AI generation successful");
+
+        } catch (error) {
+          console.error("❌ AI error:", error);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
+        }
       }
+
+      attachAiMagic("aiCardBtn", generateCardAI);
+      attachAiMagic("aiPageBtn", generatePageAI);
+      console.log("✅ AI magic handlers attached");
 
       // Replace card description button
       const aiReplaceCardBtn = document.getElementById("aiReplaceCardBtn");
@@ -1065,6 +1638,66 @@
       }
     }
   </script>
-  <script src="assets/js/cookie-consent.js" defer></script>
+  <script>
+    // ── AI Style custom dropdown (portalled to body) ──────
+    (function () {
+      const wrap    = document.getElementById('aiStyleWrap');
+      const trigger = document.getElementById('aiStyleTrigger');
+      const panel   = document.getElementById('aiStylePanel');
+      const label   = document.getElementById('aiStyleLabel');
+      const native  = document.getElementById('aiStyle');
+      const options = panel.querySelectorAll('.ai-select-option');
+
+      // Move panel to <body> so it escapes all parent stacking contexts
+      document.body.appendChild(panel);
+
+      function reposition() {
+        const rect = trigger.getBoundingClientRect();
+        panel.style.top      = (rect.bottom + 6) + 'px';
+        panel.style.left     = rect.left + 'px';
+        panel.style.minWidth = rect.width + 'px';
+      }
+      function openPanel() {
+        reposition();
+        wrap.classList.add('open');
+        panel.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+      function closePanel() {
+        wrap.classList.remove('open');
+        panel.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+      function selectOption(val) {
+        native.value = val;
+        label.textContent = val;
+        options.forEach(o => o.classList.toggle('selected', o.dataset.value === val));
+        closePanel();
+      }
+
+      trigger.addEventListener('click', () =>
+        panel.classList.contains('open') ? closePanel() : openPanel()
+      );
+      trigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+        if (e.key === 'Escape') closePanel();
+      });
+      options.forEach(o => {
+        o.addEventListener('click', () => selectOption(o.dataset.value));
+        o.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(o.dataset.value); }
+        });
+      });
+      document.addEventListener('click', e => {
+        if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closePanel();
+      });
+      window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
+      window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
+    })();
+  </script>
+  <script src="assets/js/cookies.js" defer></script>
 </body>
 </html>

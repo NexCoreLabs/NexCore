@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <!-- Cookie consent stylesheet (GA will only be injected after consent) -->
-        <link rel="stylesheet" href="assets/css/cookie-consent.css">
+        <!-- Cookie Consent Manager v2 -->
+        <link rel="stylesheet" href="assets/css/cookies.css">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Manage your NexCore Labs account settings.">
@@ -51,19 +51,78 @@
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
     hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
-    .modal{display:none;position:fixed;z-index:9999;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .modal-content{background:rgba(20,21,40,.98);margin:8% auto;padding:32px;border:1px solid rgba(255,120,120,.3);border-radius:16px;max-width:520px;box-shadow:0 8px 32px rgba(255,120,120,.15)}
+    /* ── Delete Account Modal ── */
+    .modal{
+      display:flex;position:fixed;inset:0;z-index:9999;
+      align-items:flex-end;justify-content:center;
+      padding:16px;
+      background:rgba(2,6,23,.55);
+      backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+      box-sizing:border-box;
+      opacity:0;pointer-events:none;
+      transition:opacity .28s ease;
+    }
+    .modal.open{opacity:1;pointer-events:all;}
+    @media(min-width:600px){.modal{align-items:center;}}
+    .modal-content{
+      position:relative;
+      width:100%;max-width:520px;
+      max-height:90dvh;overflow-y:auto;
+      background:rgba(8,10,22,.93);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:16px;
+      padding:28px 24px 22px;
+      box-shadow:0 24px 72px rgba(2,6,23,.85),0 0 0 1px rgba(255,120,120,.06);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      color:#e6eef3;
+      font-size:14px;line-height:1.5;
+      box-sizing:border-box;
+      transform:translateY(28px) scale(.97);
+      opacity:0;
+      transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .28s ease;
+      scrollbar-width:thin;scrollbar-color:#ff7878 transparent;
+    }
+    .modal.open .modal-content{transform:translateY(0) scale(1);opacity:1;}
+    /* top accent line */
+    .modal-content::before{
+      content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+      background:linear-gradient(90deg,transparent,#ff7878,transparent);
+      opacity:.45;border-radius:16px 16px 0 0;pointer-events:none;
+    }
     .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-    .modal-header h2{margin:0;color:#ff7878;display:flex;align-items:center;gap:10px}
-    .close{color:#aaa;font-size:28px;font-weight:bold;cursor:pointer;line-height:1}
-    .close:hover{color:#fff}
+    .modal-header h2{margin:0;color:#ff7878;display:flex;align-items:center;gap:10px;font-size:1.15rem;}
+    .close{
+      display:flex;align-items:center;justify-content:center;
+      width:32px;height:32px;border-radius:8px;
+      color:rgba(255,255,255,.45);font-size:22px;font-weight:bold;
+      cursor:pointer;line-height:1;flex-shrink:0;
+      transition:background .18s,color .18s;
+    }
+    .close:hover{background:rgba(255,255,255,.08);color:#fff;}
     .modal input[type="text"],.modal input[type="checkbox"]{margin:10px 0}
-    .modal input[type="text"]{width:100%;padding:12px;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.15);border-radius:8px;color:#fff;font-size:1rem;font-family:monospace}
-    .modal input[type="text"]:focus{outline:none;border-color:rgba(255,120,120,.5);background:rgba(0,0,0,.4)}
-    .checkbox-row{display:flex;align-items:center;gap:10px;margin:16px 0;padding:12px;background:rgba(0,0,0,.2);border-radius:8px}
-    .checkbox-row label{cursor:pointer;font-size:.8rem}
-    .modal-actions{display:flex;gap:10px;margin-top:24px}
-    .modal-actions .btn{flex:1}
+    .modal input[type="text"]{
+      width:100%;padding:12px;box-sizing:border-box;
+      background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;color:#fff;font-size:.95rem;font-family:monospace;
+      transition:border-color .18s,background .18s;
+    }
+    .modal input[type="text"]:focus{outline:none;border-color:rgba(255,120,120,.5);background:rgba(0,0,0,.45);}
+    .checkbox-row{
+      display:flex;align-items:flex-start;gap:10px;
+      margin:16px 0;padding:14px;
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:10px;
+    }
+    .checkbox-row input[type="checkbox"]{flex-shrink:0;margin-top:3px;}
+    .checkbox-row label{cursor:pointer;font-size:.82rem;color:rgba(230,238,243,.85);line-height:1.5;}
+    .modal-actions{display:flex;gap:10px;margin-top:24px;}
+    .modal-actions .btn{flex:1;}
+    @media(max-width:480px){
+      .modal-content{padding:22px 16px 18px;}
+      .modal-actions{flex-direction:column;}
+      .modal-actions .btn{width:100%;}
+    }
   </style>
   <!-- Vercel Web Analytics -->
   <script>
@@ -117,7 +176,7 @@
     
     <main>
       <div class="wrap">
-        <h1>Account Settings <span class="beta-badge">BETA</span></h1>
+        <h1>Account Settings</h1>
 
         <div class="box">
           <h2 style="margin-top:0;">Account Information</h2>
@@ -214,11 +273,43 @@
         </div>
       </div>
 
-      <!-- Delete Account Confirmation Modal -->
-      <div id="deleteAccountModal" class="modal">
+      <!-- Delete Project Confirmation Modal -->
+      <div id="deleteProjectModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="deleteProjectModalTitle">
         <div class="modal-content">
           <div class="modal-header">
-            <h2><i class="fa-solid fa-triangle-exclamation"></i> Delete Account</h2>
+            <h2 id="deleteProjectModalTitle"><i class="fa-solid fa-triangle-exclamation"></i> Delete Project</h2>
+            <span class="close" id="closeProjectModal">&times;</span>
+          </div>
+
+          <p style="margin-bottom:16px;">This action is <strong>permanent and irreversible</strong>. Your project will be removed from the hub.</p>
+
+          <div class="notice-box warning" style="margin-bottom:20px;">
+            <strong>This will delete:</strong>
+            <ul style="margin:8px 0 0 20px;line-height:1.8">
+              <li>Your project listing on the hub</li>
+              <li>All project information &amp; metadata</li>
+              <li>Your public project page</li>
+            </ul>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn primary ghost" id="cancelDeleteProjectBtn">
+              <i class="fa-solid fa-xmark"></i> Cancel
+            </button>
+            <button class="btn danger" id="confirmDeleteProjectBtn">
+              <i class="fa-solid fa-trash"></i> Delete My Project
+            </button>
+          </div>
+
+          <p id="projectModalMsg" style="margin-top:16px;"></p>
+        </div>
+      </div>
+
+      <!-- Delete Account Confirmation Modal -->
+      <div id="deleteAccountModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 id="deleteModalTitle"><i class="fa-solid fa-triangle-exclamation"></i> Delete Account</h2>
             <span class="close" id="closeModal">&times;</span>
           </div>
           
@@ -233,7 +324,7 @@
             </ul>
           </div>
           
-          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type <strong>DELETE</strong> to confirm:</label>
+          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type <strong style="font-family: 'Courier New', monospace; color: #ff7878;">DELETE</strong> to confirm:</label>
           <input type="text" id="confirmDeleteInput" placeholder="DELETE" autocomplete="off">
           
           <div class="checkbox-row">
@@ -242,11 +333,11 @@
           </div>
           
           <div class="modal-actions">
-            <button class="btn" id="cancelDeleteBtn">
-              <i class="fa-solid fa-xmark"></i> Cancel
-            </button>
             <button class="btn danger" id="confirmDeleteBtn" disabled>
               <i class="fa-solid fa-trash"></i> Delete My Account
+            </button>
+            <button class="btn primary ghost" id="cancelDeleteBtn">
+              <i class="fa-solid fa-xmark"></i> Cancel
             </button>
           </div>
           
@@ -262,7 +353,7 @@
       <footer class="site-footer">
         <div class="container footer-inner">
           <div class="f-left">
-            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on PayPal</a>
+            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
             <br>
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
               <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
@@ -362,19 +453,36 @@
       }
     }
 
-    async function deleteProject() {
-      const ok = confirm("⚠️ Delete your project permanently?\n\nThis will remove:\n• Your project from the hub\n• All project information\n• Your public page\n\nThis action CANNOT be undone.");
-      if (!ok) return;
+    function openDeleteProjectModal() {
+      const modal = document.getElementById("deleteProjectModal");
+      setMsg("projectModalMsg", "", false);
+      document.getElementById("confirmDeleteProjectBtn").disabled = false;
+      document.getElementById("confirmDeleteProjectBtn").innerHTML = '<i class="fa-solid fa-trash"></i> Delete My Project';
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      requestAnimationFrame(() => modal.classList.add("open"));
+    }
 
-      const doubleCheck = confirm("Are you absolutely sure? This is your final warning.");
-      if (!doubleCheck) return;
+    function closeDeleteProjectModal() {
+      const modal = document.getElementById("deleteProjectModal");
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+    }
+
+    async function deleteProject() {
+      closeDeleteProjectModal();
 
       try {
         const btn = document.getElementById("deleteProjectBtn");
+        const confirmBtn = document.getElementById("confirmDeleteProjectBtn");
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
-        
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Deleting...';
+
         setMsg("deleteMsg", "");
+        setMsg("projectModalMsg", "", false);
 
         // Get user's session
         const { data: { session } } = await sb.auth.getSession();
@@ -413,7 +521,7 @@
 
         setMsg("deleteMsg", "✓ Project deleted successfully.");
         btn.innerHTML = '<i class="fa-solid fa-check"></i> Deleted';
-        
+
         setTimeout(() => {
           window.location.href = "/dashboard.html";
         }, 2000);
@@ -636,16 +744,20 @@ Total Projects: ${projectCount}
 
     function openDeleteAccountModal() {
       const modal = document.getElementById("deleteAccountModal");
-      modal.style.display = "block";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
       document.getElementById("confirmDeleteInput").value = "";
       document.getElementById("confirmCheckbox").checked = false;
       document.getElementById("confirmDeleteBtn").disabled = true;
       setMsg("modalMsg", "", false);
+      requestAnimationFrame(() => modal.classList.add("open"));
     }
 
     function closeDeleteAccountModal() {
       const modal = document.getElementById("deleteAccountModal");
-      modal.style.display = "none";
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
     }
 
     function checkDeleteConfirmation() {
@@ -792,28 +904,36 @@ Total Projects: ${projectCount}
 
       // Button event listeners
       document.getElementById("logoutBtn").addEventListener("click", logout);
-      document.getElementById("deleteProjectBtn").addEventListener("click", deleteProject);
+      document.getElementById("deleteProjectBtn").addEventListener("click", openDeleteProjectModal);
       document.getElementById("copyUserIdBtn").addEventListener("click", copyUserId);
       document.getElementById("exportAccountBtn").addEventListener("click", exportAccountData);
       document.getElementById("exportProjectsBtn").addEventListener("click", exportProjects);
       document.getElementById("deleteAccountBtn").addEventListener("click", openDeleteAccountModal);
       
-      // Modal event listeners
+      // Delete project modal listeners
+      document.getElementById("closeProjectModal").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("cancelDeleteProjectBtn").addEventListener("click", closeDeleteProjectModal);
+      document.getElementById("confirmDeleteProjectBtn").addEventListener("click", deleteProject);
+
+      // Delete account modal listeners
       document.getElementById("closeModal").addEventListener("click", closeDeleteAccountModal);
       document.getElementById("cancelDeleteBtn").addEventListener("click", closeDeleteAccountModal);
       document.getElementById("confirmDeleteBtn").addEventListener("click", confirmDeleteAccount);
       document.getElementById("confirmDeleteInput").addEventListener("input", checkDeleteConfirmation);
       document.getElementById("confirmCheckbox").addEventListener("change", checkDeleteConfirmation);
-      
-      // Close modal when clicking outside
+
+      // Close modals when clicking outside or pressing Escape
       window.addEventListener("click", (event) => {
-        const modal = document.getElementById("deleteAccountModal");
-        if (event.target === modal) {
-          closeDeleteAccountModal();
-        }
+        if (event.target === document.getElementById("deleteAccountModal")) closeDeleteAccountModal();
+        if (event.target === document.getElementById("deleteProjectModal")) closeDeleteProjectModal();
+      });
+      window.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        closeDeleteAccountModal();
+        closeDeleteProjectModal();
       });
     });
   </script>
-  <script src="assets/js/cookie-consent.js" defer></script>
+  <script src="assets/js/cookies.js" defer></script>
 </body>
 </html>
