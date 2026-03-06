@@ -251,14 +251,45 @@
         async function loadProjects() {
           const sb = window.supabaseClient;
           const container = document.querySelector('#projects-container');
+
+          async function getViewsBySlug(projects) {
+            const slugToViews = new Map();
+            if (!projects || projects.length === 0) return slugToViews;
+
+            const pagePaths = projects
+              .map(p => (p.slug ? `/project/${p.slug}` : null))
+              .filter(Boolean);
+
+            if (pagePaths.length === 0) return slugToViews;
+
+            const { data: visitsData, error: visitsError } = await sb
+              .from('page_visits_daily')
+              .select('page_path, visits')
+              .in('page_path', pagePaths);
+
+            if (visitsError) {
+              console.warn('Failed to load project views:', visitsError.message);
+              return slugToViews;
+            }
+
+            (visitsData || []).forEach(row => {
+              const path = row.page_path || '';
+              const slug = path.startsWith('/project/') ? path.slice('/project/'.length) : '';
+              if (!slug) return;
+              const current = slugToViews.get(slug) || 0;
+              slugToViews.set(slug, current + (row.visits || 0));
+            });
+
+            return slugToViews;
+          }
           
           try {
             // Fetch published projects from Supabase
             const { data, error } = await sb
               .from('projects')
-              .select('public_id, name, slug, card_description')
+              .select('public_id, name, slug, card_description, created_at')
               .eq('published', true)
-              .order('created_at', { ascending: true })
+              .order('created_at', { ascending: false })
               .limit(100);
 
             if (error) {
@@ -274,21 +305,48 @@
             }
 
             container.innerHTML = ''; // clear existing
+            const viewsBySlug = await getViewsBySlug(data);
+
 
             data.forEach(project => {
-              const card = document.createElement('div');
-              card.className = 'project-card';
+              const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+              const views = viewsBySlug.get(project.slug) || 0;
+              
+              const card = document.createElement('a');
+              card.className = 'project-card-link';
+              card.href = projectLink;
               card.setAttribute('data-id', project.public_id || '');
               card.setAttribute('data-name', project.name || '');
               
-              const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+              // Format date if available
+              const createdDate = project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+              }) : 'N/A';
               
               card.innerHTML = `
-                <a class="project-card" href="${projectLink}" rel="noopener">
-                  <strong>${project.name || 'Untitled'} <sup><i class="fa-solid fa-arrow-up-right-from-square"></i></sup></strong>
-                  <span class="id">${project.public_id || ''}</span>
-                </a>
-                <p>${project.card_description || 'No description available.'}</p>
+                <div class="project-card-wrapper">
+                  <div class="project-card-header">
+                    <strong class="project-title">
+                      ${project.name || 'Untitled'} 
+                      <span class="external-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                    </strong>
+                    <span class="id">${project.public_id || ''}</span>
+                  </div>
+                  <p class="project-description">${project.card_description || 'No description available.'}</p>
+                  <div class="project-metadata">
+                    <span class="metadata-item">
+                      <i class="fas fa-calendar-alt"></i>
+                      <span>${createdDate}</span>
+                    </span>
+                    <span class="metadata-separator"></span>
+                    <span class="metadata-item">
+                      <i class="fas fa-eye"></i>
+                      <span class="view-count">${views.toLocaleString()}</span> views
+                    </span>
+                  </div>
+                </div>
               `;
               container.appendChild(card);
             });
@@ -310,18 +368,18 @@
 
           searchInput.addEventListener('input', function() {
             const query = this.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.project-card');
+            const cards = document.querySelectorAll('.project-card-link');
 
-            // cards.forEach(card => {
-            //   const name = (card.getAttribute('data-name') || '').toLowerCase();
-            //   const id = (card.getAttribute('data-id') || '').toLowerCase();
+            cards.forEach(card => {
+              const name = (card.getAttribute('data-name') || '').toLowerCase();
+              const id = (card.getAttribute('data-id') || '').toLowerCase();
               
-            //   if (name.includes(query) || id.includes(query)) {
-            //     card.style.display = '';
-            //   } else {
-            //     card.style.display = 'none';
-            //   }
-            // });
+              if (name.includes(query) || id.includes(query)) {
+                card.style.display = '';
+              } else {
+                card.style.display = 'none';
+              }
+            });
           });
         }
 
