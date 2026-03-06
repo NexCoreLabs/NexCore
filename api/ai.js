@@ -176,12 +176,15 @@ RULES:
 Source text:
 ${text}`;
     } else if (action === 'project_insights') {
-      prompt = `Analyze the following project and return a JSON object with two fields:
-1. "summary": A 2-3 sentence paragraph summarizing what this project is about (80-120 words).
-2. "insights": An array of 3-5 short bullet strings, each starting with a label like "Focus area:", "Category:", "Potential impact:", "Tech stack:", or "Target audience:".
+      prompt = `Generate a short summary (1-2 sentences, 50-80 words) that describes the project's name and the core of what it provides, based on the description.
+
+Return a JSON object with:
+- "summary": the summary text
+- "insights": [] (empty array)
 
 RULES:
-- Do NOT invent information or facts not present in the description
+- Include the project's name in the summary
+- Focus on what the project provides or its core functionality
 - Be concise and informative
 - Output ONLY valid JSON, no markdown, no code fences, no extra text
 

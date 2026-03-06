@@ -976,14 +976,37 @@
         return;
       }
 
-      const { data, error } = await sb
+      // Check if a specific project slug is requested via URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedSlug = urlParams.get('slug');
+
+      let query = sb
         .from("projects")
-        .select("*")
-        .eq("owner_user_id", userId)
-        .maybeSingle();
+        .select("*");
+
+      if (requestedSlug) {
+        // Load specific project by slug, but only if owned by current user
+        query = query
+          .eq("slug", requestedSlug)
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+      } else {
+        // Load user's project (first one if multiple)
+        query = query
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         setPublishStatus(error.message, "error");
+        render(null);
+        return;
+      }
+
+      if (requestedSlug && !data) {
+        setPublishStatus("Project not found or you don't have permission to edit it.", "error");
         render(null);
         return;
       }

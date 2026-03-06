@@ -347,56 +347,6 @@
             opacity: 0.7;
             font-size: 0.9rem;
         }
-
-        /* ------ Share Section Improvements ------ */
-        .share-social-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 8px;
-            margin-bottom: 20px;
-        }
-        .share-social-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 15px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            text-decoration: none;
-            border: 1px solid;
-            transition: all 0.2s;
-            cursor: pointer;
-            background: transparent;
-            color: #fff;
-            font-family: inherit;
-        }
-        .share-social-btn.x-twitter {
-            border-color: rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.85);
-        }
-        .share-social-btn.x-twitter:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        .share-social-btn.linkedin {
-            border-color: rgba(10, 102, 194, 0.4);
-            color: #78b8d8;
-        }
-        .share-social-btn.linkedin:hover {
-            background: rgba(10, 102, 194, 0.1);
-            border-color: rgba(10, 102, 194, 0.65);
-        }
-        .share-social-btn.whatsapp {
-            border-color: rgba(37, 211, 102, 0.3);
-            color: #7de8b0;
-        }
-        .share-social-btn.whatsapp:hover {
-            background: rgba(37, 211, 102, 0.07);
-            border-color: rgba(37, 211, 102, 0.55);
-        }
         .qr-wrapper {
             display: flex;
             flex-direction: column;
@@ -582,6 +532,11 @@
                 </div>
             </div>
 
+            <div class="project-section" id="socialSection" style="display: none;">
+                <h2>Links</h2>
+                <div class="social-links" id="socialLinks"></div>
+            </div>
+
             <!-- AI Project Insights -->
             <div class="project-section ai-insights-section" id="aiInsightsSection">
                 <h2><i class="fas fa-microchip ai-icon"></i> AI Project Insights</h2>
@@ -604,11 +559,6 @@
                 <div class="creators-grid" id="creatorsGrid"></div>
             </div>
 
-            <div class="project-section" id="socialSection" style="display: none;">
-                <h2>Links</h2>
-                <div class="social-links" id="socialLinks"></div>
-            </div>
-
             <div class="project-section qr-section">
                 <h2>Share This Project</h2>
                 <div class="actions">
@@ -617,17 +567,6 @@
                     </button>
                     <button class="btn primary ghost" id="copyBtn">
                         <i class="fas fa-copy"></i> Copy Link
-                    </button>
-                </div>
-                <div class="share-social-row">
-                    <button class="share-social-btn x-twitter" id="shareXBtn">
-                        <i class="fab fa-x-twitter"></i> X (Twitter)
-                    </button>
-                    <button class="share-social-btn linkedin" id="shareLinkedinBtn">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </button>
-                    <button class="share-social-btn whatsapp" id="shareWhatsappBtn">
-                        <i class="fab fa-whatsapp"></i> WhatsApp
                     </button>
                 </div>
                 <div class="qr-wrapper">
@@ -755,6 +694,10 @@
 
             // Show owner actions if this is the owner
             if (isOwner) {
+                const editLink = document.querySelector('#ownerActions a');
+                if (editLink) {
+                    editLink.href = `dashboard.html?slug=${encodeURIComponent(project.slug || '')}`;
+                }
                 document.getElementById('ownerActions').style.display = 'block';
             }
 
