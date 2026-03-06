@@ -167,6 +167,289 @@
         #qr {
             display: inline-block;
         }
+
+        /* ------ Creator Section ------ */
+        .creators-grid {
+            display: flex;
+            margin-top: 4px;
+        }
+        .creator-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(110, 231, 243, 0.12);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.25s ease;
+        }
+        .creator-card:hover {
+            border-color: rgba(110, 231, 243, 0.35);
+            box-shadow: 0 0 20px rgba(110, 231, 243, 0.08);
+            transform: translateY(-2px);
+        }
+        .creator-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0;
+            display: block;
+            object-fit: cover;
+            border: 2px solid rgba(110, 231, 243, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        .creator-avatar-placeholder {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(110, 231, 243, 0.1);
+            border: 2px solid rgba(110, 231, 243, 0.35);
+            font-size: 1.5rem;
+            color: #6ee7f3;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+        .creator-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .creator-meta {
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .creator-contact-title {
+            margin: 0;
+            font-size: 0.78rem;
+            opacity: 0.65;
+            letter-spacing: 0.02em;
+        }
+        .creator-contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .creator-contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(110, 231, 243, 0.22);
+            background: rgba(110, 231, 243, 0.06);
+            color: #9fe9f4;
+            text-decoration: none;
+            font-size: 0.78rem;
+            line-height: 1;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .creator-contact-link:hover {
+            border-color: rgba(110, 231, 243, 0.5);
+            background: rgba(110, 231, 243, 0.14);
+            color: #d6fbff;
+        }
+        @media (max-width: 560px) {
+            .creator-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .creator-avatar,
+            .creator-avatar-placeholder {
+                width: 54px;
+                height: 54px;
+            }
+            .creator-name {
+                font-size: 0.95rem;
+            }
+            .creator-contact-link {
+                font-size: 0.74rem;
+                padding: 6px 9px;
+            }
+        }
+
+        /* ------ AI Insights Section ------ */
+        .ai-insights-section {
+            border-color: rgba(110, 231, 243, 0.22) !important;
+            box-shadow: 0 0 28px rgba(110, 231, 243, 0.06), inset 0 0 24px rgba(110, 231, 243, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-insights-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(110, 231, 243, 0.5), transparent);
+            border-radius: 16px 16px 0 0;
+        }
+        .ai-insights-section h2 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .ai-icon {
+            color: #6ee7f3;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .ai-insights-summary {
+            line-height: 1.7;
+            opacity: 0.85;
+            margin: 0 0 16px;
+            font-size: 0.94rem;
+        }
+        .ai-insights-bullets {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .ai-insights-bullets li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 0.88rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        .ai-insights-bullets li::before {
+            content: '▸';
+            color: #6ee7f3;
+            flex-shrink: 0;
+            line-height: 1.5;
+        }
+        .ai-insights-placeholder {
+            text-align: center;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+        .ai-loading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 16px 0;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        .qr-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .qr-scan-label {
+            opacity: 0.55;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        .download-qr-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 13px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .download-qr-btn:hover {
+            background: rgba(110, 231, 243, 0.08);
+            border-color: rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
+
+            .ai-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .ai-btn.loading {
+      box-shadow:
+        0 0 20px rgba(110, 231, 243, 0.6),
+        0 0 40px rgba(110, 231, 243, 0.3);
+      transform: translateY(-1px);
+    }
+    .ai-btn.loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,0.4),
+        transparent 80%
+      );
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .ai-sparkle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .ai-btn .ai-sparkle-layer::before,
+    .ai-btn .ai-sparkle-layer::after {
+      content: "✦";
+      position: absolute;
+      font-size: 10px;
+      opacity: 0.4;
+      color: #6EE7F3;
+      animation: floatSparkle 3s ease-in-out infinite;
+    }
+    .ai-btn .ai-sparkle-layer::before {
+      top: 20%;
+      left: 30%;
+    }
+    .ai-btn .ai-sparkle-layer::after {
+      bottom: 25%;
+      right: 35%;
+    }
+    @keyframes floatSparkle {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
+      50% { transform: translateY(-4px) rotate(180deg); opacity: 0.8; }
+      100% { transform: translateY(0px) rotate(360deg); opacity: 0.4; }
+    }
+    .ai-burst-sparkle {
+      position: absolute;
+      font-size: 12px;
+      color: #6EE7F3;
+      animation: burstSparkle 0.8s ease-out forwards;
+    }
+    @keyframes burstSparkle {
+      0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.6) translateY(-20px);
+      }
+    }
+
     </style>
     <!-- Vercel Web Analytics -->
     <script>
@@ -244,6 +527,10 @@
                         <i class="fas fa-eye"></i>
                         <span id="viewCount">-</span> views
                     </div>
+                    <div class="stat-badge">
+                        <i class="fas fa-calendar"></i>
+                        <span id="createdDate">-</span>
+                    </div>
                 </div>
             </div>
 
@@ -259,6 +546,28 @@
                 <div class="social-links" id="socialLinks"></div>
             </div>
 
+            <!-- AI Project Insights -->
+            <div class="project-section ai-insights-section" id="aiInsightsSection">
+                <h2><i class="fas fa-microchip ai-icon"></i> AI Project Insights</h2>
+                <div id="aiInsightsContent">
+                    <p class="ai-insights-summary" id="aiSummaryText"></p>
+                    <ul class="ai-insights-bullets" id="aiInsightsBullets"></ul>
+                </div>
+                <div id="aiInsightsPlaceholder" class="ai-insights-placeholder" style="display: none;">
+                    <p>AI insights will appear here once generated.</p>
+                    <button class="btn primary ai-btn" id="generateInsightsBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+                    <span class="ai-btn-text">Generate</span>
+                    <span class="ai-sparkle-layer"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Creators Section -->
+            <div class="project-section" id="creatorsSection" style="display: none;">
+                <h2>Creator</h2>
+                <div class="creators-grid" id="creatorsGrid"></div>
+            </div>
+
             <div class="project-section qr-section">
                 <h2>Share This Project</h2>
                 <div class="actions">
@@ -269,10 +578,15 @@
                         <i class="fas fa-copy"></i> Copy Link
                     </button>
                 </div>
-                <div class="qr-container">
-                    <div id="qr"></div>
+                <div class="qr-wrapper">
+                    <div class="qr-container">
+                        <div id="qr"></div>
+                    </div>
+                    <p class="qr-scan-label">Scan to view this project</p>
+                    <button class="download-qr-btn" id="downloadQrBtn">
+                        <i class="fas fa-download"></i> Download QR
+                    </button>
                 </div>
-                <p style="opacity: 0.7; font-size: 0.9rem; margin-top: 12px;">Scan to view this project</p>
             </div>
 
             <div id="ownerActions" class="project-section" style="display: none; text-align: center;">
@@ -302,7 +616,7 @@
             document.getElementById('projectContent').style.display = 'none';
         }
 
-        function renderProject(project, isOwner) {
+        async function renderProject(project, isOwner) {
             try {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('projectContent').style.display = 'block';
@@ -389,8 +703,16 @@
 
             // Show owner actions if this is the owner
             if (isOwner) {
+                const editLink = document.querySelector('#ownerActions a');
+                if (editLink) {
+                    editLink.href = `dashboard.html?slug=${encodeURIComponent(project.slug || '')}`;
+                }
                 document.getElementById('ownerActions').style.display = 'block';
             }
+
+            // Render AI insights and creator section
+            renderAiInsights(project);
+            await renderCreators(project);
             } catch (error) {
                 console.error('Error rendering project:', error);
                 // Show error message but don't break the page
@@ -539,12 +861,23 @@
                 }
             }
 
-            renderProject(data, isOwner);
+            await renderProject(data, isOwner);
             
             // Track visit and get total views
             trackVisit(slug);
             const totalViews = await getTotalViews(slug);
             document.getElementById('viewCount').textContent = totalViews.toLocaleString();
+            
+            // Set created date
+            if (data.created_at) {
+                const createdDate = new Date(data.created_at);
+                const formattedDate = createdDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                document.getElementById('createdDate').textContent = formattedDate;
+            }
             
             // Setup share/copy buttons
             const currentUrl = window.location.href;
@@ -552,6 +885,13 @@
                 setupShareButtons(data, currentUrl);
             } catch (e) {
                 console.error('Failed to setup share buttons:', e);
+            }
+
+            // Setup social share buttons
+            try {
+                setupSocialShare(data, currentUrl);
+            } catch (e) {
+                console.error('Failed to setup social share:', e);
             }
             
             // Generate QR code after rendering
@@ -571,7 +911,307 @@
                     console.error('Failed to generate QR code:', e);
                     qrContainer.innerHTML = '<p style="color: #ff7878; font-size: 0.9rem;">QR code unavailable</p>';
                 }
+
+                // Setup QR download after QR code renders
+                setTimeout(() => {
+                    try { setupQrDownload(); } catch (e) { console.error('Failed to setup QR download:', e); }
+                }, 300);
             }
+        }
+
+        /* ---- AI Insights ---- */
+        function renderAiInsights(project) {
+            const contentDiv = document.getElementById('aiInsightsContent');
+            const placeholder = document.getElementById('aiInsightsPlaceholder');
+            const summaryEl = document.getElementById('aiSummaryText');
+            const bulletsEl = document.getElementById('aiInsightsBullets');
+
+            if (!contentDiv || !placeholder) return;
+
+            if (project.ai_summary) {
+                summaryEl.textContent = project.ai_summary;
+                bulletsEl.innerHTML = '';
+                const insights = Array.isArray(project.ai_insights) ? project.ai_insights : [];
+                insights.forEach(insight => {
+                    const li = document.createElement('li');
+                    li.textContent = insight;
+                    bulletsEl.appendChild(li);
+                });
+                contentDiv.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                contentDiv.style.display = 'none';
+                placeholder.style.display = 'block';
+                const generateBtn = document.getElementById('generateInsightsBtn');
+                if (generateBtn) {
+                    generateBtn.addEventListener('click', () => generateAiInsights(project));
+                }
+            }
+        }
+
+        async function generateAiInsights(project) {
+            const contentDiv = document.getElementById('aiInsightsContent');
+            const placeholder = document.getElementById('aiInsightsPlaceholder');
+            const summaryEl = document.getElementById('aiSummaryText');
+            const bulletsEl = document.getElementById('aiInsightsBullets');
+
+            placeholder.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Generating insights...</div>';
+
+            // Require auth — AI endpoint needs a Bearer token
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                placeholder.innerHTML = `
+                    <p>Sign in to generate AI insights for this project.</p>
+                    <a href="auth.html" class="btn primary ghost ai-gen-btn">
+                        <i class="fas fa-arrow-right-to-bracket"></i> Sign In
+                    </a>`;
+                return;
+            }
+
+            const descriptionText = (project.page_description || project.card_description || '').trim();
+            if (!descriptionText) {
+                placeholder.innerHTML = '<p style="opacity:0.6;">No project description available to generate insights from.</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/ai', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${session.access_token}`
+                    },
+                    body: JSON.stringify({
+                        action: 'project_insights',
+                        project_name: project.name || '',
+                        text: descriptionText
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const msg = data?.error || 'AI generation failed';
+                    placeholder.innerHTML = `
+                        <p style="opacity:0.7;">${escapeHtml(msg)}</p>
+                        <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>`;
+                    const retryBtn = document.getElementById('generateInsightsBtn');
+                    if (retryBtn) retryBtn.addEventListener('click', () => generateAiInsights(project));
+                    return;
+                }
+
+                summaryEl.textContent = data.summary || '';
+                bulletsEl.innerHTML = '';
+                (data.insights || []).forEach(insight => {
+                    const li = document.createElement('li');
+                    li.textContent = insight;
+                    bulletsEl.appendChild(li);
+                });
+
+                contentDiv.style.display = 'block';
+                placeholder.style.display = 'none';
+
+                // Show remaining usage hint
+                if (typeof data.remaining === 'number') {
+                    const hint = document.createElement('p');
+                    hint.style.cssText = 'opacity:0.45; font-size:0.78rem; margin-top:14px;';
+                    hint.textContent = `AI actions remaining today: ${data.remaining}`;
+                    contentDiv.appendChild(hint);
+                }
+            } catch (err) {
+                placeholder.innerHTML = `
+                    <p>Could not generate insights at this time.</p>
+                    <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>`;
+                const retryBtn = document.getElementById('generateInsightsBtn');
+                if (retryBtn) retryBtn.addEventListener('click', () => generateAiInsights(project));
+            }
+        }
+
+        /* ---- Creators ---- */
+        function getMetadataDisplayName(metadata) {
+            const candidate = metadata?.full_name || metadata?.name || metadata?.user_name || metadata?.preferred_username;
+            return typeof candidate === 'string' && candidate.trim() ? candidate.trim() : '';
+        }
+
+        async function fetchCreatorProfile(project) {
+            const creatorFromProject = (project.creator_name || '').trim();
+            const avatarFromProject = (project.creator_avatar_url || '').trim();
+            const profile = {
+                display_name: creatorFromProject || '',
+                avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null,
+                email: ''
+            };
+
+            if (project.owner_user_id) {
+                try {
+                    const { data: publicProfile, error } = await sb
+                        .from('user_public_profiles')
+                        .select('name, avatar_url')
+                        .eq('id', project.owner_user_id)
+                        .maybeSingle();
+
+                    if (!error && publicProfile) {
+                        if (!profile.display_name) {
+                            profile.display_name = (publicProfile.name || '').trim();
+                        }
+                        if (!profile.avatar_url && publicProfile.avatar_url) {
+                            profile.avatar_url = publicProfile.avatar_url;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('Could not load creator profile from user_public_profiles:', error?.message || error);
+                }
+            }
+
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                const sessionUser = sessionData?.session?.user;
+                if (sessionUser && sessionUser.id === project.owner_user_id) {
+                    const metadataName = getMetadataDisplayName(sessionUser.user_metadata || {});
+                    const metadataAvatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null;
+                    const sessionEmail = (sessionUser.email || '').trim();
+                    if (!profile.display_name && metadataName) {
+                        profile.display_name = metadataName;
+                    }
+                    if (!profile.avatar_url && metadataAvatar) {
+                        profile.avatar_url = metadataAvatar;
+                    }
+                    if (!profile.email && sessionEmail) {
+                        profile.email = sessionEmail;
+                    }
+                }
+            } catch (error) {
+                console.warn('Session fallback for creator profile failed:', error?.message || error);
+            }
+
+            return {
+                display_name: profile.display_name || 'Project Creator',
+                avatar_url: profile.avatar_url || null,
+                email: profile.email || ''
+            };
+        }
+
+        async function renderCreators(project) {
+            const section = document.getElementById('creatorsSection');
+            const grid = document.getElementById('creatorsGrid');
+            if (!section || !grid) return;
+            const profile = await fetchCreatorProfile(project);
+
+            grid.innerHTML = '';
+            grid.appendChild(buildCreatorCard(profile, project));
+            section.style.display = 'block';
+        }
+
+        function buildCreatorCard(profile, project) {
+            const card = document.createElement('div');
+            card.className = 'creator-card';
+
+            const name = profile.display_name || 'Creator';
+            const initial = name.charAt(0).toUpperCase();
+
+            let avatarHtml;
+            if (profile.avatar_url && /^https?:\/\//i.test(profile.avatar_url)) {
+                const safeAvatar = escapeAttr(profile.avatar_url);
+                avatarHtml = `<img class="creator-avatar is-loaded" src="${safeAvatar}" alt="${escapeAttr(name)}" loading="eager"
+                    style="opacity:1;"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="creator-avatar-placeholder" style="display:none;">${escapeHtml(initial)}</div>`;
+            } else {
+                avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
+            }
+
+            const hasEmail = profile.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email);
+            const emailTarget = hasEmail ? profile.email : '';
+            const emailSubject = encodeURIComponent(`Regarding ${project.name || 'your project'} on NexCore Labs`);
+            const emailBody = encodeURIComponent(`Hello ${name},\n\nI would like to contact you about your project.`);
+            const emailHref = `mailto:${encodeURIComponent(emailTarget)}?subject=${emailSubject}&body=${emailBody}`;
+            const emailButtonText = hasEmail ? profile.email : 'Email Creator';
+
+            card.innerHTML = `
+                ${avatarHtml}
+                <div class="creator-meta">
+                    <p class="creator-name">${escapeHtml(name)}</p>
+                    <p class="creator-contact-title">Contact Creator</p>
+                    <div class="creator-contact-links">
+                        <a href="${escapeAttr(emailHref)}" class="creator-contact-link"><i class="fas fa-envelope"></i> ${escapeHtml(emailButtonText)}</a>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.appendChild(document.createTextNode(String(text || '')));
+            return div.innerHTML;
+        }
+
+        function escapeAttr(value) {
+            return String(value || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        /* ---- Social Share ---- */
+        function setupSocialShare(project, currentUrl) {
+            const projectTitle = encodeURIComponent((project.name || 'Check out this project on NexCore Labs') + ' — NexCore Labs');
+            const encodedUrl = encodeURIComponent(currentUrl);
+
+            const shareXBtn = document.getElementById('shareXBtn');
+            const shareLinkedinBtn = document.getElementById('shareLinkedinBtn');
+            const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
+
+            if (shareXBtn) {
+                shareXBtn.addEventListener('click', () => {
+                    window.open(`https://twitter.com/intent/tweet?text=${projectTitle}&url=${encodedUrl}`, '_blank', 'noopener,noreferrer,width=600,height=400');
+                });
+            }
+            if (shareLinkedinBtn) {
+                shareLinkedinBtn.addEventListener('click', () => {
+                    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`, '_blank', 'noopener,noreferrer,width=600,height=500');
+                });
+            }
+            if (shareWhatsappBtn) {
+                shareWhatsappBtn.addEventListener('click', () => {
+                    window.open(`https://wa.me/?text=${projectTitle}%20${encodedUrl}`, '_blank', 'noopener,noreferrer');
+                });
+            }
+        }
+
+        /* ---- QR Download ---- */
+        function setupQrDownload() {
+            const downloadBtn = document.getElementById('downloadQrBtn');
+            if (!downloadBtn) return;
+
+            downloadBtn.addEventListener('click', () => {
+                let dataUrl;
+                const qrCanvas = document.querySelector('#qr canvas');
+                const qrImg = document.querySelector('#qr img');
+
+                if (qrCanvas) {
+                    dataUrl = qrCanvas.toDataURL('image/png');
+                } else if (qrImg) {
+                    try {
+                        const canvas = document.createElement('canvas');
+                        canvas.width = qrImg.naturalWidth || 200;
+                        canvas.height = qrImg.naturalHeight || 200;
+                        canvas.getContext('2d').drawImage(qrImg, 0, 0);
+                        dataUrl = canvas.toDataURL('image/png');
+                    } catch (e) {
+                        console.warn('Could not export QR image:', e);
+                        return;
+                    }
+                } else {
+                    return;
+                }
+
+                const a = document.createElement('a');
+                a.download = 'project-qr.png';
+                a.href = dataUrl;
+                a.click();
+            });
         }
 
         document.addEventListener('DOMContentLoaded', loadProject);

@@ -638,7 +638,41 @@
 
     let project = null;
     let currentUserId = null;
+    let currentSession = null;
     let moderationPopupTimer = null;
+
+    function getUserDisplayName(user) {
+      const metadata = user?.user_metadata || {};
+      const candidate = metadata.full_name || metadata.name || metadata.user_name || metadata.preferred_username;
+      if (typeof candidate === "string" && candidate.trim()) return candidate.trim();
+      return (user?.email || "Member").split("@")[0];
+    }
+
+    function getUserAvatar(user) {
+      const metadata = user?.user_metadata || {};
+      const avatar = metadata.avatar_url || metadata.picture || metadata.photo_url;
+      if (typeof avatar === "string" && /^https?:\/\//i.test(avatar.trim())) return avatar.trim();
+      return "";
+    }
+
+    async function syncUserProfile(user) {
+      if (!user?.id) return;
+      const payload = {
+        id: user.id,
+        email: user.email || null,
+        name: getUserDisplayName(user),
+        avatar_url: getUserAvatar(user) || null,
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await sb
+        .from("users")
+        .upsert(payload, { onConflict: "id" });
+
+      if (error) {
+        console.warn("Could not sync user profile:", error.message);
+      }
+    }
 
     function isProjectPublished(p) {
       if (!p) return false;
@@ -917,10 +951,13 @@
         window.location.href = "/auth.html";
         return null;
       }
+
+      currentSession = session;
+      await syncUserProfile(session.user);
       
       // Show onboarding message based on auth mode
       const authMode = sessionStorage.getItem('auth_mode');
-      let welcomeMsg = `Signed in as ${session.user.email}`;
+      let welcomeMsg = `Signed in as ${getUserDisplayName(session.user)}`;
       
       if (authMode === 'signup') {
         welcomeMsg += ' — Welcome to NexCore Labs! Create your first project below.';
@@ -944,11 +981,28 @@
         return;
       }
 
-      const { data, error } = await sb
+      // Check if a specific project slug is requested via URL parameter
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedSlug = urlParams.get('slug');
+
+      let query = sb
         .from("projects")
-        .select("*")
-        .eq("owner_user_id", userId)
-        .maybeSingle();
+        .select("*");
+
+      if (requestedSlug) {
+        // Load specific project by slug, but only if owned by current user
+        query = query
+          .eq("slug", requestedSlug)
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+      } else {
+        // Load user's project (first one if multiple)
+        query = query
+          .eq("owner_user_id", userId)
+          .maybeSingle();
+      }
+
+      const { data, error } = await query;
 
       if (error) {
         setPublishStatus(error.message, "error");
@@ -956,10 +1010,44 @@
         return;
       }
 
+      if (requestedSlug && !data) {
+        setPublishStatus("Project not found or you don't have permission to edit it.", "error");
+        render(null);
+        return;
+      }
+
       console.log("Current user:", userId);
       console.log("Project loaded:", data ? data.owner_user_id : null);
+      let hydratedProject = data || null;
 
-      render(data || null);
+      // Auto-backfill creator identity for older rows that were created
+      // before creator_name/creator_avatar_url existed.
+      if (hydratedProject) {
+        const missingName = !String(hydratedProject.creator_name || "").trim();
+        const missingAvatar = !String(hydratedProject.creator_avatar_url || "").trim();
+        if (missingName || missingAvatar) {
+          const creatorName = getUserDisplayName(currentSession?.user);
+          const creatorAvatar = getUserAvatar(currentSession?.user);
+          const { data: updated, error: updateError } = await sb
+            .from("projects")
+            .update({
+              creator_name: missingName ? (creatorName || null) : hydratedProject.creator_name,
+              creator_avatar_url: missingAvatar ? (creatorAvatar || null) : hydratedProject.creator_avatar_url,
+              updated_at: new Date().toISOString()
+            })
+            .eq("id", hydratedProject.id)
+            .select("*")
+            .single();
+
+          if (!updateError && updated) {
+            hydratedProject = updated;
+          } else if (updateError) {
+            console.warn("Could not backfill creator identity:", updateError.message);
+          }
+        }
+      }
+
+      render(hydratedProject);
     }
 
     async function createProject() {
@@ -973,9 +1061,16 @@
       disableButtons(true);
 
       // Try to insert
+      const creatorName = getUserDisplayName(currentSession?.user);
+      const creatorAvatar = getUserAvatar(currentSession?.user);
       let { data, error } = await sb
         .from("projects")
-        .insert({ name, slug })
+        .insert({
+          name,
+          slug,
+          creator_name: creatorName || null,
+          creator_avatar_url: creatorAvatar || null
+        })
         .select("*")
         .single();
 
@@ -986,7 +1081,12 @@
           const newSlug = slug + '-' + randomSuffix();
           const retry = await sb
             .from("projects")
-            .insert({ name, slug: newSlug })
+            .insert({
+              name,
+              slug: newSlug,
+              creator_name: creatorName || null,
+              creator_avatar_url: creatorAvatar || null
+            })
             .select("*")
             .single();
           
@@ -1029,6 +1129,8 @@
       const slugInput = document.getElementById("cardSlug").value.trim() || name;
       const slug = slugify(slugInput);
       const card_description = document.getElementById("cardDescription").value.trim();
+      const creatorName = getUserDisplayName(currentSession?.user);
+      const creatorAvatar = getUserAvatar(currentSession?.user);
 
       if (!name) return setPublishStatus("Project name is required.", "error");
       if (!slug) return setPublishStatus("Invalid slug.", "error");
@@ -1041,6 +1143,8 @@
           name,
           slug,
           card_description,
+          creator_name: creatorName || null,
+          creator_avatar_url: creatorAvatar || null,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)
@@ -1094,6 +1198,8 @@
       const github_url = document.getElementById("profileGithub").value.trim();
       const linkedin_url = document.getElementById("profileLinkedin").value.trim();
       const instagram_url = document.getElementById("profileInstagram").value.trim();
+      const creatorName = getUserDisplayName(currentSession?.user);
+      const creatorAvatar = getUserAvatar(currentSession?.user);
 
       disableButtons(true);
 
@@ -1107,6 +1213,8 @@
           github_url,
           linkedin_url,
           instagram_url,
+          creator_name: creatorName || null,
+          creator_avatar_url: creatorAvatar || null,
           updated_at: new Date().toISOString()
         })
         .eq("id", project.id)
