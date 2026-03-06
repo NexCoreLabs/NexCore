@@ -990,8 +990,36 @@
 
       console.log("Current user:", userId);
       console.log("Project loaded:", data ? data.owner_user_id : null);
+      let hydratedProject = data || null;
 
-      render(data || null);
+      // Auto-backfill creator identity for older rows that were created
+      // before creator_name/creator_avatar_url existed.
+      if (hydratedProject) {
+        const missingName = !String(hydratedProject.creator_name || "").trim();
+        const missingAvatar = !String(hydratedProject.creator_avatar_url || "").trim();
+        if (missingName || missingAvatar) {
+          const creatorName = getUserDisplayName(currentSession?.user);
+          const creatorAvatar = getUserAvatar(currentSession?.user);
+          const { data: updated, error: updateError } = await sb
+            .from("projects")
+            .update({
+              creator_name: missingName ? (creatorName || null) : hydratedProject.creator_name,
+              creator_avatar_url: missingAvatar ? (creatorAvatar || null) : hydratedProject.creator_avatar_url,
+              updated_at: new Date().toISOString()
+            })
+            .eq("id", hydratedProject.id)
+            .select("*")
+            .single();
+
+          if (!updateError && updated) {
+            hydratedProject = updated;
+          } else if (updateError) {
+            console.warn("Could not backfill creator identity:", updateError.message);
+          }
+        }
+      }
+
+      render(hydratedProject);
     }
 
     async function createProject() {

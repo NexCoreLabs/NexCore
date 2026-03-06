@@ -223,6 +223,62 @@
             margin: 0;
             line-height: 1.3;
         }
+        .creator-meta {
+            min-width: 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .creator-contact-title {
+            margin: 0;
+            font-size: 0.78rem;
+            opacity: 0.65;
+            letter-spacing: 0.02em;
+        }
+        .creator-contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .creator-contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(110, 231, 243, 0.22);
+            background: rgba(110, 231, 243, 0.06);
+            color: #9fe9f4;
+            text-decoration: none;
+            font-size: 0.78rem;
+            line-height: 1;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .creator-contact-link:hover {
+            border-color: rgba(110, 231, 243, 0.5);
+            background: rgba(110, 231, 243, 0.14);
+            color: #d6fbff;
+        }
+        @media (max-width: 560px) {
+            .creator-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .creator-avatar,
+            .creator-avatar-placeholder {
+                width: 54px;
+                height: 54px;
+            }
+            .creator-name {
+                font-size: 0.95rem;
+            }
+            .creator-contact-link {
+                font-size: 0.74rem;
+                padding: 6px 9px;
+            }
+        }
 
         /* ------ AI Insights Section ------ */
         .ai-insights-section {
@@ -280,13 +336,7 @@
         .ai-insights-placeholder {
             text-align: center;
             padding: 8px 0;
-            opacity: 0.65;
             font-size: 0.9rem;
-        }
-        .ai-gen-btn {
-            margin-top: 10px;
-            font-size: 0.85rem;
-            padding: 8px 16px;
         }
         .ai-loading {
             display: flex;
@@ -378,6 +428,78 @@
             border-color: rgba(110, 231, 243, 0.3);
             color: #6ee7f3;
         }
+
+            .ai-btn {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .ai-btn.loading {
+      box-shadow:
+        0 0 20px rgba(110, 231, 243, 0.6),
+        0 0 40px rgba(110, 231, 243, 0.3);
+      transform: translateY(-1px);
+    }
+    .ai-btn.loading::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,0.4),
+        transparent 80%
+      );
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .ai-sparkle-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .ai-btn .ai-sparkle-layer::before,
+    .ai-btn .ai-sparkle-layer::after {
+      content: "✦";
+      position: absolute;
+      font-size: 10px;
+      opacity: 0.4;
+      color: #6EE7F3;
+      animation: floatSparkle 3s ease-in-out infinite;
+    }
+    .ai-btn .ai-sparkle-layer::before {
+      top: 20%;
+      left: 30%;
+    }
+    .ai-btn .ai-sparkle-layer::after {
+      bottom: 25%;
+      right: 35%;
+    }
+    @keyframes floatSparkle {
+      0% { transform: translateY(0px) rotate(0deg); opacity: 0.4; }
+      50% { transform: translateY(-4px) rotate(180deg); opacity: 0.8; }
+      100% { transform: translateY(0px) rotate(360deg); opacity: 0.4; }
+    }
+    .ai-burst-sparkle {
+      position: absolute;
+      font-size: 12px;
+      color: #6EE7F3;
+      animation: burstSparkle 0.8s ease-out forwards;
+    }
+    @keyframes burstSparkle {
+      0% {
+        opacity: 1;
+        transform: scale(0.5) translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.6) translateY(-20px);
+      }
+    }
+
     </style>
 </head>
 <body>
@@ -468,9 +590,10 @@
                     <ul class="ai-insights-bullets" id="aiInsightsBullets"></ul>
                 </div>
                 <div id="aiInsightsPlaceholder" class="ai-insights-placeholder" style="display: none;">
-                    <p>AI-generated insights are not yet available for this project.</p>
-                    <button class="btn primary ghost ai-gen-btn" id="generateInsightsBtn">
-                        <i class="fas fa-wand-magic-sparkles"></i> Generate Insights
+                    <p>AI insights will appear here once generated.</p>
+                    <button class="btn primary ai-btn" id="generateInsightsBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
+                    <span class="ai-btn-text">Generate</span>
+                    <span class="ai-sparkle-layer"></span>
                     </button>
                 </div>
             </div>
@@ -954,12 +1077,11 @@
         async function fetchCreatorProfile(project) {
             const creatorFromProject = (project.creator_name || '').trim();
             const avatarFromProject = (project.creator_avatar_url || '').trim();
-            if (creatorFromProject || avatarFromProject) {
-                return {
-                    display_name: creatorFromProject || 'Project Creator',
-                    avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null
-                };
-            }
+            const profile = {
+                display_name: creatorFromProject || '',
+                avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null,
+                email: ''
+            };
 
             if (project.owner_user_id) {
                 try {
@@ -970,10 +1092,12 @@
                         .maybeSingle();
 
                     if (!error && publicProfile) {
-                        return {
-                            display_name: (publicProfile.name || '').trim() || 'Project Creator',
-                            avatar_url: publicProfile.avatar_url || null
-                        };
+                        if (!profile.display_name) {
+                            profile.display_name = (publicProfile.name || '').trim();
+                        }
+                        if (!profile.avatar_url && publicProfile.avatar_url) {
+                            profile.avatar_url = publicProfile.avatar_url;
+                        }
                     }
                 } catch (error) {
                     console.warn('Could not load creator profile from user_public_profiles:', error?.message || error);
@@ -986,16 +1110,26 @@
                 if (sessionUser && sessionUser.id === project.owner_user_id) {
                     const metadataName = getMetadataDisplayName(sessionUser.user_metadata || {});
                     const metadataAvatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null;
-                    return {
-                        display_name: metadataName || 'Project Creator',
-                        avatar_url: metadataAvatar
-                    };
+                    const sessionEmail = (sessionUser.email || '').trim();
+                    if (!profile.display_name && metadataName) {
+                        profile.display_name = metadataName;
+                    }
+                    if (!profile.avatar_url && metadataAvatar) {
+                        profile.avatar_url = metadataAvatar;
+                    }
+                    if (!profile.email && sessionEmail) {
+                        profile.email = sessionEmail;
+                    }
                 }
             } catch (error) {
                 console.warn('Session fallback for creator profile failed:', error?.message || error);
             }
 
-            return { display_name: 'Project Creator', avatar_url: null };
+            return {
+                display_name: profile.display_name || 'Project Creator',
+                avatar_url: profile.avatar_url || null,
+                email: profile.email || ''
+            };
         }
 
         async function renderCreators(project) {
@@ -1005,11 +1139,11 @@
             const profile = await fetchCreatorProfile(project);
 
             grid.innerHTML = '';
-            grid.appendChild(buildCreatorCard(profile));
+            grid.appendChild(buildCreatorCard(profile, project));
             section.style.display = 'block';
         }
 
-        function buildCreatorCard(profile) {
+        function buildCreatorCard(profile, project) {
             const card = document.createElement('div');
             card.className = 'creator-card';
 
@@ -1019,16 +1153,30 @@
             let avatarHtml;
             if (profile.avatar_url && /^https?:\/\//i.test(profile.avatar_url)) {
                 const safeAvatar = escapeAttr(profile.avatar_url);
-                avatarHtml = `<img class="creator-avatar" src="${safeAvatar}" alt="${escapeAttr(name)}" loading="lazy"
+                avatarHtml = `<img class="creator-avatar is-loaded" src="${safeAvatar}" alt="${escapeAttr(name)}" loading="eager"
+                    style="opacity:1;"
                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
                     <div class="creator-avatar-placeholder" style="display:none;">${escapeHtml(initial)}</div>`;
             } else {
                 avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
             }
 
+            const hasEmail = profile.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email);
+            const emailTarget = hasEmail ? profile.email : '';
+            const emailSubject = encodeURIComponent(`Regarding ${project.name || 'your project'} on NexCore Labs`);
+            const emailBody = encodeURIComponent(`Hello ${name},\n\nI would like to contact you about your project.`);
+            const emailHref = `mailto:${encodeURIComponent(emailTarget)}?subject=${emailSubject}&body=${emailBody}`;
+            const emailButtonText = hasEmail ? profile.email : 'Email Creator';
+
             card.innerHTML = `
                 ${avatarHtml}
-                <p class="creator-name">${escapeHtml(name)}</p>
+                <div class="creator-meta">
+                    <p class="creator-name">${escapeHtml(name)}</p>
+                    <p class="creator-contact-title">Contact Creator</p>
+                    <div class="creator-contact-links">
+                        <a href="${escapeAttr(emailHref)}" class="creator-contact-link"><i class="fas fa-envelope"></i> ${escapeHtml(emailButtonText)}</a>
+                    </div>
+                </div>
             `;
             return card;
         }
