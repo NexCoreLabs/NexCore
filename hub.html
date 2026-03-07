@@ -112,23 +112,16 @@
               <input type="text" id="projectSearch" placeholder="Search by name or ID...">
             </div>
             <div class="project-filters" id="projectFilters">
-              <button class="category-filter-btn active" data-category="all">All</button>
-              <button class="category-filter-btn" data-category="technology">Technology</button>
-              <button class="category-filter-btn" data-category="business">Business</button>
-              <button class="category-filter-btn" data-category="education">Education</button>
-              <button class="category-filter-btn" data-category="finance">Finance</button>
-              <button class="category-filter-btn" data-category="healthcare">Healthcare</button>
-              <button class="category-filter-btn" data-category="environment">Environment</button>
-              <button class="category-filter-btn" data-category="agriculture">Agriculture</button>
-              <button class="category-filter-btn" data-category="food">Food</button>
-              <button class="category-filter-btn" data-category="travel">Travel</button>
-              <button class="category-filter-btn" data-category="transportation">Transportation</button>
-              <button class="category-filter-btn" data-category="real-estate">Real Estate</button>
-              <button class="category-filter-btn" data-category="media-entertainment">Media &amp; Entertainment</button>
-              <button class="category-filter-btn" data-category="art-design">Art &amp; Design</button>
-              <button class="category-filter-btn" data-category="sports-fitness">Sports &amp; Fitness</button>
-              <button class="category-filter-btn" data-category="community">Community</button>
-              <button class="category-filter-btn" data-category="lifestyle">Lifestyle</button>
+              <div class="hub-filter-wrap" id="hubCategoryFilterWrap">
+                <select id="hubCategoryFilterNative" aria-label="Filter by category">
+                  <option value="all">All</option>
+                </select>
+                <div class="hub-filter-trigger" id="hubCategoryFilterTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="hubCategoryFilterLabel">All</span>
+                  <span class="hub-filter-chevron"></span>
+                </div>
+                <div class="hub-filter-panel" role="listbox" id="hubCategoryFilterPanel"></div>
+              </div>
             </div>
 
             <div class="projects-grid reveal" id="projects-container">
@@ -195,122 +188,77 @@
         console.log(`NexCore Labs version ${APP_VERSION}`);
       </script>
       <script>
-        /**
-         * Fetch and update the published projects count from Supabase
-         * Uses a lightweight count query without fetching rows
-         * @param {string} filterType - 'published' (default), 'all', or 'draft'
-         */
         async function updateProjectsCount(filterType = 'published') {
           const sb = window.supabaseClient;
           const countElement = document.getElementById('projectsCount');
-          
-          if (!countElement) {
-            console.error('projectsCount element not found');
-            return;
-          }
+          if (!countElement) return;
 
           try {
             let query = sb.from('projects').select('*', { count: 'exact', head: true });
-            
-            // Apply filter based on type
-            if (filterType === 'published') {
-              query = query.eq('published', true);
-            } else if (filterType === 'draft') {
-              query = query.eq('published', false);
-            }
-            // 'all' means no filter
+            if (filterType === 'published') query = query.eq('published', true);
+            else if (filterType === 'draft') query = query.eq('published', false);
 
             const { count, error } = await query;
-
             if (error) {
               console.error('Error fetching projects count:', error);
               countElement.textContent = '--';
               return;
             }
-
-            const finalCount = count || 0;
-            
-            // Animate count from 0 to finalCount
-            animateCount(countElement, 0, finalCount, 1000);
-            
+            animateCount(countElement, 0, count || 0, 1000);
           } catch (err) {
             console.error('Unexpected error fetching projects count:', err);
             countElement.textContent = '--';
           }
         }
 
-        /**
-         * Animate the count with a smooth counting effect
-         * @param {HTMLElement} element - The element to update
-         * @param {number} start - Starting number
-         * @param {number} end - Ending number
-         * @param {number} duration - Animation duration in ms
-         */
         function animateCount(element, start, end, duration) {
           const startTime = performance.now();
           const range = end - start;
-
           function updateCount(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            
-            // Ease-out animation
             const easeOut = 1 - Math.pow(1 - progress, 3);
             const current = Math.floor(start + range * easeOut);
-            
-            // Format with leading zero and + sign
-            const formatted = current.toString().padStart(2, '0') + '+';
-            element.textContent = formatted;
-
-            if (progress < 1) {
-              requestAnimationFrame(updateCount);
-            } else {
-              // Ensure final value is set
-              element.textContent = end.toString().padStart(2, '0') + '+';
-            }
+            element.textContent = current.toString().padStart(2, '0') + '+';
+            if (progress < 1) requestAnimationFrame(updateCount);
+            else element.textContent = end.toString().padStart(2, '0') + '+';
           }
-
           requestAnimationFrame(updateCount);
         }
 
         const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
+        const categoryLabels = window.ProjectCategories?.CATEGORY_LABELS || {};
+        const categoryOrder = window.ProjectCategories?.CATEGORY_ORDER || [];
         let allProjects = [];
         let activeCategory = 'all';
         let currentSearch = '';
 
         function normalizeCategory(value) {
-          const fromShared = window.ProjectCategories?.normalizeCategory?.(value);
-          return fromShared || 'uncategorized';
+          const normalized = window.ProjectCategories?.normalizeCategory?.(value);
+          return normalized || 'uncategorized';
         }
 
         function renderCategoryStats(projects) {
           const listEl = document.getElementById('categoryStatsList');
           if (!listEl) return;
-
           const stats = window.ProjectCategories?.getCategoryStats?.(projects) || {};
-          const order = window.ProjectCategories?.CATEGORY_ORDER || [];
-          listEl.innerHTML = order.map((category) => {
-            const label = window.ProjectCategories?.CATEGORY_LABELS?.[category] || category;
+          listEl.innerHTML = categoryOrder.map((category) => {
+            const label = categoryLabels[category] || category;
             const count = stats[category] || 0;
             const noun = count === 1 ? 'project' : 'projects';
-            return `
-              <div class="category-stat-item">
-                <span>${categoryIcons[category] || ''} ${label}</span>
-                <strong>${count} ${noun}</strong>
-              </div>
-            `;
+            return `<div class="category-stat-item"><span>${categoryIcons[category] || ''} ${label}</span><strong>${count} ${noun}</strong></div>`;
           }).join('');
         }
 
         function applyProjectFilters() {
           const container = document.querySelector('#projects-container');
           const filteredProjects = allProjects.filter((project) => {
-            const normalizedCategory = normalizeCategory(project.category);
-            const inCategory = activeCategory === 'all' || normalizedCategory === activeCategory;
+            const projectCategory = normalizeCategory(project.category);
+            const inCategory = activeCategory === 'all' || projectCategory === activeCategory;
             const query = currentSearch.toLowerCase();
             const name = String(project.name || '').toLowerCase();
-            const publicId = String(project.public_id || '').toLowerCase();
-            const inSearch = !query || name.includes(query) || publicId.includes(query);
+            const id = String(project.public_id || '').toLowerCase();
+            const inSearch = !query || name.includes(query) || id.includes(query);
             return inCategory && inSearch;
           });
 
@@ -320,24 +268,21 @@
           }
 
           container.innerHTML = '';
-          filteredProjects.forEach(project => {
-            const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+          filteredProjects.forEach((project) => {
+            const link = `/project.html?slug=${encodeURIComponent(project.slug)}`;
             const views = project.views || 0;
+            const createdDate = project.created_at
+              ? new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+              : 'N/A';
             const badgeHtml = window.ProjectCategories?.buildCategoryBadge
               ? window.ProjectCategories.buildCategoryBadge(project.category)
-              : `<span class="project-category cat-${normalizeCategory(project.category)}">${normalizeCategory(project.category)}</span>`;
-            const createdDate = project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            }) : 'N/A';
+              : `<span class="project-category cat-uncategorized">🏷 Uncategorized</span>`;
 
             const card = document.createElement('a');
             card.className = 'project-card-link';
-            card.href = projectLink;
+            card.href = link;
             card.setAttribute('data-id', project.public_id || '');
             card.setAttribute('data-name', project.name || '');
-            card.setAttribute('data-category', normalizeCategory(project.category));
 
             card.innerHTML = `
               <div class="project-card-wrapper">
@@ -351,15 +296,9 @@
                 ${badgeHtml}
                 <p class="project-description">${project.card_description || 'No description available.'}</p>
                 <div class="project-metadata">
-                  <span class="metadata-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>${createdDate}</span>
-                  </span>
+                  <span class="metadata-item"><i class="fas fa-calendar-alt"></i><span>${createdDate}</span></span>
                   <span class="metadata-separator"></span>
-                  <span class="metadata-item">
-                    <i class="fas fa-eye"></i>
-                    <span class="view-count">${views.toLocaleString()}</span> views
-                  </span>
+                  <span class="metadata-item"><i class="fas fa-eye"></i><span class="view-count">${views.toLocaleString()}</span> views</span>
                 </div>
               </div>
             `;
@@ -369,9 +308,8 @@
 
         function initializeSearch() {
           const searchInput = document.getElementById('projectSearch');
-          if (!searchInput || searchInput.dataset.categoryBound === '1') return;
-
-          searchInput.dataset.categoryBound = '1';
+          if (!searchInput || searchInput.dataset.bound === '1') return;
+          searchInput.dataset.bound = '1';
           searchInput.addEventListener('input', function () {
             currentSearch = this.value.trim();
             applyProjectFilters();
@@ -379,20 +317,79 @@
         }
 
         function initializeCategoryFilters() {
-          const filterWrap = document.getElementById('projectFilters');
-          if (!filterWrap || filterWrap.dataset.categoryBound === '1') return;
+          const wrap = document.getElementById('hubCategoryFilterWrap');
+          const trigger = document.getElementById('hubCategoryFilterTrigger');
+          const panel = document.getElementById('hubCategoryFilterPanel');
+          const label = document.getElementById('hubCategoryFilterLabel');
+          const native = document.getElementById('hubCategoryFilterNative');
+          if (!wrap || !trigger || !panel || !label || !native || wrap.dataset.bound === '1') return;
 
-          filterWrap.dataset.categoryBound = '1';
-          filterWrap.addEventListener('click', (event) => {
-            const btn = event.target.closest('button[data-category]');
-            if (!btn) return;
+          wrap.dataset.bound = '1';
+          native.innerHTML = `<option value="all">All</option>${categoryOrder.map((key) => `<option value="${key}">${categoryLabels[key] || key}</option>`).join('')}`;
+          panel.innerHTML = `
+            <div class="hub-filter-option selected" role="option" tabindex="0" data-value="all"><span class="hub-opt-icon">🏷</span>All</div>
+            ${categoryOrder.map((key) => `<div class="hub-filter-option" role="option" tabindex="0" data-value="${key}"><span class="hub-opt-icon">${categoryIcons[key] || '🏷'}</span>${categoryLabels[key] || key}</div>`).join('')}
+          `;
+          document.body.appendChild(panel);
 
-            activeCategory = btn.dataset.category || 'all';
-            filterWrap.querySelectorAll('button[data-category]').forEach((button) => {
-              button.classList.toggle('active', button === btn);
+          function reposition() {
+            const rect = trigger.getBoundingClientRect();
+            panel.style.top = `${rect.bottom + 6}px`;
+            panel.style.left = `${rect.left}px`;
+            panel.style.minWidth = `${rect.width}px`;
+          }
+          function openPanel() {
+            reposition();
+            wrap.classList.add('open');
+            panel.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+          }
+          function closePanel() {
+            wrap.classList.remove('open');
+            panel.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+          }
+          function applySelected(value) {
+            activeCategory = value || 'all';
+            native.value = activeCategory;
+            panel.querySelectorAll('.hub-filter-option').forEach((opt) => {
+              opt.classList.toggle('selected', opt.dataset.value === activeCategory);
             });
+            const icon = activeCategory === 'all' ? '🏷' : (categoryIcons[activeCategory] || '🏷');
+            const selected = native.querySelector(`option[value="${activeCategory}"]`);
+            label.textContent = `${icon} ${selected ? selected.textContent : 'All'}`;
             applyProjectFilters();
+          }
+          applySelected('all');
+
+          trigger.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel());
+          trigger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+            if (e.key === 'Escape') closePanel();
           });
+          panel.addEventListener('click', (e) => {
+            const option = e.target.closest('.hub-filter-option');
+            if (!option) return;
+            applySelected(option.dataset.value);
+            closePanel();
+          });
+          panel.addEventListener('keydown', (e) => {
+            const option = e.target.closest('.hub-filter-option');
+            if (!option) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              applySelected(option.dataset.value);
+              closePanel();
+            }
+          });
+          document.addEventListener('click', (e) => {
+            if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+          });
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePanel();
+          });
+          window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
+          window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
         }
 
         async function loadProjects() {
@@ -401,37 +398,25 @@
 
           async function getViewsBySlug(projects) {
             const slugToViews = new Map();
-            if (!projects || projects.length === 0) return slugToViews;
-
-            const pagePaths = projects
-              .map(p => (p.slug ? `/project/${p.slug}` : null))
-              .filter(Boolean);
-
-            if (pagePaths.length === 0) return slugToViews;
+            const pagePaths = (projects || []).map((p) => (p.slug ? `/project/${p.slug}` : null)).filter(Boolean);
+            if (!pagePaths.length) return slugToViews;
 
             const { data: visitsData, error: visitsError } = await sb
               .from('page_visits_daily')
               .select('page_path, visits')
               .in('page_path', pagePaths);
+            if (visitsError) return slugToViews;
 
-            if (visitsError) {
-              console.warn('Failed to load project views:', visitsError.message);
-              return slugToViews;
-            }
-
-            (visitsData || []).forEach(row => {
+            (visitsData || []).forEach((row) => {
               const path = row.page_path || '';
               const slug = path.startsWith('/project/') ? path.slice('/project/'.length) : '';
               if (!slug) return;
-              const current = slugToViews.get(slug) || 0;
-              slugToViews.set(slug, current + (row.visits || 0));
+              slugToViews.set(slug, (slugToViews.get(slug) || 0) + (row.visits || 0));
             });
-
             return slugToViews;
           }
-          
+
           try {
-            // Fetch published projects from Supabase
             const { data, error } = await sb
               .from('projects')
               .select('public_id, name, slug, card_description, created_at, category')
@@ -444,33 +429,23 @@
               container.innerHTML = '<p style="text-align: center; color: #ff7878;">Failed to load projects. Please try again later.</p>';
               return;
             }
-
-            if (!data || data.length === 0) {
+            if (!data || !data.length) {
               container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects published yet. Be the first to create one!</p>';
               localStorage.setItem('projectCount', '0');
               return;
             }
 
             const viewsBySlug = await getViewsBySlug(data);
-            allProjects = (data || []).map((project) => {
-              return {
-                ...project,
-                views: viewsBySlug.get(project.slug) || 0
-              };
-            });
+            allProjects = data.map((project) => ({ ...project, views: viewsBySlug.get(project.slug) || 0 }));
             renderCategoryStats(allProjects);
             applyProjectFilters();
-
-            // update project count globally
-            localStorage.setItem('projectCount', data.length);
-
+            localStorage.setItem('projectCount', String(data.length));
           } catch (err) {
             console.error('Unexpected error:', err);
             container.innerHTML = '<p style="text-align: center; color: #ff7878;">An unexpected error occurred.</p>';
           }
         }
 
-        // Load projects and count when DOM is ready
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', () => {
             initializeSearch();

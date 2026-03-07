@@ -203,7 +203,7 @@
       min-width:145px;
     }
     /* hidden native select keeps .value accessible for JS */
-    #aiStyle{
+    .ai-select-wrap > select{
       position:absolute;opacity:0;pointer-events:none;width:0;height:0;
     }
     .ai-select-trigger{
@@ -283,6 +283,19 @@
     .ai-select-option.selected .opt-icon{
       opacity:1;
     }
+    .category-select-wrap{
+      min-width:230px;
+      flex:1 1 230px;
+    }
+    .category-select-wrap .ai-select-trigger{
+      min-height:42px;
+    }
+    .category-select-panel{
+      max-height:320px;
+      overflow-y:auto;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(110,231,243,.45) transparent;
+    }
   </style>
 </head>
 <body>
@@ -344,24 +357,31 @@
         <p>You don't have a project yet.</p>
         <div class="row">
           <input id="newProjectName" placeholder="Project name" />
-          <select id="newProjectCategory" name="category" aria-label="Project category">
-            <option value="technology">Technology</option>
-            <option value="business">Business</option>
-            <option value="education">Education</option>
-            <option value="finance">Finance</option>
-            <option value="healthcare">Healthcare</option>
-            <option value="environment">Environment</option>
-            <option value="agriculture">Agriculture</option>
-            <option value="food">Food</option>
-            <option value="travel">Travel</option>
-            <option value="transportation">Transportation</option>
-            <option value="real-estate">Real Estate</option>
-            <option value="media-entertainment">Media &amp; Entertainment</option>
-            <option value="art-design">Art &amp; Design</option>
-            <option value="sports-fitness">Sports &amp; Fitness</option>
-            <option value="community">Community</option>
-            <option value="lifestyle">Lifestyle</option>
-          </select>
+          <div class="ai-select-wrap category-select-wrap" id="newProjectCategoryWrap">
+            <select id="newProjectCategory" name="category" aria-label="Project category">
+              <option value="technology">Technology</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="finance">Finance</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="environment">Environment</option>
+              <option value="agriculture">Agriculture</option>
+              <option value="food">Food</option>
+              <option value="travel">Travel</option>
+              <option value="transportation">Transportation</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="media-entertainment">Media &amp; Entertainment</option>
+              <option value="art-design">Art &amp; Design</option>
+              <option value="sports-fitness">Sports &amp; Fitness</option>
+              <option value="community">Community</option>
+              <option value="lifestyle">Lifestyle</option>
+            </select>
+            <div class="ai-select-trigger" id="newProjectCategoryTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+              <span id="newProjectCategoryLabel">Technology</span>
+              <span class="ai-select-chevron"></span>
+            </div>
+            <div class="ai-select-panel category-select-panel" role="listbox" id="newProjectCategoryPanel"></div>
+          </div>
           <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
         </div>
         <p class="muted" style="margin-top:10px;">
@@ -401,24 +421,31 @@
           <p class="muted" style="font-size:.85rem;margin-top:4px;">One phrase that appears on hub cards</p>
 
           <label>Category *</label>
-          <select id="cardCategory" name="category">
-            <option value="technology">Technology</option>
-            <option value="business">Business</option>
-            <option value="education">Education</option>
-            <option value="finance">Finance</option>
-            <option value="healthcare">Healthcare</option>
-            <option value="environment">Environment</option>
-            <option value="agriculture">Agriculture</option>
-            <option value="food">Food</option>
-            <option value="travel">Travel</option>
-            <option value="transportation">Transportation</option>
-            <option value="real-estate">Real Estate</option>
-            <option value="media-entertainment">Media &amp; Entertainment</option>
-            <option value="art-design">Art &amp; Design</option>
-            <option value="sports-fitness">Sports &amp; Fitness</option>
-            <option value="community">Community</option>
-            <option value="lifestyle">Lifestyle</option>
-          </select>
+          <div class="ai-select-wrap category-select-wrap" id="cardCategoryWrap">
+            <select id="cardCategory" name="category">
+              <option value="technology">Technology</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="finance">Finance</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="environment">Environment</option>
+              <option value="agriculture">Agriculture</option>
+              <option value="food">Food</option>
+              <option value="travel">Travel</option>
+              <option value="transportation">Transportation</option>
+              <option value="real-estate">Real Estate</option>
+              <option value="media-entertainment">Media &amp; Entertainment</option>
+              <option value="art-design">Art &amp; Design</option>
+              <option value="sports-fitness">Sports &amp; Fitness</option>
+              <option value="community">Community</option>
+              <option value="lifestyle">Lifestyle</option>
+            </select>
+            <div class="ai-select-trigger" id="cardCategoryTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+              <span id="cardCategoryLabel">Technology</span>
+              <span class="ai-select-chevron"></span>
+            </div>
+            <div class="ai-select-panel category-select-panel" role="listbox" id="cardCategoryPanel"></div>
+          </div>
 
           <!-- AI Card Summary Generator -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
@@ -959,7 +986,10 @@
       document.getElementById("slugPreview").textContent = p.slug || "your-slug";
       document.getElementById("cardDescription").value = p.card_description || "";
       const cardCategoryEl = document.getElementById("cardCategory");
-      if (cardCategoryEl) cardCategoryEl.value = normalizeProjectCategory(p.category);
+      if (cardCategoryEl) {
+        cardCategoryEl.value = normalizeProjectCategory(p.category);
+        cardCategoryEl.dispatchEvent(new Event("change"));
+      }
 
       // Profile fields
       document.getElementById("profileImageUrl").value = p.image_url || "";
@@ -1796,63 +1826,140 @@
     }
   </script>
   <script>
-    // ── AI Style custom dropdown (portalled to body) ──────
+    // ── Custom dropdowns (portalled to body) ──────
     (function () {
-      const wrap    = document.getElementById('aiStyleWrap');
-      const trigger = document.getElementById('aiStyleTrigger');
-      const panel   = document.getElementById('aiStylePanel');
-      const label   = document.getElementById('aiStyleLabel');
-      const native  = document.getElementById('aiStyle');
-      const options = panel.querySelectorAll('.ai-select-option');
+      function initPortalSelect(config) {
+        const wrap = document.getElementById(config.wrapId);
+        const trigger = document.getElementById(config.triggerId);
+        const panel = document.getElementById(config.panelId);
+        const label = document.getElementById(config.labelId);
+        const native = document.getElementById(config.nativeId);
+        if (!wrap || !trigger || !panel || !label || !native) return;
 
-      // Move panel to <body> so it escapes all parent stacking contexts
-      document.body.appendChild(panel);
+        if (config.buildOptions) {
+          panel.innerHTML = config.buildOptions(native);
+        }
+        document.body.appendChild(panel);
+        const options = () => panel.querySelectorAll('.ai-select-option');
 
-      function reposition() {
-        const rect = trigger.getBoundingClientRect();
-        panel.style.top      = (rect.bottom + 6) + 'px';
-        panel.style.left     = rect.left + 'px';
-        panel.style.minWidth = rect.width + 'px';
-      }
-      function openPanel() {
-        reposition();
-        wrap.classList.add('open');
-        panel.classList.add('open');
-        trigger.setAttribute('aria-expanded', 'true');
-      }
-      function closePanel() {
-        wrap.classList.remove('open');
-        panel.classList.remove('open');
-        trigger.setAttribute('aria-expanded', 'false');
-      }
-      function selectOption(val) {
-        native.value = val;
-        label.textContent = val;
-        options.forEach(o => o.classList.toggle('selected', o.dataset.value === val));
-        closePanel();
-      }
+        function reposition() {
+          const rect = trigger.getBoundingClientRect();
+          panel.style.top = (rect.bottom + 6) + 'px';
+          panel.style.left = rect.left + 'px';
+          panel.style.minWidth = rect.width + 'px';
+        }
 
-      trigger.addEventListener('click', () =>
-        panel.classList.contains('open') ? closePanel() : openPanel()
-      );
-      trigger.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
-        if (e.key === 'Escape') closePanel();
-      });
-      options.forEach(o => {
-        o.addEventListener('click', () => selectOption(o.dataset.value));
-        o.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectOption(o.dataset.value); }
+        function openPanel() {
+          reposition();
+          wrap.classList.add('open');
+          panel.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+
+        function closePanel() {
+          wrap.classList.remove('open');
+          panel.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+
+        function labelForValue(value) {
+          if (typeof config.labelForValue === 'function') return config.labelForValue(value, native);
+          return value;
+        }
+
+        function selectOption(value) {
+          native.value = value;
+          native.dispatchEvent(new Event('change', { bubbles: true }));
+          closePanel();
+        }
+
+        native.addEventListener('change', () => {
+          label.textContent = labelForValue(native.value);
+          options().forEach((option) => {
+            option.classList.toggle('selected', option.dataset.value === native.value);
+          });
         });
+        native.dispatchEvent(new Event('change', { bubbles: true }));
+
+        trigger.addEventListener('click', () => {
+          panel.classList.contains('open') ? closePanel() : openPanel();
+        });
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+          if (e.key === 'Escape') closePanel();
+        });
+
+        panel.addEventListener('click', (e) => {
+          const option = e.target.closest('.ai-select-option');
+          if (!option) return;
+          selectOption(option.dataset.value);
+        });
+        panel.addEventListener('keydown', (e) => {
+          const option = e.target.closest('.ai-select-option');
+          if (!option) return;
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectOption(option.dataset.value);
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closePanel();
+        });
+        window.addEventListener('scroll', () => {
+          if (panel.classList.contains('open')) reposition();
+        }, true);
+        window.addEventListener('resize', () => {
+          if (panel.classList.contains('open')) reposition();
+        });
+      }
+
+      initPortalSelect({
+        wrapId: 'aiStyleWrap',
+        triggerId: 'aiStyleTrigger',
+        panelId: 'aiStylePanel',
+        labelId: 'aiStyleLabel',
+        nativeId: 'aiStyle'
       });
-      document.addEventListener('click', e => {
-        if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+
+      const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
+      const buildCategoryOptions = (native) => {
+        return Array.from(native.options).map((option) => {
+          const icon = categoryIcons[option.value] || '🏷';
+          return `
+            <div class="ai-select-option${option.selected ? ' selected' : ''}" role="option" tabindex="0" data-value="${option.value}">
+              <span class="opt-icon">${icon}</span>${option.textContent}
+            </div>
+          `;
+        }).join('');
+      };
+      const categoryLabel = (value, native) => {
+        const selected = native.querySelector(`option[value="${value}"]`);
+        return selected ? selected.textContent : value;
+      };
+
+      initPortalSelect({
+        wrapId: 'newProjectCategoryWrap',
+        triggerId: 'newProjectCategoryTrigger',
+        panelId: 'newProjectCategoryPanel',
+        labelId: 'newProjectCategoryLabel',
+        nativeId: 'newProjectCategory',
+        buildOptions: buildCategoryOptions,
+        labelForValue: categoryLabel
       });
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') closePanel();
+
+      initPortalSelect({
+        wrapId: 'cardCategoryWrap',
+        triggerId: 'cardCategoryTrigger',
+        panelId: 'cardCategoryPanel',
+        labelId: 'cardCategoryLabel',
+        nativeId: 'cardCategory',
+        buildOptions: buildCategoryOptions,
+        labelForValue: categoryLabel
       });
-      window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
-      window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
     })();
   </script>
   <script src="assets/js/cookies.js" defer></script>
