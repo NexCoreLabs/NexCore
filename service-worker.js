@@ -1,5 +1,5 @@
 /* Improved Service Worker — robust caching, offline fallback, and runtime strategies */
-const CACHE_VERSION = 'v2.0.0-beta';
+const CACHE_VERSION = 'v2.4.0';
 const CACHE_NAME = `nexcore-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
@@ -10,8 +10,8 @@ const PRECACHE_URLS = [
   '/googleb60d962a5a64f048.html',
   '/offline.html',
 
-  '/assets/css/unminified-css.css',
-  '/assets/js/unminified-js.js',
+  '/assets/css/style.css',
+  '/assets/js/script.js',
   '/version.js',
 
   '/assets/images/nexcore-logo.webp',
