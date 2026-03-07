@@ -272,6 +272,7 @@
 
 .project-category-row {
   margin-top: 10px;
+  margin-bottom: 10px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
