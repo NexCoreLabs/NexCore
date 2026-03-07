@@ -50,6 +50,23 @@
     .notice-box.warning{background:rgba(255,200,120,.08);border-color:rgba(255,200,120,.2);color:#ffffff}
     .notice-box.warning strong{color: rgb(255,200,120);}
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+    .contact-form{display:grid;gap:12px}
+    .contact-form label{display:block;font-size:.9rem;opacity:.85;margin-bottom:6px}
+    .contact-form input{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.25);
+      color:#fff;
+      box-sizing:border-box;
+    }
+    .contact-form input:focus{
+      outline:none;
+      border-color:rgba(110,231,243,.5);
+      background:rgba(0,0,0,.35);
+    }
+    .help-text{font-size:.82rem;opacity:.7;margin-top:4px}
     hr{border:none;border-top:1px solid rgba(255,255,255,.08);margin:24px 0}
     .beta-badge{display:inline-block;padding:4px 10px;background:rgba(110,231,243,.15);border:1px solid rgba(110,231,243,.35);border-radius:6px;font-size:.75rem;font-weight:600;color:#6ee7f3;letter-spacing:.5px;margin-left:10px;vertical-align:middle}
     /* ── Delete Account Modal ── */
@@ -204,6 +221,29 @@
             <span class="info-label">Last sign in:</span>
             <span class="info-value" id="lastSignIn">Loading...</span>
           </div>
+        </div>
+
+        <div class="box">
+          <h3 class="section-title"><i class="fa-solid fa-address-card"></i> Contact Information</h3>
+          <p class="muted" style="font-size:.9rem;">Set the public contact details shown on your project page. Your Google sign-in email stays private.</p>
+          <form id="contactInfoForm" class="contact-form" novalidate>
+            <div>
+              <label for="contactEmail">Contact Email</label>
+              <input id="contactEmail" type="email" placeholder="your@email.com" autocomplete="email">
+              <p class="help-text">Public email shown in creator contact section.</p>
+            </div>
+            <div>
+              <label for="phoneNumber">Phone Number (optional)</label>
+              <input id="phoneNumber" type="tel" placeholder="+968 XXXXXXXX" autocomplete="tel">
+              <p class="help-text">Shown publicly only when provided.</p>
+            </div>
+            <div class="row">
+              <button class="btn primary ghost" id="saveContactBtn" type="submit">
+                <i class="fa-solid fa-floppy-disk"></i> Save Contact Info
+              </button>
+            </div>
+            <p id="contactMsg"></p>
+          </form>
         </div>
 
         <div class="box">
@@ -371,6 +411,7 @@
 
   <script>
     const sb = window.supabaseClient;
+    let currentUser = null;
 
     function setMsg(elId, text, isError = false) {
       const el = document.getElementById(elId);
@@ -444,6 +485,107 @@
         : "N/A";
       
       document.getElementById("lastSignIn").textContent = lastSignInDate;
+      currentUser = user;
+
+      await loadContactInfo(user.id);
+    }
+
+    async function loadContactInfo(userId) {
+      try {
+        const { data, error } = await sb
+          .from("users")
+          .select("contact_email, phone_number")
+          .eq("id", userId)
+          .maybeSingle();
+
+        if (error) {
+          console.warn("Could not load contact info:", error.message);
+          return;
+        }
+
+        document.getElementById("contactEmail").value = (data?.contact_email || "").trim();
+        document.getElementById("phoneNumber").value = (data?.phone_number || "").trim();
+      } catch (error) {
+        console.warn("Could not load contact info:", error?.message || error);
+      }
+    }
+
+    function validateContactInputs(contactEmail, phoneNumber) {
+      const emailValue = String(contactEmail || "").trim();
+      const phoneValue = String(phoneNumber || "").trim();
+
+      if (emailValue) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(emailValue)) {
+          return { ok: false, message: "Please enter a valid contact email.", isError: true };
+        }
+      }
+
+      if (phoneValue) {
+        const phonePattern = /^\+?[0-9()\-\s]{6,20}$/;
+        if (!phonePattern.test(phoneValue)) {
+          return { ok: false, message: "Please enter a valid phone number in international format.", isError: true };
+        }
+      }
+
+      return { ok: true, email: emailValue || null, phone: phoneValue || null };
+    }
+
+    async function saveContactInfo(event) {
+      event.preventDefault();
+
+      if (!currentUser?.id) {
+        setMsg("contactMsg", "Not authenticated. Please sign in again.", true);
+        return;
+      }
+
+      const btn = document.getElementById("saveContactBtn");
+      const contactEmail = document.getElementById("contactEmail").value;
+      const phoneNumber = document.getElementById("phoneNumber").value;
+      const validation = validateContactInputs(contactEmail, phoneNumber);
+
+      if (!validation.ok) {
+        setMsg("contactMsg", validation.message, true);
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+      setMsg("contactMsg", "");
+
+      try {
+        const payload = {
+          contact_email: validation.email,
+          phone_number: validation.phone,
+          updated_at: new Date().toISOString()
+        };
+
+        const { data: updatedRows, error } = await sb
+          .from("users")
+          .update(payload)
+          .eq("id", currentUser.id)
+          .select("id");
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (!updatedRows || updatedRows.length === 0) {
+          const { error: upsertError } = await sb
+            .from("users")
+            .upsert({ id: currentUser.id, ...payload }, { onConflict: "id" });
+          if (upsertError) {
+            throw new Error(upsertError.message);
+          }
+        }
+
+        setMsg("contactMsg", "✓ Contact information updated.");
+      } catch (error) {
+        setMsg("contactMsg", "Error: " + (error?.message || error), true);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save Contact Info';
+      }
     }
 
     async function logout() {
@@ -556,10 +698,26 @@
           throw new Error("Not authenticated");
         }
 
-        const user = session.user;
-        const exportData = {
+      const user = session.user;
+      let contactEmail = "";
+      let phoneNumber = "";
+      try {
+        const { data: contactData } = await sb
+          .from("users")
+          .select("contact_email, phone_number")
+          .eq("id", user.id)
+          .maybeSingle();
+        contactEmail = (contactData?.contact_email || "").trim();
+        phoneNumber = (contactData?.phone_number || "").trim();
+      } catch (error) {
+        console.warn("Failed to include contact info in account export:", error?.message || error);
+      }
+
+      const exportData = {
           email: user.email,
           user_id: user.id,
+          contact_email: contactEmail || null,
+          phone_number: phoneNumber || null,
           created_at: user.created_at,
           last_sign_in_at: user.last_sign_in_at,
           export_date: new Date().toISOString(),
@@ -609,6 +767,8 @@ Export Time: ${new Date().toISOString()}
 
 Email: ${user.email || "N/A"}
 User ID: ${user.id || "N/A"}
+Public Contact Email: ${contactEmail || "Not set"}
+Public Phone Number: ${phoneNumber || "Not set"}
 Account Created: ${createdDate}
 Last Sign In: ${lastSignIn}
 
@@ -918,6 +1078,7 @@ Total Projects: ${projectCount}
       document.getElementById("logoutBtn").addEventListener("click", logout);
       document.getElementById("deleteProjectBtn").addEventListener("click", openDeleteProjectModal);
       document.getElementById("copyUserIdBtn").addEventListener("click", copyUserId);
+      document.getElementById("contactInfoForm").addEventListener("submit", saveContactInfo);
       document.getElementById("exportAccountBtn").addEventListener("click", exportAccountData);
       document.getElementById("exportProjectsBtn").addEventListener("click", exportProjects);
       document.getElementById("deleteAccountBtn").addEventListener("click", openDeleteAccountModal);
