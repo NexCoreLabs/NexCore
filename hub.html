@@ -216,6 +216,7 @@
         const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
         const categoryLabels = window.ProjectCategories?.CATEGORY_LABELS || {};
         const categoryOrder = window.ProjectCategories?.CATEGORY_ORDER || [];
+        const uncategorizedIcon = window.ProjectCategories?.getCategoryIconMarkup?.('uncategorized') || '';
         let allProjects = [];
         let activeCategory = 'all';
         let currentSearch = '';
@@ -263,7 +264,7 @@
               : 'N/A';
             const badgeHtml = window.ProjectCategories?.buildCategoryBadge
               ? window.ProjectCategories.buildCategoryBadge(project.category)
-              : `<span class="project-category cat-uncategorized">🏷 Uncategorized</span>`;
+              : `<span class="project-category cat-uncategorized">${uncategorizedIcon}Uncategorized</span>`;
 
             const card = document.createElement('a');
             card.className = 'project-card-link';
@@ -314,8 +315,8 @@
           wrap.dataset.bound = '1';
           native.innerHTML = `<option value="all">All</option>${categoryOrder.map((key) => `<option value="${key}">${categoryLabels[key] || key}</option>`).join('')}`;
           panel.innerHTML = `
-            <div class="hub-filter-option selected" role="option" tabindex="0" data-value="all"><span class="hub-opt-icon">🏷</span>All</div>
-            ${categoryOrder.map((key) => `<div class="hub-filter-option" role="option" tabindex="0" data-value="${key}"><span class="hub-opt-icon">${categoryIcons[key] || '🏷'}</span>${categoryLabels[key] || key}</div>`).join('')}
+            <div class="hub-filter-option selected" role="option" tabindex="0" data-value="all"><span class="hub-opt-icon">${uncategorizedIcon}</span>All</div>
+            ${categoryOrder.map((key) => `<div class="hub-filter-option" role="option" tabindex="0" data-value="${key}"><span class="hub-opt-icon">${categoryIcons[key] || uncategorizedIcon}</span>${categoryLabels[key] || key}</div>`).join('')}
           `;
           document.body.appendChild(panel);
 
@@ -342,9 +343,9 @@
             panel.querySelectorAll('.hub-filter-option').forEach((opt) => {
               opt.classList.toggle('selected', opt.dataset.value === activeCategory);
             });
-            const icon = activeCategory === 'all' ? '🏷' : (categoryIcons[activeCategory] || '🏷');
+            const icon = activeCategory === 'all' ? uncategorizedIcon : (categoryIcons[activeCategory] || uncategorizedIcon);
             const selected = native.querySelector(`option[value="${activeCategory}"]`);
-            label.textContent = `${icon} ${selected ? selected.textContent : 'All'}`;
+            label.innerHTML = `${icon}${selected ? selected.textContent : 'All'}`;
             applyProjectFilters();
           }
           applySelected('all');

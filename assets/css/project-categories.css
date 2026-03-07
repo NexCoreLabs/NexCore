@@ -30,6 +30,26 @@
   line-height: 1;
 }
 
+.pc-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.pc-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.project-category .pc-icon {
+  width: 12px;
+  height: 12px;
+}
+
 .cat-technology {
   background: var(--cat-technology);
 }
@@ -140,6 +160,12 @@
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
+#hubCategoryFilterLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .hub-filter-trigger:hover {
   background: rgba(110, 231, 243, 0.06);
   border-color: rgba(110, 231, 243, 0.45);
@@ -218,9 +244,15 @@
 }
 
 .hub-opt-icon {
-  font-size: 0.9rem;
+  display: inline-flex;
   width: 16px;
-  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.hub-opt-icon .pc-icon {
+  width: 14px;
+  height: 14px;
 }
 
 .category-filter-btn {

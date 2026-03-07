@@ -279,9 +279,13 @@
       font-size:.8rem;
       opacity:.7;
       width:14px;text-align:center;
+      display:inline-flex;align-items:center;justify-content:center;
     }
     .ai-select-option.selected .opt-icon{
       opacity:1;
+    }
+    .ai-select-option .opt-icon .pc-icon{
+      width:14px;height:14px;
     }
     .category-select-wrap{
       min-width:230px;
@@ -1938,9 +1942,10 @@
       });
 
       const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
+      const uncategorizedIcon = window.ProjectCategories?.getCategoryIconMarkup?.('uncategorized') || '';
       const buildCategoryOptions = (native) => {
         return Array.from(native.options).map((option) => {
-          const icon = categoryIcons[option.value] || '🏷';
+          const icon = categoryIcons[option.value] || uncategorizedIcon;
           return `
             <div class="ai-select-option${option.selected ? ' selected' : ''}" role="option" tabindex="0" data-value="${option.value}">
               <span class="opt-icon">${icon}</span>${option.textContent}
