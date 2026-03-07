@@ -101,10 +101,19 @@
 }
 
 .ncc-icon {
-  font-size: 30px;
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
   margin-bottom: 10px;
-  line-height: 1;
+  color: var(--ncc-primary);
+}
+
+.ncc-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .ncc-title {
@@ -471,8 +480,18 @@
 }
 
 .ncc-cookie-icon {
-  font-size: 15px;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.ncc-cookie-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 /* ── Responsive ───────────────────────────── */

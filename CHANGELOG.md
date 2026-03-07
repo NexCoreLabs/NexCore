@@ -1,5 +1,6 @@
 # 🧾 Changelog
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 ## v2.4.0 - 7 Mar 2026
@@ -247,6 +248,10 @@ hub.html: changed projects ordering from newest-first to oldest-first (created_a
 ---
 
 >>>>>>> Stashed changes
+=======
+## v
+
+>>>>>>> f2cd9b3c88d6012d35b6282e6627af537d098a02
 ## v2.0.0 — 10 Feb 2026
 **Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
 ###  New Features (from beta)

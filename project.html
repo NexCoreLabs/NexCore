@@ -26,6 +26,7 @@
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/unminified-css.css">
+    <link rel="stylesheet" href="assets/css/project-categories.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -521,6 +522,10 @@
             <div class="project-hero">
                 <div class="project-id" id="projectId">Proj-#</div>
                 <h1 id="projectName">Project Name</h1>
+                <div class="project-category-row" id="projectCategoryRow">
+                  <span class="project-category-label">Category:</span>
+                  <span class="project-category cat-uncategorized">🏷 Uncategorized</span>
+                </div>
                 <img id="projectImage" class="project-image" alt="" style="display: none;" />
                 <div class="project-stats">
                     <div class="stat-badge">
@@ -601,6 +606,7 @@
     <script src="assets/js/script.js"></script>
     <script src="assets/js/supabase-client.js"></script>
     <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/js/project-categories.js"></script>
     
     <script>
         const sb = window.supabaseClient;
@@ -647,6 +653,13 @@
                 document.getElementById('projectId').textContent = project.public_id || 'Proj-#';
                 document.getElementById('projectName').textContent = project.name || 'Untitled Project';
                 document.getElementById('pageDescription').textContent = project.page_description || 'No description available.';
+                const categoryRow = document.getElementById('projectCategoryRow');
+                if (categoryRow) {
+                    const badgeHtml = window.ProjectCategories?.buildCategoryBadge
+                        ? window.ProjectCategories.buildCategoryBadge(project.category)
+                        : '<span class="project-category cat-uncategorized">🏷 Uncategorized</span>';
+                    categoryRow.innerHTML = `<span class="project-category-label">Category:</span>${badgeHtml}`;
+                }
 
             // Show image if available
             if (project.image_url && project.image_url.startsWith('http')) {
@@ -1040,11 +1053,22 @@
         async function fetchCreatorProfile(project) {
             const creatorFromProject = (project.creator_name || '').trim();
             const avatarFromProject = (project.creator_avatar_url || '').trim();
+            let sessionUser = null;
             const profile = {
                 display_name: creatorFromProject || '',
                 avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null,
-                email: ''
+                contact_email: '',
+                phone_number: '',
+                viewer_signed_in: false
             };
+
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                sessionUser = sessionData?.session?.user || null;
+                profile.viewer_signed_in = !!sessionUser;
+            } catch (error) {
+                console.warn('Could not determine viewer session:', error?.message || error);
+            }
 
             if (project.owner_user_id) {
                 try {
@@ -1065,23 +1089,34 @@
                 } catch (error) {
                     console.warn('Could not load creator profile from user_public_profiles:', error?.message || error);
                 }
+
+                if (!profile.contact_email && !profile.phone_number) {
+                    try {
+                        const { data: ownerUser, error } = await sb
+                            .from('users')
+                            .select('contact_email, phone_number')
+                            .eq('id', project.owner_user_id)
+                            .maybeSingle();
+
+                        if (!error && ownerUser) {
+                            profile.contact_email = String(ownerUser.contact_email || '').trim();
+                            profile.phone_number = String(ownerUser.phone_number || '').trim();
+                        }
+                    } catch (error) {
+                        console.warn('Could not load creator contact info from users:', error?.message || error);
+                    }
+                }
             }
 
             try {
-                const { data: sessionData } = await sb.auth.getSession();
-                const sessionUser = sessionData?.session?.user;
                 if (sessionUser && sessionUser.id === project.owner_user_id) {
                     const metadataName = getMetadataDisplayName(sessionUser.user_metadata || {});
                     const metadataAvatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null;
-                    const sessionEmail = (sessionUser.email || '').trim();
                     if (!profile.display_name && metadataName) {
                         profile.display_name = metadataName;
                     }
                     if (!profile.avatar_url && metadataAvatar) {
                         profile.avatar_url = metadataAvatar;
-                    }
-                    if (!profile.email && sessionEmail) {
-                        profile.email = sessionEmail;
                     }
                 }
             } catch (error) {
@@ -1091,7 +1126,9 @@
             return {
                 display_name: profile.display_name || 'Project Creator',
                 avatar_url: profile.avatar_url || null,
-                email: profile.email || ''
+                contact_email: profile.contact_email || '',
+                phone_number: profile.phone_number || '',
+                viewer_signed_in: !!profile.viewer_signed_in
             };
         }
 
@@ -1124,20 +1161,31 @@
                 avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
             }
 
-            const hasEmail = profile.email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.email);
-            const emailTarget = hasEmail ? profile.email : '';
+            const hasEmail = profile.contact_email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.contact_email);
+            const hasPhone = profile.phone_number && /^\+?[0-9()\-\s]{6,20}$/.test(profile.phone_number);
             const emailSubject = encodeURIComponent(`Regarding ${project.name || 'your project'} on NexCore Labs`);
             const emailBody = encodeURIComponent(`Hello ${name},\n\nI would like to contact you about your project.`);
-            const emailHref = `mailto:${encodeURIComponent(emailTarget)}?subject=${emailSubject}&body=${emailBody}`;
-            const emailButtonText = hasEmail ? profile.email : 'Email Creator';
+            const emailHref = hasEmail ? `mailto:${encodeURIComponent(profile.contact_email)}?subject=${emailSubject}&body=${emailBody}` : '';
+            const phoneHref = hasPhone ? `tel:${profile.phone_number.replace(/[^\d+]/g, '')}` : '';
+            const contactLinks = [
+                hasEmail ? `<a href="${escapeAttr(emailHref)}" class="creator-contact-link"><i class="fas fa-envelope"></i> ${escapeHtml(profile.contact_email)}</a>` : '',
+                hasPhone ? `<a href="${escapeAttr(phoneHref)}" class="creator-contact-link"><i class="fas fa-phone"></i> ${escapeHtml(profile.phone_number)}</a>` : ''
+            ].filter(Boolean).join('');
+            const loginRequiredText = !profile.viewer_signed_in
+                ? '<p style="opacity:.8;margin:0;">Sign in to view creator contact details (if provided).</p>'
+                : '';
+            const emptyContactText = contactLinks
+                ? ''
+                : (loginRequiredText || '<p style="opacity:.7;margin:0;">No public contact details provided.</p>');
 
             card.innerHTML = `
                 ${avatarHtml}
                 <div class="creator-meta">
                     <p class="creator-name">${escapeHtml(name)}</p>
-                    <p class="creator-contact-title">Contact Creator</p>
+                    <p class="creator-contact-title">Creator Contact</p>
                     <div class="creator-contact-links">
-                        <a href="${escapeAttr(emailHref)}" class="creator-contact-link"><i class="fas fa-envelope"></i> ${escapeHtml(emailButtonText)}</a>
+                        ${contactLinks}
+                        ${emptyContactText}
                     </div>
                 </div>
             `;
