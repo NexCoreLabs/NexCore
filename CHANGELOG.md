@@ -1,5 +1,7 @@
 # 🧾 Changelog
 
+## v
+
 ## v2.0.0 — 10 Feb 2026
 **Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
 ###  New Features (from beta)
