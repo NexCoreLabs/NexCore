@@ -228,13 +228,15 @@
           <p class="muted" style="font-size:.9rem;">Set the public contact details shown on your project page. Your Google sign-in email stays private.</p>
           <form id="contactInfoForm" class="contact-form" novalidate>
             <div>
-              <label for="contactEmail">Contact Email</label>
-              <input id="contactEmail" type="email" placeholder="your@email.com" autocomplete="email">
+              <label class="field" for="contactEmail">
+                <input id="contactEmail" type="email" placeholder="Contact Email: your@email.com" autocomplete="email">
+              </label>
               <p class="help-text">Public email shown in creator contact section.</p>
             </div>
             <div>
-              <label for="phoneNumber">Phone Number (optional)</label>
-              <input id="phoneNumber" type="tel" placeholder="+968 XXXXXXXX" autocomplete="tel">
+              <label class="field" for="phoneNumber">
+                <input id="phoneNumber" type="tel" placeholder="Phone Number (optional): +968 XXXXXXXX" autocomplete="tel">
+              </label>
               <p class="help-text">Shown publicly only when provided.</p>
             </div>
             <div class="row">

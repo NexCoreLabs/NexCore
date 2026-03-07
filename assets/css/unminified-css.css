@@ -1937,7 +1937,6 @@ textarea:focus {
   box-shadow: 0 6px 20px rgba(115, 189, 215, 0.06);
   border-color: rgba(115, 189, 215, 0.2);
   transition: 0.3s ease-in-out;
-  transform: translateY(-2px);
 }
 
 .signup-wrapper {
