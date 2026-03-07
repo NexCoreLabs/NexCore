@@ -1,8 +1,11 @@
 # 🧾 Changelog
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
 ## v2.4.0 - 7 Mar 2026
 ### Account Management
 - Added **Contact Information section** in account page with email & phone number fields
@@ -246,10 +249,13 @@ hub.html: changed projects ordering from newest-first to oldest-first (created_a
 - Notable: package-lock shows version set to 2.0.0-beta in places—worth double-checking your release/versioning consistency.
 
 ---
+<<<<<<< Updated upstream
 
 >>>>>>> Stashed changes
 =======
 ## v
+=======
+>>>>>>> Stashed changes
 
 >>>>>>> f2cd9b3c88d6012d35b6282e6627af537d098a02
 ## v2.0.0 — 10 Feb 2026
