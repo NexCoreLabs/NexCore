@@ -10,6 +10,11 @@
   const PREF_KEY = 'nexcore_cookie_preferences';
   const OLD_KEY  = 'nexcore_cookie_consent_v1';
   const GA_ID    = 'G-PYZB5L2R8W';
+  const COOKIE_ICON_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M14 3a5 5 0 0 0 7 7 9 9 0 1 1-9-9h2Z"/>' +
+    '<circle cx="8.5" cy="10.5" r="1"/><circle cx="13.5" cy="13.5" r="1"/><circle cx="10.5" cy="16.5" r=".9"/>' +
+    '</svg>';
 
   // ─── Storage helpers ───────────────────────
 
@@ -107,7 +112,7 @@
       '     aria-describedby="ncc-desc" aria-hidden="true" tabindex="-1">',
       '  <div class="ncc-panel" role="document">',
       '    <div class="ncc-header">',
-      '      <span class="ncc-icon" aria-hidden="true">&#x1F36A;</span>',
+      '      <span class="ncc-icon" aria-hidden="true">' + COOKIE_ICON_SVG + '</span>',
       '      <h2 id="ncc-title" class="ncc-title">Privacy &amp; Cookies</h2>',
       '      <p id="ncc-desc" class="ncc-desc">',
       '        We use cookies to enhance your experience, ensure security, and improve our services.',
@@ -207,7 +212,7 @@
       // Floating settings button
       '<button id="nexcore-cookie-settings-btn" class="ncc-floating-btn"',
       '        aria-label="Cookie Settings" title="Cookie Settings" type="button">',
-      '  <span class="ncc-cookie-icon" aria-hidden="true">&#x1F36A;</span>',
+      '  <span class="ncc-cookie-icon" aria-hidden="true">' + COOKIE_ICON_SVG + '</span>',
       '  <span>Cookie Settings</span>',
       '</button>',
     ].join('\n');

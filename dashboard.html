@@ -407,14 +407,6 @@
           View public page:
           <a id="publicLink" href="#" target="_blank" rel="noopener" style="color: #6EE7F3;">open</a>
         </p>
-        <div class="row" style="margin-top:8px;">
-          <a id="openProjectPageBtn" class="btn primary ghost" href="#" target="_blank" rel="noopener">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open My Page
-          </a>
-          <a class="btn primary ghost" href="hub.html#projects">
-            <i class="fa-solid fa-compass"></i> Open Hub
-          </a>
-        </div>
 
         <!-- CARD SECTION -->
         <div class="box">
@@ -1016,10 +1008,7 @@
       const a = document.getElementById("publicLink");
       a.href = link;
       a.textContent = link;
-      const openProjectPageBtn = document.getElementById("openProjectPageBtn");
-      if (openProjectPageBtn) {
-        openProjectPageBtn.href = link;
-      }
+
 
       // Image preview
       const img = document.getElementById("imgPreview");
