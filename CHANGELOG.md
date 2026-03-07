@@ -1,5 +1,252 @@
 # 🧾 Changelog
 
+<<<<<<< Updated upstream
+=======
+## v2.4.0 - 7 Mar 2026
+### Account Management
+- Added **Contact Information section** in account page with email & phone number fields
+- Contact info is public (shown on project pages) while Google sign-in email remains private
+- Implemented contact info validation (email pattern & phone format checks)
+- Added load/save functionality for contact details in Supabase
+- Updated data export to include contact email and phone number
+
+
+### Project Categories
+
+- Introduced **16 project categories** with color-coded badges:
+  - Technology, Business, Education, Finance, Healthcare, Environment, Agriculture, Food, Travel, Transportation, Real Estate, Media & Entertainment, Art & Design, Sports & Fitness, Community, Lifestyle
+- Created new `project-categories.js` module with category management & normalization
+- Added category field to project creation form (dashboard & hub)
+- Implemented category filtering in project hub with statistics display
+- Generated SVG icons for each category type
+
+
+### UI/UX Improvements
+
+- Enhanced tooltip styling (added backdrop-filter & box-shadow)
+- Refactored custom dropdowns to support multiple select types with icon support
+- Improved input field styling (color consistency for text & borders)
+- Cleaned up footer by removing privacy policy links from several pages
+- Updated team member roles and titles (index.html)
+- Increased task count from 120+ to 360+ on homepage
+
+
+### Developer Files
+
+- Added `.gitignore` entry for `sql` directory
+- Started changelog for next version (v marked in CHANGELOG.md)
+- Converted cookie icons from emoji to SVG for better rendering
+
+
+### Code Refactoring
+
+- Extracted dropdown functionality into reusable `initPortalSelect()` function
+- Removed unnecessary CSS (deleted `cookie-consent.css`)
+- Optimized hub.js project loading logic with filter/search integration
+- Updated version.js from `v2.0.0` to `v2.4.0`
+
+---
+
+## v2.3.0 - 7 Mar 2026
+### Account & User Profile Management
+Added user display name field to account settings page (showing full name, username, or email prefix)
+Implemented user metadata extraction supporting multiple name formats (full_name, name, user_name, preferred_username)
+Added user profile syncing to database on login with avatar URL support
+Created helper functions getUserDisplayName() and getUserAvatar() across multiple pages
+
+
+### AI Features Expansion
+
+New AI Action: Added project_insights action to the AI API endpoint
+Generates project summaries with insights array based on project description
+Implemented AI insights section on project pages with on-demand generation
+Added "Generate insights" button with loading state and error handling
+Added AI usage tracking feedback to users (remaining actions per day)
+
+
+### Project Display Enhancements
+
+Redesigned project cards with new structure using .project-card-link wrapper
+Added project metadata section showing creation date and view count
+Implemented view count tracking from page_visits_daily table
+Changed project listing order from ascending to descending (newest first)
+Added external link icon with hover animation on project titles
+Improved responsive design for project cards on mobile devices
+
+
+### Creator/Author Profile Display
+
+Added creator section showing project creator information
+Implemented avatar display with fallback to initials placeholder
+Added contact creator functionality with email mailto links
+Auto-backfill creator identity for legacy projects missing creator metadata
+Stores creator name and avatar URL in project records
+
+
+### Project Page Features
+
+Added creation date badge to project stats
+Implemented QR code download functionality
+Added social sharing buttons (X/Twitter, LinkedIn, WhatsApp) setup
+Improved QR code section layout with wrapper styling
+
+
+### Navigation & Auth UI
+
+Enhanced navbar user display with avatar image support
+Switched from showing email to display name in navigation
+Added user avatar to dropdown menu with icon fallback
+
+
+### Database Improvements
+
+Deleted legacy supabase_ai_migration.sql file (no longer needed)
+Added support for creator_name and creator_avatar_url project fields
+Project queries now support slug-based filtering in dashboard
+
+
+### Code Quality
+
+Fixed dashboard slug-based project loading from URL parameters
+Improved HTML closing tag formatting in multiple files
+Enhanced CSS minification with new responsive media queries
+
+---
+
+## v2.2.0 - 6 Mar 2026
+### Cookie Consent Manager upgraded to v2 across the site
+
+Replaced old assets/css/cookie-consent.css + assets/js/cookie-consent.js with new assets/css/cookies.css + assets/js/cookies.js in multiple pages (e.g., index.html, auth.html, dashboard.html, faq.html, hub.html, privacy-policy.html, terms.html, etc.).
+Removed the old inline cookie banner HTML from pages like index.html, hub.html, faq.html, how-to-use.html, privacy-policy.html.
+
+
+### New cookie consent implementation
+
+Added assets/css/cookies.css (new file): full UI styling for the new consent modal + floating “Cookie Settings” button.
+Added assets/js/cookies.js (new file): granular consent prefs, migration from old key, GA load/clear behavior, focus trap + a11y, floating settings button.
+
+
+### Account page destructive actions UI/UX & accessibility improvements (account.html)
+
+Reworked “Delete account” modal behavior to be accessible and animated (ARIA attributes, focus/escape/outside click handling, open class instead of display:none).
+Added a new “Delete Project” confirmation modal (instead of browser confirm() dialogs).
+Improved modal visuals (layout, buttons order, mobile responsiveness, better “DELETE” confirmation styling).
+
+
+### Dashboard improvements (dashboard.html)
+
+Added moderation status UI (badge + popup with reason).
+Added publish flow moderation checks (publish/edit now triggers moderation logic rather than just flipping a published flag).
+Added delete-project confirmation modal (custom modal instead of native confirm).
+
+
+### Improved AI UI/UX:
+
+New “AI magic” button states (loading shimmer + sparkles).
+Split remaining-quota UI into card/page elements and added shared helpers.
+Added a custom “AI style” dropdown UI (portalled panel to body to avoid z-index issues).
+
+
+### New moderation API endpoint
+
+Added api/moderate-project.js (new file): rule-based + Gemini-based moderation, updates project moderation fields, optional logging to moderation_logs, controls publish state depending on moderation decision.
+
+
+### AI API improvement (api/ai.js)
+
+Added support for GET /api/ai?usage=1 to fetch AI usage stats via Supabase RPC (get_ai_usage).
+Kept generation as POST-only (now POST-only is enforced after the GET usage path).
+
+
+### Footer branding update
+
+Updated the PayPal support link in footers to include the PayPal icon/logo (seen across many pages).
+
+
+### Small content/UI tweaks
+
+Removed “BETA” badges from some headers (e.g., account.html, dashboard.html, hub.html Projects heading).
+hub.html: changed projects ordering from newest-first to oldest-first (created_at ascending).
+
+---
+
+## v2.1.0 - 1 Mar 2026
+### 1. New “AI Assist” feature (major user-facing addition)
+
+- Added AI-assisted writing inside dashboard.html:
+- Enhance Content with AI for the full Page Description with style modes:
+- Professional / Shorter / Technical / Inspiring
+- AI Card Brief generator to create a concise card_description derived from the page description
+- Includes UX actions: Generate, Replace, Copy, status messages, and remaining-uses counter UI.
+- Added a new serverless endpoint /api/ai.js (Vercel function):
+- Uses Google Gemini via @google/genai
+- Requires Bearer token auth (Supabase JWT validation server-side)
+- Enforces daily rate limiting (3 actions/day/user) via Supabase RPC (consume_ai_use)
+- Has defensive error handling and returns JSON consistently.
+- Added a helper endpoint /api/models.js:
+- Lists available Gemini models (intended as a temporary “model discovery” debugging endpoint).
+
+
+### 2. Supabase DB changes for AI usage limits (new migration)
+
+- New SQL migration: supabase_ai_migration.sql
+- Creates ai_usage table
+- Adds RPC function consume_ai_use(max_uses) to atomically enforce daily limit
+- Adds optional helper get_ai_usage(max_uses)
+- Enables RLS + policies to ensure each user only accesses their own usage rows
+- Adds optional cleanup function for old records.
+
+
+### 3. Project data model / naming updates across pages (functional change)
+
+- Introduced/standardized separate fields:
+- card_description (for hub cards)
+- page_description (for the full project page)
+- Updated hub.html:
+- Fetch now selects card_description instead of description
+- Card rendering uses card_description
+- Search filter logic appears commented out (behavior change: search may no longer filter cards).
+- Updated project.html:
+- “About” section now displays page_description
+- Meta tags use card_description (important for social previews)
+- Owner-check query tightened by adding .eq('owner_user_id', session.user.id) (security improvement).
+
+
+### 4. Dashboard & Account improvements (UI/UX + correctness)
+
+- Switched multiple pages from minified CSS to assets/css/unminified-css.css for styling consistency/debuggability:
+- dashboard.html, account.html, index.html, project.html
+- Dashboard UX improvements:
+- Adds slug label/preview changes (now indicates slug is tied to [username])
+- Adds “Copy Page Link” button
+- Adds extra icon fonts (Flaticon sets)
+- Account page safety/correctness:
+- Project queries now explicitly filter by owner_user_id = session.user.id in multiple places (prevents accidental cross-user operations even if RLS is misconfigured).
+
+
+### 5. Styling updates (visual polish)
+
+- assets/css/unminified-css.css:
+- New button styles: .btn.danger, .btn.logout, .btn.copy (+ copied state)
+- Textarea color behavior changed (default vs hover/focus) which will affect perceived readability.
+
+
+### 6. Marketing/home page additions
+
+- index.html “Core Tools & Systems” adds new tool cards/images:
+- Google Gemini, Google AI Studio, Google Cloud Console
+- Social link update: StackOverflow link replaced with LinkedIn.
+
+
+### 7. Dependencies & package metadata
+
+- package.json adds dependency: @google/genai
+- package-lock.json updated heavily (new dependency tree)
+- Notable: package-lock shows version set to 2.0.0-beta in places—worth double-checking your release/versioning consistency.
+
+---
+
+>>>>>>> Stashed changes
 ## v2.0.0 — 10 Feb 2026
 **Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
 ###  New Features (from beta)
