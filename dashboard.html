@@ -27,6 +27,7 @@
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
         <link rel="stylesheet" href="assets/css/unminified-css.css">
+        <link rel="stylesheet" href="assets/css/project-categories.css">
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +46,7 @@
     label{display:block;margin:10px 0 6px;opacity:.9}
     textarea{min-height:110px}
     .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .row select{min-width:160px}
     .btn:disabled{opacity:.5;cursor:not-allowed}
     .muted{opacity:.75}
     .msg-success{color:#6ee7f3}
@@ -338,10 +340,28 @@
       </div>
 
       <!-- State: no project -->
-      <div id="noProject" style="display:none;margin-top:12px;">
+        <div id="noProject" style="display:none;margin-top:12px;">
         <p>You don't have a project yet.</p>
         <div class="row">
           <input id="newProjectName" placeholder="Project name" />
+          <select id="newProjectCategory" name="category" aria-label="Project category">
+            <option value="technology">Technology</option>
+            <option value="business">Business</option>
+            <option value="education">Education</option>
+            <option value="finance">Finance</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="environment">Environment</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="transportation">Transportation</option>
+            <option value="real-estate">Real Estate</option>
+            <option value="media-entertainment">Media &amp; Entertainment</option>
+            <option value="art-design">Art &amp; Design</option>
+            <option value="sports-fitness">Sports &amp; Fitness</option>
+            <option value="community">Community</option>
+            <option value="lifestyle">Lifestyle</option>
+          </select>
           <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
         </div>
         <p class="muted" style="margin-top:10px;">
@@ -379,6 +399,26 @@
           <label>Short Description</label>
           <textarea id="cardDescription" placeholder="A brief one-phrase description..."></textarea>
           <p class="muted" style="font-size:.85rem;margin-top:4px;">One phrase that appears on hub cards</p>
+
+          <label>Category *</label>
+          <select id="cardCategory" name="category">
+            <option value="technology">Technology</option>
+            <option value="business">Business</option>
+            <option value="education">Education</option>
+            <option value="finance">Finance</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="environment">Environment</option>
+            <option value="agriculture">Agriculture</option>
+            <option value="food">Food</option>
+            <option value="travel">Travel</option>
+            <option value="transportation">Transportation</option>
+            <option value="real-estate">Real Estate</option>
+            <option value="media-entertainment">Media &amp; Entertainment</option>
+            <option value="art-design">Art &amp; Design</option>
+            <option value="sports-fitness">Sports &amp; Fitness</option>
+            <option value="community">Community</option>
+            <option value="lifestyle">Lifestyle</option>
+          </select>
 
           <!-- AI Card Summary Generator -->
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
@@ -601,9 +641,11 @@
   <script src="assets/js/script.js"></script>
   <script src="assets/js/supabase-client.js"></script>
   <script src="assets/js/auth-ui.js"></script>
+  <script src="assets/js/project-categories.js"></script>
 
   <script>
     const sb = window.supabaseClient;
+    const PROJECT_CATEGORY_FALLBACK = "technology";
 
     function setMsg(el, text, isError = false) {
       el.textContent = text || "";
@@ -621,6 +663,11 @@
 
     function randomSuffix() {
       return Math.random().toString(36).substring(2, 6);
+    }
+
+    function normalizeProjectCategory(value, fallback = PROJECT_CATEGORY_FALLBACK) {
+      const normalized = window.ProjectCategories?.normalizeCategory?.(value);
+      return normalized || fallback;
     }
 
     function disableButtons(disabled) {
@@ -911,6 +958,8 @@
       document.getElementById("cardSlug").value = p.slug || "";
       document.getElementById("slugPreview").textContent = p.slug || "your-slug";
       document.getElementById("cardDescription").value = p.card_description || "";
+      const cardCategoryEl = document.getElementById("cardCategory");
+      if (cardCategoryEl) cardCategoryEl.value = normalizeProjectCategory(p.category);
 
       // Profile fields
       document.getElementById("profileImageUrl").value = p.image_url || "";
@@ -1048,6 +1097,7 @@
     async function createProject() {
       setPublishStatus("");
       const name = document.getElementById("newProjectName").value.trim();
+      const category = normalizeProjectCategory(document.getElementById("newProjectCategory")?.value);
       if (!name) return setPublishStatus("Please enter a project name.", "error");
 
       const slug = slugify(name);
@@ -1063,6 +1113,7 @@
         .insert({
           name,
           slug,
+          category,
           creator_name: creatorName || null,
           creator_avatar_url: creatorAvatar || null
         })
@@ -1079,6 +1130,7 @@
             .insert({
               name,
               slug: newSlug,
+              category,
               creator_name: creatorName || null,
               creator_avatar_url: creatorAvatar || null
             })
@@ -1124,6 +1176,7 @@
       const slugInput = document.getElementById("cardSlug").value.trim() || name;
       const slug = slugify(slugInput);
       const card_description = document.getElementById("cardDescription").value.trim();
+      const category = normalizeProjectCategory(document.getElementById("cardCategory")?.value);
       const creatorName = getUserDisplayName(currentSession?.user);
       const creatorAvatar = getUserAvatar(currentSession?.user);
 
@@ -1138,6 +1191,7 @@
           name,
           slug,
           card_description,
+          category,
           creator_name: creatorName || null,
           creator_avatar_url: creatorAvatar || null,
           updated_at: new Date().toISOString()

@@ -26,6 +26,7 @@
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
     <link rel="stylesheet" href="assets/css/unminified-css.css">
+    <link rel="stylesheet" href="assets/css/project-categories.css">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -516,6 +517,10 @@
             <div class="project-hero">
                 <div class="project-id" id="projectId">Proj-#</div>
                 <h1 id="projectName">Project Name</h1>
+                <div class="project-category-row" id="projectCategoryRow">
+                  <span class="project-category-label">Category:</span>
+                  <span class="project-category cat-uncategorized">🏷 Uncategorized</span>
+                </div>
                 <img id="projectImage" class="project-image" alt="" style="display: none;" />
                 <div class="project-stats">
                     <div class="stat-badge">
@@ -596,6 +601,7 @@
     <script src="assets/js/script.js"></script>
     <script src="assets/js/supabase-client.js"></script>
     <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/js/project-categories.js"></script>
     
     <script>
         const sb = window.supabaseClient;
@@ -642,6 +648,13 @@
                 document.getElementById('projectId').textContent = project.public_id || 'Proj-#';
                 document.getElementById('projectName').textContent = project.name || 'Untitled Project';
                 document.getElementById('pageDescription').textContent = project.page_description || 'No description available.';
+                const categoryRow = document.getElementById('projectCategoryRow');
+                if (categoryRow) {
+                    const badgeHtml = window.ProjectCategories?.buildCategoryBadge
+                        ? window.ProjectCategories.buildCategoryBadge(project.category)
+                        : '<span class="project-category cat-uncategorized">🏷 Uncategorized</span>';
+                    categoryRow.innerHTML = `<span class="project-category-label">Category:</span>${badgeHtml}`;
+                }
 
             // Show image if available
             if (project.image_url && project.image_url.startsWith('http')) {

@@ -1,0 +1,176 @@
+:root {
+  --cat-technology: #1e40af;
+  --cat-business: #ea580c;
+  --cat-education: #4f46e5;
+  --cat-finance: #0f766e;
+  --cat-healthcare: #dc2626;
+  --cat-environment: #15803d;
+  --cat-agriculture: #65a30d;
+  --cat-food: #d97706;
+  --cat-travel: #0284c7;
+  --cat-transportation: #334155;
+  --cat-real-estate: #7c3aed;
+  --cat-media-entertainment: #be185d;
+  --cat-art-design: #c026d3;
+  --cat-sports-fitness: #ca8a04;
+  --cat-community: #2563eb;
+  --cat-lifestyle: #db2777;
+  --cat-uncategorized: #475569;
+}
+
+.project-category {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.cat-technology {
+  background: var(--cat-technology);
+}
+
+.cat-business {
+  background: var(--cat-business);
+}
+
+.cat-education {
+  background: var(--cat-education);
+}
+
+.cat-finance {
+  background: var(--cat-finance);
+}
+
+.cat-healthcare {
+  background: var(--cat-healthcare);
+}
+
+.cat-environment {
+  background: var(--cat-environment);
+}
+
+.cat-agriculture {
+  background: var(--cat-agriculture);
+}
+
+.cat-food {
+  background: var(--cat-food);
+}
+
+.cat-travel {
+  background: var(--cat-travel);
+}
+
+.cat-transportation {
+  background: var(--cat-transportation);
+}
+
+.cat-real-estate {
+  background: var(--cat-real-estate);
+}
+
+.cat-media-entertainment {
+  background: var(--cat-media-entertainment);
+}
+
+.cat-art-design {
+  background: var(--cat-art-design);
+}
+
+.cat-sports-fitness {
+  background: var(--cat-sports-fitness);
+}
+
+.cat-community {
+  background: var(--cat-community);
+}
+
+.cat-lifestyle {
+  background: var(--cat-lifestyle);
+}
+
+.cat-uncategorized {
+  background: var(--cat-uncategorized);
+}
+
+.project-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+
+.category-filter-btn {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d9e1ea;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.category-filter-btn:hover {
+  border-color: rgba(110, 231, 243, 0.4);
+}
+
+.category-filter-btn.active {
+  background: rgba(110, 231, 243, 0.18);
+  color: #6ee7f3;
+  border-color: rgba(110, 231, 243, 0.45);
+}
+
+.category-stats {
+  margin-top: 20px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(10, 11, 28, 0.2);
+}
+
+.category-stats h3 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.category-stats-list {
+  display: grid;
+  gap: 8px;
+}
+
+.category-stat-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.92rem;
+  opacity: 0.9;
+}
+
+.project-category-row {
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-category-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .project-filters {
+    gap: 6px;
+  }
+
+  .category-filter-btn {
+    font-size: 0.78rem;
+    padding: 6px 10px;
+  }
+}

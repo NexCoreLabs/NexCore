@@ -32,6 +32,7 @@
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/project-categories.css">
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
         <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
@@ -110,9 +111,32 @@
             <div class="search-bar">
               <input type="text" id="projectSearch" placeholder="Search by name or ID...">
             </div>
+            <div class="project-filters" id="projectFilters">
+              <button class="category-filter-btn active" data-category="all">All</button>
+              <button class="category-filter-btn" data-category="technology">Technology</button>
+              <button class="category-filter-btn" data-category="business">Business</button>
+              <button class="category-filter-btn" data-category="education">Education</button>
+              <button class="category-filter-btn" data-category="finance">Finance</button>
+              <button class="category-filter-btn" data-category="healthcare">Healthcare</button>
+              <button class="category-filter-btn" data-category="environment">Environment</button>
+              <button class="category-filter-btn" data-category="agriculture">Agriculture</button>
+              <button class="category-filter-btn" data-category="food">Food</button>
+              <button class="category-filter-btn" data-category="travel">Travel</button>
+              <button class="category-filter-btn" data-category="transportation">Transportation</button>
+              <button class="category-filter-btn" data-category="real-estate">Real Estate</button>
+              <button class="category-filter-btn" data-category="media-entertainment">Media &amp; Entertainment</button>
+              <button class="category-filter-btn" data-category="art-design">Art &amp; Design</button>
+              <button class="category-filter-btn" data-category="sports-fitness">Sports &amp; Fitness</button>
+              <button class="category-filter-btn" data-category="community">Community</button>
+              <button class="category-filter-btn" data-category="lifestyle">Lifestyle</button>
+            </div>
 
             <div class="projects-grid reveal" id="projects-container">
               <!-- Project cards will be loaded here dynamically -->
+            </div>
+            <div class="category-stats" id="categoryStats">
+              <h3>Platform Categories</h3>
+              <div class="category-stats-list" id="categoryStatsList"></div>
             </div>
           </div>
         </section>
@@ -164,6 +188,7 @@
       <script src="assets/js/script.js"></script>
       <script src="assets/js/supabase-client.js"></script>
       <script src="assets/js/auth-ui.js"></script>
+      <script src="assets/js/project-categories.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
       <script src="version.js"></script>
       <script>
@@ -248,6 +273,128 @@
           requestAnimationFrame(updateCount);
         }
 
+        const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
+        let allProjects = [];
+        let activeCategory = 'all';
+        let currentSearch = '';
+
+        function normalizeCategory(value) {
+          const fromShared = window.ProjectCategories?.normalizeCategory?.(value);
+          return fromShared || 'uncategorized';
+        }
+
+        function renderCategoryStats(projects) {
+          const listEl = document.getElementById('categoryStatsList');
+          if (!listEl) return;
+
+          const stats = window.ProjectCategories?.getCategoryStats?.(projects) || {};
+          const order = window.ProjectCategories?.CATEGORY_ORDER || [];
+          listEl.innerHTML = order.map((category) => {
+            const label = window.ProjectCategories?.CATEGORY_LABELS?.[category] || category;
+            const count = stats[category] || 0;
+            const noun = count === 1 ? 'project' : 'projects';
+            return `
+              <div class="category-stat-item">
+                <span>${categoryIcons[category] || ''} ${label}</span>
+                <strong>${count} ${noun}</strong>
+              </div>
+            `;
+          }).join('');
+        }
+
+        function applyProjectFilters() {
+          const container = document.querySelector('#projects-container');
+          const filteredProjects = allProjects.filter((project) => {
+            const normalizedCategory = normalizeCategory(project.category);
+            const inCategory = activeCategory === 'all' || normalizedCategory === activeCategory;
+            const query = currentSearch.toLowerCase();
+            const name = String(project.name || '').toLowerCase();
+            const publicId = String(project.public_id || '').toLowerCase();
+            const inSearch = !query || name.includes(query) || publicId.includes(query);
+            return inCategory && inSearch;
+          });
+
+          if (!filteredProjects.length) {
+            container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects match this filter.</p>';
+            return;
+          }
+
+          container.innerHTML = '';
+          filteredProjects.forEach(project => {
+            const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+            const views = project.views || 0;
+            const badgeHtml = window.ProjectCategories?.buildCategoryBadge
+              ? window.ProjectCategories.buildCategoryBadge(project.category)
+              : `<span class="project-category cat-${normalizeCategory(project.category)}">${normalizeCategory(project.category)}</span>`;
+            const createdDate = project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            }) : 'N/A';
+
+            const card = document.createElement('a');
+            card.className = 'project-card-link';
+            card.href = projectLink;
+            card.setAttribute('data-id', project.public_id || '');
+            card.setAttribute('data-name', project.name || '');
+            card.setAttribute('data-category', normalizeCategory(project.category));
+
+            card.innerHTML = `
+              <div class="project-card-wrapper">
+                <div class="project-card-header">
+                  <strong class="project-title">
+                    ${project.name || 'Untitled'}
+                    <span class="external-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                  </strong>
+                  <span class="id">${project.public_id || ''}</span>
+                </div>
+                ${badgeHtml}
+                <p class="project-description">${project.card_description || 'No description available.'}</p>
+                <div class="project-metadata">
+                  <span class="metadata-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>${createdDate}</span>
+                  </span>
+                  <span class="metadata-separator"></span>
+                  <span class="metadata-item">
+                    <i class="fas fa-eye"></i>
+                    <span class="view-count">${views.toLocaleString()}</span> views
+                  </span>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        function initializeSearch() {
+          const searchInput = document.getElementById('projectSearch');
+          if (!searchInput || searchInput.dataset.categoryBound === '1') return;
+
+          searchInput.dataset.categoryBound = '1';
+          searchInput.addEventListener('input', function () {
+            currentSearch = this.value.trim();
+            applyProjectFilters();
+          });
+        }
+
+        function initializeCategoryFilters() {
+          const filterWrap = document.getElementById('projectFilters');
+          if (!filterWrap || filterWrap.dataset.categoryBound === '1') return;
+
+          filterWrap.dataset.categoryBound = '1';
+          filterWrap.addEventListener('click', (event) => {
+            const btn = event.target.closest('button[data-category]');
+            if (!btn) return;
+
+            activeCategory = btn.dataset.category || 'all';
+            filterWrap.querySelectorAll('button[data-category]').forEach((button) => {
+              button.classList.toggle('active', button === btn);
+            });
+            applyProjectFilters();
+          });
+        }
+
         async function loadProjects() {
           const sb = window.supabaseClient;
           const container = document.querySelector('#projects-container');
@@ -287,7 +434,7 @@
             // Fetch published projects from Supabase
             const { data, error } = await sb
               .from('projects')
-              .select('public_id, name, slug, card_description, created_at')
+              .select('public_id, name, slug, card_description, created_at, category')
               .eq('published', true)
               .order('created_at', { ascending: false })
               .limit(100);
@@ -304,92 +451,36 @@
               return;
             }
 
-            container.innerHTML = ''; // clear existing
             const viewsBySlug = await getViewsBySlug(data);
-
-
-            data.forEach(project => {
-              const projectLink = `/project.html?slug=${encodeURIComponent(project.slug)}`;
-              const views = viewsBySlug.get(project.slug) || 0;
-              
-              const card = document.createElement('a');
-              card.className = 'project-card-link';
-              card.href = projectLink;
-              card.setAttribute('data-id', project.public_id || '');
-              card.setAttribute('data-name', project.name || '');
-              
-              // Format date if available
-              const createdDate = project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-              }) : 'N/A';
-              
-              card.innerHTML = `
-                <div class="project-card-wrapper">
-                  <div class="project-card-header">
-                    <strong class="project-title">
-                      ${project.name || 'Untitled'} 
-                      <span class="external-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                    </strong>
-                    <span class="id">${project.public_id || ''}</span>
-                  </div>
-                  <p class="project-description">${project.card_description || 'No description available.'}</p>
-                  <div class="project-metadata">
-                    <span class="metadata-item">
-                      <i class="fas fa-calendar-alt"></i>
-                      <span>${createdDate}</span>
-                    </span>
-                    <span class="metadata-separator"></span>
-                    <span class="metadata-item">
-                      <i class="fas fa-eye"></i>
-                      <span class="view-count">${views.toLocaleString()}</span> views
-                    </span>
-                  </div>
-                </div>
-              `;
-              container.appendChild(card);
+            allProjects = (data || []).map((project) => {
+              return {
+                ...project,
+                views: viewsBySlug.get(project.slug) || 0
+              };
             });
+            renderCategoryStats(allProjects);
+            applyProjectFilters();
 
             // update project count globally
             localStorage.setItem('projectCount', data.length);
 
-            // Re-initialize search functionality
-            initializeSearch();
           } catch (err) {
             console.error('Unexpected error:', err);
             container.innerHTML = '<p style="text-align: center; color: #ff7878;">An unexpected error occurred.</p>';
           }
         }
 
-        function initializeSearch() {
-          const searchInput = document.getElementById('projectSearch');
-          if (!searchInput) return;
-
-          searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            const cards = document.querySelectorAll('.project-card-link');
-
-            cards.forEach(card => {
-              const name = (card.getAttribute('data-name') || '').toLowerCase();
-              const id = (card.getAttribute('data-id') || '').toLowerCase();
-              
-              if (name.includes(query) || id.includes(query)) {
-                card.style.display = '';
-              } else {
-                card.style.display = 'none';
-              }
-            });
-          });
-        }
-
         // Load projects and count when DOM is ready
         if (document.readyState === 'loading') {
           document.addEventListener('DOMContentLoaded', () => {
+            initializeSearch();
+            initializeCategoryFilters();
             updateProjectsCount('published');
             loadProjects();
           });
         } else {
+          initializeSearch();
+          initializeCategoryFilters();
           updateProjectsCount('published');
           loadProjects();
         }
