@@ -1035,12 +1035,22 @@
         async function fetchCreatorProfile(project) {
             const creatorFromProject = (project.creator_name || '').trim();
             const avatarFromProject = (project.creator_avatar_url || '').trim();
+            let sessionUser = null;
             const profile = {
                 display_name: creatorFromProject || '',
                 avatar_url: /^https?:\/\//i.test(avatarFromProject) ? avatarFromProject : null,
                 contact_email: '',
-                phone_number: ''
+                phone_number: '',
+                viewer_signed_in: false
             };
+
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                sessionUser = sessionData?.session?.user || null;
+                profile.viewer_signed_in = !!sessionUser;
+            } catch (error) {
+                console.warn('Could not determine viewer session:', error?.message || error);
+            }
 
             if (project.owner_user_id) {
                 try {
@@ -1081,8 +1091,6 @@
             }
 
             try {
-                const { data: sessionData } = await sb.auth.getSession();
-                const sessionUser = sessionData?.session?.user;
                 if (sessionUser && sessionUser.id === project.owner_user_id) {
                     const metadataName = getMetadataDisplayName(sessionUser.user_metadata || {});
                     const metadataAvatar = sessionUser.user_metadata?.avatar_url || sessionUser.user_metadata?.picture || null;
@@ -1101,7 +1109,8 @@
                 display_name: profile.display_name || 'Project Creator',
                 avatar_url: profile.avatar_url || null,
                 contact_email: profile.contact_email || '',
-                phone_number: profile.phone_number || ''
+                phone_number: profile.phone_number || '',
+                viewer_signed_in: !!profile.viewer_signed_in
             };
         }
 
@@ -1144,7 +1153,12 @@
                 hasEmail ? `<a href="${escapeAttr(emailHref)}" class="creator-contact-link"><i class="fas fa-envelope"></i> ${escapeHtml(profile.contact_email)}</a>` : '',
                 hasPhone ? `<a href="${escapeAttr(phoneHref)}" class="creator-contact-link"><i class="fas fa-phone"></i> ${escapeHtml(profile.phone_number)}</a>` : ''
             ].filter(Boolean).join('');
-            const emptyContactText = contactLinks ? '' : '<p style="opacity:.7;margin:0;">No public contact details provided.</p>';
+            const loginRequiredText = !profile.viewer_signed_in
+                ? '<p style="opacity:.8;margin:0;">Sign in to view creator contact details (if provided).</p>'
+                : '';
+            const emptyContactText = contactLinks
+                ? ''
+                : (loginRequiredText || '<p style="opacity:.7;margin:0;">No public contact details provided.</p>');
 
             card.innerHTML = `
                 ${avatarHtml}
