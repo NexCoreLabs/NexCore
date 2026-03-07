@@ -1426,7 +1426,7 @@ textarea {
   padding: 14px 20px 12px 20px;
   border: none;
   color: var(--muted);
-  border-bottom: 1px solid #6bd3c9;
+  border-bottom: 1px solid #6ee7f3;
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.1),
@@ -1448,7 +1448,7 @@ textarea {
 input:hover,
 textarea:hover {
   color: #eaf6fb;
-  border-bottom-color: #6ee7f3;
+  border-bottom-color: #6bd3c9;
   transform: scale(0.99);
 }
 
