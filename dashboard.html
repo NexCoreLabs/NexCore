@@ -10,12 +10,10 @@
         <meta name="keywords" content="NexCore Labs, dashboard, team, projects, student projects, Sultan Qaboos University, Oman">
         <meta name="theme-color" content="#0a0b1c">
         <meta name="mobile-web-app-capable" content="yes">
-
         <meta property="og:url" content="https://nexcorelabs.vercel.app/dashboard.html">
         <meta property="og:type" content="website">
         <meta property="og:title" content="NexCore Labs | Dashboard">
         <meta property="og:description" content="Team dashboard for managing NexCore Labs projects.">
-
         <meta name="twitter:card" content="summary_large_image">
         <meta property="twitter:domain" content="nexcorelabs.vercel.app">
         <meta property="twitter:url" content="https://nexcorelabs.vercel.app/dashboard.html">
@@ -25,6 +23,7 @@
         <title>NexCore Labs | Dashboard</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <link rel="stylesheet" href="assets/css/style.css">
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="stylesheet" href="assets/css/project-categories.css">
@@ -39,7 +38,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
-    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
     /* .box:hover{
       border:2px solid rgba(255,255,255,.08);
     } */
@@ -52,7 +51,7 @@
     .msg-success{color:#6ee7f3}
     .msg-error{color:#ff7878}
     .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
-    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;user-select:none}
+    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;-webkit-user-select:none;user-select:none}
     .help-box summary:hover{opacity:1}
     .help-box[open] summary{margin-bottom:10px;opacity:1}
     .help-box code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.85rem;color:#6ee7f3}
@@ -67,7 +66,7 @@
     .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
     .mod-popup{position:fixed;z-index:9999;
-      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
+      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
     .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
     .ai-btn {
       position: relative;
@@ -151,7 +150,7 @@
       align-items:flex-end;justify-content:center;
       padding:16px;box-sizing:border-box;
       background:rgba(2,6,23,.55);
-      backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
       opacity:0;pointer-events:none;
       transition:opacity .28s ease;
     }
@@ -166,7 +165,7 @@
       border-radius:16px;
       padding:28px 24px 22px;box-sizing:border-box;
       box-shadow:0 24px 72px rgba(2,6,23,.85),0 0 0 1px rgba(255,120,120,.06);
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
       color:#e6eef3;font-size:14px;line-height:1.5;
       transform:translateY(28px) scale(.97);opacity:0;
       transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .28s ease;
@@ -215,7 +214,7 @@
       color:#e6eef3;
       font-size:.875rem;font-family:inherit;font-weight:500;
       cursor:pointer;
-      user-select:none;
+      -webkit-user-select:none;user-select:none;
       transition:border-color .2s,background .2s,box-shadow .2s;
     }
     .ai-select-trigger:hover{
@@ -242,7 +241,7 @@
     .ai-select-panel{
       position:fixed;
       background:rgba(8,10,22,.5);
-      backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);
+      -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
       border:1px solid rgba(110,231,243,.6);
       border-radius:12px;
       padding:6px;
@@ -300,6 +299,26 @@
       scrollbar-width:thin;
       scrollbar-color:rgba(110,231,243,.45) transparent;
     }
+    .mt-0{margin-top:0!important}
+    .mt-12{margin-top:12px!important}
+    .mt-10{margin-top:10px!important}
+    .mt-16{margin-top:16px!important}
+    .mt-4 { margin-top: 4px !important; }
+    .fs-9 { font-size: 0.9rem !important; }
+    .fs-85 { font-size: 0.85rem !important; }
+    .d-none{display:none!important}
+    .d-flex{display:flex!important}
+    .gap-8{gap:8px!important}
+    .gap-10{gap:10px!important}
+    .gap-12{gap:12px!important}
+    .color-ai{color:#6EE7F3!important}
+    .bg-ai-glass{background:rgba(110,231,243,.05)!important;border-color:rgba(110,231,243,.2)!important}
+    .w-100{width:100%!important}
+    .max-w-320{max-width:320px!important}
+    .ta-center{text-align:center!important}
+    .jc-center{justify-content:center!important}
+    .ls-2{letter-spacing:2px!important}
+    .img-preview{max-width:240px;border-radius:14px;border: 2px solid rgba(255, 255, 255, 0.06);padding: 12px;}
   </style>
   <!-- Vercel Web Analytics -->
   <script>
@@ -328,7 +347,7 @@
           <span class="dot" aria-hidden="true"></span>
           <span class="dot" aria-hidden="true"></span>
         </div>
-        
+
      <div id="myDropdown" class="dropdown-content">
          <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
@@ -344,6 +363,7 @@
          <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
          <div class="div-menu-line"></div>
          <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+        <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
          <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
          <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
      </div>
@@ -460,12 +480,12 @@
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
             <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>AI Card Brief</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate a concise card description from your page description using AI</p>
-            
+
             <button class="btn primary ai-btn" id="aiCardBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
               <span class="ai-btn-text">Generate</span>
               <span class="ai-sparkle-layer"></span>
             </button>
-            
+
             <div id="aiCardOutput" style="display:none;margin-top:12px;">
               <label>AI Generated Summary</label>
               <textarea id="aiOutputCard" readonly style="background:rgba(0,0,0,.2);cursor:default;min-height:80px;"></textarea>
@@ -478,7 +498,7 @@
                 </button>
               </div>
             </div>
-            
+
             <p id="aiCardStatus" style="margin-top:10px;font-size:.9rem;"></p>
             <p id="aiCardRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
           </div>
@@ -498,7 +518,7 @@
           </button>
 
           <p class="muted" style="font-size:.9rem;">This information appears on your project's dedicated page.</p>
-        
+
           <label>Image URL (optional)</label>
           <input id="profileImageUrl" placeholder="https://..." />
           <div style="margin-top:10px;">
@@ -508,7 +528,7 @@
           <details class="help-box">
             <summary><i class="fa-solid fa-lightbulb"></i> Image URL Tips</summary>
             <p style="margin-top:0;"><strong>Your image must be publicly accessible.</strong> Here's how to get a valid URL:</p>
-            
+
             <strong>Option A: Google Drive</strong>
             <ol>
               <li>Upload your image to Google Drive</li>
@@ -544,7 +564,7 @@
           <div class="box" style="background:rgba(110,231,243,.05);border-color:rgba(110,231,243,.2);margin-top:16px;">
             <h4 style="margin:0 0 12px 0;"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6EE7F3;margin-right:8px;"></i>Enhance Content with AI</h4>
             <p class="muted" style="font-size:.85rem;margin-bottom:12px;">Generate, refine, and optimise your page content using AI</p>
-            
+
             <div class="row" style="margin-bottom:12px;gap:10px;align-items:center;">
               <label style="margin:0;">Style:</label>
               <div class="ai-select-wrap" id="aiStyleWrap">
@@ -579,7 +599,7 @@
                 <span class="ai-sparkle-layer"></span>
               </button>
             </div>
-            
+
             <div id="aiPageOutput" style="display:none;">
               <label>AI Generated Description</label>
               <textarea id="aiOutputPage" readonly style="background:rgba(0,0,0,.2);cursor:default;min-height:140px;"></textarea>
@@ -592,7 +612,7 @@
                 </button>
               </div>
             </div>
-            
+
             <p id="aiStatus" style="margin-top:10px;font-size:.9rem;"></p>
             <p id="aiPageRemaining" class="muted" style="font-size:.85rem;margin-top:6px;"></p>
           </div>
@@ -608,7 +628,7 @@
 
           <label>GitHub URL (optional)</label>
           <input id="profileGithub" placeholder="https://github.com/..." type="url" />
-          
+
           <label>LinkedIn URL (optional)</label>
           <input id="profileLinkedin" placeholder="https://linkedin.com/..." type="url" />
 
@@ -666,7 +686,7 @@
             <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
             <br>
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
-              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
                 <i class="fa-solid fa-scale-balanced"></i> MIT License
               </a>            </small>
           </div>
@@ -1014,7 +1034,6 @@
       a.href = link;
       a.textContent = link;
 
-
       // Image preview
       const img = document.getElementById("imgPreview");
       if (p.image_url && p.image_url.startsWith("http")) {
@@ -1038,11 +1057,11 @@
 
       currentSession = session;
       await syncUserProfile(session.user);
-      
+
       // Show onboarding message based on auth mode
       const authMode = sessionStorage.getItem('auth_mode');
       let welcomeMsg = `Signed in as ${getUserDisplayName(session.user)}`;
-      
+
       if (authMode === 'signup') {
         welcomeMsg += ' — Welcome to NexCore Labs! Create your first project below.';
         sessionStorage.removeItem('auth_mode');
@@ -1050,7 +1069,7 @@
         welcomeMsg += ' — Welcome back.';
         sessionStorage.removeItem('auth_mode');
       }
-      
+
       document.getElementById("userLine").textContent = welcomeMsg;
       return session;
     }
@@ -1176,7 +1195,7 @@
             })
             .select("*")
             .single();
-          
+
           if (retry.error) {
             // Check if it's the one_project_per_user constraint
             if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
@@ -1188,7 +1207,7 @@
             disableButtons(false);
             return setPublishStatus(retry.error.message, "error");
           }
-          
+
           data = retry.data;
         } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
           // User already has a project
@@ -1664,7 +1683,7 @@
               document.execCommand('copy');
               document.body.removeChild(textarea);
             }
-            
+
             const originalHTML = aiCopyPageBtn.innerHTML;
             aiCopyPageBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
             setTimeout(() => {
@@ -1790,7 +1809,7 @@
               document.execCommand('copy');
               document.body.removeChild(textarea);
             }
-            
+
             const originalHTML = aiCopyCardBtn.innerHTML;
             aiCopyCardBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
             setTimeout(() => {
@@ -1809,19 +1828,19 @@
     async function copyProjectPageLink() {
       const publicLinkEl = document.getElementById("publicLink");
       const copyBtn = document.getElementById("copyProjectPageLink");
-      
+
       if (!publicLinkEl.href || publicLinkEl.href === "#") return;
-      
+
       try {
         // Get the full URL from href
         const fullUrl = new URL(publicLinkEl.href, window.location.origin).href;
         await navigator.clipboard.writeText(fullUrl);
-        
+
         // Visual feedback
         const originalHTML = copyBtn.innerHTML;
         copyBtn.classList.add("copied");
         copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-        
+
         setTimeout(() => {
           copyBtn.classList.remove("copied");
           copyBtn.innerHTML = originalHTML;

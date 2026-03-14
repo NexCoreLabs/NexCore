@@ -1,0 +1,210 @@
+﻿[
+  {
+    "id": "v2-4-0",
+    "version": "v2.4.0",
+    "date": "2026-03-07",
+    "summary": "Account enhancements, expanded project categories, and UI polish.",
+    "user_updates": {
+      "new": [
+        "Contact information is now available on project pages",
+        "New project categories with color-coded badges"
+      ],
+      "improvements": [
+        "Tooltips and dropdowns feel smoother",
+        "Team roles updated for clarity",
+        "Homepage task counter refreshed"
+      ],
+      "fixes": [
+        "Cleaner footer layout across pages",
+        "Cookie visuals updated for consistent display"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "New project-categories module for normalization",
+        "Dropdown logic refactored into reusable helpers"
+      ],
+      "database_changes": [
+        "Contact info fields now saved with projects"
+      ],
+      "api_updates": [],
+      "internal_improvements": [
+        "Removed unused cookie-consent CSS",
+        "Expanded changelog structure"
+      ]
+    },
+    "is_major_release": false
+  },
+  {
+    "id": "v2-3-0",
+    "version": "v2.3.0",
+    "date": "2026-03-07",
+    "summary": "AI enhancements, creator profiles, and project discovery upgrades.",
+    "user_updates": {
+      "new": [
+        "AI insights section on project pages",
+        "Project cards now show creation date and views",
+        "Creator profiles added to each project page"
+      ],
+      "improvements": [
+        "Projects show newest releases first",
+        "Social sharing buttons added"
+      ],
+      "fixes": [
+        "Cleaner mobile layout for project cards"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "New project_insights AI action",
+        "Slug-based filtering supported across dashboard"
+      ],
+      "database_changes": [
+        "Creator metadata stored with project records"
+      ],
+      "api_updates": [
+        "AI endpoint reports usage stats via GET"
+      ],
+      "internal_improvements": [
+        "Improved HTML closing tag structure"
+      ]
+    },
+    "is_major_release": false
+  },
+  {
+    "id": "v2-2-0",
+    "version": "v2.2.0",
+    "date": "2026-03-06",
+    "summary": "Cookie consent upgrades, moderation workflows, and dashboard safety improvements.",
+    "user_updates": {
+      "new": [
+        "Cookie consent manager redesigned",
+        "Moderation status now visible on dashboard"
+      ],
+      "improvements": [
+        "Deletion confirmations are clearer and safer",
+        "AI button states feel more responsive"
+      ],
+      "fixes": [
+        "Footer branding now consistent everywhere"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "New moderation API endpoint with rule checks",
+        "AI usage GET endpoint added"
+      ],
+      "database_changes": [
+        "Moderation fields now update publish state"
+      ],
+      "api_updates": [
+        "Moderation endpoint enforces publish rules"
+      ],
+      "internal_improvements": [
+        "Cookie assets migrated to new CSS/JS"
+      ]
+    },
+    "is_major_release": false
+  },
+  {
+    "id": "v2-1-0",
+    "version": "v2.1.0",
+    "date": "2026-03-01",
+    "summary": "AI Assist for writing, stronger permissions, and styling upgrades.",
+    "user_updates": {
+      "new": [
+        "AI Assist added to help write project descriptions",
+        "Copy Page Link button in dashboard"
+      ],
+      "improvements": [
+        "Account safety checks tightened",
+        "Project cards show cleaner text hierarchy"
+      ],
+      "fixes": [
+        "Slug preview now matches usernames"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "AI Assist uses Gemini via serverless API",
+        "Project queries now use owner_user_id checks"
+      ],
+      "database_changes": [
+        "AI usage tables and RPC functions added"
+      ],
+      "api_updates": [
+        "New /api/ai endpoint with rate limiting"
+      ],
+      "internal_improvements": [
+        "Switched more pages to unminified CSS for debugging"
+      ]
+    },
+    "is_major_release": false
+  },
+  {
+    "id": "v2-0-0",
+    "version": "v2.0.0",
+    "date": "2026-02-10",
+    "summary": "Major platform graduation with full Supabase integration and UI polish.",
+    "user_updates": {
+      "new": [
+        "Full account and project management experience",
+        "Live project hub with public browsing"
+      ],
+      "improvements": [
+        "Core UI polished for consistent navigation"
+      ],
+      "fixes": [
+        "Reliability improvements for sign-in flows"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "Supabase auth and database integration across pages"
+      ],
+      "database_changes": [
+        "Projects and account profiles persisted in Supabase"
+      ],
+      "api_updates": [],
+      "internal_improvements": [
+        "Deployment flow stabilized"
+      ]
+    },
+    "is_major_release": true,
+    "major_details": {
+      "title": "v2.0.0 — Graduation Release",
+      "why_it_matters": "This release moved NexCore from beta to a full platform with live projects, accounts, and management tools.",
+      "description": "Teams now get complete visibility over their project pages, while the hub makes discovery fast.",
+      "highlights": [
+        "Supabase-backed auth and data",
+        "New hub and dashboard experiences",
+        "Improved deployment readiness"
+      ],
+      "screenshots": []
+    }
+  },
+  {
+    "id": "v1-0-0",
+    "version": "v1.0.0",
+    "date": "2025-10-27",
+    "summary": "Initial release of the NexCore Labs platform.",
+    "user_updates": {
+      "new": [
+        "Foundational project showcase experience"
+      ],
+      "improvements": [
+        "Basic navigation and documentation"
+      ],
+      "fixes": []
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "Static HTML/CSS release baseline"
+      ],
+      "database_changes": [],
+      "api_updates": [],
+      "internal_improvements": []
+    },
+    "is_major_release": false
+  }
+]

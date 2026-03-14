@@ -1,21 +1,21 @@
 :root {
-  --cat-technology: #1e40af;
-  --cat-business: #ea580c;
-  --cat-education: #4f46e5;
-  --cat-finance: #0f766e;
-  --cat-healthcare: #dc2626;
-  --cat-environment: #15803d;
-  --cat-agriculture: #65a30d;
-  --cat-food: #d97706;
-  --cat-travel: #0284c7;
-  --cat-transportation: #334155;
-  --cat-real-estate: #7c3aed;
-  --cat-media-entertainment: #be185d;
-  --cat-art-design: #c026d3;
-  --cat-sports-fitness: #ca8a04;
-  --cat-community: #2563eb;
-  --cat-lifestyle: #db2777;
-  --cat-uncategorized: #475569;
+  --cat-technology: #1e40afb0;
+  --cat-business: #ea580cb0;
+  --cat-education: #4f46e5b0;
+  --cat-finance: #0f766eb0;
+  --cat-healthcare: #dc2626b0;
+  --cat-environment: #15803db0;
+  --cat-agriculture: #65a30db0;
+  --cat-food: #d97706b0;
+  --cat-travel: #0284c7b0;
+  --cat-transportation: #334155b0;
+  --cat-real-estate: #7c3aedb0;
+  --cat-media-entertainment: #be185db0;
+  --cat-art-design: #c026d3b0;
+  --cat-sports-fitness: #ca8a04b0;
+  --cat-community: #2563ebb0;
+  --cat-lifestyle: #db2777b0;
+  --cat-uncategorized: #475569b0;
 }
 
 .project-category {
@@ -34,8 +34,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 }
 
@@ -46,76 +46,110 @@
 }
 
 .project-category .pc-icon {
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
 }
 
 .cat-technology {
   background: var(--cat-technology);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-business {
   background: var(--cat-business);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-education {
   background: var(--cat-education);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-finance {
   background: var(--cat-finance);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-healthcare {
   background: var(--cat-healthcare);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-environment {
   background: var(--cat-environment);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-agriculture {
   background: var(--cat-agriculture);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-food {
   background: var(--cat-food);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-travel {
   background: var(--cat-travel);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-transportation {
   background: var(--cat-transportation);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-real-estate {
   background: var(--cat-real-estate);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-media-entertainment {
   background: var(--cat-media-entertainment);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-art-design {
   background: var(--cat-art-design);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-sports-fitness {
   background: var(--cat-sports-fitness);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-community {
   background: var(--cat-community);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-lifestyle {
   background: var(--cat-lifestyle);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .cat-uncategorized {
   background: var(--cat-uncategorized);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
 }
 
 .project-filters {
@@ -142,39 +176,10 @@
   height: 0;
 }
 
-.hub-filter-trigger {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.35);
-  border: 1px solid rgba(110, 231, 243, 0.22);
-  border-radius: 10px;
-  color: #e6eef3;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  user-select: none;
-  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-}
-
 #hubCategoryFilterLabel {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-
-.hub-filter-trigger:hover {
-  background: rgba(110, 231, 243, 0.06);
-  border-color: rgba(110, 231, 243, 0.45);
-}
-
-.hub-filter-wrap.open .hub-filter-trigger {
-  border-color: #6ee7f3;
-  box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.15);
-  background: rgba(110, 231, 243, 0.06);
 }
 
 .hub-filter-chevron {
@@ -190,57 +195,6 @@
 .hub-filter-wrap.open .hub-filter-chevron {
   transform: rotate(180deg);
   border-top-color: #6ee7f3;
-}
-
-.hub-filter-panel {
-  position: fixed;
-  background: rgba(8, 10, 22, 0.5);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  border: 1px solid rgba(110, 231, 243, 0.6);
-  border-radius: 12px;
-  padding: 6px;
-  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(110, 231, 243, 0.08);
-  z-index: 99999;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-6px) scale(0.97);
-  transform-origin: top left;
-  transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.2, 0.9, 0.3, 1);
-  max-height: 340px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(110, 231, 243, 0.45) transparent;
-}
-
-.hub-filter-panel.open {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0) scale(1);
-}
-
-.hub-filter-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(230, 238, 243, 0.8);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
-}
-
-.hub-filter-option:hover {
-  background: rgba(110, 231, 243, 0.08);
-  color: #e6eef3;
-}
-
-.hub-filter-option.selected {
-  color: #6ee7f3;
-  background: rgba(110, 231, 243, 0.1);
 }
 
 .hub-opt-icon {
@@ -313,6 +267,88 @@
 .project-category-label {
   font-size: 0.9rem;
   opacity: 0.8;
+}
+
+/* Category Explorer (Chips) */
+.category-explorer {
+  margin: 15px 0 25px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.category-chips-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px 2px 15px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(110, 231, 243, 0.3) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-chips-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.category-chips-scroll::-webkit-scrollbar-thumb {
+  background: rgba(110, 231, 243, 0.2);
+  border-radius: 10px;
+}
+
+.category-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  color: #e6eef3;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.category-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(110, 231, 243, 0.3);
+  transform: translateY(-2px);
+}
+
+.category-chip.active {
+  background: rgba(110, 231, 243, 0.15);
+  border-color: #6ee7f3;
+  color: #6ee7f3;
+  box-shadow: 0 4px 12px rgba(110, 231, 243, 0.2);
+}
+
+.category-chip .count {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+.category-chip.active .count {
+  opacity: 1;
+  background: rgba(110, 231, 243, 0.2);
+}
+
+.category-chip .pc-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Hide the old annoying stats section */
+.category-stats {
+  display: none !important;
 }
 
 @media (max-width: 640px) {

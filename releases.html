@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="assets/css/cookies.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="NexCore Labs, releases, updates, changelog, features, improvements, Sultan Qaboos University, Oman">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>NexCore Labs | Releases</title>
+    <meta name="description" content="Follow the evolution of NexCore Labs — new features, improvements, and fixes.">
+    <meta property="og:url" content="https://nexcorelabs.vercel.app/releases.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs | Releases">
+    <meta property="og:description" content="Follow the evolution of NexCore Labs — new features, improvements, and fixes.">
+    <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+    <meta property="twitter:url" content="https://nexcorelabs.vercel.app/releases.html">
+    <meta name="twitter:title" content="NexCore Labs | Releases">
+    <meta name="twitter:description" content="Follow the evolution of NexCore Labs — new features, improvements, and fixes.">
+    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+    <script defer src="/_vercel/insights/script.js"></script>
+
+    <style>
+        :root {
+            --accent:       #6ee7f3;
+            --accent-dim:   rgba(110,231,243,0.1);
+            --accent-glow:  rgba(110,231,243,0.2);
+            --cyan:         #acd9e5;
+            --amber:        #ffcc78;
+            --violet:       #c4a8f7;
+            --mint:         #a8e6cf;
+            --gold:         #ffd278;
+            --surface:      rgba(10,11,28,0.5);
+            --border:       rgba(255,255,255,0.07);
+            --border-lit:   rgba(110,231,243,0.2);
+            --text-hi:      #eaf6fb;
+            --text-mid:     rgba(230,238,243,0.75);
+            --text-dim:     rgba(154,163,178,0.65);
+            --mono:         'JetBrains Mono', monospace;
+            --spring:       cubic-bezier(0.2,0.9,0.3,1);
+        }
+
+        .rl-wrap {
+            max-width: 980px;
+            margin: 76px auto 80px;
+            padding: 0 22px;
+        }
+
+        .rl-hero {
+            text-align: center;
+            padding: 24px 0 50px;
+            position: relative;
+        }
+        .rl-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100%; max-width: 480px; height: 180px;
+            background: radial-gradient(ellipse at center, rgba(110,231,243,0.065) 0%, transparent 72%);
+            pointer-events: none;
+        }
+        .rl-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px;
+            border: 1px solid var(--accent-glow);
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: var(--accent-dim);
+            margin-bottom: 22px;
+        }
+        .rl-eyebrow-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 6px var(--accent);
+            animation: blink 2.6s ease-in-out infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.3;transform:scale(.55)} }
+        .rl-hero h1 {
+            font-size: clamp(1.95rem, 5.2vw, 3.3rem);
+            font-weight: 800;
+            letter-spacing: -0.9px;
+            color: var(--text-hi);
+            margin: 0 0 15px;
+            line-height: 1.08;
+        }
+        .rl-hero h1 em { font-style: normal; color: var(--accent); }
+        .rl-hero-sub {
+            color: var(--text-dim);
+            font-size: 0.97rem;
+            max-width: 490px;
+            margin: 0 auto 28px;
+            line-height: 1.7;
+        }
+        .rl-hero-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .rl-hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 13px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-mid);
+            font-family: var(--mono);
+        }
+        .rl-hero-pill i { color: var(--accent); font-size: 0.72rem; }
+        .rl-hero-pill strong { color: var(--accent); }
+
+        .rl-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin-bottom: 26px;
+            padding: 12px 16px;
+            background: linear-gradient(90deg, rgba(110,231,243,0.07), rgba(110,231,243,0.02));
+            border: 1px solid var(--accent-glow);
+            border-left: 3px solid var(--accent);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            line-height: 1.55;
+            color: #c6f3fb;
+        }
+        .rl-banner i { color: var(--accent); flex-shrink:0; margin-top:2px; font-size:.82rem; }
+        .rl-banner strong { color: var(--accent); }
+        .rl-banner.hidden { display: none; }
+
+        .rl-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 34px;
+        }
+
+        /* Mode toggle */
+        .rl-mode {
+            display: inline-flex;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 4px;
+            gap: 3px;
+        }
+        .rl-mode-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            border-radius: 9px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background: transparent;
+            color: rgba(230,238,243,0.42);
+            font-family: inherit;
+            white-space: nowrap;
+            transition: color .2s, background .2s, border-color .2s, transform .16s var(--spring);
+        }
+        .rl-mode-btn i { font-size: 0.76rem; }
+        .rl-mode-btn.active {
+            background: var(--accent-dim);
+            color: var(--accent);
+            border-color: var(--accent-glow);
+        }
+        .rl-mode-btn:hover:not(.active) { color: rgba(230,238,243,0.78); background: rgba(255,255,255,0.04); }
+        .rl-mode-btn:active { transform: scale(0.95); }
+
+        /* Filter pills row */
+        .rl-filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .rl-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 13px;
+            border-radius: 999px;
+            font-size: 0.77rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.09);
+            background: rgba(255,255,255,0.03);
+            color: rgba(230,238,243,0.48);
+            font-family: inherit;
+            letter-spacing: 0.2px;
+            transition: color .18s, background .18s, border-color .18s, transform .14s var(--spring);
+        }
+        .rl-pill i { font-size: 0.63rem; }
+        .rl-pill:hover { border-color: var(--accent-glow); color: var(--text-hi); }
+        .rl-pill:active { transform: scale(0.93); }
+        .rl-pill.active                            { background: var(--accent-dim);            border-color: var(--accent-glow);           color: var(--accent); }
+        .rl-pill[data-filter="feature"].active     { background: rgba(110,231,243,0.09);       border-color: rgba(110,231,243,0.3);        color: var(--accent); }
+        .rl-pill[data-filter="improvement"].active { background: rgba(172,217,229,0.08);       border-color: rgba(172,217,229,0.32);       color: var(--cyan); }
+        .rl-pill[data-filter="fix"].active         { background: rgba(255,204,120,0.08);       border-color: rgba(255,204,120,0.32);       color: var(--amber); }
+        .rl-pill[data-filter="developer"].active   { background: rgba(196,168,247,0.08);       border-color: rgba(196,168,247,0.28);       color: var(--violet); }
+
+        .rl-layout {
+            display: grid;
+            grid-template-columns: 162px 1fr;
+            gap: 26px;
+            align-items: start;
+        }
+
+        .rl-nav {
+            position: sticky;
+            top: 88px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .rl-nav-select-wrap {
+            position: relative;
+            width: 100%;
+            display: none;
+        }
+        .rl-nav-select-native {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+        }
+        .rl-nav-select-trigger {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(110, 231, 243, 0.22);
+            border-radius: 10px;
+            color: #e6eef3;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .rl-nav-select-trigger:hover {
+            background: rgba(110, 231, 243, 0.06);
+            border-color: rgba(110, 231, 243, 0.45);
+        }
+        .rl-nav-select-wrap.open .rl-nav-select-trigger, .rl-nav-select-trigger:focus {
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.15);
+            background: rgba(110, 231, 243, 0.06);
+        }
+        .rl-nav-select-chevron {
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(110, 231, 243, 0.75);
+            transition: transform 0.22s var(--spring), border-top-color 0.18s;
+            flex-shrink: 0;
+        }
+        .rl-nav-select-wrap.open .rl-nav-select-chevron {
+            transform: rotate(180deg);
+            border-top-color: #6ee7f3;
+        }
+        .rl-nav-select-panel {
+            position: fixed;
+            background: rgba(8, 10, 22, 0.5);
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+            border: 1px solid rgba(110, 231, 243, 0.6);
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(110, 231, 243, 0.08);
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px) scale(0.97);
+            transform-origin: top center;
+            transition: opacity 0.2s ease, transform 0.22s var(--spring);
+            max-height: 340px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(110, 231, 243, 0.45) transparent;
+        }
+        .rl-nav-select-panel.open {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0) scale(1);
+        }
+        .rl-nav-select-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(230, 238, 243, 0.8);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+        .rl-nav-select-option:hover {
+            background: rgba(110, 231, 243, 0.08);
+            color: #e6eef3;
+        }
+        .rl-nav-select-option.selected {
+            color: #6ee7f3;
+            background: rgba(110, 231, 243, 0.1);
+        }
+        .rl-nav-select-option.dimmed {
+            display: none;
+        }
+
+        .rl-nav-label {
+            font-size: 0.67rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: rgba(154,163,178,0.4);
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        .rl-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            font-family: var(--mono);
+            color: rgba(230,238,243,0.38);
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: color .17s, background .17s, border-color .17s, opacity .17s;
+        }
+        .rl-nav-item:hover { color: var(--text-hi); background: rgba(255,255,255,0.04); }
+        .rl-nav-item.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-glow); }
+        .rl-nav-item.dimmed { opacity: 0.25; pointer-events: none; }
+        .rl-dot-maj {
+            width: 7px; height: 7px; border-radius: 50%; flex-shrink:0;
+            background: var(--accent);
+            box-shadow: 0 0 7px rgba(110,231,243,0.7);
+        }
+        .rl-dot-min {
+            width: 5px; height: 5px; border-radius: 50%; flex-shrink:0;
+            background: rgba(110,231,243,0.28);
+            border: 1px solid rgba(110,231,243,0.45);
+        }
+
+        .rl-tl {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .rl-tl::before {
+            content: '';
+            position: absolute;
+            left: 20px; top: 10px; bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, rgba(110,231,243,0.32) 0%, rgba(110,231,243,0.05) 65%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .rl-card {
+            position: relative;
+            padding: 0 0 26px 52px;
+        }
+        .rl-card.hidden { display: none; }
+
+        /* timeline dot */
+        .rl-card::before {
+            content: '';
+            position: absolute;
+            left: 13px; top: 20px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: rgba(7,9,22,1);
+            border: 2px solid rgba(110,231,243,0.32);
+            transition: border-color .22s, box-shadow .22s;
+        }
+        .rl-card:hover::before { border-color: var(--accent); }
+        .rl-card.major::before {
+            left: 11px; top: 18px;
+            width: 18px; height: 18px;
+            border-color: var(--accent);
+            background: rgba(110,231,243,0.09);
+            box-shadow: 0 0 14px rgba(110,231,243,0.3);
+        }
+
+        /* card shell */
+        .rl-box {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .rl-box:hover { border-color: var(--border-lit); box-shadow: 0 6px 28px rgba(2,6,23,0.5); }
+        .rl-card.major .rl-box {
+            border-color: rgba(110,231,243,0.13);
+            background: rgba(10,11,28,0.62);
+        }
+
+        /* ── card header (always shown, clickable) ── */
+        .rl-head {
+            padding: 15px 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .rl-head-body { flex: 1; min-width: 0; }
+        .rl-head-top {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 3px;
+        }
+        .rl-ver {
+            font-family: var(--mono);
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: var(--text-hi);
+            letter-spacing: -0.4px;
+        }
+        .rl-badge-latest {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: linear-gradient(65deg, #6ee7f3, #acd9e5 50%, #6bd3c9);
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: #010d10;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+        .rl-badge-major {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 9px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-glow);
+            border-radius: 999px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .rl-date {
+            font-family: var(--mono);
+            font-size: 0.76rem;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+        .rl-date i { margin-right: 4px; opacity: .55; }
+        .rl-summary { font-size: 0.88rem; color: var(--text-mid); line-height: 1.52; }
+        .rl-tags {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-top: 9px;
+        }
+        .rl-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.67rem;
+            font-weight: 700;
+            border: 1px solid;
+            letter-spacing: 0.2px;
+        }
+        .rl-tag.feat { color: var(--accent);  border-color: rgba(110,231,243,0.25); background: rgba(110,231,243,0.06); }
+        .rl-tag.impr { color: var(--cyan);    border-color: rgba(172,217,229,0.25); background: rgba(172,217,229,0.05); }
+        .rl-tag.fix  { color: var(--amber);   border-color: rgba(255,204,120,0.25); background: rgba(255,204,120,0.05); }
+        .rl-tag.dev  { color: var(--violet);  border-color: rgba(196,168,247,0.25); background: rgba(196,168,247,0.06); }
+
+        /* chevron */
+        .rl-chev {
+            font-size: 0.77rem;
+            color: rgba(154,163,178,0.38);
+            flex-shrink: 0;
+            margin-top: 3px;
+            transition: transform .28s var(--spring), color .2s;
+        }
+        .rl-card.open .rl-chev { transform: rotate(180deg); color: var(--accent); }
+
+        /* ── card body (collapsible) ── */
+        .rl-body {
+            display: none;
+            border-top: 1px solid rgba(255,255,255,0.052);
+        }
+        .rl-card.open .rl-body { display: block; }
+
+        /* major note */
+        .rl-major-note {
+            margin: 15px 17px 0;
+            padding: 12px 14px;
+            background: linear-gradient(120deg, rgba(110,231,243,0.055), rgba(110,231,243,0.015));
+            border: 1px solid rgba(110,231,243,0.13);
+            border-left: 3px solid var(--accent);
+            border-radius: 9px;
+            font-size: 0.86rem;
+            color: var(--text-mid);
+            line-height: 1.65;
+        }
+        .rl-major-note strong { color: var(--accent); }
+
+        /* ── tabs ── */
+        .rl-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255,255,255,0.052);
+        }
+        .rl-tab-btn {
+            padding: 9px 17px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: rgba(230,238,243,0.36);
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            transition: color .17s, border-color .17s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        .rl-tab-btn:hover { color: rgba(230,238,243,0.7); }
+        .rl-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+        /* global mode hides one tab per card */
+        body.mode-dev  .tab-u,
+        body.mode-user .tab-d { display: none; }
+
+        .rl-pane { display: none; padding: 17px; }
+        .rl-pane.active { display: block; }
+
+        /* ── update blocks ── */
+        .rl-blk { margin-bottom: 17px; }
+        .rl-blk:last-child { margin-bottom: 0; }
+        .rl-blk-ttl {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.69rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 9px;
+        }
+        .rl-blk-ttl.c-new  { color: var(--accent); }
+        .rl-blk-ttl.c-impr { color: var(--cyan); }
+        .rl-blk-ttl.c-fix  { color: var(--amber); }
+        .rl-blk-ttl.c-tech { color: var(--violet); }
+        .rl-blk-ttl.c-db   { color: var(--mint); }
+        .rl-blk-ttl.c-api  { color: var(--gold); }
+        .rl-blk-ttl.c-int  { color: rgba(154,163,178,0.72); }
+
+        .rl-ul {
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 7px;
+        }
+        .rl-ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 0.875rem;
+            line-height: 1.56;
+            color: var(--text-mid);
+        }
+        .rl-ul li::before {
+            content: '▸';
+            flex-shrink: 0;
+            margin-top: 1px;
+            font-size: 0.69rem;
+            opacity: 0.55;
+        }
+        .rl-ul.c-new  li::before { color: var(--accent);  opacity: 1; }
+        .rl-ul.c-impr li::before { color: var(--cyan);    opacity: 1; }
+        .rl-ul.c-fix  li::before { color: var(--amber);   opacity: 1; }
+        .rl-ul.c-tech li::before { color: var(--violet);  opacity: 1; }
+        .rl-ul.c-db   li::before { color: var(--mint);    opacity: 1; }
+        .rl-ul.c-api  li::before { color: var(--gold);    opacity: 1; }
+        .rl-ul.c-int  li::before { color: rgba(154,163,178,0.65); }
+
+        /* inline code */
+        .ct {
+            font-family: var(--mono);
+            font-size: 0.79rem;
+            color: var(--accent);
+            background: rgba(0,0,0,0.26);
+            border: 1px solid rgba(110,231,243,0.13);
+            border-radius: 4px;
+            padding: 1px 5px;
+        }
+
+        .rl-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-dim);
+        }
+        .rl-empty.hidden { display: none; }
+        .rl-empty i { font-size: 2rem; color: rgba(110,231,243,0.22); margin-bottom: 13px; display: block; }
+
+        @media screen and (min-width: 1200px) {
+            .rl-wrap { max-width: 1140px;
+        }}
+
+        @media (max-width: 740px) {
+            .rl-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            /* horizontal scrollable pill strip */
+            .rl-nav {
+                position: static;
+                gap: 8px;
+                margin-bottom: 8px;
+                justify-content: center;
+            }
+            .rl-nav-label { display: none; }
+            .rl-nav-item { display: none; }
+            .rl-dot-maj, .rl-dot-min { display: none; }
+            .rl-nav-select-wrap { display: block; }
+        }
+
+        @media (max-width: 540px) {
+            .rl-wrap { padding: 0 14px; margin-top: 70px; }
+            .rl-hero { padding: 14px 0 34px; }
+
+            /* controls stay centred, mode toggle full-width */
+            .rl-mode { width: 100%; }
+            .rl-mode-btn { flex: 1; justify-content: center; font-size: 0.81rem; padding: 9px 10px; }
+            .rl-filters { justify-content: center; }
+            .rl-pill { padding: 5px 11px; font-size: 0.74rem; }
+
+            /* nav strip — allow wrapping on very small screens */
+            .rl-nav { flex-wrap: wrap; justify-content: center; }
+
+            /* timeline tighter */
+            .rl-tl::before { left: 14px; }
+            .rl-card { padding-left: 38px; padding-bottom: 20px; }
+            .rl-card::before { left: 7px; top: 18px; width: 13px; height: 13px; }
+            .rl-card.major::before { left: 5px; top: 16px; width: 17px; height: 17px; }
+            .rl-head { padding: 12px 14px; gap: 9px; }
+            .rl-tab-btn { padding: 8px 13px; font-size: 0.79rem; }
+            .rl-pane { padding: 13px; }
+            .rl-major-note { margin: 12px 13px 0; padding: 10px 12px; font-size: 0.84rem; }
+        }
+
+        @media (max-width: 360px) {
+            .rl-hero-pills { flex-direction: column; align-items: center; }
+            .rl-tags { display: none; }
+            .rl-ver { font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo">NexCore <span>Labs</span></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
+                    <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+                    <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
+                    <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
+                    <div class="div-menu-line"></div>
+                    <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs">How to Use</a>
+                    <div class="div-menu-line"></div>
+                    <a href="index.html#tools" class="mt-0" title="Tools & Systems">Tools & Systems</a>
+                    <a href="index.html#about" title="About NexCore Labs">About Us</a>
+                    <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
+                    <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
+                    <div class="div-menu-line"></div>
+                    <a href="faq.html" class="fade mt-0" title="FAQ & Support">FAQ</a>
+                    <a href="releases.html" class="fade mt-0" title="Releases & Updates">Releases / Updates</a>
+                    <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+                    <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+    <div class="rl-wrap">
+
+        <!-- Hero -->
+        <div class="rl-hero">
+            <div class="rl-eyebrow"><span class="rl-eyebrow-dot"></span> <a href="CHANGELOG.md" title="View changelog">Changelog</a></div>
+            <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
+            <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
+            <div class="rl-hero-pills">
+                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.5.0</strong></span>
+                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>14 Mar 2026</strong></span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>10</strong> releases</span>
+            </div>
+        </div>
+
+        <!-- What's new banner -->
+        <div class="rl-banner hidden" id="rlBanner">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span id="rlBannerText">Loading…</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="rl-controls">
+            <div class="rl-mode" role="group" aria-label="View mode">
+                <button class="rl-mode-btn active" data-mode="user" aria-pressed="true">
+                    <i class="fa-solid fa-user"></i> User Updates
+                </button>
+                <button class="rl-mode-btn" data-mode="developer" aria-pressed="false">
+                    <i class="fa-solid fa-code"></i> Developer Notes
+                </button>
+            </div>
+            <div class="rl-filters" role="group" aria-label="Filter releases">
+                <button class="rl-pill active" data-filter="all">All</button>
+                <button class="rl-pill" data-filter="feature"><i class="fa-solid fa-wand-magic-sparkles"></i> Features</button>
+                <button class="rl-pill" data-filter="improvement"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</button>
+                <button class="rl-pill" data-filter="fix"><i class="fa-solid fa-wrench"></i> Fixes</button>
+                <button class="rl-pill" data-filter="developer"><i class="fa-solid fa-terminal"></i> Developer</button>
+            </div>
+        </div>
+
+        <!-- Layout -->
+        <div class="rl-layout">
+
+            <!-- Sidebar nav -->
+            <nav class="rl-nav" aria-label="Version navigation">
+                <div class="rl-nav-label">Versions</div>
+                <div class="rl-nav-select-wrap" id="rlVersionSelectWrap">
+                    <select class="rl-nav-select-native" id="rlVersionSelect" aria-label="Select release version"></select>
+                    <div class="rl-nav-select-trigger" id="rlVersionSelectTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="rlVersionSelectLabel">Select Version</span>
+                        <span class="rl-nav-select-chevron"></span>
+                    </div>
+                    <div class="rl-nav-select-panel" role="listbox" id="rlVersionSelectPanel"></div>
+                </div>
+
+                <div class="rl-nav-panel">
+                    <a class="rl-nav-item"href="#v250" data-version="v2.5.0"><span class="rl-dot-min"></span>v2.5.0</a>
+                    <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
+                    <a class="rl-nav-item"href="#v240" data-version="v2.4.0"><span class="rl-dot-min"></span>v2.4.0</a>
+                    <a class="rl-nav-item"href="#v230" data-version="v2.3.0"><span class="rl-dot-min"></span>v2.3.0</a>
+                    <a class="rl-nav-item"href="#v220" data-version="v2.2.0"><span class="rl-dot-min"></span>v2.2.0</a>
+                    <a class="rl-nav-item"href="#v210" data-version="v2.1.0"><span class="rl-dot-min"></span>v2.1.0</a>
+                    <a class="rl-nav-item"href="#v200" data-version="v2.0.0"><span class="rl-dot-maj"></span>v2.0.0</a>
+                    <a class="rl-nav-item"href="#v120" data-version="v1.2.0"><span class="rl-dot-min"></span>v1.2.0</a>
+                    <a class="rl-nav-item"href="#v110" data-version="v1.1.0"><span class="rl-dot-min"></span>v1.1.0</a>
+                    <a class="rl-nav-item"href="#v100" data-version="v1.0.0"><span class="rl-dot-maj"></span>v1.0.0</a>    
+                </div>
+            </nav>
+
+            <!-- Timeline -->
+            <div class="rl-tl" id="rlTl">
+
+                <!-- v2.5.0 -->
+                <div class="rl-card open" id="v250" data-version="v2.5.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.5.0</span>
+                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>14 Mar 2026</div>
+                            <div class="rl-summary">Major UI refresh, releases hub, and performance polish across the platform.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u250">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d250">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u250">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Brand-new dark theme applied to the Hub and homepage.</li>
+                                    <li>Project details upgraded with stats, social links, QR codes, and creator profiles.</li>
+                                    <li>Dedicated Releases page for tracking platform history.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Category chips and filters with richer styling across the explorer experience.</li>
+                                    <li>Polished project category badges and detail layouts for better readability.</li>
+                                    <li>Faster page loads via minified core CSS and JS assets.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Removed stray BOM characters and fixed string interpolation glitches.</li>
+                                    <li>Icon updates across the Releases page for consistent visual language.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d250">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Custom-styled version dropdown replacing the native select.</li>
+                                    <li>New cookie consent manager and authentication UI components.</li>
+                                    <li>Added <span class="ct">rel="noopener"</span> on external links for improved security.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Added Apple Touch icon and social meta tags for richer sharing.</li>
+                                    <li>Core JS bootstrapping and layout styling refreshed across the site.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.4.1 -->
+                <div class="rl-card" id="v241" data-version="v2.4.1" data-tags="fix,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.4.1</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>7 Mar 2026</div>
+                            <div class="rl-summary">Fixing known problems and updating the service worker.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u241">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d241">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u241">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Fixed known issues reported in the latest release.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d241">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Updated <span class="ct">service-worker.js</span> for better caching stability.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.4.0 -->
+                <div class="rl-card" id="v240" data-version="v2.4.0" data-tags="feature,improvement,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.4.0</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>7 Mar 2026</div>
+                            <div class="rl-summary">Project categories, contact information, and 16 color-coded category types with hub filtering.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u240">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d240">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u240">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li><strong>Contact Information section</strong> in account settings — set a public email and phone number displayed on your project page.</li>
+                                    <li><strong>16 project categories</strong> with color-coded badges: Technology, Business, Education, Finance, Healthcare, Environment, and more.</li>
+                                    <li><strong>Category filtering</strong> on the Hub — browse all published projects by type in one tap.</li>
+                                    <li><strong>Category stats</strong> section at the bottom of the Hub showing project counts per category.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Enhanced tooltip styling with blur effect and shadow for better readability.</li>
+                                    <li>Consistent input field colours and borders across the whole site.</li>
+                                    <li>Task counter on the homepage bumped from 120+ to 360+.</li>
+                                    <li>Data export now includes your contact email and phone number.</li>
+                                    <li>Cleaned up footer links across multiple pages.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d240">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>New <span class="ct">project-categories.js</span> module — normalisation, slug aliases, badge rendering, SVG icon map for all 16 categories.</li>
+                                    <li>New <span class="ct">assets/css/project-categories.css</span> with CSS variables per category and badge component styles.</li>
+                                    <li>Dropdown functionality extracted into reusable <span class="ct">initPortalSelect()</span> — panels portalled to <span class="ct">document.body</span> to eliminate z-index stacking issues.</li>
+                                    <li>Cookie icons converted from emoji to inline SVG for consistent cross-platform rendering.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Added <span class="ct">contact_email</span> and <span class="ct">phone_number</span> columns to the <span class="ct">users</span> table.</li>
+                                    <li>Projects now carry a <span class="ct">category</span> field with normalisation and legacy alias support.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Updated <span class="ct">version.js</span> to <span class="ct">v2.4.0</span>.</li>
+                                    <li>Added <span class="ct">sql/</span> to <span class="ct">.gitignore</span>.</li>
+                                    <li>Removed legacy <span class="ct">cookie-consent.css</span> — fully migrated to Cookie Manager v2.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.3.0 -->
+                <div class="rl-card" id="v230" data-version="v2.3.0" data-tags="feature,improvement,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top"><span class="rl-ver">v2.3.0</span></div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>7 Mar 2026</div>
+                            <div class="rl-summary">User profiles, AI project insights, creator sections on project pages, QR downloads, and view counters.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u230">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d230">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u230">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Your display name (full name, username, or email prefix) shown everywhere instead of the raw email address.</li>
+                                    <li>Project pages now feature a <strong>Creator section</strong> with your avatar, name, and public contact links.</li>
+                                    <li><strong>AI Project Insights</strong> — generate a smart summary on any project page with one click.</li>
+                                    <li>QR codes can now be <strong>downloaded as PNG</strong> directly from project pages.</li>
+                                    <li>View count and creation date badges added to every project page.</li>
+                                    <li>Social sharing buttons for X, LinkedIn, and WhatsApp on all project pages.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Navbar now shows your avatar and display name when signed in.</li>
+                                    <li>Project cards on the Hub redesigned with creation date and view count metadata.</li>
+                                    <li>Hub now loads newest projects first (descending order).</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d230">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Added <span class="ct">getUserDisplayName()</span> and <span class="ct">getUserAvatar()</span> helpers across all pages.</li>
+                                    <li>New <span class="ct">project_insights</span> action in <span class="ct">/api/ai</span> — returns <span class="ct">{ summary, insights[] }</span>.</li>
+                                    <li>Owner-check in <span class="ct">project.html</span> tightened with <span class="ct">.eq('owner_user_id', session.user.id)</span>.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Added <span class="ct">creator_name</span> and <span class="ct">creator_avatar_url</span> to the <span class="ct">projects</span> table.</li>
+                                    <li>Auto-backfill logic for legacy projects missing creator metadata on next dashboard load.</li>
+                                    <li>User profile sync on login now stores avatar URL in the <span class="ct">users</span> table.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.2.0 -->
+                <div class="rl-card" id="v220" data-version="v2.2.0" data-tags="improvement,fix,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top"><span class="rl-ver">v2.2.0</span></div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>6 Mar 2026</div>
+                            <div class="rl-summary">Cookie Consent v2 rollout, moderation UI in dashboard, improved modals, and AI loading animations.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u220">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d220">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u220">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Upgraded to <strong>Cookie Consent Manager v2</strong> — granular control over analytics, external media, and AI cookies with a polished modal.</li>
+                                    <li>Redesigned <strong>Delete Account</strong> modal — animated, accessible, with proper focus trapping and ARIA attributes.</li>
+                                    <li>New <strong>Delete Project</strong> confirmation modal — replaces browser <span class="ct">confirm()</span> dialogs site-wide.</li>
+                                    <li>Dashboard now displays your project's <strong>moderation status</strong> via a colour-coded badge with a reason popup on tap.</li>
+                                    <li>AI generate buttons animate with a shimmer sweep and burst sparkles while loading.</li>
+                                    <li>Footer updated with proper PayPal logo across all pages.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Fixed z-index issue with AI style dropdown — panel now portals to <span class="ct">document.body</span>.</li>
+                                    <li>Removed stale "BETA" badges from account, dashboard, and hub headings.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d220">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>New <span class="ct">api/moderate-project.js</span> — rule-based + Gemini-powered moderation, optional <span class="ct">moderation_logs</span> table, controls publish state.</li>
+                                    <li><span class="ct">GET /api/ai?usage=1</span> added — fetch quota stats without consuming an action.</li>
+                                    <li>Cookie HTML removed from all page bodies; injected by <span class="ct">cookies.js</span> (v2) with granular categories, focus trap, and a11y.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Added <span class="ct">moderation_status</span>, <span class="ct">moderation_reason</span>, <span class="ct">last_moderated_at</span> to <span class="ct">projects</span>.</li>
+                                    <li>Created <span class="ct">moderation_logs</span> table for full audit trail of all moderation decisions.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.1.0 -->
+                <div class="rl-card" id="v210" data-version="v2.1.0" data-tags="feature,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top"><span class="rl-ver">v2.1.0</span></div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>1 Mar 2026</div>
+                            <div class="rl-summary">AI Assist launched — enhance descriptions, generate card briefs, with 3-action daily limits.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u210">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d210">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u210">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li><strong>AI Assist</strong> in the dashboard — rewrite your page description in Professional, Shorter, Technical, or Inspiring tone.</li>
+                                    <li><strong>AI Card Brief</strong> generator — derive a concise hub card description from your full page description in one click.</li>
+                                    <li>AI actions are <strong>limited to 3 per day</strong> — your remaining count is always visible in the dashboard.</li>
+                                    <li><strong>Copy Page Link</strong> button added to the dashboard for instant sharing.</li>
+                                    <li>Slug preview updates live as you type the project name.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d210">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-api"><i class="fa-solid fa-plug"></i> API</div>
+                                <ul class="rl-ul c-api">
+                                    <li>New <span class="ct">api/ai.js</span> — Google Gemini via <span class="ct">@google/genai</span>, Bearer JWT required, enforces 3-per-day limit via Supabase RPC.</li>
+                                    <li>Supported actions: <span class="ct">improve_page</span>, <span class="ct">card_summary</span>, <span class="ct">project_insights</span>.</li>
+                                    <li>Debug endpoint <span class="ct">api/models.js</span> for listing available Gemini models (temporary).</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>New <span class="ct">ai_usage</span> table for per-user daily tracking with RLS.</li>
+                                    <li>RPC <span class="ct">consume_ai_use(max_uses)</span> — atomic daily limit enforcement.</li>
+                                    <li>RPC <span class="ct">get_ai_usage(max_uses)</span> — returns used/remaining counts.</li>
+                                    <li>Separate <span class="ct">card_description</span> and <span class="ct">page_description</span> fields added to <span class="ct">projects</span> table.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Added <span class="ct">@google/genai ^1.43.0</span> to <span class="ct">package.json</span>.</li>
+                                    <li>Gemini model configurable via <span class="ct">GEMINI_MODEL</span> env var (default: <span class="ct">models/gemini-2.5-flash</span>).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v2.0.0 MAJOR -->
+                <div class="rl-card major" id="v200" data-version="v2.0.0" data-tags="feature,improvement,developer">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.0.0</span>
+                                <span class="rl-badge-major"><i class="fa-solid fa-crown fa-mini"></i> Major Release</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>10 Feb 2026</div>
+                            <div class="rl-summary">Complete platform rebuild — Supabase auth, user dashboards, project management, dynamic hub.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-major-note">
+                            <strong>Why this matters —</strong> v2.0.0 is the graduation from a static showcase to a fully dynamic platform. Any SQU student can now sign in, create a project, and publish it to the hub — zero technical setup required. This release is the foundation everything else was built on.
+                        </div>
+                        <div class="rl-tabs rl-major-divider">
+                            <button class="rl-tab-btn tab-u active" data-tab="u200">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d200">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u200">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Sign in with your <strong>SQU Google account</strong> — no password, no friction.</li>
+                                    <li>New <strong>Dashboard</strong> — create, edit, and publish your project in minutes.</li>
+                                    <li>New <strong>Account Settings</strong> — view your profile, export data, delete your account.</li>
+                                    <li>Projects get <strong>dedicated public pages</strong> with QR codes and social sharing.</li>
+                                    <li>Hub now loads projects <strong>live from the database</strong> — always up-to-date.</li>
+                                    <li>Per-project page visit analytics tracking.</li>
+                                    <li>Trustpilot review widget integrated on the hub.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d200">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Integrated <span class="ct">@supabase/supabase-js</span> for full backend, auth, and database.</li>
+                                    <li>New <span class="ct">assets/js/supabase-client.js</span> — shared client initialisation across all pages.</li>
+                                    <li>New <span class="ct">assets/js/auth-ui.js</span> — global auth state, navbar injection, avatar support.</li>
+                                    <li>Serverless functions: <span class="ct">api/track-visit.js</span>, <span class="ct">api/delete-account.js</span>.</li>
+                                    <li>New <span class="ct">lib/supabaseAdmin.js</span> for service-role server-side operations.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Migrated from static <span class="ct">data/projects.json</span> to a live Supabase <span class="ct">projects</span> table.</li>
+                                    <li>Created <span class="ct">users</span>, <span class="ct">projects</span>, <span class="ct">page_visits_daily</span> tables.</li>
+                                    <li>Row Level Security (RLS) enabled on all user-facing tables.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v1.2.0 -->
+                <div class="rl-card" id="v120" data-version="v1.2.0" data-tags="improvement,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top"><span class="rl-ver">v1.2.0</span></div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>3 Feb 2026</div>
+                            <div class="rl-summary">Service Worker rewrite, cookie consent, offline support, and UI polish across all pages.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u120">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d120">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u120">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Added <strong>offline support</strong> — previously visited pages remain accessible without internet.</li>
+                                    <li>Introduced the <strong>cookie consent</strong> banner — analytics only load with your explicit permission.</li>
+                                    <li>Leader image replaced with an optimised <strong>WebP photo</strong>.</li>
+                                    <li>Meta tags updated site-wide for better social sharing previews on all platforms.</li>
+                                    <li>Oman badge added and navigation order improved for a more natural flow.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Fixed broken image paths in the Service Worker precache list.</li>
+                                    <li>Hardened signup form validation against incomplete or malformed submissions.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d120">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Full rewrite of <span class="ct">service-worker.js</span> — precaching, stale-while-revalidate runtime strategy, navigation preload, and <span class="ct">offline.html</span> fallback.</li>
+                                    <li>Image cache capped at 60 entries with LRU eviction via recursive <span class="ct">trimCache()</span>.</li>
+                                    <li>Backdrop blur values reduced for improved performance on low-end devices.</li>
+                                    <li>Full documentation suite added: implementation notes, quick reference, delivery summary, completion checklist.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v1.1.0 -->
+                <div class="rl-card" id="v110" data-version="v1.1.0" data-tags="improvement">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top"><span class="rl-ver">v1.1.0</span></div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>1 Nov 2025</div>
+                            <div class="rl-summary">Image compression to WebP, a new research page, UI polish, and Git version control introduced.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag impr">↑ Improvements</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u110">User Updates</button>
+                            <button class="rl-tab-btn tab-d"        data-tab="d110">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u110">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>All images compressed and converted to <strong>WebP</strong> — pages load noticeably faster.</li>
+                                    <li>New <strong>research page</strong> added for academic content.</li>
+                                    <li>General UI improvements and visual polish throughout.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d110">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Began using <strong>Git VCS</strong> — all changes tracked from this release onward.</li>
+                                    <li>WebP image compression pipeline established.</li>
+                                    <li>Deleted broken legacy file <span class="ct">mobile-preview.html</span>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- ▸ v1.0.0 MAJOR -->
+                <div class="rl-card major" id="v100" data-version="v1.0.0" data-tags="feature">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v1.0.0</span>
+                                <span class="rl-badge-major"><i class="fa-solid fa-rocket fa-mini"></i> Initial Launch</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>27 Oct 2025</div>
+                            <div class="rl-summary">NexCore Labs went live — the very first version of the platform.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-major-note">
+                            <strong>The beginning —</strong> NexCore Labs launched as a static showcase for Sultan Qaboos University student projects. This version established the brand identity, design system, and core pages that every future release built upon.
+                        </div>
+                        <div class="rl-tabs rl-major-divider">
+                            <button class="rl-tab-btn tab-u active" data-tab="u100">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d100">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u100">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>NexCore Labs website live at <strong>nexcorelabs.vercel.app</strong>.</li>
+                                    <li>Homepage with hero, about, tools, team, and contact sections.</li>
+                                    <li>Project Hub with static project card listings.</li>
+                                    <li>PWA support — installable on mobile and desktop with offline caching.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d100">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical Foundation</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Pure HTML5 / CSS3 / vanilla JS — zero frameworks, zero dependencies.</li>
+                                    <li>Custom CSS design system with <span class="ct">--dark-base</span>, <span class="ct">--primary-accent</span>, glass card components.</li>
+                                    <li>Service Worker with basic precaching strategy.</li>
+                                    <li>Google Analytics 4 with IP anonymisation.</li>
+                                    <li>OpenGraph and Twitter Card meta tags site-wide for rich previews.</li>
+                                    <li>Deployed on Vercel with automatic GitHub CI/CD integration.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Empty state -->
+                <div class="rl-empty hidden" id="rlEmpty">
+                    <i class="fa-solid fa-filter-circle-xmark"></i>
+                    <p>No releases match this filter.</p>
+                </div>
+
+            </div><!-- /rl-tl -->
+        </div><!-- /rl-layout -->
+
+    </div><!-- /rl-wrap -->
+
+    <div class="nexcore-sign">
+        <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+    </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart text-accent"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+                <br>
+                <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>
+                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <!-- <script src="assets/js/release.js"></script> -->
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/auth-ui.js"></script>
+    <script src="version.js"></script>
+    <script>
+        console.log(`NexCore Labs version ${APP_VERSION}`);
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.body.classList.add('mode-user');
+
+        /* ── toggle open/close ── */
+        function toggleCard(card) { card.classList.toggle('open'); }
+
+        /* ── mode switch ── */
+        let currentMode = 'user';
+        document.querySelectorAll('.rl-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentMode = btn.dataset.mode;
+                document.querySelectorAll('.rl-mode-btn').forEach(b => {
+                    b.classList.toggle('active', b === btn);
+                    b.setAttribute('aria-pressed', String(b === btn));
+                });
+                document.body.className = document.body.className.replace(/mode-\S+/g, '').trim();
+                document.body.classList.add(currentMode === 'developer' ? 'mode-dev' : 'mode-user');
+
+                document.querySelectorAll('.rl-card.open').forEach(card => {
+                    card.querySelectorAll('.rl-tab-btn').forEach(t => t.classList.remove('active'));
+                    card.querySelectorAll('.rl-pane').forEach(p => p.classList.remove('active'));
+                    const want = currentMode === 'developer' ? card.querySelector('.tab-d') : card.querySelector('.tab-u');
+                    if (want) {
+                        want.classList.add('active');
+                        const pane = document.getElementById(want.dataset.tab);
+                        if (pane) pane.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        /* ── tab click inside a card ── */
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.rl-tab-btn');
+            if (!btn) return;
+            const card = btn.closest('.rl-card');
+            card.querySelectorAll('.rl-tab-btn').forEach(t => t.classList.remove('active'));
+            card.querySelectorAll('.rl-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const pane = document.getElementById(btn.dataset.tab);
+            if (pane) pane.classList.add('active');
+        });
+
+        /* ── filter pills ── */
+        let currentFilter = 'all';
+        const versionSelect = document.getElementById('rlVersionSelect');
+        const versionSelectWrap = document.getElementById('rlVersionSelectWrap');
+        const versionSelectTrigger = document.getElementById('rlVersionSelectTrigger');
+        const versionSelectLabel = document.getElementById('rlVersionSelectLabel');
+        const versionSelectPanel = document.getElementById('rlVersionSelectPanel');
+
+        function buildVersionSelect() {
+            if (!versionSelect || !versionSelectWrap) return;
+            const items = Array.from(document.querySelectorAll('.rl-nav-item'));
+            
+            // Native select fallback
+            versionSelect.innerHTML = items.map(item => {
+                const href = item.getAttribute('href');
+                const label = item.dataset.version || item.textContent.trim();
+                return `<option value="${href}">${label}</option>`;
+            }).join('');
+
+            // Custom panel options
+            versionSelectPanel.innerHTML = items.map(item => {
+                const href = item.getAttribute('href');
+                const label = item.dataset.version || item.textContent.trim();
+                return `<div class="rl-nav-select-option" role="option" tabindex="0" data-value="${href}">${label}</div>`;
+            }).join('');
+
+            // Move panel to body to fix z-index issues
+            document.body.appendChild(versionSelectPanel);
+
+            function reposition() {
+                const rect = versionSelectTrigger.getBoundingClientRect();
+                versionSelectPanel.style.top = `${rect.bottom + 6}px`;
+                versionSelectPanel.style.left = `${rect.left}px`;
+                versionSelectPanel.style.minWidth = `${rect.width}px`;
+            }
+
+            function openPanel() {
+                reposition();
+                versionSelectWrap.classList.add('open');
+                versionSelectPanel.classList.add('open');
+                versionSelectTrigger.setAttribute('aria-expanded', 'true');
+            }
+
+            function closePanel() {
+                versionSelectWrap.classList.remove('open');
+                versionSelectPanel.classList.remove('open');
+                versionSelectTrigger.setAttribute('aria-expanded', 'false');
+            }
+
+            function applySelected(val) {
+                versionSelect.value = val;
+                
+                versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
+                    opt.classList.toggle('selected', opt.dataset.value === val);
+                });
+                
+                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
+                if (selectedEl) {
+                    versionSelectLabel.textContent = selectedEl.textContent;
+                }
+
+                const target = document.querySelector(val);
+                if (!target) return;
+                const y = target.getBoundingClientRect().top + window.scrollY - 92;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+                target.classList.add('open');
+            }
+
+            versionSelectTrigger.addEventListener('click', () => {
+                if (versionSelectPanel.classList.contains('open')) closePanel();
+                else openPanel();
+            });
+
+            versionSelectTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+                if (e.key === 'Escape') closePanel();
+            });
+
+            versionSelectPanel.addEventListener('click', e => {
+                const opt = e.target.closest('.rl-nav-select-option');
+                if (!opt) return;
+                applySelected(opt.dataset.value);
+                closePanel();
+            });
+
+            versionSelectPanel.addEventListener('keydown', e => {
+                const opt = e.target.closest('.rl-nav-select-option');
+                if (!opt) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    applySelected(opt.dataset.value);
+                    closePanel();
+                }
+            });
+
+            document.addEventListener('click', e => {
+                if (!versionSelectWrap.contains(e.target) && !versionSelectPanel.contains(e.target)) {
+                    closePanel();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closePanel();
+            });
+
+            window.addEventListener('scroll', () => {
+                if (versionSelectPanel.classList.contains('open')) reposition();
+            }, true);
+            window.addEventListener('resize', () => {
+                if (versionSelectPanel.classList.contains('open')) reposition();
+            });
+
+            if (items.length > 0) {
+                const firstHref = items[0].getAttribute('href');
+                versionSelect.value = firstHref;
+                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${firstHref}"]`);
+                if (selectedEl) {
+                    selectedEl.classList.add('selected');
+                    versionSelectLabel.textContent = selectedEl.textContent;
+                }
+            }
+        }
+
+        function syncSelectDisabled() {
+            if (!versionSelect) return;
+            const options = Array.from(versionSelect.options);
+            options.forEach(option => {
+                const item = document.querySelector(`.rl-nav-item[href="${option.value}"]`);
+                const isDimmed = item ? item.classList.contains('dimmed') : false;
+                option.disabled = isDimmed;
+                if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
+                    const customOpt = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${option.value}"]`);
+                    if (customOpt) customOpt.classList.toggle('dimmed', isDimmed);
+                }
+            });
+        }
+
+        document.querySelectorAll('.rl-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                currentFilter = pill.dataset.filter;
+                document.querySelectorAll('.rl-pill').forEach(p => p.classList.toggle('active', p === pill));
+                applyFilter();
+            });
+        });
+        function applyFilter() {
+            let visible = 0;
+            document.querySelectorAll('.rl-card[data-version]').forEach(card => {
+                const tags = (card.dataset.tags || '').split(',');
+                const show = currentFilter === 'all' || tags.includes(currentFilter);
+                card.classList.toggle('hidden', !show);
+                if (show) visible++;
+                const nav = document.querySelector(`.rl-nav-item[data-version="${card.dataset.version}"]`);
+                if (nav) nav.classList.toggle('dimmed', !show);
+            });
+            document.getElementById('rlEmpty').classList.toggle('hidden', visible > 0);
+            syncSelectDisabled();
+        }
+
+        /* ── version nav scroll spy + smooth jump ── */
+        function updateNavSpy() {
+            let cur = null;
+            document.querySelectorAll('.rl-card[data-version]:not(.hidden)').forEach(card => {
+                if (card.getBoundingClientRect().top <= 130) cur = card.dataset.version;
+            });
+            document.querySelectorAll('.rl-nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.version === cur);
+            });
+            if (versionSelect && cur) {
+                const active = document.querySelector(`.rl-nav-item[data-version="${cur}"]`);
+                if (active) {
+                    const val = active.getAttribute('href');
+                    versionSelect.value = val;
+                    if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
+                        versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
+                            opt.classList.toggle('selected', opt.dataset.value === val);
+                        });
+                        const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
+                        if (selectedEl) versionSelectLabel.textContent = selectedEl.textContent;
+                    }
+                }
+            }
+        }
+        window.addEventListener('scroll', updateNavSpy, { passive: true });
+        updateNavSpy();
+
+        document.querySelectorAll('.rl-nav-item').forEach(item => {
+            item.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(item.getAttribute('href'));
+                if (!target) return;
+                const y = target.getBoundingClientRect().top + window.scrollY - 92;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+                target.classList.add('open');
+            });
+        });
+
+        buildVersionSelect();
+        syncSelectDisabled();
+        updateNavSpy();
+
+        /* ── what's new since last visit ── */
+        (function () {
+            const KEY = 'nexcore_rl_visit';
+            const DATES = {
+                'v2.5.0': new Date('2026-03-14'),
+                'v2.4.1': new Date('2026-03-07'),
+                'v2.4.0': new Date('2026-03-07'),
+                'v2.3.0': new Date('2026-03-07'),
+                'v2.2.0': new Date('2026-03-06'),
+                'v2.1.0': new Date('2026-03-01'),
+                'v2.0.0': new Date('2026-02-10'),
+                'v1.2.0': new Date('2026-02-03'),
+                'v1.1.0': new Date('2025-11-01'),
+                'v1.0.0': new Date('2025-10-27'),
+            };
+            const stored = localStorage.getItem(KEY);
+            localStorage.setItem(KEY, String(Date.now()));
+            if (!stored) return;
+            const last = new Date(Number(stored));
+            const fresh = Object.entries(DATES).filter(([, d]) => d > last).map(([v]) => v);
+            if (!fresh.length) return;
+            const anchor = '#v' + fresh[0].replace(/\./g, '');
+            document.getElementById('rlBannerText').innerHTML =
+                `<strong>New since your last visit:</strong> ${fresh.join(', ')} — <a href="${anchor}" style="color:var(--accent);text-decoration:underline;font-weight:600;" onclick="event.preventDefault();var t=document.querySelector('${anchor}');if(t){t.classList.add('open');window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-92,behavior:'smooth'})}">Jump to changes ↗</a>`;
+            document.getElementById('rlBanner').classList.remove('hidden');
+        })();
+    </script>
+    <script src="assets/js/cookies.js" defer></script>
+</body>
+</html>

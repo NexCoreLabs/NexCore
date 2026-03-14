@@ -1,5 +1,41 @@
 # 🧾 Changelog
 
+## v2.5.0 - 14 Mar 2026
+### UI Overhaul:
+- Added styling for project categories, filters, and explorer components.
+- Implemented category chips for project filtering.
+- Added comprehensive styling for project detail pages, including sections for stats, social links, QR codes, and creator profiles.
+
+
+### New Components & Features:
+
+- Implemented a custom-styled dropdown component for version selection, replacing the native select element.
+- Introduced a new granular cookie consent manager and authentication UI components.
+- Added a dedicated releases page to track project history.
+- Added Apple Touch Icon and social media meta tags for better platform integration.
+
+
+### Core & Performance:
+
+- Introduced core JavaScript functionalities and styling for the NexCore website.
+- Minified CSS and JS main files to improve loading performance.
+- Improved link security by adding rel="noopener" to external links.
+
+
+### Refactoring & Fixes:
+
+- Removed BOM (Byte Order Mark) characters and fixed string interpolation issues.
+- Updated icons (e.g., switched fa-sparkles to fa-wand-magic-sparkles) across the releases page.
+- General code formatting and layout improvements for consistency.
+
+---
+
+## v2.4.1 - 7 Mar 2026
+- Fixing known problems.
+- Update service worker.
+
+---
+
 ## v2.4.0 - 7 Mar 2026
 ### Account Management
 - Added **Contact Information section** in account page with email & phone number fields
@@ -243,15 +279,7 @@ hub.html: changed projects ordering from newest-first to oldest-first (created_a
 - Notable: package-lock shows version set to 2.0.0-beta in places—worth double-checking your release/versioning consistency.
 
 ---
-<<<<<<< Updated upstream
 
->>>>>>> Stashed changes
-=======
-## v
-=======
->>>>>>> Stashed changes
-
->>>>>>> f2cd9b3c88d6012d35b6282e6627af537d098a02
 ## v2.0.0 — 10 Feb 2026
 **Note:** This is a major release graduating from v2.0.0-beta with additional UI polish.
 ###  New Features (from beta)
