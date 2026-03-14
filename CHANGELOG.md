@@ -4,6 +4,8 @@
 - Fixing known problems.
 - Update service worker.
 
+---
+
 ## v2.4.0 - 7 Mar 2026
 ### Account Management
 - Added **Contact Information section** in account page with email & phone number fields

@@ -21,6 +21,7 @@
     <meta name="twitter:title" content="NexCore Labs | Releases">
     <meta name="twitter:description" content="Follow the evolution of NexCore Labs — new features, improvements, and fixes.">
     <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/releases.css">
@@ -242,35 +243,32 @@
             gap: 2px;
         }
         .rl-nav-select {
-            display: none;
-            width: 100%;
-            padding: 8px 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.09);
-            background: rgba(255,255,255,0.03);
-            color: var(--text-mid);
-            font-family: var(--mono);
-            font-size: 0.82rem;
-            letter-spacing: 0.2px;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            text-align: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(110, 231, 243, 0.22);
+            border-radius: 10px;
+            color: #e6eef3;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
-            appearance: none;
-            background-image: linear-gradient(45deg, transparent 50%, rgba(230,238,243,0.55) 50%), linear-gradient(135deg, rgba(230,238,243,0.55) 50%, transparent 50%);
-            background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
-            background-size: 6px 6px, 6px 6px;
-            background-repeat: no-repeat;
+            user-select: none;
+            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
         .rl-nav-select:hover {
-            border-color: var(--accent-glow);
-            color: var(--text-hi);
+            background: rgba(110, 231, 243, 0.06);
+            border-color: rgba(110, 231, 243, 0.45);
         }
         .rl-nav-select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(110,231,243,0.18);
-            color: var(--text-hi);
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.15);
+            background: rgba(110, 231, 243, 0.06);
         }
+
         .rl-nav-label {
             font-size: 0.67rem;
             font-weight: 700;
@@ -371,7 +369,6 @@
             display: flex;
             align-items: flex-start;
             gap: 11px;
-            -webkit-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
@@ -671,9 +668,10 @@
 
     <main>
     <div class="rl-wrap">
+
         <!-- Hero -->
         <div class="rl-hero">
-            <div class="rl-eyebrow"><span class="rl-eyebrow-dot"></span> Changelog</div>
+            <div class="rl-eyebrow"><span class="rl-eyebrow-dot"></span> <a href="CHANGELOG.md" title="View changelog">Changelog</a></div>
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
@@ -710,23 +708,28 @@
 
         <!-- Layout -->
         <div class="rl-layout">
+
             <!-- Sidebar nav -->
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
                 <select class="rl-nav-select" id="rlVersionSelect" aria-label="Select release version"></select>
-                <a class="rl-nav-item"        href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
-                <a class="rl-nav-item"        href="#v240" data-version="v2.4.0"><span class="rl-dot-min"></span>v2.4.0</a>
-                <a class="rl-nav-item"        href="#v230" data-version="v2.3.0"><span class="rl-dot-min"></span>v2.3.0</a>
-                <a class="rl-nav-item"        href="#v220" data-version="v2.2.0"><span class="rl-dot-min"></span>v2.2.0</a>
-                <a class="rl-nav-item"        href="#v210" data-version="v2.1.0"><span class="rl-dot-min"></span>v2.1.0</a>
-                <a class="rl-nav-item"        href="#v200" data-version="v2.0.0"><span class="rl-dot-maj"></span>v2.0.0</a>
-                <a class="rl-nav-item"        href="#v120" data-version="v1.2.0"><span class="rl-dot-min"></span>v1.2.0</a>
-                <a class="rl-nav-item"        href="#v110" data-version="v1.1.0"><span class="rl-dot-min"></span>v1.1.0</a>
-                <a class="rl-nav-item"        href="#v100" data-version="v1.0.0"><span class="rl-dot-maj"></span>v1.0.0</a>
+
+                <div class="rl-nav-panel">
+                                <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
+                <a class="rl-nav-item"href="#v240" data-version="v2.4.0"><span class="rl-dot-min"></span>v2.4.0</a>
+                <a class="rl-nav-item"href="#v230" data-version="v2.3.0"><span class="rl-dot-min"></span>v2.3.0</a>
+                <a class="rl-nav-item"href="#v220" data-version="v2.2.0"><span class="rl-dot-min"></span>v2.2.0</a>
+                <a class="rl-nav-item"href="#v210" data-version="v2.1.0"><span class="rl-dot-min"></span>v2.1.0</a>
+                <a class="rl-nav-item"href="#v200" data-version="v2.0.0"><span class="rl-dot-maj"></span>v2.0.0</a>
+                <a class="rl-nav-item"href="#v120" data-version="v1.2.0"><span class="rl-dot-min"></span>v1.2.0</a>
+                <a class="rl-nav-item"href="#v110" data-version="v1.1.0"><span class="rl-dot-min"></span>v1.1.0</a>
+                <a class="rl-nav-item"href="#v100" data-version="v1.0.0"><span class="rl-dot-maj"></span>v1.0.0</a>    
+                </div>
             </nav>
 
             <!-- Timeline -->
             <div class="rl-tl" id="rlTl">
+
                 <!-- ▸ v2.4.1 -->
                 <div class="rl-card open" id="v241" data-version="v2.4.1" data-tags="fix,developer">
                 <div class="rl-box">
@@ -748,7 +751,7 @@
                     <div class="rl-body">
                         <div class="rl-tabs">
                             <button class="rl-tab-btn tab-u active" data-tab="u241">User Updates</button>
-                            <button class="rl-tab-btn tab-d"        data-tab="d241">Developer Notes</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d241">Developer Notes</button>
                         </div>
                         <div class="rl-pane active" id="u241">
                             <div class="rl-blk">
@@ -1253,6 +1256,7 @@
                     <i class="fa-solid fa-filter-circle-xmark"></i>
                     <p>No releases match this filter.</p>
                 </div>
+
             </div><!-- /rl-tl -->
         </div><!-- /rl-layout -->
 
@@ -1269,7 +1273,7 @@
                 <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color:#6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
                 <br>
                 <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
-                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
                         <i class="fa-solid fa-scale-balanced"></i> MIT License
                     </a>
                 </small>
