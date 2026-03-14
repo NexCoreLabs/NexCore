@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 
@@ -35,6 +35,7 @@
         <meta name="twitter:description" content="Sign in to NexCore Labs with your SQU Google account.">
         <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <link rel="stylesheet" href="assets/css/style.css">
 
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
@@ -47,6 +48,15 @@
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <style>
+        .mt-0 { margin-top: 0 !important; }
+        .p-3-0 { padding: 3rem 0 !important; }
+        .mt-1rem { margin-top: 1rem !important; }
+        .pl-1-25rem { padding-left: 1.25rem !important; }
+        .d-none { display: none !important; }
+        .auth-msg-box { padding: 1rem; background: rgba(110, 231, 243, 0.1); border-radius: 8px; margin-bottom: 1rem; color: #6EE7F3; }
+        .auth-note-box { padding: 0.875rem; background: rgba(255, 120, 120, 0.12); border: 1px solid rgba(255, 120, 120, 0.3); border-radius: 8px; margin-bottom: 1rem; color: #ff8888; font-size: 0.9rem; line-height: 1.5; }
+    </style>
     </head>
 
     <body>
@@ -83,7 +93,7 @@
                         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
                         <div class="div-menu-line"></div>
 
-                        <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
+                        <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs">How to Use</a>
 
                         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
 
@@ -95,8 +105,8 @@
                         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
                         <div class="div-menu-line"></div>
 
-                        <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-        <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
+                        <a href="faq.html" class="fade mt-0" title="FAQ & Support">FAQ</a>
+        <a href="releases.html" class="fade mt-0" title="Releases & Updates">Releases / Updates</a>
                         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
                         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
                     </div>
@@ -105,7 +115,7 @@
         </header>
 
         <main>
-            <section class="panel" style="padding: 3rem 0;">
+            <section class="panel p-3-0">
                 <div class="container">
                     <div class="signup-wrapper">
                         <!-- Left Column: Information -->
@@ -117,7 +127,7 @@
 
                                     <p>Align your project vision with our expertise and bring your ideas to life online. We provide comprehensive digital solutions tailored for student-led initiatives.</p>
 
-                                    <ul style="margin-top: 1rem; padding-left: 1.25rem;">
+                                    <ul class="mt-1rem pl-1-25rem">
                                         <li>Professional page development</li>
 
                                         <li>Technical support & guidance</li>
@@ -131,12 +141,12 @@
 
 
 
-                                <div class="auth-content-text" id="loginContent" style="display: none;">
+                                <div class="auth-content-text d-none" id="loginContent">
                                     <h3><i class="fa-solid fa-shield-halved"></i> Welcome Back</h3>
 
                                     <p>Log in to manage your team project, track progress, and access your dashboard. Your secure workspace awaits.</p>
 
-                                    <ul style="margin-top: 1rem; padding-left: 1.25rem;">
+                                    <ul class="mt-1rem pl-1-25rem">
                                         <li>Access your project dashboard</li>
 
                                         <li>Manage team settings</li>
@@ -170,12 +180,12 @@
                                     <button class="auth-tab" id="loginTab" type="button">Existing User</button>
                                 </div>
 
-                                <div id="authMessage" style="display: none; padding: 1rem; background: rgba(110, 231, 243, 0.1); border-radius: 8px; margin-bottom: 1rem; color: #6EE7F3;">
+                                <div id="authMessage" class="auth-msg-box d-none">
                                     <!-- Messages will be displayed here -->
 
                                 </div>
 
-                                <div id="authNote" class="auth-note" style="display: none; padding: 0.875rem; background: rgba(255, 120, 120, 0.12); border: 1px solid rgba(255, 120, 120, 0.3); border-radius: 8px; margin-bottom: 1rem; color: #ff8888; font-size: 0.9rem; line-height: 1.5;">
+                                <div id="authNote" class="auth-note auth-note-box d-none">
                                     <!-- Error notes will be displayed here -->
 
                                 </div>
@@ -224,7 +234,7 @@
 
                     <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
 
-                        <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                        <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
 
                             <i class="fa-solid fa-scale-balanced"></i> MIT License
 

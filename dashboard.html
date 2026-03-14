@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <!-- Cookie Consent Manager v2 -->
@@ -23,6 +23,7 @@
         <title>NexCore Labs | Dashboard</title>
 
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
         <link rel="stylesheet" href="assets/css/unminified-css.css">
         <link rel="stylesheet" href="assets/css/project-categories.css">
@@ -37,7 +38,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .wrap{max-width:980px;margin:60px auto;padding:16px}
-    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08); backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);}
+    .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;margin:14px 0;background:rgba(110,231,243,.08);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
     /* .box:hover{
       border:2px solid rgba(255,255,255,.08);
     } */
@@ -50,7 +51,7 @@
     .msg-success{color:#6ee7f3}
     .msg-error{color:#ff7878}
     .help-box{margin:12px 0;padding:12px;background:rgba(0,0,0,.15);border:1px solid rgba(255,255,255,.06);border-radius:10px;font-size:.9rem}
-    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;user-select:none}
+    .help-box summary{cursor:pointer;opacity:.85;font-weight:500;-webkit-user-select:none;user-select:none}
     .help-box summary:hover{opacity:1}
     .help-box[open] summary{margin-bottom:10px;opacity:1}
     .help-box code{background:rgba(0,0,0,.3);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:.85rem;color:#6ee7f3}
@@ -65,7 +66,7 @@
     .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
     .mod-popup{position:fixed;z-index:9999;
-      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
+      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
     .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
     .ai-btn {
       position: relative;
@@ -149,7 +150,7 @@
       align-items:flex-end;justify-content:center;
       padding:16px;box-sizing:border-box;
       background:rgba(2,6,23,.55);
-      backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
       opacity:0;pointer-events:none;
       transition:opacity .28s ease;
     }
@@ -164,7 +165,7 @@
       border-radius:16px;
       padding:28px 24px 22px;box-sizing:border-box;
       box-shadow:0 24px 72px rgba(2,6,23,.85),0 0 0 1px rgba(255,120,120,.06);
-      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
       color:#e6eef3;font-size:14px;line-height:1.5;
       transform:translateY(28px) scale(.97);opacity:0;
       transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .28s ease;
@@ -213,7 +214,7 @@
       color:#e6eef3;
       font-size:.875rem;font-family:inherit;font-weight:500;
       cursor:pointer;
-      user-select:none;
+      -webkit-user-select:none;user-select:none;
       transition:border-color .2s,background .2s,box-shadow .2s;
     }
     .ai-select-trigger:hover{
@@ -240,7 +241,7 @@
     .ai-select-panel{
       position:fixed;
       background:rgba(8,10,22,.5);
-      backdrop-filter:blur(3px); -webkit-backdrop-filter: blur(3px);
+      -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
       border:1px solid rgba(110,231,243,.6);
       border-radius:12px;
       padding:6px;
@@ -298,6 +299,26 @@
       scrollbar-width:thin;
       scrollbar-color:rgba(110,231,243,.45) transparent;
     }
+    .mt-0{margin-top:0!important}
+    .mt-12{margin-top:12px!important}
+    .mt-10{margin-top:10px!important}
+    .mt-16{margin-top:16px!important}
+    .mt-4 { margin-top: 4px !important; }
+    .fs-9 { font-size: 0.9rem !important; }
+    .fs-85 { font-size: 0.85rem !important; }
+    .d-none{display:none!important}
+    .d-flex{display:flex!important}
+    .gap-8{gap:8px!important}
+    .gap-10{gap:10px!important}
+    .gap-12{gap:12px!important}
+    .color-ai{color:#6EE7F3!important}
+    .bg-ai-glass{background:rgba(110,231,243,.05)!important;border-color:rgba(110,231,243,.2)!important}
+    .w-100{width:100%!important}
+    .max-w-320{max-width:320px!important}
+    .ta-center{text-align:center!important}
+    .jc-center{justify-content:center!important}
+    .ls-2{letter-spacing:2px!important}
+    .img-preview{max-width:240px;border-radius:14px;border: 2px solid rgba(255, 255, 255, 0.06);padding: 12px;}
   </style>
 </head>
 <body>
@@ -660,7 +681,7 @@
             <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
             <br>
             <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
-              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
                 <i class="fa-solid fa-scale-balanced"></i> MIT License
               </a>            </small>
           </div>

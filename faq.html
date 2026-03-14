@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="en">
 
@@ -38,6 +38,7 @@
     <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
@@ -50,6 +51,10 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <style>
+        .mt-0 { margin-top: 0 !important; }
+        .logo-link a { text-decoration: none; color: inherit; }
+    </style>
 </head>
 
 <body>
@@ -63,7 +68,7 @@
     <header class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <h1 id="logo"><a href="index.html" style="text-decoration: none; color: inherit;">NexCore <span>Labs</span></a></h1>
+                <h1 id="logo" class="logo-link"><a href="index.html">NexCore <span>Labs</span></a></h1>
             </div>
 
             <div class="dropdown">
@@ -84,7 +89,7 @@
                     <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
                     <div class="div-menu-line"></div>
 
-                    <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
+                    <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs">How to Use</a>
 
                     <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
 
@@ -96,8 +101,8 @@
                     <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
                     <div class="div-menu-line"></div>
 
-                    <a href="#" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-                    <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
+                    <a href="#" class="fade mt-0" title="FAQ & Support">FAQ</a>
+                    <a href="releases.html" class="fade mt-0" title="Releases & Updates">Releases / Updates</a>
                     <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
                     <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
                 </div>
@@ -761,7 +766,7 @@
 
                 <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
 
-                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
 
                         <i class="fa-solid fa-scale-balanced"></i> MIT License
 

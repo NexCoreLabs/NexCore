@@ -105,8 +105,8 @@ a {
   position: absolute;
   inset: 0;
   mask: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   filter: blur(30px);
   z-index: -1;
 }
@@ -119,6 +119,7 @@ a {
   font-weight: 600;
   color: #eaf6fb;
   cursor: default;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -139,6 +140,7 @@ a {
 }
 
 .nexcore-sign img {
+  -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
   max-width: 250px;
@@ -163,6 +165,7 @@ a {
   width: 600px;
   opacity: 0.8;
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
   transition:
     opacity 0.6s ease,
@@ -281,8 +284,8 @@ a {
 }
 button,
 .btn {
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   letter-spacing: 1px;
 }
 .btn.primary {
@@ -369,6 +372,7 @@ button,
   margin-bottom: 20px;
   display: inline-block;
   cursor: default;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -442,8 +446,8 @@ button,
   border-radius: 10px;
   text-align: center;
   min-width: 70px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 .kpis strong {
   display: block;
@@ -467,8 +471,8 @@ button,
   width: 220px;
   background-color: rgba(10, 11, 28, 0.9);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   color: #fff;
   text-align: center;
   padding: 8px;
@@ -528,8 +532,8 @@ button,
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.03);
   box-shadow: 0 8px 24px rgba(3, 6, 12, 0.6);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 article.info-card:hover {
   box-shadow: 0 12px 40px rgba(3, 6, 12, 0.8);
@@ -554,8 +558,8 @@ article.info-card:hover {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
   margin-top: 18px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 .member {
   padding: 18px;
@@ -574,6 +578,7 @@ article.info-card:hover {
     transform 1s cubic-bezier(0.2, 0.9, 0.3, 1),
     border-radius 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -608,14 +613,26 @@ article.info-card:hover {
   margin: 0 0 18px;
 }
 
+.member h4 sup {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Utilities */
+.mt-0 { margin-top: 0 !important; }
+.text-accent { color: #6ee7f3 !important; }
+.hidden { display: none !important; }
+.fa-mini { font-size: 0.55rem !important; }
+.rl-major-divider { margin-top: 0 !important; border-top: 1px solid rgba(255,255,255,0.052) !important; }
+
 /* projects & hub */
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
   margin-top: 18px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 /* New project card link wrapper - makes entire card clickable */
@@ -764,8 +781,8 @@ a.project-card:hover .id {
 .signup-form {
   padding: 18px;
   border-radius: 12px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.03);
 }
 
@@ -863,8 +880,8 @@ a.project-card:hover .id {
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   margin-top: 18px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .tool-card {
@@ -874,8 +891,8 @@ a.project-card:hover .id {
   cursor: default;
   padding: 12px;
   border-radius: 10px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.03);
   color: var(--muted);
   font-weight: 600;
@@ -891,7 +908,7 @@ a.project-card:hover .id {
 }
 
 .tool-card img {
-  pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
   position: absolute;
@@ -916,14 +933,14 @@ a.project-card:hover .id {
   align-items: start;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 .contact-card {
   padding: 18px;
   border-radius: 12px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 .socials {
   display: flex;
@@ -1002,8 +1019,8 @@ a.project-card:hover .id {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .pricing-card::before {
@@ -1127,8 +1144,8 @@ a.project-card:hover .id {
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .comparison-table th {
@@ -1182,8 +1199,8 @@ a.project-card:hover .id {
 .faq-item {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   padding: 20px;
   margin-bottom: 15px;
   border-radius: 8px;
@@ -1255,8 +1272,8 @@ a.project-card:hover .id {
   gap: 10px;
   padding: 12px 18px;
   background-color: #00b67940;
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border: 2px solid rgba(255, 255, 255, 0.06);
   border-radius: 6px;
   text-decoration: none;
@@ -1426,8 +1443,8 @@ textarea {
     rgba(255, 255, 255, 0.1),
     rgba(255, 255, 255, 0)
   );
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   margin-bottom: 10px;
@@ -1501,6 +1518,7 @@ textarea:focus {
 .checkbox-field {
   color: #fff;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   display: flex;
   align-items: center;
@@ -1513,8 +1531,8 @@ textarea:focus {
 .form-message-popup {
   border-radius: 18px !important;
   background: transparent;
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   box-shadow: 0 0 20px rgba(115, 189, 215, 0.06);
 }
 
@@ -1564,6 +1582,7 @@ textarea:focus {
   padding: 28px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.03);
   margin-top: 28px;
+  -webkit-user-select: none;
   user-select: none;
   cursor: default;
 }
@@ -1806,6 +1825,7 @@ textarea:focus {
   width: 400px;
   max-height: 360px;
   min-height: 100px;
+  -webkit-user-select: none;
   user-select: none;
   border-radius: var(--radius);
   border: none;
@@ -1815,8 +1835,8 @@ textarea:focus {
   box-shadow:
     0 8px 32px 0 rgba(115, 189, 215, 0.06),
     inset 0px 0px 20px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   background: rgba(10, 11, 28, 0.8);
   overflow-y: auto;
   padding: 12px 16px;
@@ -1912,8 +1932,8 @@ textarea:focus {
     rgba(255, 255, 255, 0.1),
     rgba(255, 255, 255, 0)
   );
-  backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
   margin-bottom: 10px;
@@ -1955,8 +1975,8 @@ textarea:focus {
   border-radius: 12px;
   padding: 1.5rem;
   max-width: 760px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .info-block h3 {
@@ -2008,8 +2028,8 @@ textarea:focus {
 .signup-form-wrapper {
   position: sticky;
   top: 2rem;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .form-container {
@@ -2098,8 +2118,8 @@ textarea:focus {
   border-radius: 12px;
   padding: 30px;
   margin-bottom: 50px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .table-of-contents h2 {
@@ -2167,8 +2187,8 @@ textarea:focus {
   padding: 20px;
   margin: 20px 0;
   border-radius: 8px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .feature-box strong {
@@ -2183,8 +2203,8 @@ textarea:focus {
 
 .steps-list li {
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   margin-bottom: 15px;
   padding: 20px;
   border-radius: 8px;
@@ -2249,8 +2269,8 @@ textarea:focus {
   margin-bottom: 15px;
   border-radius: 8px;
   cursor: pointer;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .faq-item:hover {
@@ -2292,8 +2312,8 @@ textarea:focus {
   border-radius: 12px;
   text-align: center;
   margin-top: 80px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .cta-section h2 {
@@ -2371,8 +2391,8 @@ textarea:focus {
   padding: 20px;
   margin: 20px 0;
   border-radius: 8px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .important {
@@ -2381,8 +2401,8 @@ textarea:focus {
   padding: 20px;
   margin: 20px 0;
   border-radius: 8px;
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .important strong {
