@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <!-- Cookie Consent Manager v2 -->
@@ -1262,8 +1262,7 @@
         } else if (moderation.data.decision === "blocked") {
           setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
         } else {
-          setPublishStatus(
-eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
         }
         return;
       }
@@ -1331,8 +1330,7 @@ eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
           setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
           setMsg(msgEl, "Profile saved, but project was auto-unpublished (blocked).", true);
         } else {
-          setPublishStatus(
-eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
           setMsg(msgEl, "Profile saved, but project was auto-unpublished (needs review).", true);
         }
         return;
@@ -1386,8 +1384,7 @@ eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
       } else if (moderation.data.decision === "blocked") {
         setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
       } else {
-        setPublishStatus(
-eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
+        setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
       }
     }
 
@@ -1618,8 +1615,7 @@ eeds review: ${moderation.data.reason || "Manual review required."}`, "warn");
 
         } catch (error) {
           console.error("❌ AI error:", error);
-          setMsg(statusEl, 
-etwork error: ${error.message}. Please try again.`, true);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
         }
       }
 
@@ -1741,8 +1737,7 @@ etwork error: ${error.message}. Please try again.`, true);
 
         } catch (error) {
           console.error("❌ AI error:", error);
-          setMsg(statusEl, 
-etwork error: ${error.message}. Please try again.`, true);
+          setMsg(statusEl, `Network error: ${error.message}. Please try again.`, true);
         }
       }
 
