@@ -242,7 +242,19 @@
             flex-direction: column;
             gap: 2px;
         }
-        .rl-nav-select {
+        .rl-nav-select-wrap {
+            position: relative;
+            width: 100%;
+            display: none;
+        }
+        .rl-nav-select-native {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 0;
+            height: 0;
+        }
+        .rl-nav-select-trigger {
             display: flex;
             align-items: center;
             text-align: center;
@@ -260,14 +272,75 @@
             user-select: none;
             transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
-        .rl-nav-select:hover {
+        .rl-nav-select-trigger:hover {
             background: rgba(110, 231, 243, 0.06);
             border-color: rgba(110, 231, 243, 0.45);
         }
-        .rl-nav-select:focus {
+        .rl-nav-select-wrap.open .rl-nav-select-trigger, .rl-nav-select-trigger:focus {
             border-color: #6ee7f3;
             box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.15);
             background: rgba(110, 231, 243, 0.06);
+        }
+        .rl-nav-select-chevron {
+            width: 0; height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(110, 231, 243, 0.75);
+            transition: transform 0.22s var(--spring), border-top-color 0.18s;
+            flex-shrink: 0;
+        }
+        .rl-nav-select-wrap.open .rl-nav-select-chevron {
+            transform: rotate(180deg);
+            border-top-color: #6ee7f3;
+        }
+        .rl-nav-select-panel {
+            position: fixed;
+            background: rgba(8, 10, 22, 0.5);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            border: 1px solid rgba(110, 231, 243, 0.6);
+            border-radius: 12px;
+            padding: 6px;
+            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(110, 231, 243, 0.08);
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-6px) scale(0.97);
+            transform-origin: top center;
+            transition: opacity 0.2s ease, transform 0.22s var(--spring);
+            max-height: 340px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(110, 231, 243, 0.45) transparent;
+        }
+        .rl-nav-select-panel.open {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0) scale(1);
+        }
+        .rl-nav-select-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: rgba(230, 238, 243, 0.8);
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+        .rl-nav-select-option:hover {
+            background: rgba(110, 231, 243, 0.08);
+            color: #e6eef3;
+        }
+        .rl-nav-select-option.selected {
+            color: #6ee7f3;
+            background: rgba(110, 231, 243, 0.1);
+        }
+        .rl-nav-select-option.dimmed {
+            display: none;
         }
 
         .rl-nav-label {
@@ -592,7 +665,7 @@
             .rl-nav-label { display: none; }
             .rl-nav-item { display: none; }
             .rl-dot-maj, .rl-dot-min { display: none; }
-            .rl-nav-select { display: block; }
+            .rl-nav-select-wrap { display: block; }
         }
 
         @media (max-width: 540px) {
@@ -714,7 +787,14 @@
             <!-- Sidebar nav -->
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
-                <select class="rl-nav-select" id="rlVersionSelect" aria-label="Select release version"></select>
+                <div class="rl-nav-select-wrap" id="rlVersionSelectWrap">
+                    <select class="rl-nav-select-native" id="rlVersionSelect" aria-label="Select release version"></select>
+                    <div class="rl-nav-select-trigger" id="rlVersionSelectTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                        <span id="rlVersionSelectLabel">Select Version</span>
+                        <span class="rl-nav-select-chevron"></span>
+                    </div>
+                    <div class="rl-nav-select-panel" role="listbox" id="rlVersionSelectPanel"></div>
+                </div>
 
                 <div class="rl-nav-panel">
                                 <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
@@ -1337,23 +1417,123 @@
         /* ── filter pills ── */
         let currentFilter = 'all';
         const versionSelect = document.getElementById('rlVersionSelect');
+        const versionSelectWrap = document.getElementById('rlVersionSelectWrap');
+        const versionSelectTrigger = document.getElementById('rlVersionSelectTrigger');
+        const versionSelectLabel = document.getElementById('rlVersionSelectLabel');
+        const versionSelectPanel = document.getElementById('rlVersionSelectPanel');
 
         function buildVersionSelect() {
-            if (!versionSelect) return;
+            if (!versionSelect || !versionSelectWrap) return;
             const items = Array.from(document.querySelectorAll('.rl-nav-item'));
+            
+            // Native select fallback
             versionSelect.innerHTML = items.map(item => {
                 const href = item.getAttribute('href');
                 const label = item.dataset.version || item.textContent.trim();
                 return `<option value="${href}">${label}</option>`;
             }).join('');
 
-            versionSelect.addEventListener('change', () => {
-                const target = document.querySelector(versionSelect.value);
+            // Custom panel options
+            versionSelectPanel.innerHTML = items.map(item => {
+                const href = item.getAttribute('href');
+                const label = item.dataset.version || item.textContent.trim();
+                return `<div class="rl-nav-select-option" role="option" tabindex="0" data-value="${href}">${label}</div>`;
+            }).join('');
+
+            // Move panel to body to fix z-index issues
+            document.body.appendChild(versionSelectPanel);
+
+            function reposition() {
+                const rect = versionSelectTrigger.getBoundingClientRect();
+                versionSelectPanel.style.top = `${rect.bottom + 6}px`;
+                versionSelectPanel.style.left = `${rect.left}px`;
+                versionSelectPanel.style.minWidth = `${rect.width}px`;
+            }
+
+            function openPanel() {
+                reposition();
+                versionSelectWrap.classList.add('open');
+                versionSelectPanel.classList.add('open');
+                versionSelectTrigger.setAttribute('aria-expanded', 'true');
+            }
+
+            function closePanel() {
+                versionSelectWrap.classList.remove('open');
+                versionSelectPanel.classList.remove('open');
+                versionSelectTrigger.setAttribute('aria-expanded', 'false');
+            }
+
+            function applySelected(val) {
+                versionSelect.value = val;
+                
+                versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
+                    opt.classList.toggle('selected', opt.dataset.value === val);
+                });
+                
+                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
+                if (selectedEl) {
+                    versionSelectLabel.textContent = selectedEl.textContent;
+                }
+
+                const target = document.querySelector(val);
                 if (!target) return;
                 const y = target.getBoundingClientRect().top + window.scrollY - 92;
                 window.scrollTo({ top: y, behavior: 'smooth' });
                 target.classList.add('open');
+            }
+
+            versionSelectTrigger.addEventListener('click', () => {
+                if (versionSelectPanel.classList.contains('open')) closePanel();
+                else openPanel();
             });
+
+            versionSelectTrigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+                if (e.key === 'Escape') closePanel();
+            });
+
+            versionSelectPanel.addEventListener('click', e => {
+                const opt = e.target.closest('.rl-nav-select-option');
+                if (!opt) return;
+                applySelected(opt.dataset.value);
+                closePanel();
+            });
+
+            versionSelectPanel.addEventListener('keydown', e => {
+                const opt = e.target.closest('.rl-nav-select-option');
+                if (!opt) return;
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    applySelected(opt.dataset.value);
+                    closePanel();
+                }
+            });
+
+            document.addEventListener('click', e => {
+                if (!versionSelectWrap.contains(e.target) && !versionSelectPanel.contains(e.target)) {
+                    closePanel();
+                }
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closePanel();
+            });
+
+            window.addEventListener('scroll', () => {
+                if (versionSelectPanel.classList.contains('open')) reposition();
+            }, true);
+            window.addEventListener('resize', () => {
+                if (versionSelectPanel.classList.contains('open')) reposition();
+            });
+
+            if (items.length > 0) {
+                const firstHref = items[0].getAttribute('href');
+                versionSelect.value = firstHref;
+                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${firstHref}"]`);
+                if (selectedEl) {
+                    selectedEl.classList.add('selected');
+                    versionSelectLabel.textContent = selectedEl.textContent;
+                }
+            }
         }
 
         function syncSelectDisabled() {
@@ -1361,7 +1541,12 @@
             const options = Array.from(versionSelect.options);
             options.forEach(option => {
                 const item = document.querySelector(`.rl-nav-item[href="${option.value}"]`);
-                option.disabled = item ? item.classList.contains('dimmed') : false;
+                const isDimmed = item ? item.classList.contains('dimmed') : false;
+                option.disabled = isDimmed;
+                if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
+                    const customOpt = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${option.value}"]`);
+                    if (customOpt) customOpt.classList.toggle('dimmed', isDimmed);
+                }
             });
         }
 
@@ -1397,7 +1582,17 @@
             });
             if (versionSelect && cur) {
                 const active = document.querySelector(`.rl-nav-item[data-version="${cur}"]`);
-                if (active) versionSelect.value = active.getAttribute('href');
+                if (active) {
+                    const val = active.getAttribute('href');
+                    versionSelect.value = val;
+                    if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
+                        versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
+                            opt.classList.toggle('selected', opt.dataset.value === val);
+                        });
+                        const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
+                        if (selectedEl) versionSelectLabel.textContent = selectedEl.textContent;
+                    }
+                }
             }
         }
         window.addEventListener('scroll', updateNavSpy, { passive: true });
