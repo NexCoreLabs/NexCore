@@ -7,7 +7,7 @@
     'use strict';
 
     const sb = window.supabaseClient;
-    
+
     if (!sb) {
         console.error('Supabase client not found. Make sure supabase-client.js is loaded first.');
         return;
@@ -64,17 +64,17 @@
         if (!dropdown) return;
 
         // Check if elements already exist
-        if (document.getElementById('navAuth') && 
-            document.getElementById('navDashboard') && 
-            document.getElementById('navAccount') && 
-            document.getElementById('navUser') && 
+        if (document.getElementById('navAuth') &&
+            document.getElementById('navDashboard') &&
+            document.getElementById('navAccount') &&
+            document.getElementById('navUser') &&
             document.getElementById('navLogout')) {
             return;
         }
 
         // Find the first menu item to insert after
         const firstMenuItem = dropdown.querySelector('a.magic-signup');
-        
+
         if (firstMenuItem) {
             // Create auth elements HTML
             const authHTML = `
@@ -98,7 +98,7 @@
                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
                 </a>
             `;
-            
+
             // Replace the first menu item with our auth elements
             firstMenuItem.outerHTML = authHTML;
         }
@@ -108,7 +108,7 @@
     async function updateAuthUI() {
         try {
             const { data: { session } } = await sb.auth.getSession();
-            
+
             const navAuth = document.getElementById('navAuth');
             const navDashboard = document.getElementById('navDashboard');
             const navAccount = document.getElementById('navAccount');
@@ -161,11 +161,11 @@
     // Logout function
     async function handleLogout(e) {
         e.preventDefault();
-        
+
         try {
             const { error } = await sb.auth.signOut();
             if (error) throw error;
-            
+
             // Redirect to auth page
             window.location.href = '/auth.html';
         } catch (error) {
@@ -178,16 +178,16 @@
     function init() {
         // Ensure nav elements exist
         ensureNavElements();
-        
+
         // Set up logout handler
         const logoutBtn = document.getElementById('navLogout');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', handleLogout);
         }
-        
+
         // Update UI initially
         updateAuthUI();
-        
+
         // Listen for auth state changes
         sb.auth.onAuthStateChange((event, session) => {
             console.log('Auth state changed:', event);
