@@ -9,6 +9,13 @@ const PRECACHE_URLS = [
   '/releases.html',
   '/thanks.html',
   '/googleb60d962a5a64f048.html',
+  '/account.html',
+  '/auth.html',
+  '/dashboard.html',
+  '/faq.html',
+  '/how-to-use.html',
+  '/privacy-policy.html',
+  '/terms.html',
   '/offline.html',
 
   '/assets/css/unminified-css.css',
