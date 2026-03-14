@@ -18,49 +18,59 @@ async function trackVisit() {
 window.addEventListener("load", trackVisit);
 
 document.addEventListener("DOMContentLoaded", () => {
-  const navList =
-    document.getElementById("navList") || document.getElementById("navListHub");
+  // Attach signature scroll top listener early
+  const setupSign = () => {
+    const sign = document.querySelector(".nexcore-sign") || document.getElementById("nexcoreSign");
+    if (sign) {
+      sign.style.cursor = "pointer";
+      sign.onclick = (e) => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Fallback for immediate jump
+        setTimeout(() => {
+          if (window.scrollY > 0) window.scrollTo(0, 0);
+        }, 500);
+      };
+    }
+  };
+  setupSign();
+
+  const navList = document.getElementById("navList") || document.getElementById("navListHub");
   const navLinks = document.querySelectorAll(".nav-link");
   const revealItems = document.querySelectorAll(".reveal");
   const glass = document.getElementById("glassCard");
-  const yearEl =
-    document.getElementById("year") || document.getElementById("yearHub");
+  const yearEl = document.getElementById("year") || document.getElementById("yearHub");
   const form = document.getElementById("contactForm");
   const notice = document.getElementById("formNotice");
   const resetBtn = document.getElementById("resetBtn");
+  const logoImg = document.getElementById("logoImg");
+  const mainContent = document.querySelector("main");
+  const myDropdown = document.getElementById("myDropdown");
+  const coreMenu = document.getElementById("coreMenu");
+  const phone = document.getElementById("phoneMockup");
+  const links = document.querySelectorAll("a.fade");
+  const searchInput = document.getElementById("projectSearch");
+  const projectsContainer = document.getElementById("projects-container");
 
   // Smooth scroll to the top when the logo is clicked
-  document.getElementById("logo").addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent default anchor behavior
-
-    if (window.scrollY === 0) {
-      mainContent.style.opacity = "0";
-      myDropdown.style.opacity = "0";
-      logoImg.style.opacity = "0.8";
-      logoImg.style.left = "50%";
-      logoImg.style.top = "10%";
-      logoImg.style.width = "600px";
-
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1000);
-    } else {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // Smooth scrolling
-      });
-    }
-  });
-
-  document
-    .getElementById("nexcoreSign")
-    .addEventListener("click", function (event) {
-      event.preventDefault(); // Prevent default anchor behavior
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth", // Smooth scrolling
-      });
+  const logoTrigger = document.getElementById("logo");
+  if (logoTrigger) {
+    logoTrigger.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (window.scrollY === 0) {
+        if (mainContent) mainContent.style.opacity = "0";
+        if (myDropdown) myDropdown.style.opacity = "0";
+        if (logoImg) {
+          logoImg.style.opacity = "0.8";
+          logoImg.style.left = "50%";
+          logoImg.style.top = "10%";
+          logoImg.style.width = "600px";
+        }
+        setTimeout(() => { window.location.href = "index.html"; }, 1000);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     });
+  }
 
   // set year
   if (yearEl) yearEl.textContent = new Date().getFullYear();
@@ -68,20 +78,17 @@ document.addEventListener("DOMContentLoaded", () => {
   // smooth scroll offset for anchored links on same page
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener("click", (ev) => {
-      const target = document.querySelector(a.getAttribute("href"));
+      const href = a.getAttribute("href");
+      if (href === "#") return;
+      const target = document.querySelector(href);
       if (!target) return;
       ev.preventDefault();
       const headerOffset = 82;
-      const elementPosition =
-        target.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - headerOffset;
       window.scrollTo({ top: offsetPosition, behavior: "smooth" });
 
-      if (
-        window.innerWidth <= 980 &&
-        navList &&
-        navList.style.display === "flex"
-      ) {
+      if (window.innerWidth <= 980 && navList && navList.style.display === "flex") {
         navList.style.display = "";
       }
     });
@@ -89,35 +96,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // scroll spy (active nav)
   const sections = Array.from(document.querySelectorAll("main section[id]"));
-  window.addEventListener(
-    "scroll",
-    () => {
+  if (sections.length > 0) {
+    window.addEventListener("scroll", () => {
       const fromTop = window.scrollY + 120;
-      let current = sections[0] && sections[0].id;
+      let current = sections[0].id;
       for (const sec of sections) {
         if (sec.offsetTop <= fromTop) current = sec.id;
       }
       navLinks.forEach((link) => {
-        link.classList.toggle(
-          "active",
-          link.getAttribute("href") === `#${current}` ||
-            link.getAttribute("href") === current,
-        );
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}` || link.getAttribute("href") === current);
       });
-    },
-    { passive: true },
-  );
+    }, { passive: true });
+  }
 
-  // reveal on scroll
-  const revealOnScroll = () => {
-    const bottom = window.innerHeight;
-    revealItems.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < bottom - 80) el.classList.add("visible");
+  // Reveal elements on scroll using IntersectionObserver (more robust)
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
     });
-  };
-  revealOnScroll();
-  window.addEventListener("scroll", revealOnScroll, { passive: true });
+  }, { threshold: 0.1 });
+
+  revealItems.forEach(el => revealObserver.observe(el));
+
+  // Image Lazy Loading Fix using IntersectionObserver
+  const imgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const handleLoad = () => img.classList.add("is-loaded");
+        if (img.complete) {
+          handleLoad();
+        } else {
+          img.addEventListener("load", handleLoad);
+        }
+        imgObserver.unobserve(img);
+      }
+    });
+  }, { rootMargin: "50px" });
+
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => imgObserver.observe(img));
 
   // subtle parallax on glass card with mouse move
   if (glass) {
@@ -129,128 +149,153 @@ document.addEventListener("DOMContentLoaded", () => {
       const dy = (e.clientY - cy) / rect.height;
       glass.style.transform = `translate3d(${dx * 8}px, ${dy * 8}px, 0) rotate(${dx * 1.2}deg)`;
     });
-    document.addEventListener("mouseleave", () => {
-      glass.style.transform = "";
+    document.addEventListener("mouseleave", () => { glass.style.transform = ""; });
+  }
+
+  // simple form handling
+  if (form) {
+    form.addEventListener("submit", (ev) => {
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !email || !message) {
+        ev.preventDefault();
+        if (notice) notice.textContent = "Please fill all fields.";
+      } else {
+        if (notice) notice.textContent = "Sending...";
+      }
     });
   }
 
-  // simple form handling (no back-end). Validate & simulate send.
-  form.addEventListener("submit", (ev) => {
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const message = form.message.value.trim();
-
-    if (!name || !email || !message) {
-      ev.preventDefault(); // block submission only if invalid
-      notice.textContent = "Please fill all fields.";
-    } else {
-      notice.textContent = "Sending...";
-    }
-  });
-
-  resetBtn.addEventListener("click", () => {
-    form.reset();
-    notice.textContent = "";
-  });
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (form) form.reset();
+      if (notice) notice.textContent = "";
+    });
+  }
 
   // respect reduced motion
   const media = window.matchMedia("(prefers-reduced-motion: reduce)");
   if (media && media.matches) {
-    document
-      .querySelectorAll(".bg-orbit")
-      .forEach((n) => (n.style.animation = "none"));
-    document
-      .querySelectorAll(".reveal")
-      .forEach((n) => n.classList.add("visible"));
+    document.querySelectorAll(".bg-orbit").forEach((n) => (n.style.animation = "none"));
+    document.querySelectorAll(".reveal").forEach((n) => n.classList.add("visible"));
   }
 
-  // Safety check: element exists
+  // Changing Text Rotator
   const textElement = document.getElementById("changing-text");
-  if (!textElement) {
-    console.warn("changing-text element not found – tiny rotation aborted");
-    return;
+  if (textElement) {
+    const sentences = [
+      `<div class="flag-includes"><img src="assets/images/oman.webp" alt="Oman flag"><span>Proudly Built in Oman</span></div>`,
+      `<div class="flag-includes"><img src="assets/images/eu.webp" alt="EU flag"><span>EU GDPR-aligned</span></div>`,
+      "The margin between good and great is care.",
+      "Real. Useful. Done.",
+      "Showcase • Discover • Collaborate",
+      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
+    ];
+
+    let index = 0;
+    textElement.innerHTML = sentences[index];
+
+    setInterval(() => {
+      textElement.classList.add("fade-out");
+      setTimeout(() => {
+        index = (index + 1) % sentences.length;
+        textElement.innerHTML = sentences[index];
+        void textElement.offsetHeight;
+        textElement.classList.remove("fade-out");
+      }, 550);
+    }, 3000);
   }
 
-  // Sentences — note: these are HTML strings for innerHTML
-  const sentences = [
-    `<div class="flag-includes">
-        <img src="assets/images/oman.webp" alt="Oman flag">
-        <span>Proudly Built in Oman</span>
-      </div>`,
+  // Dropdown Menu Logic
+  if (coreMenu && myDropdown) {
+    coreMenu.addEventListener("click", () => {
+      coreMenu.classList.toggle("active");
+      if (myDropdown.style.visibility == "visible" && myDropdown.style.opacity == 1) {
+        myDropdown.style.visibility = "hidden";
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = "translateY(0)";
+        myDropdown.style.userSelect = "none";
+      } else {
+        myDropdown.style.visibility = "visible";
+        myDropdown.style.opacity = 1;
+        myDropdown.style.transform = "translateY(10px)";
+        myDropdown.style.userSelect = "auto";
+      }
+    });
 
-      `<div class="flag-includes">
-        <img src="assets/images/eu.webp" alt="EU flag">
-        <span>EU GDPR-aligned</span>
-      </div>`,
+    document.addEventListener("click", (event) => {
+      if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
+        coreMenu.classList.remove("active");
+        myDropdown.style.visibility = "hidden";
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = "translateY(0)";
+        myDropdown.style.userSelect = "none";
+      }
+    });
+  }
 
-    "The margin between good and great is care.",
+  // Mobile Preview Transition
+  if (phone) {
+    phone.addEventListener("click", () => {
+      phone.classList.add("expand");
+      setTimeout(() => { window.location.href = "mobile-preview.html"; }, 900);
+    });
+  }
 
-    "Real. Useful. Done.",
+  // Fade links
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.href;
+      if (!href) return;
+      event.preventDefault();
+      if (mainContent) mainContent.style.opacity = "0";
+      if (myDropdown) myDropdown.style.opacity = "0";
+      if (logoImg) {
+        logoImg.style.opacity = "0.8";
+        logoImg.style.left = "50%";
+        logoImg.style.top = "10%";
+        logoImg.style.width = "600px";
+      }
+      setTimeout(() => { window.location.href = href; }, 1000);
+    });
+  });
 
-    "Showcase • Discover • Collaborate",
-    // brand icons will render if Font Awesome CSS loaded
-    'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
-  ];
+  // Project Search
+  if (searchInput && projectsContainer) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      const projectCards = projectsContainer.querySelectorAll(".project-card");
+      projectCards.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? "block" : "none";
+      });
+    });
+  }
 
-  // initial index: show first sentence immediately (index 0 already in HTML)
-  let index = 0;
-  const changeInterval = 3000; // milliseconds
-  const fadeDuration = 550; // should match CSS transition (ms)
-
-  // Ensure initial content is the first sentence (in case footer HTML changed)
-  textElement.innerHTML = sentences[index];
-
-  // Rotator
-  setInterval(() => {
-    // fade out
-    textElement.classList.add("fade-out");
-
-    // after fade duration, change text and fade in
-    setTimeout(() => {
-      index = (index + 1) % sentences.length;
-      textElement.innerHTML = sentences[index];
-
-      // force reflow to allow transition to apply consistently
-      // (read offsetHeight triggers reflow)
-      void textElement.offsetHeight;
-
-      // fade in
-      textElement.classList.remove("fade-out");
-    }, fadeDuration);
-  }, changeInterval);
-});
-
-// Dropdown Menu
-const myDropdown = document.getElementById("myDropdown");
-const coreMenu = document.getElementById("coreMenu");
-
-coreMenu.addEventListener("click", () => {
-  coreMenu.classList.toggle("active");
-
-  if (
-    myDropdown.style.visibility == "visible" &&
-    myDropdown.style.opacity == 1
-  ) {
-    coreMenu.style;
-    myDropdown.style.visibility = "hidden";
-    myDropdown.style.opacity = 0;
-    myDropdown.style.transform = "translateY(0)";
-    myDropdown.style.userSelect = "none";
-  } else {
-    myDropdown.style.visibility = "visible";
-    myDropdown.style.opacity = 1;
-    myDropdown.style.transform = "translateY(10px)";
-    myDropdown.style.userSelect = "auto";
+  // Initial animation
+  if (logoImg) {
+    logoImg.style.filter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1))";
+    logoImg.style.webkitFilter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1))";
+    logoImg.style.left = "100%";
+    logoImg.style.top = "15%";
+    logoImg.style.width = "200px";
+    setTimeout(() => { logoImg.style.opacity = "0.3"; }, 1000);
+  }
+  
+  if (mainContent) {
+    mainContent.style.opacity = "1";
   }
 });
 
 function filterFunction() {
   const input = document.getElementById("myInput");
-  const filter = input.value.toUpperCase();
+  const filter = input ? input.value.toUpperCase() : "";
   const div = document.getElementById("myDropdown");
+  if (!div) return;
   const a = div.getElementsByTagName("a");
   for (let i = 0; i < a.length; i++) {
-    txtValue = a[i].textContent || a[i].innerText;
+    const txtValue = a[i].textContent || a[i].innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
       a[i].style.display = "";
     } else {
@@ -259,85 +304,11 @@ function filterFunction() {
   }
 }
 
-document.addEventListener("click", (event) => {
-  if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
-    coreMenu.classList.remove("active");
-    myDropdown.style.visibility = "hidden";
-    myDropdown.style.opacity = 0;
-    myDropdown.style.transform = "translateY(0)";
-    myDropdown.style.userSelect = "none";
-  }
-});
-
-// Mobile Preview Transition
-const phone = document.getElementById("phoneMockup");
-if (phone) phone.addEventListener("click", openMobilePreview);
-
-function openMobilePreview() {
-  // add the expanding class
-  phone.classList.add("expand");
-
-  // wait for the animation to finish (same duration as CSS transition)
-  setTimeout(() => {
-    window.location.href = "mobile-preview.html";
-  }, 900); // 0.8s + small buffer
-}
-
-const logoImg = document.getElementById("logoImg");
-const shape = document.getElementById("shape");
-const mainContent = document.querySelector("main");
-const links = document.querySelectorAll("a.fade");
-
-links.forEach((link) => {
-  link.addEventListener("click", (event) => {
-    event.preventDefault();
-    mainContent.style.opacity = "0";
-    myDropdown.style.opacity = "0";
-    logoImg.style.opacity = "0.8";
-    logoImg.style.left = "50%";
-    logoImg.style.top = "10%";
-    logoImg.style.width = "600px";
-
-    setTimeout(() => {
-      window.location.href = event.target.href;
-    }, 1000);
-  });
-});
-
-window.onload = () => {
-  logoImg.style.filter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1)";
-  logoImg.style.webkitFilter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1)";
-  logoImg.style.left = "100%";
-  logoImg.style.top = "15%";
-  logoImg.style.width = "200px";
-  mainContent.style.opacity = "1";
-
-  setTimeout(() => {
-    logoImg.style.opacity = "0.3";
-  }, 1000);
-};
-
-const searchInput = document.getElementById("projectSearch");
-const projectsContainer = document.getElementById("projects-container");
-
-searchInput.addEventListener("input", () => {
-  const query = searchInput.value.toLowerCase();
-  const projectCards = projectsContainer.querySelectorAll(".project-card"); // adjust class name if needed
-
-  projectCards.forEach((card) => {
-    const text = card.textContent.toLowerCase();
-    card.style.display = text.includes(query) ? "block" : "none";
-  });
-});
-
 function showWebsiteLabel() {
-  // Get the checkbox
-  var checkBox = document.getElementById("websiteShow");
-  // Get the output text
-  var websiteLabel = document.getElementById("websiteURLLabel");
-
-  // If the checkbox is checked, display the output text
-  if (checkBox.checked == true) {
+  const checkBox = document.getElementById("websiteShow");
+  const websiteLabel = document.getElementById("websiteURLLabel");
+  if (!checkBox || !websiteLabel) return;
+  if (checkBox.checked) {
     websiteLabel.style.display = "block";
     websiteLabel.setAttribute("required", "required");
   } else {
@@ -345,47 +316,3 @@ function showWebsiteLabel() {
     websiteLabel.removeAttribute("required");
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Safety check: element exists
-  const textElement = document.getElementById("changing-text");
-  if (!textElement) {
-    console.warn("changing-text element not found – tiny rotation aborted");
-    return;
-  }
-
-  // initial index: show first sentence immediately (index 0 already in HTML)
-  let index = 0;
-  const changeInterval = 3000; // milliseconds
-  const fadeDuration = 550; // should match CSS transition (ms)
-
-  // Ensure initial content is the first sentence (in case footer HTML changed)
-  textElement.innerHTML = sentences[index];
-
-  // Rotator
-  setInterval(() => {
-    // fade out
-    textElement.classList.add("fade-out");
-
-    // after fade duration, change text and fade in
-    setTimeout(() => {
-      index = (index + 1) % sentences.length;
-      textElement.innerHTML = sentences[index];
-
-      // force reflow to allow transition to apply consistently
-      // (read offsetHeight triggers reflow)
-      void textElement.offsetHeight;
-
-      // fade in
-      textElement.classList.remove("fade-out");
-    }, fadeDuration);
-  }, changeInterval);
-});
-
-// Legacy snippet removed: avoid referencing undefined 'project' and 'card' variables.
-
-document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
-  img.addEventListener("load", () => {
-    img.classList.add("is-loaded");
-  });
-});

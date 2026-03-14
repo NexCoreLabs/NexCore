@@ -1,1 +1,318 @@
-async function trackVisit(){try{await fetch("/api/track-visit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({page_path:window.location.pathname})})}catch(e){}}window.addEventListener("load",trackVisit),document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("navList")||document.getElementById("navListHub"),t=document.querySelectorAll(".nav-link"),n=document.querySelectorAll(".reveal"),o=document.getElementById("glassCard"),i=document.getElementById("year")||document.getElementById("yearHub"),l=document.getElementById("contactForm"),s=document.getElementById("formNotice"),a=document.getElementById("resetBtn");document.getElementById("logo").addEventListener("click",(function(e){e.preventDefault(),0===window.scrollY?(mainContent.style.opacity="0",myDropdown.style.opacity="0",logoImg.style.opacity="0.8",logoImg.style.left="50%",logoImg.style.top="10%",logoImg.style.width="600px",setTimeout((()=>{window.location.href="index.html"}),1e3)):window.scrollTo({top:0,behavior:"smooth"})})),document.getElementById("nexcoreSign").addEventListener("click",(function(e){e.preventDefault(),window.scrollTo({top:0,behavior:"smooth"})})),i&&(i.textContent=(new Date).getFullYear()),document.querySelectorAll('a[href^="#"]').forEach((t=>{t.addEventListener("click",(n=>{const o=document.querySelector(t.getAttribute("href"));if(!o)return;n.preventDefault();const i=o.getBoundingClientRect().top+window.pageYOffset-82;window.scrollTo({top:i,behavior:"smooth"}),window.innerWidth<=980&&e&&"flex"===e.style.display&&(e.style.display="")}))}));const d=Array.from(document.querySelectorAll("main section[id]"));window.addEventListener("scroll",(()=>{const e=window.scrollY+120;let n=d[0]&&d[0].id;for(const t of d)t.offsetTop<=e&&(n=t.id);t.forEach((e=>{e.classList.toggle("active",e.getAttribute("href")===`#${n}`||e.getAttribute("href")===n)}))}),{passive:!0});const r=()=>{const e=window.innerHeight;n.forEach((t=>{t.getBoundingClientRect().top<e-80&&t.classList.add("visible")}))};r(),window.addEventListener("scroll",r,{passive:!0}),o&&(document.addEventListener("mousemove",(e=>{const t=o.getBoundingClientRect(),n=t.left+t.width/2,i=t.top+t.height/2,l=(e.clientX-n)/t.width,s=(e.clientY-i)/t.height;o.style.transform=`translate3d(${8*l}px, ${8*s}px, 0) rotate(${1.2*l}deg)`})),document.addEventListener("mouseleave",(()=>{o.style.transform=""}))),l.addEventListener("submit",(e=>{const t=l.name.value.trim(),n=l.email.value.trim(),o=l.message.value.trim();t&&n&&o?s.textContent="Sending...":(e.preventDefault(),s.textContent="Please fill all fields.")})),a.addEventListener("click",(()=>{l.reset(),s.textContent=""}));const c=window.matchMedia("(prefers-reduced-motion: reduce)");c&&c.matches&&(document.querySelectorAll(".bg-orbit").forEach((e=>e.style.animation="none")),document.querySelectorAll(".reveal").forEach((e=>e.classList.add("visible"))));const m=document.getElementById("changing-text");if(!m)return void console.warn("changing-text element not found – tiny rotation aborted");const y=['<div class="flag-includes">\n        <img src="assets/images/oman.webp" alt="Oman flag">\n        <span>Proudly Built in Oman</span>\n      </div>','<div class="flag-includes">\n        <img src="assets/images/eu.webp" alt="EU flag">\n        <span>EU GDPR-aligned</span>\n      </div>',"Powered by NexCore • Driven by ambition","Crafted with care • Inspired by simplicity","Fast • Focused • Clean",'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>'];let u=0;m.innerHTML=y[u],setInterval((()=>{m.classList.add("fade-out"),setTimeout((()=>{u=(u+1)%y.length,m.innerHTML=y[u],m.offsetHeight,m.classList.remove("fade-out")}),550)}),3e3)}));const myDropdown=document.getElementById("myDropdown"),coreMenu=document.getElementById("coreMenu");function filterFunction(){const e=document.getElementById("myInput").value.toUpperCase(),t=document.getElementById("myDropdown").getElementsByTagName("a");for(let n=0;n<t.length;n++)txtValue=t[n].textContent||t[n].innerText,txtValue.toUpperCase().indexOf(e)>-1?t[n].style.display="":t[n].style.display="none"}coreMenu.addEventListener("click",(()=>{coreMenu.classList.toggle("active"),"visible"==myDropdown.style.visibility&&1==myDropdown.style.opacity?(coreMenu.style,myDropdown.style.visibility="hidden",myDropdown.style.opacity=0,myDropdown.style.transform="translateY(0)",myDropdown.style.userSelect="none"):(myDropdown.style.visibility="visible",myDropdown.style.opacity=1,myDropdown.style.transform="translateY(10px)",myDropdown.style.userSelect="auto")})),document.addEventListener("click",(e=>{coreMenu.contains(e.target)||myDropdown.contains(e.target)||(coreMenu.classList.remove("active"),myDropdown.style.visibility="hidden",myDropdown.style.opacity=0,myDropdown.style.transform="translateY(0)",myDropdown.style.userSelect="none")}));const phone=document.getElementById("phoneMockup");function openMobilePreview(){phone.classList.add("expand"),setTimeout((()=>{window.location.href="mobile-preview.html"}),900)}phone&&phone.addEventListener("click",openMobilePreview);const logoImg=document.getElementById("logoImg"),shape=document.getElementById("shape"),mainContent=document.querySelector("main"),links=document.querySelectorAll("a.fade");links.forEach((e=>{e.addEventListener("click",(e=>{e.preventDefault(),mainContent.style.opacity="0",myDropdown.style.opacity="0",logoImg.style.opacity="0.8",logoImg.style.left="50%",logoImg.style.top="10%",logoImg.style.width="600px",setTimeout((()=>{window.location.href=e.target.href}),1e3)}))})),window.onload=()=>{logoImg.style.filter="drop-shadow(0 0 25px rgba(110, 231, 243, 1)",logoImg.style.webkitFilter="drop-shadow(0 0 25px rgba(110, 231, 243, 1)",logoImg.style.left="100%",logoImg.style.top="15%",logoImg.style.width="200px",mainContent.style.opacity="1",setTimeout((()=>{logoImg.style.opacity="0.3"}),1e3)};const searchInput=document.getElementById("projectSearch"),projectsContainer=document.getElementById("projects-container");function showWebsiteLabel(){var e=document.getElementById("websiteShow"),t=document.getElementById("websiteURLLabel");1==e.checked?(t.style.display="block",t.setAttribute("required","required")):(t.style.display="none",t.removeAttribute("required"))}searchInput.addEventListener("input",(()=>{const e=searchInput.value.toLowerCase();projectsContainer.querySelectorAll(".project-card").forEach((t=>{const n=t.textContent.toLowerCase();t.style.display=n.includes(e)?"block":"none"}))})),document.addEventListener("DOMContentLoaded",(()=>{const e=document.getElementById("changing-text");if(!e)return void console.warn("changing-text element not found – tiny rotation aborted");let t=0;e.innerHTML=sentences[t],setInterval((()=>{e.classList.add("fade-out"),setTimeout((()=>{t=(t+1)%sentences.length,e.innerHTML=sentences[t],e.offsetHeight,e.classList.remove("fade-out")}),550)}),3e3)})),document.querySelectorAll('img[loading="lazy"]').forEach((e=>{e.addEventListener("load",(()=>{e.classList.add("is-loaded")}))}));
+// script.js — all custom JS for NexCore site
+
+// Simple analytics: track page visits
+async function trackVisit() {
+  try {
+    await fetch("/api/track-visit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page_path: window.location.pathname
+      })
+    });
+  } catch (e) {
+    // silent fail – analytics should never break UX
+  }
+}
+
+window.addEventListener("load", trackVisit);
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Attach signature scroll top listener early
+  const setupSign = () => {
+    const sign = document.querySelector(".nexcore-sign") || document.getElementById("nexcoreSign");
+    if (sign) {
+      sign.style.cursor = "pointer";
+      sign.onclick = (e) => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Fallback for immediate jump
+        setTimeout(() => {
+          if (window.scrollY > 0) window.scrollTo(0, 0);
+        }, 500);
+      };
+    }
+  };
+  setupSign();
+
+  const navList = document.getElementById("navList") || document.getElementById("navListHub");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const revealItems = document.querySelectorAll(".reveal");
+  const glass = document.getElementById("glassCard");
+  const yearEl = document.getElementById("year") || document.getElementById("yearHub");
+  const form = document.getElementById("contactForm");
+  const notice = document.getElementById("formNotice");
+  const resetBtn = document.getElementById("resetBtn");
+  const logoImg = document.getElementById("logoImg");
+  const mainContent = document.querySelector("main");
+  const myDropdown = document.getElementById("myDropdown");
+  const coreMenu = document.getElementById("coreMenu");
+  const phone = document.getElementById("phoneMockup");
+  const links = document.querySelectorAll("a.fade");
+  const searchInput = document.getElementById("projectSearch");
+  const projectsContainer = document.getElementById("projects-container");
+
+  // Smooth scroll to the top when the logo is clicked
+  const logoTrigger = document.getElementById("logo");
+  if (logoTrigger) {
+    logoTrigger.addEventListener("click", function (event) {
+      event.preventDefault();
+      if (window.scrollY === 0) {
+        if (mainContent) mainContent.style.opacity = "0";
+        if (myDropdown) myDropdown.style.opacity = "0";
+        if (logoImg) {
+          logoImg.style.opacity = "0.8";
+          logoImg.style.left = "50%";
+          logoImg.style.top = "10%";
+          logoImg.style.width = "600px";
+        }
+        setTimeout(() => { window.location.href = "index.html"; }, 1000);
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+  }
+
+  // set year
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // smooth scroll offset for anchored links on same page
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (ev) => {
+      const href = a.getAttribute("href");
+      if (href === "#") return;
+      const target = document.querySelector(href);
+      if (!target) return;
+      ev.preventDefault();
+      const headerOffset = 82;
+      const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+
+      if (window.innerWidth <= 980 && navList && navList.style.display === "flex") {
+        navList.style.display = "";
+      }
+    });
+  });
+
+  // scroll spy (active nav)
+  const sections = Array.from(document.querySelectorAll("main section[id]"));
+  if (sections.length > 0) {
+    window.addEventListener("scroll", () => {
+      const fromTop = window.scrollY + 120;
+      let current = sections[0].id;
+      for (const sec of sections) {
+        if (sec.offsetTop <= fromTop) current = sec.id;
+      }
+      navLinks.forEach((link) => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}` || link.getAttribute("href") === current);
+      });
+    }, { passive: true });
+  }
+
+  // Reveal elements on scroll using IntersectionObserver (more robust)
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  revealItems.forEach(el => revealObserver.observe(el));
+
+  // Image Lazy Loading Fix using IntersectionObserver
+  const imgObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        const handleLoad = () => img.classList.add("is-loaded");
+        if (img.complete) {
+          handleLoad();
+        } else {
+          img.addEventListener("load", handleLoad);
+        }
+        imgObserver.unobserve(img);
+      }
+    });
+  }, { rootMargin: "50px" });
+
+  document.querySelectorAll('img[loading="lazy"]').forEach(img => imgObserver.observe(img));
+
+  // subtle parallax on glass card with mouse move
+  if (glass) {
+    document.addEventListener("mousemove", (e) => {
+      const rect = glass.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / rect.width;
+      const dy = (e.clientY - cy) / rect.height;
+      glass.style.transform = `translate3d(${dx * 8}px, ${dy * 8}px, 0) rotate(${dx * 1.2}deg)`;
+    });
+    document.addEventListener("mouseleave", () => { glass.style.transform = ""; });
+  }
+
+  // simple form handling
+  if (form) {
+    form.addEventListener("submit", (ev) => {
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !email || !message) {
+        ev.preventDefault();
+        if (notice) notice.textContent = "Please fill all fields.";
+      } else {
+        if (notice) notice.textContent = "Sending...";
+      }
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (form) form.reset();
+      if (notice) notice.textContent = "";
+    });
+  }
+
+  // respect reduced motion
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (media && media.matches) {
+    document.querySelectorAll(".bg-orbit").forEach((n) => (n.style.animation = "none"));
+    document.querySelectorAll(".reveal").forEach((n) => n.classList.add("visible"));
+  }
+
+  // Changing Text Rotator
+  const textElement = document.getElementById("changing-text");
+  if (textElement) {
+    const sentences = [
+      `<div class="flag-includes"><img src="assets/images/oman.webp" alt="Oman flag"><span>Proudly Built in Oman</span></div>`,
+      `<div class="flag-includes"><img src="assets/images/eu.webp" alt="EU flag"><span>EU GDPR-aligned</span></div>`,
+      "The margin between good and great is care.",
+      "Real. Useful. Done.",
+      "Showcase • Discover • Collaborate",
+      'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
+    ];
+
+    let index = 0;
+    textElement.innerHTML = sentences[index];
+
+    setInterval(() => {
+      textElement.classList.add("fade-out");
+      setTimeout(() => {
+        index = (index + 1) % sentences.length;
+        textElement.innerHTML = sentences[index];
+        void textElement.offsetHeight;
+        textElement.classList.remove("fade-out");
+      }, 550);
+    }, 3000);
+  }
+
+  // Dropdown Menu Logic
+  if (coreMenu && myDropdown) {
+    coreMenu.addEventListener("click", () => {
+      coreMenu.classList.toggle("active");
+      if (myDropdown.style.visibility == "visible" && myDropdown.style.opacity == 1) {
+        myDropdown.style.visibility = "hidden";
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = "translateY(0)";
+        myDropdown.style.userSelect = "none";
+      } else {
+        myDropdown.style.visibility = "visible";
+        myDropdown.style.opacity = 1;
+        myDropdown.style.transform = "translateY(10px)";
+        myDropdown.style.userSelect = "auto";
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!coreMenu.contains(event.target) && !myDropdown.contains(event.target)) {
+        coreMenu.classList.remove("active");
+        myDropdown.style.visibility = "hidden";
+        myDropdown.style.opacity = 0;
+        myDropdown.style.transform = "translateY(0)";
+        myDropdown.style.userSelect = "none";
+      }
+    });
+  }
+
+  // Mobile Preview Transition
+  if (phone) {
+    phone.addEventListener("click", () => {
+      phone.classList.add("expand");
+      setTimeout(() => { window.location.href = "mobile-preview.html"; }, 900);
+    });
+  }
+
+  // Fade links
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.href;
+      if (!href) return;
+      event.preventDefault();
+      if (mainContent) mainContent.style.opacity = "0";
+      if (myDropdown) myDropdown.style.opacity = "0";
+      if (logoImg) {
+        logoImg.style.opacity = "0.8";
+        logoImg.style.left = "50%";
+        logoImg.style.top = "10%";
+        logoImg.style.width = "600px";
+      }
+      setTimeout(() => { window.location.href = href; }, 1000);
+    });
+  });
+
+  // Project Search
+  if (searchInput && projectsContainer) {
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value.toLowerCase();
+      const projectCards = projectsContainer.querySelectorAll(".project-card");
+      projectCards.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        card.style.display = text.includes(query) ? "block" : "none";
+      });
+    });
+  }
+
+  // Initial animation
+  if (logoImg) {
+    logoImg.style.filter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1))";
+    logoImg.style.webkitFilter = "drop-shadow(0 0 25px rgba(110, 231, 243, 1))";
+    logoImg.style.left = "100%";
+    logoImg.style.top = "15%";
+    logoImg.style.width = "200px";
+    setTimeout(() => { logoImg.style.opacity = "0.3"; }, 1000);
+  }
+  
+  if (mainContent) {
+    mainContent.style.opacity = "1";
+  }
+});
+
+function filterFunction() {
+  const input = document.getElementById("myInput");
+  const filter = input ? input.value.toUpperCase() : "";
+  const div = document.getElementById("myDropdown");
+  if (!div) return;
+  const a = div.getElementsByTagName("a");
+  for (let i = 0; i < a.length; i++) {
+    const txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+function showWebsiteLabel() {
+  const checkBox = document.getElementById("websiteShow");
+  const websiteLabel = document.getElementById("websiteURLLabel");
+  if (!checkBox || !websiteLabel) return;
+  if (checkBox.checked) {
+    websiteLabel.style.display = "block";
+    websiteLabel.setAttribute("required", "required");
+  } else {
+    websiteLabel.style.display = "none";
+    websiteLabel.removeAttribute("required");
+  }
+}
