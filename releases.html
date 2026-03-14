@@ -71,7 +71,7 @@
             position: absolute;
             top: 0; left: 50%;
             transform: translateX(-50%);
-            width: 480px; height: 180px;
+            width: 100%; max-width: 480px; height: 180px;
             background: radial-gradient(ellipse at center, rgba(110,231,243,0.065) 0%, transparent 72%);
             pointer-events: none;
         }
@@ -256,6 +256,7 @@
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
+            -webkit-user-select: none;
             user-select: none;
             transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         }
@@ -369,6 +370,7 @@
             display: flex;
             align-items: flex-start;
             gap: 11px;
+            -webkit-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
