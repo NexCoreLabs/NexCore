@@ -156,6 +156,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
@@ -195,8 +196,8 @@
 .hub-filter-panel {
   position: fixed;
   background: rgba(8, 10, 22, 0.5);
-  backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   border: 1px solid rgba(110, 231, 243, 0.6);
   border-radius: 12px;
   padding: 6px;
@@ -313,6 +314,88 @@
 .project-category-label {
   font-size: 0.9rem;
   opacity: 0.8;
+}
+
+/* Category Explorer (Chips) */
+.category-explorer {
+  margin: 15px 0 25px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.category-chips-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px 2px 15px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(110, 231, 243, 0.3) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-chips-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.category-chips-scroll::-webkit-scrollbar-thumb {
+  background: rgba(110, 231, 243, 0.2);
+  border-radius: 10px;
+}
+
+.category-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  color: #e6eef3;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.category-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(110, 231, 243, 0.3);
+  transform: translateY(-2px);
+}
+
+.category-chip.active {
+  background: rgba(110, 231, 243, 0.15);
+  border-color: #6ee7f3;
+  color: #6ee7f3;
+  box-shadow: 0 4px 12px rgba(110, 231, 243, 0.2);
+}
+
+.category-chip .count {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+.category-chip.active .count {
+  opacity: 1;
+  background: rgba(110, 231, 243, 0.2);
+}
+
+.category-chip .pc-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Hide the old annoying stats section */
+.category-stats {
+  display: none !important;
 }
 
 @media (max-width: 640px) {

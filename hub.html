@@ -143,20 +143,21 @@
 
             </div>
 
-            <div class="project-filters" id="projectFilters">
+            <div class="category-explorer" id="categoryExplorer">
+              <div class="category-chips-scroll" id="categoryChips">
+                <!-- Chips will be loaded here -->
+              </div>
+            </div>
+
+            <div class="project-filters" id="projectFilters" style="display: none;">
               <div class="hub-filter-wrap" id="hubCategoryFilterWrap">
                 <select id="hubCategoryFilterNative" aria-label="Filter by category">
-
                   <option value="all">All</option>
-
                 </select>
-
                 <div class="hub-filter-trigger" id="hubCategoryFilterTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
                   <span id="hubCategoryFilterLabel">All</span>
-
                   <span class="hub-filter-chevron"></span>
                 </div>
-
                 <div class="hub-filter-panel" role="listbox" id="hubCategoryFilterPanel"></div>
               </div>
             </div>
@@ -324,25 +325,62 @@
         }
 
         function renderCategoryStats(projects) {
-
           const listEl = document.getElementById('categoryStatsList');
-
-          if (!listEl) return;
+          const chipsEl = document.getElementById('categoryChips');
+          if (!chipsEl) return;
 
           const stats = window.ProjectCategories?.getCategoryStats?.(projects) || {};
+          const totalProjects = projects.length;
 
-          listEl.innerHTML = categoryOrder.map((category) => {
+          // Render Chips
+          const allChipHtml = `
+            <div class="category-chip ${activeCategory === 'all' ? 'active' : ''}" data-value="all">
+              <span class="hub-opt-icon">${uncategorizedIcon}</span>
+              <span>All</span>
+              <span class="count">${totalProjects}</span>
+            </div>
+          `;
 
+          const otherChipsHtml = categoryOrder.map((category) => {
             const label = categoryLabels[category] || category;
-
             const count = stats[category] || 0;
+            if (count === 0 && activeCategory !== category) return ''; // Hide empty categories unless active
 
-            const noun = count === 1 ? 'project' : 'projects';
-
-            return `<div class="category-stat-item"><span>${categoryIcons[category] || ''} ${label}</span><strong>${count} ${noun}</strong></div>`;
-
+            return `
+              <div class="category-chip ${activeCategory === category ? 'active' : ''}" data-value="${category}">
+                <span class="hub-opt-icon">${categoryIcons[category] || uncategorizedIcon}</span>
+                <span>${label}</span>
+                <span class="count">${count}</span>
+              </div>
+            `;
           }).join('');
 
+          chipsEl.innerHTML = allChipHtml + otherChipsHtml;
+
+          // Attach click listeners to chips
+          chipsEl.querySelectorAll('.category-chip').forEach(chip => {
+            chip.onclick = () => {
+              activeCategory = chip.dataset.value;
+              applyProjectFilters();
+              renderCategoryStats(allProjects); // Re-render to update active state and counts if needed
+              
+              // Smooth scroll to results if on mobile
+              if (window.innerWidth < 768) {
+                const container = document.getElementById('projects-container');
+                if (container) container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            };
+          });
+
+          // Also update the old list if it exists (though hidden now)
+          if (listEl) {
+            listEl.innerHTML = categoryOrder.map((category) => {
+              const label = categoryLabels[category] || category;
+              const count = stats[category] || 0;
+              const noun = count === 1 ? 'project' : 'projects';
+              return `<div class="category-stat-item"><span>${categoryIcons[category] || ''} ${label}</span><strong>${count} ${noun}</strong></div>`;
+            }).join('');
+          }
         }
 
         function applyProjectFilters() {
