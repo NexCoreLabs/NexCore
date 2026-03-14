@@ -732,14 +732,6 @@ article.info-card:hover {
   gap: 12px;
 }
 
-.project-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
 .project-title {
   display: flex;
   align-items: center;
@@ -754,15 +746,12 @@ article.info-card:hover {
   align-items: center;
   justify-content: center;
   transition: transform 0.2s ease;
+  font-size: 10px;
   flex-shrink: 0;
 }
 
 .project-card-link:hover .external-link-icon {
   transform: translate(2px, -2px);
-}
-
-.external-link-icon i {
-  font-size: 12px;
 }
 
 .project-description {
@@ -800,47 +789,26 @@ article.info-card:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
-/* Backward compatibility for existing .project-card and related styles */
-.project-card {
-  display: block;
-  opacity: 1;
-  padding: 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-  box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
-  transition: 0.2s ease;
-}
-
-.project-card[style="display: none"] {
+.project-card-wrapper[style="display: none"] {
   opacity: 0;
   transform: scale(0.98);
 }
 
-.project-card p {
+.project-card-wrapper p {
   color: var(--muted);
   margin-bottom: 0;
 }
 
-div.project-card:hover {
-  transform: scale(1.02);
-}
-
-div.project-card i {
-  font-size: 11px;
-}
-
-a.project-card {
+.project-card-wrapper .project-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  gap: 8px;
 }
 
-a.project-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.id {
+.project-card-wrapper .project-card-header .id {
+  display: inline-block;
   font-size: 12px;
   padding: 5px 8px;
   border-radius: 8px;
@@ -852,10 +820,11 @@ a.project-card:hover {
   transition:
     background-position 2s cubic-bezier(0.2, 0.9, 0.3, 1),
     transform 0.2s,
-    padding 1s ease;
+    padding 0.2s,
+    0.3 ease;
 }
 
-a.project-card:hover .id {
+.project-card-wrapper:hover .project-card-header .id {
   background-position: 100% 50%;
   padding: 5px 10px;
 }
@@ -3278,10 +3247,6 @@ strong {
 
 /* Responsive styles for new project card structure */
 @media screen and (max-width: 640px) {
-  .project-card-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 
   .project-title {
     width: 100%;

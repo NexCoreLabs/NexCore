@@ -197,30 +197,6 @@
   border-top-color: #6ee7f3;
 }
 
-.hub-filter-option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(230, 238, 243, 0.8);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
-}
-
-.hub-filter-option:hover {
-  background: rgba(110, 231, 243, 0.08);
-  color: #e6eef3;
-}
-
-.hub-filter-option.selected {
-  color: #6ee7f3;
-  background: rgba(110, 231, 243, 0.1);
-}
-
 .hub-opt-icon {
   display: inline-flex;
   width: 16px;
