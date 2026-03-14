@@ -7,72 +7,39 @@
     <!-- Cookie Consent Manager v2 -->
 
     <link rel="stylesheet" href="assets/css/cookies.css">
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <meta name="author" content="NexCore Labs">
-
     <meta name="theme-color" content="#0a0b1c">
-
     <meta name="mobile-web-app-capable" content="yes">
-
-
 
     <title>Project | NexCore Labs</title>
 
     <meta name="description" content="View project details on NexCore Labs">
-
-
-
     <meta property="og:url" content="https://nexcorelabs.vercel.app/project.html">
-
     <meta property="og:type" content="website">
-
     <meta property="og:title" content="Project | NexCore Labs">
-
     <meta property="og:description" content="View project details on NexCore Labs">
-
-
-
     <meta name="twitter:card" content="summary_large_image">
-
     <meta property="twitter:domain" content="nexcorelabs.vercel.app">
-
     <meta property="twitter:url" content="https://nexcorelabs.vercel.app/project.html">
-
     <meta name="twitter:title" content="Project | NexCore Labs">
-
     <meta name="twitter:description" content="View project details on NexCore Labs">
-
-
-
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
 
     <!-- <link rel="stylesheet" href="assets/css/style.css"> -->
 
     <link rel="stylesheet" href="assets/css/unminified-css.css">
-
     <link rel="stylesheet" href="assets/css/project-categories.css">
-
     <link rel="manifest" href="manifest.json">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
 
     <style>
 
@@ -338,8 +305,6 @@
 
         }
 
-
-
         /* ------ Creator Section ------ */
 
         .creators-grid {
@@ -562,8 +527,6 @@
 
         }
 
-
-
         /* ------ AI Insights Section ------ */
 
         .ai-insights-section {
@@ -760,8 +723,6 @@
 
         }
 
-
-
             .ai-btn {
 
       position: relative;
@@ -902,8 +863,6 @@
 
     }
 
-
-
     </style>
 
 </head>
@@ -911,57 +870,35 @@
 <body>
 
       <div class="background">
-
       <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
 
       <div id="spotLight" class="spot-light"></div>
-
     </div>
 
-
-
     <header class="navbar">
-
       <div class="nav-container">
-
         <div class="logo">
-
           <h1 id="logo">NexCore <span>Labs</span></h1>
-
         </div>
-
-
 
         <div class="dropdown">
-
         <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
-
           <span class="dot" aria-hidden="true"></span>
-
           <span class="dot" aria-hidden="true"></span>
-
           <span class="dot" aria-hidden="true"></span>
-
           <span class="dot" aria-hidden="true"></span>
-
           <span class="dot" aria-hidden="true"></span>
-
           <span class="dot" aria-hidden="true"></span>
-
         </div>
 
-        
+
 
      <div id="myDropdown" class="dropdown-content">
-
          <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
-
          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
 
          <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
-
          <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
-
          <div class="div-menu-line"></div>
 
          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
@@ -971,86 +908,56 @@
          <div class="div-menu-line"></div>
 
          <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
-
          <a href="index.html#about" title="About NexCore Labs">About Us</a>
-
          <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
-
          <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
-
          <div class="div-menu-line"></div>
 
          <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-
         <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
          <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-
          <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-
      </div>
-
         </div>
-
       </div>
-
     </header>
 
-
-
     <main>
-
     <div class="project-wrap">
-
         <div id="loading" style="text-align: center; padding: 100px 20px;">
-
             <p style="opacity: 0.7;">Loading project...</p>
-
         </div>
 
-
-
         <div id="notFound" class="not-found" style="display: none;">
-
             <h1>404</h1>
 
             <p>Project not found</p>
 
             <div class="actions">
-
                 <a href="hub.html" class="btn primary ghost">
 
                     <i class="fas fa-home"></i> Back to Hub
 
                 </a>
-
             </div>
-
         </div>
 
-
-
         <div id="projectContent" style="display: none;">
-
             <div class="project-hero">
-
                 <div class="project-id" id="projectId">Proj-#</div>
 
                 <h1 id="projectName">Project Name</h1>
 
                 <div class="project-category-row" id="projectCategoryRow">
-
                   <span class="project-category-label">Category:</span>
 
                   <span class="project-category cat-uncategorized">🏷 Uncategorized</span>
-
                 </div>
 
                 <img id="projectImage" class="project-image" alt="" style="display: none;" />
 
                 <div class="project-stats">
-
                     <div class="stat-badge">
-
                         <i class="fas fa-eye"></i>
 
                         <span id="viewCount">-</span> views
@@ -1058,21 +965,14 @@
                     </div>
 
                     <div class="stat-badge">
-
                         <i class="fas fa-calendar"></i>
 
                         <span id="createdDate">-</span>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-
             <div class="project-section">
-
                 <h2>About</h2>
 
                 <div class="project-description" id="pageDescription">
@@ -1080,29 +980,20 @@
                     No description available.
 
                 </div>
-
             </div>
 
-
-
             <div class="project-section" id="socialSection" style="display: none;">
-
                 <h2>Links</h2>
 
                 <div class="social-links" id="socialLinks"></div>
-
             </div>
-
-
 
             <!-- AI Project Insights -->
 
             <div class="project-section ai-insights-section" id="aiInsightsSection">
-
                 <h2><i class="fas fa-microchip ai-icon"></i> AI Project Insights</h2>
 
                 <div id="aiInsightsContent">
-
                     <p class="ai-insights-summary" id="aiSummaryText"></p>
 
                     <ul class="ai-insights-bullets" id="aiInsightsBullets"></ul>
@@ -1110,7 +1001,6 @@
                 </div>
 
                 <div id="aiInsightsPlaceholder" class="ai-insights-placeholder" style="display: none;">
-
                     <p>AI insights will appear here once generated.</p>
 
                     <button class="btn primary ai-btn" id="generateInsightsBtn" style="width:100%;max-width:320px; text-align: center; justify-content: center; letter-spacing: 2px;">
@@ -1118,33 +1008,22 @@
                     <span class="ai-btn-text">Generate</span>
 
                     <span class="ai-sparkle-layer"></span>
-
                     </button>
-
                 </div>
-
             </div>
-
-
 
             <!-- Creators Section -->
 
             <div class="project-section" id="creatorsSection" style="display: none;">
-
                 <h2>Creator</h2>
 
                 <div class="creators-grid" id="creatorsGrid"></div>
-
             </div>
 
-
-
             <div class="project-section qr-section">
-
                 <h2>Share This Project</h2>
 
                 <div class="actions">
-
                     <button class="btn primary ghost" id="shareBtn">
 
                         <i class="fas fa-share-alt"></i> Share Link
@@ -1156,15 +1035,11 @@
                         <i class="fas fa-copy"></i> Copy Link
 
                     </button>
-
                 </div>
 
                 <div class="qr-wrapper">
-
                     <div class="qr-container">
-
                         <div id="qr"></div>
-
                     </div>
 
                     <p class="qr-scan-label">Scan to view this project</p>
@@ -1174,30 +1049,19 @@
                         <i class="fas fa-download"></i> Download QR
 
                     </button>
-
                 </div>
-
             </div>
 
-
-
             <div id="ownerActions" class="project-section" style="display: none; text-align: center;">
-
                 <a href="dashboard.html" class="btn primary ghost">
 
                     <i class="fas fa-edit"></i> Edit in Dashboard
 
                 </a>
-
             </div>
-
         </div>
-
     </div>
-
     </main>
-
-
 
     <script src="assets/js/script.js"></script>
 
@@ -1207,13 +1071,11 @@
 
     <script src="assets/js/project-categories.js"></script>
 
-    
+
 
     <script>
 
         const sb = window.supabaseClient;
-
-
 
         function getSlugFromUrl() {
 
@@ -1222,8 +1084,6 @@
             return params.get('slug');
 
         }
-
-
 
         function showNotFound() {
 
@@ -1235,8 +1095,6 @@
 
         }
 
-
-
         async function renderProject(project, isOwner) {
 
             try {
@@ -1245,13 +1103,9 @@
 
                 document.getElementById('projectContent').style.display = 'block';
 
-
-
                 // Update page title
 
                 document.title = `${project.name} • NexCore Labs`;
-
-
 
                 // Update meta tags safely
 
@@ -1265,7 +1119,7 @@
 
                     if (twitterTitle) twitterTitle.content = `${project.name} • NexCore Labs`;
 
-                    
+
 
                     if (project.page_description) {
 
@@ -1289,8 +1143,6 @@
 
                 }
 
-
-
                 // Populate content
 
                 document.getElementById('projectId').textContent = project.public_id || 'Proj-#';
@@ -1312,8 +1164,6 @@
                     categoryRow.innerHTML = `<span class="project-category-label">Category:</span>${badgeHtml}`;
 
                 }
-
-
 
             // Show image if available
 
@@ -1353,8 +1203,6 @@
 
             }
 
-
-
             // Populate social links
 
             const socialLinks = [];
@@ -1389,8 +1237,6 @@
 
             }
 
-
-
             if (socialLinks.length > 0) {
 
                 const container = document.getElementById('socialLinks');
@@ -1419,8 +1265,6 @@
 
             }
 
-
-
             // Show owner actions if this is the owner
 
             if (isOwner) {
@@ -1436,8 +1280,6 @@
                 document.getElementById('ownerActions').style.display = 'block';
 
             }
-
-
 
             // Render AI insights and creator section
 
@@ -1467,8 +1309,6 @@
 
         }
 
-
-
         function setupShareButtons(project, currentUrl) {
 
             // Remove existing listeners by cloning buttons
@@ -1477,7 +1317,7 @@
 
             const copyBtn = document.getElementById('copyBtn');
 
-            
+
 
             if (!shareBtn || !copyBtn) {
 
@@ -1487,7 +1327,7 @@
 
             }
 
-            
+
 
             const newShareBtn = shareBtn.cloneNode(true);
 
@@ -1496,8 +1336,6 @@
             shareBtn.replaceWith(newShareBtn);
 
             copyBtn.replaceWith(newCopyBtn);
-
-
 
             function copyToClipboard() {
 
@@ -1522,8 +1360,6 @@
                 });
 
             }
-
-
 
             // Share button
 
@@ -1561,15 +1397,11 @@
 
             });
 
-
-
             // Copy button
 
             document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
 
         }
-
-
 
         async function trackVisit(slug) {
 
@@ -1593,7 +1425,7 @@
 
                 });
 
-                
+
 
                 if (response.ok) {
 
@@ -1613,8 +1445,6 @@
 
         }
 
-
-
         async function getTotalViews(slug) {
 
             try {
@@ -1627,11 +1457,11 @@
 
                     .eq('page_path', `/project/${slug}`);
 
-                
+
 
                 if (error) throw error;
 
-                
+
 
                 if (data && data.length > 0) {
 
@@ -1651,13 +1481,11 @@
 
         }
 
-
-
         async function loadProject() {
 
             const slug = getSlugFromUrl();
 
-            
+
 
             if (!slug) {
 
@@ -1666,8 +1494,6 @@
                 return;
 
             }
-
-
 
             // First, try to fetch as a public project (for logged-out users)
 
@@ -1683,11 +1509,7 @@
 
                 .single();
 
-
-
             let isOwner = false;
-
-
 
             // If not found publicly, check if user is logged in and owns it
 
@@ -1695,7 +1517,7 @@
 
                 const { data: { session } } = await sb.auth.getSession();
 
-                
+
 
                 if (session) {
 
@@ -1713,7 +1535,7 @@
 
                         .single();
 
-                    
+
 
                     if (ownerQuery.data) {
 
@@ -1739,11 +1561,9 @@
 
             }
 
-
-
             await renderProject(data, isOwner);
 
-            
+
 
             // Track visit and get total views
 
@@ -1753,7 +1573,7 @@
 
             document.getElementById('viewCount').textContent = totalViews.toLocaleString();
 
-            
+
 
             // Set created date
 
@@ -1775,7 +1595,7 @@
 
             }
 
-            
+
 
             // Setup share/copy buttons
 
@@ -1791,8 +1611,6 @@
 
             }
 
-
-
             // Setup social share buttons
 
             try {
@@ -1805,7 +1623,7 @@
 
             }
 
-            
+
 
             // Generate QR code after rendering
 
@@ -1841,8 +1659,6 @@
 
                 }
 
-
-
                 // Setup QR download after QR code renders
 
                 setTimeout(() => {
@@ -1854,8 +1670,6 @@
             }
 
         }
-
-
 
         /* ---- AI Insights ---- */
 
@@ -1869,11 +1683,7 @@
 
             const bulletsEl = document.getElementById('aiInsightsBullets');
 
-
-
             if (!contentDiv || !placeholder) return;
-
-
 
             if (project.ai_summary) {
 
@@ -1915,8 +1725,6 @@
 
         }
 
-
-
         async function generateAiInsights(project) {
 
             const contentDiv = document.getElementById('aiInsightsContent');
@@ -1927,11 +1735,7 @@
 
             const bulletsEl = document.getElementById('aiInsightsBullets');
 
-
-
             placeholder.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Generating insights...</div>';
-
-
 
             // Require auth — AI endpoint needs a Bearer token
 
@@ -1953,8 +1757,6 @@
 
             }
 
-
-
             const descriptionText = (project.page_description || project.card_description || '').trim();
 
             if (!descriptionText) {
@@ -1964,8 +1766,6 @@
                 return;
 
             }
-
-
 
             try {
 
@@ -1993,11 +1793,7 @@
 
                 });
 
-
-
                 const data = await response.json();
-
-
 
                 if (!response.ok) {
 
@@ -2021,8 +1817,6 @@
 
                 }
 
-
-
                 summaryEl.textContent = data.summary || '';
 
                 bulletsEl.innerHTML = '';
@@ -2037,13 +1831,9 @@
 
                 });
 
-
-
                 contentDiv.style.display = 'block';
 
                 placeholder.style.display = 'none';
-
-
 
                 // Show remaining usage hint
 
@@ -2079,8 +1869,6 @@
 
         }
 
-
-
         /* ---- Creators ---- */
 
         function getMetadataDisplayName(metadata) {
@@ -2090,8 +1878,6 @@
             return typeof candidate === 'string' && candidate.trim() ? candidate.trim() : '';
 
         }
-
-
 
         async function fetchCreatorProfile(project) {
 
@@ -2115,8 +1901,6 @@
 
             };
 
-
-
             try {
 
                 const { data: sessionData } = await sb.auth.getSession();
@@ -2131,8 +1915,6 @@
 
             }
 
-
-
             if (project.owner_user_id) {
 
                 try {
@@ -2146,8 +1928,6 @@
                         .eq('id', project.owner_user_id)
 
                         .maybeSingle();
-
-
 
                     if (!error && publicProfile) {
 
@@ -2171,8 +1951,6 @@
 
                 }
 
-
-
                 if (!profile.contact_email && !profile.phone_number) {
 
                     try {
@@ -2186,8 +1964,6 @@
                             .eq('id', project.owner_user_id)
 
                             .maybeSingle();
-
-
 
                         if (!error && ownerUser) {
 
@@ -2206,8 +1982,6 @@
                 }
 
             }
-
-
 
             try {
 
@@ -2237,8 +2011,6 @@
 
             }
 
-
-
             return {
 
                 display_name: profile.display_name || 'Project Creator',
@@ -2255,8 +2027,6 @@
 
         }
 
-
-
         async function renderCreators(project) {
 
             const section = document.getElementById('creatorsSection');
@@ -2267,8 +2037,6 @@
 
             const profile = await fetchCreatorProfile(project);
 
-
-
             grid.innerHTML = '';
 
             grid.appendChild(buildCreatorCard(profile, project));
@@ -2277,21 +2045,15 @@
 
         }
 
-
-
         function buildCreatorCard(profile, project) {
 
             const card = document.createElement('div');
 
             card.className = 'creator-card';
 
-
-
             const name = profile.display_name || 'Creator';
 
             const initial = name.charAt(0).toUpperCase();
-
-
 
             let avatarHtml;
 
@@ -2312,8 +2074,6 @@
                 avatarHtml = `<div class="creator-avatar-placeholder">${escapeHtml(initial)}</div>`;
 
             }
-
-
 
             const hasEmail = profile.contact_email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(profile.contact_email);
 
@@ -2347,14 +2107,11 @@
 
                 : (loginRequiredText || '<p style="opacity:.7;margin:0;">No public contact details provided.</p>');
 
-
-
             card.innerHTML = `
 
                 ${avatarHtml}
 
                 <div class="creator-meta">
-
                     <p class="creator-name">${escapeHtml(name)}</p>
 
                     <p class="creator-contact-title">Creator Contact</p>
@@ -2366,7 +2123,6 @@
                         ${emptyContactText}
 
                     </div>
-
                 </div>
 
             `;
@@ -2374,8 +2130,6 @@
             return card;
 
         }
-
-
 
         function escapeHtml(text) {
 
@@ -2387,15 +2141,11 @@
 
         }
 
-
-
         function escapeAttr(value) {
 
             return String(value || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
         }
-
-
 
         /* ---- Social Share ---- */
 
@@ -2405,15 +2155,11 @@
 
             const encodedUrl = encodeURIComponent(currentUrl);
 
-
-
             const shareXBtn = document.getElementById('shareXBtn');
 
             const shareLinkedinBtn = document.getElementById('shareLinkedinBtn');
 
             const shareWhatsappBtn = document.getElementById('shareWhatsappBtn');
-
-
 
             if (shareXBtn) {
 
@@ -2447,8 +2193,6 @@
 
         }
 
-
-
         /* ---- QR Download ---- */
 
         function setupQrDownload() {
@@ -2457,8 +2201,6 @@
 
             if (!downloadBtn) return;
 
-
-
             downloadBtn.addEventListener('click', () => {
 
                 let dataUrl;
@@ -2466,8 +2208,6 @@
                 const qrCanvas = document.querySelector('#qr canvas');
 
                 const qrImg = document.querySelector('#qr img');
-
-
 
                 if (qrCanvas) {
 
@@ -2501,8 +2241,6 @@
 
                 }
 
-
-
                 const a = document.createElement('a');
 
                 a.download = 'project-qr.png';
@@ -2515,13 +2253,9 @@
 
         }
 
-
-
         document.addEventListener('DOMContentLoaded', loadProject);
 
     </script>
-
-
 
     <script src="assets/js/cookies.js" defer></script>
 

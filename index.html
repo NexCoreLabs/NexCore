@@ -63,8 +63,6 @@
       <div id="spotLight" class="spot-light"></div>
   </div>
 
-
-
 <header class="navbar">
   <div class="nav-container">
     <div class="logo">
@@ -80,8 +78,6 @@
       <span class="dot" aria-hidden="true"></span>
       <span class="dot" aria-hidden="true"></span>
      </div>
-
-
 
      <div id="myDropdown" class="dropdown-content">
          <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
@@ -161,8 +157,6 @@
         <h2 class="section-title">About NexCore Labs</h2>
 
         <p class="section-lead">We take student projects and turn them into clean, presentable and deployable pages — fast is the main goal. We emphasize clarity of message, speed of delivery, and maintainability.</p>
-
-
 
         <div class="cards-grid">
           <article class="info-card reveal">
@@ -356,8 +350,6 @@
             <a class="social discord" href="https://discord.gg/ExtGSwy5Pn" target="_blank" rel="noopener">Join our <i class="fa-brands fa-discord"></i> Server</a>
           </div>
 
-
-
             <form id="contactForm" class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="ba811578-09f0-4f90-b1eb-7acc03fe745d">
 
@@ -451,8 +443,6 @@
 
       const countElement = document.getElementById('projectCount');
 
-
-
       if (!countElement) {
 
         console.error('projectCount element not found');
@@ -485,13 +475,9 @@
 
         const finalCount = count || 0;
 
-
-
         // Animate count from 0 to finalCount
 
         animateCount(countElement, 0, finalCount, 1000);
-
-
 
       } catch (err) {
 
@@ -529,15 +515,11 @@
 
         const progress = Math.min(elapsed / duration, 1);
 
-
-
         // Ease-out animation
 
         const easeOut = 1 - Math.pow(1 - progress, 3);
 
         const current = Math.floor(start + range * easeOut);
-
-
 
         // Format with leading zero and + sign
 

@@ -7,75 +7,44 @@
         <!-- Cookie Consent Manager v2 -->
 
         <link rel="stylesheet" href="assets/css/cookies.css">
-
         <meta charset="UTF-8">
-
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
         <meta name="author" content="NexCore Labs">
-
         <meta name="keywords" content="NexCore Labs, signin, signup, login, authentication, SQU, Sultan Qaboos University, Oman">
-
         <meta name="theme-color" content="#0a0b1c">
-
         <meta name="mobile-web-app-capable" content="yes">
-
-
 
         <title>NexCore Labs | Sign In</title>
 
         <meta name="description" content="Sign in to NexCore Labs with your SQU Google account.">
 
-
-
         <!-- Facebook Meta Tags -->
 
         <meta property="og:url" content="https://nexcorelabs.vercel.app/auth.html">
-
         <meta property="og:type" content="website">
-
         <meta property="og:title" content="NexCore Labs | Sign In">
-
         <meta property="og:description" content="Sign in to NexCore Labs with your SQU Google account.">
-
         <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
-
-
 
         <!-- Twitter Meta Tags -->
 
         <meta name="twitter:card" content="summary_large_image">
-
         <meta property="twitter:domain" content="nexcorelabs.vercel.app">
-
         <meta property="twitter:url" content="https://nexcorelabs.vercel.app/auth.html">
-
         <meta name="twitter:title" content="NexCore Labs | Sign In">
-
         <meta name="twitter:description" content="Sign in to NexCore Labs with your SQU Google account.">
-
         <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
-
-
-
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-
         <link rel="stylesheet" href="assets/css/style.css">
 
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
 
         <link rel="manifest" href="manifest.json">
-
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
         <link rel="preconnect" href="https://fonts.googleapis.com">
-
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     </head>
@@ -83,57 +52,35 @@
     <body>
 
         <div class="background">
-
             <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
 
             <div id="spotLight" class="spot-light"></div>
-
         </div>
 
-
-
         <header class="navbar">
-
             <div class="nav-container">
-
                 <div class="logo">
-
                     <h1 id="logo">NexCore <span>Labs</span></h1>
-
                 </div>
 
-
-
                 <div class="dropdown">
-
                     <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
-
                         <span class="dot" aria-hidden="true"></span>
-
                         <span class="dot" aria-hidden="true"></span>
-
                         <span class="dot" aria-hidden="true"></span>
-
                         <span class="dot" aria-hidden="true"></span>
-
                         <span class="dot" aria-hidden="true"></span>
-
                         <span class="dot" aria-hidden="true"></span>
-
                     </div>
 
-                    
+
 
                     <div id="myDropdown" class="dropdown-content">
-
                         <a href="hub.html" class="magic-signup fade" title="Back to Hub">Back to Hub</a>
-
                         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
 
                         <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
-
                         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
-
                         <div class="div-menu-line"></div>
 
                         <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
@@ -143,54 +90,34 @@
                         <div class="div-menu-line"></div>
 
                         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
-
                         <a href="index.html#about" title="About NexCore Labs">About Us</a>
-
                         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
-
                         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
-
                         <div class="div-menu-line"></div>
 
                         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-
         <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
                         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-
                         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-
                     </div>
-
                 </div>
-
             </div>
-
         </header>
 
-
-
         <main>
-
             <section class="panel" style="padding: 3rem 0;">
-
                 <div class="container">
-
                     <div class="signup-wrapper">
-
                         <!-- Left Column: Information -->
 
                         <div class="signup-info">
-
                             <div class="info-block">
-
                                 <div class="auth-content-text" id="signupContent">
-
                                     <h3><i class="fa-solid fa-rocket"></i> Why Join NexCore?</h3>
 
                                     <p>Align your project vision with our expertise and bring your ideas to life online. We provide comprehensive digital solutions tailored for student-led initiatives.</p>
 
                                     <ul style="margin-top: 1rem; padding-left: 1.25rem;">
-
                                         <li>Professional page development</li>
 
                                         <li>Technical support & guidance</li>
@@ -198,21 +125,18 @@
                                         <li>Portfolio building opportunity</li>
 
                                         <li>Collaborative team environment</li>
-
                                     </ul>
 
                                 </div>
 
-                                
+
 
                                 <div class="auth-content-text" id="loginContent" style="display: none;">
-
                                     <h3><i class="fa-solid fa-shield-halved"></i> Welcome Back</h3>
 
                                     <p>Log in to manage your team project, track progress, and access your dashboard. Your secure workspace awaits.</p>
 
                                     <ul style="margin-top: 1rem; padding-left: 1.25rem;">
-
                                         <li>Access your project dashboard</li>
 
                                         <li>Manage team settings</li>
@@ -220,64 +144,41 @@
                                         <li>Track development progress</li>
 
                                         <li>Update project information</li>
-
                                     </ul>
 
                                 </div>
-
                             </div>
 
-
-
                             <div class="info-block">
-
                                 <h3><i class="fa-solid fa-graduation-cap"></i> SQU Community</h3>
 
                                 <p>NexCore Labs is exclusively for Sultan Qaboos University students and staff. We're here to support your innovative projects and ideas.</p>
-
                             </div>
-
                         </div>
-
-
 
                         <!-- Right Column: Auth Form -->
 
                         <div class="signup-form">
-
                             <div class="form-box">
-
                                 <h2 id="formTitle">Access the Core</h2>
 
                                 <p class="form-desc" id="formDesc">Sign in with your SQU Google account</p>
 
-
-
                                 <div class="auth-tabs">
-
                                     <button class="auth-tab active" id="signupTab" type="button">New User</button>
 
                                     <button class="auth-tab" id="loginTab" type="button">Existing User</button>
-
                                 </div>
 
-
-
                                 <div id="authMessage" style="display: none; padding: 1rem; background: rgba(110, 231, 243, 0.1); border-radius: 8px; margin-bottom: 1rem; color: #6EE7F3;">
-
                                     <!-- Messages will be displayed here -->
 
                                 </div>
 
-
-
                                 <div id="authNote" class="auth-note" style="display: none; padding: 0.875rem; background: rgba(255, 120, 120, 0.12); border: 1px solid rgba(255, 120, 120, 0.3); border-radius: 8px; margin-bottom: 1rem; color: #ff8888; font-size: 0.9rem; line-height: 1.5;">
-
                                     <!-- Error notes will be displayed here -->
 
                                 </div>
-
-
 
                                 <button class="google-btn" id="googleSignInBtn">
 
@@ -294,47 +195,29 @@
                                     </svg>
 
                                     <span id="btnText">Continue with Google</span>
-
                                 </button>
 
-
-
                                 <div class="squ-notice">
-
                                     <i class="fa-solid fa-info-circle"></i>
 
                                     Allowed emails: SQU staff, SQU students, or approved NexCore users.
 
                                 </div>
-
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
 
-
-
             <div class="nexcore-sign">
-
                 <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
 
             </div>
-
         </main>
 
-
-
         <footer class="site-footer">
-
             <div class="container footer-inner">
-
                 <div class="f-left">
-
                     <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
 
                     <br>
@@ -346,18 +229,13 @@
                             <i class="fa-solid fa-scale-balanced"></i> MIT License
 
                         </a>
-
                     </small>
 
                 </div>
 
                 <div class="f-right"><small>Empowering our env. to do more</small></div>
-
             </div>
-
         </footer>
-
-
 
         <script src="assets/js/script.js"></script>
 
@@ -374,7 +252,7 @@
 
             let suppressSignedOutNote = false;
 
-            
+
 
             // DOM elements
 
@@ -398,8 +276,6 @@
 
             const authNote = document.getElementById('authNote');
 
-
-
             // Check if user is already logged in
 
             async function checkExistingSession() {
@@ -420,8 +296,6 @@
 
             }
 
-
-
             // Check for errors in URL (OAuth redirect errors)
 
             function checkURLForErrors() {
@@ -430,13 +304,13 @@
 
                 const hashParams = new URLSearchParams(window.location.hash.substring(1));
 
-                
+
 
                 const error = params.get('error') || hashParams.get('error');
 
                 const errorDescription = params.get('error_description') || hashParams.get('error_description');
 
-                
+
 
                 if (error || errorDescription) {
 
@@ -446,7 +320,7 @@
 
                     showNote(message, true);
 
-                    
+
 
                     // Clean URL without reloading
 
@@ -461,8 +335,6 @@
                 return false;
 
             }
-
-
 
             // Listen to auth state changes
 
@@ -496,15 +368,13 @@
 
             });
 
-
-
             // Switch between signup and login modes
 
             function switchMode(mode) {
 
                 currentMode = mode;
 
-                
+
 
                 if (mode === 'signup') {
 
@@ -538,8 +408,6 @@
 
             }
 
-
-
             // Show message
 
             function showMessage(text, isError = false) {
@@ -556,8 +424,6 @@
 
             }
 
-
-
             // Show error note
 
             function showNote(text, isError = false) {
@@ -566,7 +432,7 @@
 
                 authNote.style.display = 'block';
 
-                
+
 
                 if (isError) {
 
@@ -586,7 +452,7 @@
 
                 }
 
-                
+
 
                 // Re-enable button if it was disabled
 
@@ -595,8 +461,6 @@
                 btnText.textContent = 'Continue with Google';
 
             }
-
-
 
             // Google Sign In
 
@@ -610,13 +474,13 @@
 
                     btnText.textContent = 'Redirecting…';
 
-                    
+
 
                     // Store current mode in sessionStorage
 
                     sessionStorage.setItem('auth_mode', currentMode);
 
-                    
+
 
                     // Initiate Google OAuth
 
@@ -632,7 +496,7 @@
 
                     });
 
-                    
+
 
                     if (error) {
 
@@ -640,7 +504,7 @@
 
                     }
 
-                    
+
 
                     // OAuth redirect will happen automatically
 
@@ -660,8 +524,6 @@
 
             }
 
-
-
             // Event listeners
 
             signupTab.addEventListener('click', () => switchMode('signup'));
@@ -669,8 +531,6 @@
             loginTab.addEventListener('click', () => switchMode('login'));
 
             googleBtn.addEventListener('click', signInWithGoogle);
-
-
 
             // Initialize
 
@@ -682,7 +542,7 @@
 
                 if (hasSession) return;
 
-                
+
 
                 // Check for OAuth errors in URL
 
@@ -690,13 +550,13 @@
 
             }
 
-            
+
 
             init();
 
         </script>
 
-        
+
 
         <!-- Cookie consent script -->
 
@@ -705,8 +565,3 @@
     </body>
 
 </html>
-
-
-
-
-
