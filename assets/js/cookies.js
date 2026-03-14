@@ -112,7 +112,7 @@
       '     aria-describedby="ncc-desc" aria-hidden="true" tabindex="-1">',
       '  <div class="ncc-panel" role="document">',
       '    <div class="ncc-header">',
-      '      <span class="ncc-icon" aria-hidden="true">' + COOKIE_ICON_SVG + '</span>',
+      '      <span class="ncc-icon" aria-hidden="true" title="Cookie Settings">' + COOKIE_ICON_SVG + '</span>',
       '      <h2 id="ncc-title" class="ncc-title">Privacy &amp; Cookies</h2>',
       '      <p id="ncc-desc" class="ncc-desc">',
       '        We use cookies to enhance your experience, ensure security, and improve our services.',
