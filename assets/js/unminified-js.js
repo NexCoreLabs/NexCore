@@ -183,11 +183,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <span>EU GDPR-aligned</span>
       </div>`,
 
-    "Powered by NexCore • Driven by ambition",
+    "The margin between good and great is care.",
 
-    "Crafted with care • Inspired by simplicity",
+    "Real. Useful. Done.",
 
-    "Fast • Focused • Clean",
+    "Showcase • Discover • Collaborate",
     // brand icons will render if Font Awesome CSS loaded
     'Enhanced for <i class="fa-brands fa-edge" aria-hidden="true"></i> & <i class="fa-brands fa-android" aria-hidden="true"></i>',
   ];

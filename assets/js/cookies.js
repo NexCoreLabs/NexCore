@@ -8,8 +8,8 @@
   'use strict';
 
   const PREF_KEY = 'nexcore_cookie_preferences';
-  const OLD_KEY  = 'nexcore_cookie_consent_v1';
-  const GA_ID    = 'G-PYZB5L2R8W';
+  const OLD_KEY = 'nexcore_cookie_consent_v1';
+  const GA_ID = 'G-PYZB5L2R8W';
   const COOKIE_ICON_SVG =
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="M14 3a5 5 0 0 0 7 7 9 9 0 1 1-9-9h2Z"/>' +
@@ -41,10 +41,10 @@
       if (!old || getPrefs()) return; // nothing to migrate or already migrated
       const parsed = JSON.parse(old);
       savePrefs({
-        necessary:      true,
-        analytics:      !!parsed.analytics,
+        necessary: true,
+        analytics: !!parsed.analytics,
         external_media: false,
-        ai_services:    false,
+        ai_services: false,
       });
       localStorage.removeItem(OLD_KEY);
     } catch (e) { /* ignore */ }
@@ -56,7 +56,7 @@
     if (window.__ncc_ga_loaded) return;
     window.__ncc_ga_loaded = true;
     const s = document.createElement('script');
-    s.src   = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
     s.async = true;
     s.onload = function () {
       window.dataLayer = window.dataLayer || [];
@@ -64,9 +64,9 @@
       window.gtag = window.gtag || gtag;
       gtag('js', new Date());
       gtag('config', GA_ID, {
-        anonymize_ip:                       true,
-        allow_google_signals:               false,
-        allow_ad_personalization_signals:   false,
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
       });
     };
     document.head.appendChild(s);
@@ -213,7 +213,6 @@
       '<button id="nexcore-cookie-settings-btn" class="ncc-floating-btn"',
       '        aria-label="Cookie Settings" title="Cookie Settings" type="button">',
       '  <span class="ncc-cookie-icon" aria-hidden="true">' + COOKIE_ICON_SVG + '</span>',
-      '  <span>Cookie Settings</span>',
       '</button>',
     ].join('\n');
   }
@@ -243,7 +242,7 @@
     if (!focusable.length) return;
 
     var first = focusable[0];
-    var last  = focusable[focusable.length - 1];
+    var last = focusable[focusable.length - 1];
 
     if (e.shiftKey && document.activeElement === first) {
       e.preventDefault();
@@ -258,14 +257,14 @@
 
   function showModal() {
     var overlay = document.getElementById('nexcore-cookie-overlay');
-    var btn     = document.getElementById('nexcore-cookie-settings-btn');
+    var btn = document.getElementById('nexcore-cookie-settings-btn');
     if (!overlay) return;
 
     // Pre-fill toggles from stored preferences
     var prefs = getPrefs() || { necessary: true, analytics: false, external_media: false, ai_services: false };
     setToggle('ncc-chk-analytics', !!prefs.analytics);
-    setToggle('ncc-chk-external',  !!prefs.external_media);
-    setToggle('ncc-chk-ai',        !!prefs.ai_services);
+    setToggle('ncc-chk-external', !!prefs.external_media);
+    setToggle('ncc-chk-ai', !!prefs.ai_services);
 
     overlay.classList.add('ncc-visible');
     overlay.setAttribute('aria-hidden', 'false');
@@ -280,7 +279,7 @@
 
   function closeModal() {
     var overlay = document.getElementById('nexcore-cookie-overlay');
-    var btn     = document.getElementById('nexcore-cookie-settings-btn');
+    var btn = document.getElementById('nexcore-cookie-settings-btn');
     if (!overlay) return;
 
     overlay.classList.remove('ncc-visible');
@@ -302,11 +301,11 @@
   // ─── Bind button events ─────────────────────
 
   function bindEvents() {
-    var overlay      = document.getElementById('nexcore-cookie-overlay');
+    var overlay = document.getElementById('nexcore-cookie-overlay');
     var acceptAllBtn = document.getElementById('ncc-accept-all');
     var rejectOptBtn = document.getElementById('ncc-reject-opt');
-    var saveBtn      = document.getElementById('ncc-save');
-    var settingsBtn  = document.getElementById('nexcore-cookie-settings-btn');
+    var saveBtn = document.getElementById('ncc-save');
+    var settingsBtn = document.getElementById('nexcore-cookie-settings-btn');
 
     if (acceptAllBtn) {
       acceptAllBtn.addEventListener('click', function () {
@@ -325,10 +324,10 @@
     if (saveBtn) {
       saveBtn.addEventListener('click', function () {
         savePrefs({
-          necessary:      true,
-          analytics:      getToggle('ncc-chk-analytics'),
+          necessary: true,
+          analytics: getToggle('ncc-chk-analytics'),
           external_media: getToggle('ncc-chk-external'),
-          ai_services:    getToggle('ncc-chk-ai'),
+          ai_services: getToggle('ncc-chk-ai'),
         });
         closeModal();
       });
@@ -386,8 +385,8 @@
 
     // Public API — accessible via window.nexcoreConsent
     window.nexcoreConsent = {
-      get:    getPrefs,
-      open:   showModal,
+      get: getPrefs,
+      open: showModal,
       accept: function () {
         savePrefs({ necessary: true, analytics: true, external_media: true, ai_services: true });
         closeModal();

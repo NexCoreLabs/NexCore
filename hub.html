@@ -1,454 +1,459 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <!-- Cookie Consent Manager v2 -->
-        <link rel="stylesheet" href="assets/css/cookies.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="NexCore Labs">
-        <meta name="keywords" content="NexCore Labs, page development, HTML, CSS, JavaScript, innovation, technology, creative projects, Oman, university tech teams, front-end development, NexCore Labs hub, hub, projects showcase">
-        <meta name="theme-color" content="#0a0b1c">
-        <meta name="mobile-web-app-capable" content="yes">
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Cookie Consent Manager v2 -->
+        <link rel="stylesheet" href="assets/css/cookies.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="NexCore Labs, page development, HTML, CSS, JavaScript, innovation, technology, creative projects, Oman, university tech teams, front-end development, NexCore Labs hub, hub, projects showcase">
+        <meta name="theme-color" content="#0a0b1c">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <title>NexCore Labs | Hub for Student Projects</title>
+        <meta name="description" content="Where projects converge — the central hub.">
+
+        <!-- Facebook Meta Tags -->
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/hub.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs | Hub for Student Projects">
+        <meta property="og:description" content="Where projects converge — the central hub.">
+        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+        <!-- Twitter Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/hub.html">
+        <meta name="twitter:title" content="NexCore Labs | Hub for Student Projects">
+        <meta name="twitter:description" content="Where projects converge — the central hub.">
+        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+        <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/project-categories.css">
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+        <link rel="manifest" href="manifest.json">
+        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+    <div class="background">
+      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+      <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h1 id="logo">NexCore <span>Labs</span></h1>
+        </div>
+
+        <div class="dropdown">
+        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+        </div>
+        
+     <div id="myDropdown" class="dropdown-content">
+         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
+         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+         <a href="#" class="fade" title="NexCore Labs Hub">Hub</a>
+         <a href="#projects" class="fade" title="Projects">Projects</a>
+         <div class="div-menu-line"></div>
+         <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
+         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
+         <div class="div-menu-line"></div>
+         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
+         <a href="index.html#about" title="About NexCore Labs">About Us</a>
+         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
+         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
+         <div class="div-menu-line"></div>
+         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
+        <a href="releases.html" class="fade" title="Releases & Updates" style="margin-top: 0;">Releases / Updates</a>
+         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
+         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
+     </div>
+        </div>
+      </div>
+    </header>
+      <main>
+        <section class="hub-hero hero">
+          <div class="container">
+            <div class="hub-top">
+              <h1 class="title">NexCore Hub</h1>
+              <p class="lead">Where projects converge — the central hub.</p>
+              <div class="hero-actions">
+                <a class="btn primary" href="auth.html">Access the Core</a>
+                <a class="btn ghost" href="#projects">Projects</a>
+              </div>
+            </div>
+          </div>
+          <div class="bg-orbit" aria-hidden="true"></div>
+        </section>
+
+        <section id="projects" class="panel">
+          <div class="container">
+            <h2 class="section-title">Projects</h2>
+            <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
+            
+                <!-- 🔍 Search Bar -->
+            <div class="search-bar">
+              <input type="text" id="projectSearch" placeholder="Search by name or ID...">
+            </div>
+            <div class="project-filters" id="projectFilters">
+              <div class="hub-filter-wrap" id="hubCategoryFilterWrap">
+                <select id="hubCategoryFilterNative" aria-label="Filter by category">
+                  <option value="all">All</option>
+                </select>
+                <div class="hub-filter-trigger" id="hubCategoryFilterTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+                  <span id="hubCategoryFilterLabel">All</span>
+                  <span class="hub-filter-chevron"></span>
+                </div>
+                <div class="hub-filter-panel" role="listbox" id="hubCategoryFilterPanel"></div>
+              </div>
+            </div>
+
+            <div class="projects-grid reveal" id="projects-container">
+              <!-- Project cards will be loaded here dynamically -->
+            </div>
+            <div class="category-stats" id="categoryStats">
+              <h3>Platform Categories</h3>
+              <div class="category-stats-list" id="categoryStatsList"></div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- TrustBox widget - Review Collector -->
+        <div class="trustpilot-review-widget">
+          <a href="https://www.trustpilot.com/review/nexcorelabs.vercel.app" target="_blank" rel="noopener noreferrer" class="trustpilot-widget">
+            <span class="tp-text">Review us on</span>
+
+            <span class="tp-logo">
+              <img src="assets/images/trustpilot.webp" alt="Trustpilot logo"/>
+              <span class="tp-name">Trustpilot</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="nexcore-sign">
+          <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div class="f-left">
+            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+            <br>
+            <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
+                <i class="fa-solid fa-scale-balanced"></i> MIT License
+              </a>            </small>
+          </div>
+          <div class="f-right footer-line"></div>
+        </div>
+      </footer>
+
+      <script src="assets/js/script.js"></script>
+      <script src="assets/js/supabase-client.js"></script>
+      <script src="assets/js/auth-ui.js"></script>
+      <script src="assets/js/project-categories.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script src="version.js"></script>
+      <script>
+        console.log(
+exCore Labs version ${APP_VERSION}`);
+      </script>
+      <script>
+        async function updateProjectsCount(filterType = 'published') {
+          const sb = window.supabaseClient;
+          const countElement = document.getElementById('projectsCount');
+          if (!countElement) return;
+
+          try {
+            let query = sb.from('projects').select('*', { count: 'exact', head: true });
+            if (filterType === 'published') query = query.eq('published', true);
+            else if (filterType === 'draft') query = query.eq('published', false);
+
+            const { count, error } = await query;
+            if (error) {
+              console.error('Error fetching projects count:', error);
+              countElement.textContent = '--';
+              return;
+            }
+            animateCount(countElement, 0, count || 0, 1000);
+          } catch (err) {
+            console.error('Unexpected error fetching projects count:', err);
+            countElement.textContent = '--';
+          }
+        }
+
+        function animateCount(element, start, end, duration) {
+          const startTime = performance.now();
+          const range = end - start;
+          function updateCount(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.floor(start + range * easeOut);
+            element.textContent = current.toString().padStart(2, '0') + '+';
+            if (progress < 1) requestAnimationFrame(updateCount);
+            else element.textContent = end.toString().padStart(2, '0') + '+';
+          }
+          requestAnimationFrame(updateCount);
+        }
+
+        const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
+        const categoryLabels = window.ProjectCategories?.CATEGORY_LABELS || {};
+        const categoryOrder = window.ProjectCategories?.CATEGORY_ORDER || [];
+        const uncategorizedIcon = window.ProjectCategories?.getCategoryIconMarkup?.('uncategorized') || '';
+        let allProjects = [];
+        let activeCategory = 'all';
+        let currentSearch = '';
+
+        function normalizeCategory(value) {
+          const normalized = window.ProjectCategories?.normalizeCategory?.(value);
+          return normalized || 'uncategorized';
+        }
+
+        function renderCategoryStats(projects) {
+          const listEl = document.getElementById('categoryStatsList');
+          if (!listEl) return;
+          const stats = window.ProjectCategories?.getCategoryStats?.(projects) || {};
+          listEl.innerHTML = categoryOrder.map((category) => {
+            const label = categoryLabels[category] || category;
+            const count = stats[category] || 0;
+            const noun = count === 1 ? 'project' : 'projects';
+            return `<div class="category-stat-item"><span>${categoryIcons[category] || ''} ${label}</span><strong>${count} ${noun}</strong></div>`;
+          }).join('');
+        }
+
+        function applyProjectFilters() {
+          const container = document.querySelector('#projects-container');
+          const filteredProjects = allProjects.filter((project) => {
+            const projectCategory = normalizeCategory(project.category);
+            const inCategory = activeCategory === 'all' || projectCategory === activeCategory;
+            const query = currentSearch.toLowerCase();
+            const name = String(project.name || '').toLowerCase();
+            const id = String(project.public_id || '').toLowerCase();
+            const inSearch = !query || name.includes(query) || id.includes(query);
+            return inCategory && inSearch;
+          });
+
+          if (!filteredProjects.length) {
+            container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects match this filter.</p>';
+            return;
+          }
+
+          container.innerHTML = '';
+          filteredProjects.forEach((project) => {
+            const link = `/project.html?slug=${encodeURIComponent(project.slug)}`;
+            const views = project.views || 0;
+            const createdDate = project.created_at
+              ? new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+              : 'N/A';
+            const badgeHtml = window.ProjectCategories?.buildCategoryBadge
+              ? window.ProjectCategories.buildCategoryBadge(project.category)
+              : `<span class="project-category cat-uncategorized">${uncategorizedIcon}Uncategorized</span>`;
+
+            const card = document.createElement('a');
+            card.className = 'project-card-link';
+            card.href = link;
+            card.setAttribute('data-id', project.public_id || '');
+            card.setAttribute('data-name', project.name || '');
+
+            card.innerHTML = `
+              <div class="project-card-wrapper">
+                <div class="project-card-header">
+                  <strong class="project-title">
+                    ${project.name || 'Untitled'}
+                    <span class="external-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                  </strong>
+                  <span class="id">${project.public_id || ''}</span>
+                </div>
+                ${badgeHtml}
+                <p class="project-description">${project.card_description || 'No description available.'}</p>
+                <div class="project-metadata">
+                  <span class="metadata-item"><i class="fas fa-calendar-alt"></i><span>${createdDate}</span></span>
+                  <span class="metadata-separator"></span>
+                  <span class="metadata-item"><i class="fas fa-eye"></i><span class="view-count">${views.toLocaleString()}</span> views</span>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        }
+
+        function initializeSearch() {
+          const searchInput = document.getElementById('projectSearch');
+          if (!searchInput || searchInput.dataset.bound === '1') return;
+          searchInput.dataset.bound = '1';
+          searchInput.addEventListener('input', function () {
+            currentSearch = this.value.trim();
+            applyProjectFilters();
+          });
+        }
+
+        function initializeCategoryFilters() {
+          const wrap = document.getElementById('hubCategoryFilterWrap');
+          const trigger = document.getElementById('hubCategoryFilterTrigger');
+          const panel = document.getElementById('hubCategoryFilterPanel');
+          const label = document.getElementById('hubCategoryFilterLabel');
+          const native = document.getElementById('hubCategoryFilterNative');
+          if (!wrap || !trigger || !panel || !label || !native || wrap.dataset.bound === '1') return;
+
+          wrap.dataset.bound = '1';
+          native.innerHTML = `<option value="all">All</option>${categoryOrder.map((key) => `<option value="${key}">${categoryLabels[key] || key}</option>`).join('')}`;
+          panel.innerHTML = `
+            <div class="hub-filter-option selected" role="option" tabindex="0" data-value="all"><span class="hub-opt-icon">${uncategorizedIcon}</span>All</div>
+            ${categoryOrder.map((key) => `<div class="hub-filter-option" role="option" tabindex="0" data-value="${key}"><span class="hub-opt-icon">${categoryIcons[key] || uncategorizedIcon}</span>${categoryLabels[key] || key}</div>`).join('')}
+          `;
+          document.body.appendChild(panel);
+
+          function reposition() {
+            const rect = trigger.getBoundingClientRect();
+            panel.style.top = `${rect.bottom + 6}px`;
+            panel.style.left = `${rect.left}px`;
+            panel.style.minWidth = `${rect.width}px`;
+          }
+          function openPanel() {
+            reposition();
+            wrap.classList.add('open');
+            panel.classList.add('open');
+            trigger.setAttribute('aria-expanded', 'true');
+          }
+          function closePanel() {
+            wrap.classList.remove('open');
+            panel.classList.remove('open');
+            trigger.setAttribute('aria-expanded', 'false');
+          }
+          function applySelected(value) {
+            activeCategory = value || 'all';
+            native.value = activeCategory;
+            panel.querySelectorAll('.hub-filter-option').forEach((opt) => {
+              opt.classList.toggle('selected', opt.dataset.value === activeCategory);
+            });
+            const icon = activeCategory === 'all' ? uncategorizedIcon : (categoryIcons[activeCategory] || uncategorizedIcon);
+            const selected = native.querySelector(`option[value="${activeCategory}"]`);
+            label.innerHTML = `${icon}${selected ? selected.textContent : 'All'}`;
+            applyProjectFilters();
+          }
+          applySelected('all');
+
+          trigger.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel());
+          trigger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
+            if (e.key === 'Escape') closePanel();
+          });
+          panel.addEventListener('click', (e) => {
+            const option = e.target.closest('.hub-filter-option');
+            if (!option) return;
+            applySelected(option.dataset.value);
+            closePanel();
+          });
+          panel.addEventListener('keydown', (e) => {
+            const option = e.target.closest('.hub-filter-option');
+            if (!option) return;
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              applySelected(option.dataset.value);
+              closePanel();
+            }
+          });
+          document.addEventListener('click', (e) => {
+            if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
+          });
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePanel();
+          });
+          window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
+          window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
+        }
+
+        async function loadProjects() {
+          const sb = window.supabaseClient;
+          const container = document.querySelector('#projects-container');
+
+          async function getViewsBySlug(projects) {
+            const slugToViews = new Map();
+            const pagePaths = (projects || []).map((p) => (p.slug ? `/project/${p.slug}` : null)).filter(Boolean);
+            if (!pagePaths.length) return slugToViews;
+
+            const { data: visitsData, error: visitsError } = await sb
+              .from('page_visits_daily')
+              .select('page_path, visits')
+              .in('page_path', pagePaths);
+            if (visitsError) return slugToViews;
+
+            (visitsData || []).forEach((row) => {
+              const path = row.page_path || '';
+              const slug = path.startsWith('/project/') ? path.slice('/project/'.length) : '';
+              if (!slug) return;
+              slugToViews.set(slug, (slugToViews.get(slug) || 0) + (row.visits || 0));
+            });
+            return slugToViews;
+          }
+
+          try {
+            const { data, error } = await sb
+              .from('projects')
+              .select('public_id, name, slug, card_description, created_at, category')
+              .eq('published', true)
+              .order('created_at', { ascending: false })
+              .limit(100);
+
+            if (error) {
+              console.error('Error loading projects:', error);
+              container.innerHTML = '<p style="text-align: center; color: #ff7878;">Failed to load projects. Please try again later.</p>';
+              return;
+            }
+            if (!data || !data.length) {
+              container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects published yet. Be the first to create one!</p>';
+              localStorage.setItem('projectCount', '0');
+              return;
+            }
+
+            const viewsBySlug = await getViewsBySlug(data);
+            allProjects = data.map((project) => ({ ...project, views: viewsBySlug.get(project.slug) || 0 }));
+            renderCategoryStats(allProjects);
+            applyProjectFilters();
+            localStorage.setItem('projectCount', String(data.length));
+          } catch (err) {
+            console.error('Unexpected error:', err);
+            container.innerHTML = '<p style="text-align: center; color: #ff7878;">An unexpected error occurred.</p>';
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', () => {
+            initializeSearch();
+            initializeCategoryFilters();
+            updateProjectsCount('published');
+            loadProjects();
+          });
+        } else {
+          initializeSearch();
+          initializeCategoryFilters();
+          updateProjectsCount('published');
+          loadProjects();
+        }
+      </script>
+
+  <script src="assets/js/cookies.js" defer></script>
+  </body>
+</html>
+
 
-        <title>NexCore Labs | Hub for Student Projects</title>
-        <meta name="description" content="Where projects converge — the central hub.">
 
-        <!-- Facebook Meta Tags -->
-        <meta property="og:url" content="https://nexcorelabs.vercel.app/hub.html">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="NexCore Labs | Hub for Student Projects">
-        <meta property="og:description" content="Where projects converge — the central hub.">
-        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
-
-        <!-- Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image">
-        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
-        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/hub.html">
-        <meta name="twitter:title" content="NexCore Labs | Hub for Student Projects">
-        <meta name="twitter:description" content="Where projects converge — the central hub.">
-        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
-
-        <!-- Meta Tags Generated via https://www.opengraph.xyz -->
-
-        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <link rel="stylesheet" href="assets/css/project-categories.css">
-        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
-        <link rel="manifest" href="manifest.json">
-        <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    </head>
-    <body>
-    <div class="background">
-      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
-      <div id="spotLight" class="spot-light"></div>
-    </div>
-
-    <header class="navbar">
-      <div class="nav-container">
-        <div class="logo">
-          <h1 id="logo">NexCore <span>Labs</span></h1>
-        </div>
-
-        <div class="dropdown">
-        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
-          <span class="dot" aria-hidden="true"></span>
-          <span class="dot" aria-hidden="true"></span>
-          <span class="dot" aria-hidden="true"></span>
-          <span class="dot" aria-hidden="true"></span>
-          <span class="dot" aria-hidden="true"></span>
-          <span class="dot" aria-hidden="true"></span>
-        </div>
-        
-     <div id="myDropdown" class="dropdown-content">
-         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
-         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
-         <a href="#" class="fade" title="NexCore Labs Hub">Hub</a>
-         <a href="#projects" class="fade" title="Projects">Projects</a>
-         <div class="div-menu-line"></div>
-         <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs" style="margin-top: 0;">How to Use</a>
-         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
-         <div class="div-menu-line"></div>
-         <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
-         <a href="index.html#about" title="About NexCore Labs">About Us</a>
-         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
-         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
-         <div class="div-menu-line"></div>
-         <a href="faq.html" class="fade" title="FAQ & Support" style="margin-top: 0;">FAQ</a>
-         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-     </div>
-        </div>
-      </div>
-    </header>
-      <main>
-        <section class="hub-hero hero">
-          <div class="container">
-            <div class="hub-top">
-              <h1 class="title">NexCore Hub</h1>
-              <p class="lead">Where projects converge — the central hub.</p>
-              <div class="hero-actions">
-                <a class="btn primary" href="auth.html">Access the Core</a>
-                <a class="btn ghost" href="#projects">Projects</a>
-              </div>
-            </div>
-          </div>
-          <div class="bg-orbit" aria-hidden="true"></div>
-        </section>
-
-        <section id="projects" class="panel">
-          <div class="container">
-            <h2 class="section-title">Projects</h2>
-            <p class="section-lead">Tap a card and see what teams are building. <span id="projectsCount" style="display:inline-block;padding:2px 8px;background:rgba(110,231,243,.1);backdrop-filter: blur(3px);-webkit-backdrop-filter: blur(3px);border:1px solid rgba(110,231,243,.25);border-radius:4px;font-weight:600;color:#6ee7f3;margin-left:6px;">00+</span></p>
-            
-                <!-- 🔍 Search Bar -->
-            <div class="search-bar">
-              <input type="text" id="projectSearch" placeholder="Search by name or ID...">
-            </div>
-            <div class="project-filters" id="projectFilters">
-              <div class="hub-filter-wrap" id="hubCategoryFilterWrap">
-                <select id="hubCategoryFilterNative" aria-label="Filter by category">
-                  <option value="all">All</option>
-                </select>
-                <div class="hub-filter-trigger" id="hubCategoryFilterTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
-                  <span id="hubCategoryFilterLabel">All</span>
-                  <span class="hub-filter-chevron"></span>
-                </div>
-                <div class="hub-filter-panel" role="listbox" id="hubCategoryFilterPanel"></div>
-              </div>
-            </div>
-
-            <div class="projects-grid reveal" id="projects-container">
-              <!-- Project cards will be loaded here dynamically -->
-            </div>
-            <div class="category-stats" id="categoryStats">
-              <h3>Platform Categories</h3>
-              <div class="category-stats-list" id="categoryStatsList"></div>
-            </div>
-          </div>
-        </section>
-        
-        <!-- TrustBox widget - Review Collector -->
-        <div class="trustpilot-review-widget">
-          <a href="https://www.trustpilot.com/review/nexcorelabs.vercel.app" target="_blank" rel="noopener noreferrer" class="trustpilot-widget">
-            <span class="tp-text">Review us on</span>
-
-            <span class="tp-logo">
-              <img src="assets/images/trustpilot.webp" alt="Trustpilot logo"/>
-              <span class="tp-name">Trustpilot</span>
-            </span>
-          </a>
-        </div>
-
-        <div class="nexcore-sign">
-          <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
-        </div>
-      </main>
-
-      <footer class="site-footer">
-        <div class="container footer-inner">
-          <div class="f-left">
-            <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
-            <br>
-            <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
-              <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" class="license-link">
-                <i class="fa-solid fa-scale-balanced"></i> MIT License
-              </a>            </small>
-          </div>
-          <div class="f-right footer-line"></div>
-        </div>
-      </footer>
-
-      <script src="assets/js/script.js"></script>
-      <script src="assets/js/supabase-client.js"></script>
-      <script src="assets/js/auth-ui.js"></script>
-      <script src="assets/js/project-categories.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <script src="version.js"></script>
-      <script>
-        console.log(`NexCore Labs version ${APP_VERSION}`);
-      </script>
-      <script>
-        async function updateProjectsCount(filterType = 'published') {
-          const sb = window.supabaseClient;
-          const countElement = document.getElementById('projectsCount');
-          if (!countElement) return;
-
-          try {
-            let query = sb.from('projects').select('*', { count: 'exact', head: true });
-            if (filterType === 'published') query = query.eq('published', true);
-            else if (filterType === 'draft') query = query.eq('published', false);
-
-            const { count, error } = await query;
-            if (error) {
-              console.error('Error fetching projects count:', error);
-              countElement.textContent = '--';
-              return;
-            }
-            animateCount(countElement, 0, count || 0, 1000);
-          } catch (err) {
-            console.error('Unexpected error fetching projects count:', err);
-            countElement.textContent = '--';
-          }
-        }
-
-        function animateCount(element, start, end, duration) {
-          const startTime = performance.now();
-          const range = end - start;
-          function updateCount(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const easeOut = 1 - Math.pow(1 - progress, 3);
-            const current = Math.floor(start + range * easeOut);
-            element.textContent = current.toString().padStart(2, '0') + '+';
-            if (progress < 1) requestAnimationFrame(updateCount);
-            else element.textContent = end.toString().padStart(2, '0') + '+';
-          }
-          requestAnimationFrame(updateCount);
-        }
-
-        const categoryIcons = window.ProjectCategories?.CATEGORY_ICONS || {};
-        const categoryLabels = window.ProjectCategories?.CATEGORY_LABELS || {};
-        const categoryOrder = window.ProjectCategories?.CATEGORY_ORDER || [];
-        const uncategorizedIcon = window.ProjectCategories?.getCategoryIconMarkup?.('uncategorized') || '';
-        let allProjects = [];
-        let activeCategory = 'all';
-        let currentSearch = '';
-
-        function normalizeCategory(value) {
-          const normalized = window.ProjectCategories?.normalizeCategory?.(value);
-          return normalized || 'uncategorized';
-        }
-
-        function renderCategoryStats(projects) {
-          const listEl = document.getElementById('categoryStatsList');
-          if (!listEl) return;
-          const stats = window.ProjectCategories?.getCategoryStats?.(projects) || {};
-          listEl.innerHTML = categoryOrder.map((category) => {
-            const label = categoryLabels[category] || category;
-            const count = stats[category] || 0;
-            const noun = count === 1 ? 'project' : 'projects';
-            return `<div class="category-stat-item"><span>${categoryIcons[category] || ''} ${label}</span><strong>${count} ${noun}</strong></div>`;
-          }).join('');
-        }
-
-        function applyProjectFilters() {
-          const container = document.querySelector('#projects-container');
-          const filteredProjects = allProjects.filter((project) => {
-            const projectCategory = normalizeCategory(project.category);
-            const inCategory = activeCategory === 'all' || projectCategory === activeCategory;
-            const query = currentSearch.toLowerCase();
-            const name = String(project.name || '').toLowerCase();
-            const id = String(project.public_id || '').toLowerCase();
-            const inSearch = !query || name.includes(query) || id.includes(query);
-            return inCategory && inSearch;
-          });
-
-          if (!filteredProjects.length) {
-            container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects match this filter.</p>';
-            return;
-          }
-
-          container.innerHTML = '';
-          filteredProjects.forEach((project) => {
-            const link = `/project.html?slug=${encodeURIComponent(project.slug)}`;
-            const views = project.views || 0;
-            const createdDate = project.created_at
-              ? new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-              : 'N/A';
-            const badgeHtml = window.ProjectCategories?.buildCategoryBadge
-              ? window.ProjectCategories.buildCategoryBadge(project.category)
-              : `<span class="project-category cat-uncategorized">${uncategorizedIcon}Uncategorized</span>`;
-
-            const card = document.createElement('a');
-            card.className = 'project-card-link';
-            card.href = link;
-            card.setAttribute('data-id', project.public_id || '');
-            card.setAttribute('data-name', project.name || '');
-
-            card.innerHTML = `
-              <div class="project-card-wrapper">
-                <div class="project-card-header">
-                  <strong class="project-title">
-                    ${project.name || 'Untitled'}
-                    <span class="external-link-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
-                  </strong>
-                  <span class="id">${project.public_id || ''}</span>
-                </div>
-                ${badgeHtml}
-                <p class="project-description">${project.card_description || 'No description available.'}</p>
-                <div class="project-metadata">
-                  <span class="metadata-item"><i class="fas fa-calendar-alt"></i><span>${createdDate}</span></span>
-                  <span class="metadata-separator"></span>
-                  <span class="metadata-item"><i class="fas fa-eye"></i><span class="view-count">${views.toLocaleString()}</span> views</span>
-                </div>
-              </div>
-            `;
-            container.appendChild(card);
-          });
-        }
-
-        function initializeSearch() {
-          const searchInput = document.getElementById('projectSearch');
-          if (!searchInput || searchInput.dataset.bound === '1') return;
-          searchInput.dataset.bound = '1';
-          searchInput.addEventListener('input', function () {
-            currentSearch = this.value.trim();
-            applyProjectFilters();
-          });
-        }
-
-        function initializeCategoryFilters() {
-          const wrap = document.getElementById('hubCategoryFilterWrap');
-          const trigger = document.getElementById('hubCategoryFilterTrigger');
-          const panel = document.getElementById('hubCategoryFilterPanel');
-          const label = document.getElementById('hubCategoryFilterLabel');
-          const native = document.getElementById('hubCategoryFilterNative');
-          if (!wrap || !trigger || !panel || !label || !native || wrap.dataset.bound === '1') return;
-
-          wrap.dataset.bound = '1';
-          native.innerHTML = `<option value="all">All</option>${categoryOrder.map((key) => `<option value="${key}">${categoryLabels[key] || key}</option>`).join('')}`;
-          panel.innerHTML = `
-            <div class="hub-filter-option selected" role="option" tabindex="0" data-value="all"><span class="hub-opt-icon">${uncategorizedIcon}</span>All</div>
-            ${categoryOrder.map((key) => `<div class="hub-filter-option" role="option" tabindex="0" data-value="${key}"><span class="hub-opt-icon">${categoryIcons[key] || uncategorizedIcon}</span>${categoryLabels[key] || key}</div>`).join('')}
-          `;
-          document.body.appendChild(panel);
-
-          function reposition() {
-            const rect = trigger.getBoundingClientRect();
-            panel.style.top = `${rect.bottom + 6}px`;
-            panel.style.left = `${rect.left}px`;
-            panel.style.minWidth = `${rect.width}px`;
-          }
-          function openPanel() {
-            reposition();
-            wrap.classList.add('open');
-            panel.classList.add('open');
-            trigger.setAttribute('aria-expanded', 'true');
-          }
-          function closePanel() {
-            wrap.classList.remove('open');
-            panel.classList.remove('open');
-            trigger.setAttribute('aria-expanded', 'false');
-          }
-          function applySelected(value) {
-            activeCategory = value || 'all';
-            native.value = activeCategory;
-            panel.querySelectorAll('.hub-filter-option').forEach((opt) => {
-              opt.classList.toggle('selected', opt.dataset.value === activeCategory);
-            });
-            const icon = activeCategory === 'all' ? uncategorizedIcon : (categoryIcons[activeCategory] || uncategorizedIcon);
-            const selected = native.querySelector(`option[value="${activeCategory}"]`);
-            label.innerHTML = `${icon}${selected ? selected.textContent : 'All'}`;
-            applyProjectFilters();
-          }
-          applySelected('all');
-
-          trigger.addEventListener('click', () => panel.classList.contains('open') ? closePanel() : openPanel());
-          trigger.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
-            if (e.key === 'Escape') closePanel();
-          });
-          panel.addEventListener('click', (e) => {
-            const option = e.target.closest('.hub-filter-option');
-            if (!option) return;
-            applySelected(option.dataset.value);
-            closePanel();
-          });
-          panel.addEventListener('keydown', (e) => {
-            const option = e.target.closest('.hub-filter-option');
-            if (!option) return;
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              applySelected(option.dataset.value);
-              closePanel();
-            }
-          });
-          document.addEventListener('click', (e) => {
-            if (!wrap.contains(e.target) && !panel.contains(e.target)) closePanel();
-          });
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closePanel();
-          });
-          window.addEventListener('scroll', () => { if (panel.classList.contains('open')) reposition(); }, true);
-          window.addEventListener('resize', () => { if (panel.classList.contains('open')) reposition(); });
-        }
-
-        async function loadProjects() {
-          const sb = window.supabaseClient;
-          const container = document.querySelector('#projects-container');
-
-          async function getViewsBySlug(projects) {
-            const slugToViews = new Map();
-            const pagePaths = (projects || []).map((p) => (p.slug ? `/project/${p.slug}` : null)).filter(Boolean);
-            if (!pagePaths.length) return slugToViews;
-
-            const { data: visitsData, error: visitsError } = await sb
-              .from('page_visits_daily')
-              .select('page_path, visits')
-              .in('page_path', pagePaths);
-            if (visitsError) return slugToViews;
-
-            (visitsData || []).forEach((row) => {
-              const path = row.page_path || '';
-              const slug = path.startsWith('/project/') ? path.slice('/project/'.length) : '';
-              if (!slug) return;
-              slugToViews.set(slug, (slugToViews.get(slug) || 0) + (row.visits || 0));
-            });
-            return slugToViews;
-          }
-
-          try {
-            const { data, error } = await sb
-              .from('projects')
-              .select('public_id, name, slug, card_description, created_at, category')
-              .eq('published', true)
-              .order('created_at', { ascending: false })
-              .limit(100);
-
-            if (error) {
-              console.error('Error loading projects:', error);
-              container.innerHTML = '<p style="text-align: center; color: #ff7878;">Failed to load projects. Please try again later.</p>';
-              return;
-            }
-            if (!data || !data.length) {
-              container.innerHTML = '<p style="text-align: center; opacity: 0.7;">No projects published yet. Be the first to create one!</p>';
-              localStorage.setItem('projectCount', '0');
-              return;
-            }
-
-            const viewsBySlug = await getViewsBySlug(data);
-            allProjects = data.map((project) => ({ ...project, views: viewsBySlug.get(project.slug) || 0 }));
-            renderCategoryStats(allProjects);
-            applyProjectFilters();
-            localStorage.setItem('projectCount', String(data.length));
-          } catch (err) {
-            console.error('Unexpected error:', err);
-            container.innerHTML = '<p style="text-align: center; color: #ff7878;">An unexpected error occurred.</p>';
-          }
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', () => {
-            initializeSearch();
-            initializeCategoryFilters();
-            updateProjectsCount('published');
-            loadProjects();
-          });
-        } else {
-          initializeSearch();
-          initializeCategoryFilters();
-          updateProjectsCount('published');
-          loadProjects();
-        }
-      </script>
-
-  <script src="assets/js/cookies.js" defer></script>
-  </body>
-</html>
