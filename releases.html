@@ -242,6 +242,36 @@
             flex-direction: column;
             gap: 2px;
         }
+        .rl-nav-select {
+            display: none;
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.09);
+            background: rgba(255,255,255,0.03);
+            color: var(--text-mid);
+            font-family: var(--mono);
+            font-size: 0.82rem;
+            letter-spacing: 0.2px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: pointer;
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, rgba(230,238,243,0.55) 50%), linear-gradient(135deg, rgba(230,238,243,0.55) 50%, transparent 50%);
+            background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%;
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+        }
+        .rl-nav-select:hover {
+            border-color: var(--accent-glow);
+            color: var(--text-hi);
+        }
+        .rl-nav-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(110,231,243,0.18);
+            color: var(--text-hi);
+        }
         .rl-nav-label {
             font-size: 0.67rem;
             font-weight: 700;
@@ -543,6 +573,10 @@
         .rl-empty.hidden { display: none; }
         .rl-empty i { font-size: 2rem; color: rgba(110,231,243,0.22); margin-bottom: 13px; display: block; }
 
+        @media screen and (min-width: 1200px) {
+            .rl-wrap { max-width: 1140px;
+        }}
+
         @media (max-width: 740px) {
             .rl-layout {
                 grid-template-columns: 1fr;
@@ -552,26 +586,14 @@
             /* horizontal scrollable pill strip */
             .rl-nav {
                 position: static;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-                gap: 5px;
-                padding: 2px 0 12px;
+                gap: 8px;
                 margin-bottom: 8px;
                 justify-content: center;
             }
-            .rl-nav::-webkit-scrollbar { display: none; }
             .rl-nav-label { display: none; }
-            .rl-nav-item {
-                flex-shrink: 0;
-                padding: 6px 13px;
-                font-size: 0.77rem;
-                border-radius: 999px; /* pill on mobile */
-            }
+            .rl-nav-item { display: none; }
             .rl-dot-maj, .rl-dot-min { display: none; }
+            .rl-nav-select { display: block; }
         }
 
         @media (max-width: 540px) {
@@ -693,6 +715,7 @@
             <!-- Sidebar nav -->
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
+                <select class="rl-nav-select" id="rlVersionSelect" aria-label="Select release version"></select>
                 <a class="rl-nav-item"        href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
                 <a class="rl-nav-item"        href="#v240" data-version="v2.4.0"><span class="rl-dot-min"></span>v2.4.0</a>
                 <a class="rl-nav-item"        href="#v230" data-version="v2.3.0"><span class="rl-dot-min"></span>v2.3.0</a>
@@ -1311,6 +1334,35 @@
 
         /* ── filter pills ── */
         let currentFilter = 'all';
+        const versionSelect = document.getElementById('rlVersionSelect');
+
+        function buildVersionSelect() {
+            if (!versionSelect) return;
+            const items = Array.from(document.querySelectorAll('.rl-nav-item'));
+            versionSelect.innerHTML = items.map(item => {
+                const href = item.getAttribute('href');
+                const label = item.dataset.version || item.textContent.trim();
+                return `<option value="${href}">${label}</option>`;
+            }).join('');
+
+            versionSelect.addEventListener('change', () => {
+                const target = document.querySelector(versionSelect.value);
+                if (!target) return;
+                const y = target.getBoundingClientRect().top + window.scrollY - 92;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+                target.classList.add('open');
+            });
+        }
+
+        function syncSelectDisabled() {
+            if (!versionSelect) return;
+            const options = Array.from(versionSelect.options);
+            options.forEach(option => {
+                const item = document.querySelector(`.rl-nav-item[href="${option.value}"]`);
+                option.disabled = item ? item.classList.contains('dimmed') : false;
+            });
+        }
+
         document.querySelectorAll('.rl-pill').forEach(pill => {
             pill.addEventListener('click', () => {
                 currentFilter = pill.dataset.filter;
@@ -1329,6 +1381,7 @@
                 if (nav) nav.classList.toggle('dimmed', !show);
             });
             document.getElementById('rlEmpty').classList.toggle('hidden', visible > 0);
+            syncSelectDisabled();
         }
 
         /* ── version nav scroll spy + smooth jump ── */
@@ -1340,6 +1393,10 @@
             document.querySelectorAll('.rl-nav-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.version === cur);
             });
+            if (versionSelect && cur) {
+                const active = document.querySelector(`.rl-nav-item[data-version="${cur}"]`);
+                if (active) versionSelect.value = active.getAttribute('href');
+            }
         }
         window.addEventListener('scroll', updateNavSpy, { passive: true });
         updateNavSpy();
@@ -1354,6 +1411,10 @@
                 target.classList.add('open');
             });
         });
+
+        buildVersionSelect();
+        syncSelectDisabled();
+        updateNavSpy();
 
         /* ── what's new since last visit ── */
         (function () {
