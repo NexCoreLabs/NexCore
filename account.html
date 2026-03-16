@@ -1221,9 +1221,8 @@
 
           : "N/A";
 
-        const txtContent = `
+        const txtContent = `NexCore Labs - Account Data Export
 
-NexCore Labs - Account Data Export
 Export Time: ${new Date().toISOString()}
 
 --- Account Information ---
@@ -1350,9 +1349,7 @@ Last Sign In: ${lastSignIn}`;
 
         // Export TXT (human-readable)
 
-        let txtContent = `
-
-NexCore Labs - Projects Export
+        let txtContent = `NexCore Labs - Projects Export
 
 Export Time: ${new Date().toISOString()}
 
@@ -1360,7 +1357,7 @@ User ID: ${session.user.id}
 
 Email: ${session.user.email || "N/A"}
 
-- Projects Summary -
+---
 
 Total Projects: ${projectCount}`;
 
@@ -1370,13 +1367,13 @@ Total Projects: ${projectCount}`;
 
         } else {
 
-          txtContent += "=---\n";
+          txtContent += "\n";
 
           projects.forEach((project, index) => {
 
             txtContent += `\nProject #${index + 1}\n`;
 
-            txtContent += `---\n`;
+            txtContent += `\n`;
 
             txtContent += `ID: ${project.id || "N/A"}\n`;
 
