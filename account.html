@@ -1360,7 +1360,7 @@ User ID: ${session.user.id}
 
 Email: ${session.user.email || "N/A"}
 
---- Projects Summary ---
+- Projects Summary -
 
 Total Projects: ${projectCount}`;
 
@@ -1370,13 +1370,13 @@ Total Projects: ${projectCount}`;
 
         } else {
 
-          txtContent += "========================================\n";
+          txtContent += "=---\n";
 
           projects.forEach((project, index) => {
 
             txtContent += `\nProject #${index + 1}\n`;
 
-            txtContent += `-------------------\n`;
+            txtContent += `---\n`;
 
             txtContent += `ID: ${project.id || "N/A"}\n`;
 
@@ -1450,7 +1450,7 @@ Total Projects: ${projectCount}`;
 
         }
 
-        txtContent += `\n========================================\nEnd of Export\n========================================\n`;
+        txtContent += `\nEnd of Export - NexCore Labs`;
 
         downloadText(`${baseFilename}.txt`, txtContent);
 
