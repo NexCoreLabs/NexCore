@@ -20,9 +20,9 @@ window.addEventListener("load", trackVisit);
 document.addEventListener("DOMContentLoaded", () => {
   // Attach signature scroll top listener early
   const setupSign = () => {
-    const sign = document.querySelector(".nexcore-sign") || document.getElementById("nexcoreSign");
+    const sign = document.getElementById("nexcoreSign");
     if (sign) {
-      sign.style.cursor = "pointer";
+      sign.style.cursor = "default";
       sign.onclick = (e) => {
         window.scrollTo({ top: 0, behavior: "smooth" });
         // Fallback for immediate jump
