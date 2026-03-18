@@ -480,8 +480,68 @@ main {
   50%       { box-shadow: 0 0 10px rgba(245,166,35,0.3); }
 }
 
-/* Comment button */
-.comment-btn {
+/* ── ADMIN CONTROLS ── */
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  background: rgba(245,166,35,0.04);
+  border: 1px solid rgba(245,166,35,0.15);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-label {
+  font-size: 11px;
+  color: #f5a623;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-status-btns {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.status-pick {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.status-pick:hover {
+  border-color: rgba(110,231,243,0.4);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.06);
+}
+
+.status-pick.active {
+  border-color: #6ee7f3;
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.1);
+}
+
+/* ── EXPANDABLE CARDS ── */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.comment-chip {
   background: transparent;
   border: 1px solid rgba(255,255,255,0.08);
   color: var(--muted);
@@ -495,16 +555,152 @@ main {
   gap: 5px;
 }
 
-.comment-btn:hover {
+.comment-chip:hover {
   border-color: rgba(110,231,243,0.3);
   color: #6ee7f3;
   background: rgba(110,231,243,0.06);
+}
+
+.expand-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .24s ease;
+}
+
+.expand-btn i {
+  transition: transform .24s ease;
+}
+
+.feature-card.expanded .expand-btn i {
+  transform: rotate(180deg);
+}
+
+.expand-btn:hover {
+  border-color: rgba(110,231,243,0.4);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
 }
 
 .card-date {
   font-size: 11px;
   color: var(--muted);
   opacity: 0.6;
+}
+
+.feature-details {
+  grid-column: 1 / -1;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s cubic-bezier(.2,.9,.3,1);
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(110,231,243,0.15);
+}
+
+.feature-details-inner {
+  padding: 14px 18px 16px 86px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-full-desc {
+  margin: 0;
+  font-size: 13.5px;
+  color: #c8d5e4;
+  line-height: 1.62;
+}
+
+.feature-meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.meta-pill {
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.02);
+  white-space: nowrap;
+}
+
+.inline-comments {
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  background: rgba(4,8,18,0.45);
+  overflow: hidden;
+}
+
+.inline-comments-head {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #eaf6fb;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.inline-comments-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inline-comments-list::-webkit-scrollbar { width: 4px; }
+.inline-comments-list::-webkit-scrollbar-thumb { background: rgba(110,231,243,0.25); border-radius: 2px; }
+
+.inline-comments-compose {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 12px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.inline-comments-compose .form-textarea {
+  resize: none;
+  min-height: 64px;
+  flex: 1;
+}
+
+.inline-auth-nudge {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.feature-card.removing {
+  pointer-events: none;
+  animation: cardOut 260ms ease forwards;
+}
+
+@keyframes cardOut {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+  }
 }
 
 /* ─── SKELETON ─── */
@@ -582,12 +778,30 @@ main {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  animation: overlayIn 200ms ease;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
 }
 
-.modal-overlay.hidden { display: none; }
+.modal-overlay.hidden {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
-@keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-overlay.is-closing {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
 
 .modal-panel {
   background: rgba(10,11,28,0.95);
@@ -599,7 +813,9 @@ main {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 24px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.04);
-  animation: modalIn 280ms cubic-bezier(.2,.9,.3,1);
+  opacity: 0;
+  transform: scale(0.96) translateY(14px);
+  transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
 }
 
 .modal-panel::before {
@@ -616,10 +832,9 @@ main {
 }
 
 .modal-wide { max-width: 560px; }
-
-@keyframes modalIn {
-  from { opacity: 0; transform: scale(0.95) translateY(12px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0); }
+.modal-overlay.is-open .modal-panel {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 .modal-close {
@@ -848,6 +1063,54 @@ main {
   line-height: 1.5;
 }
 
+.comment-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comment-action-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.comment-action-btn:hover {
+  border-color: rgba(110,231,243,0.35);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
+.owner-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.owner-action-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  border-radius: 999px;
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.owner-action-btn:hover {
+  border-color: rgba(110,231,243,0.35);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
 .comments-compose {
   padding: 14px 26px 26px;
   display: flex;
@@ -935,6 +1198,7 @@ main {
   .fab span { display: none; }
   .fab { padding: 14px 16px; border-radius: 50%; }
   main { padding: 0 14px 100px; }
+  .feature-details-inner { padding: 12px 14px 14px 14px; }
 }
 
 @media (max-width: 480px) {
@@ -943,6 +1207,8 @@ main {
   .comments-list, .comments-compose, .comments-auth-nudge { padding-left: 18px; padding-right: 18px; }
   .auth-tabs { padding-left: 18px; padding-right: 18px; }
   .feature-card { grid-template-columns: 56px 1fr; }
+  .inline-comments-compose { flex-direction: column; align-items: stretch; }
+  .inline-auth-nudge { flex-wrap: wrap; }
 }
   </style>
 </head>
@@ -1000,7 +1266,7 @@ main {
     </div>
   </header>
 
-  <!-- HERO -->
+  <main>
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-left">
@@ -1030,8 +1296,6 @@ main {
     </div>
   </section>
 
-  <!-- MAIN -->
-  <main>
     <div class="roadmap-wrap">
       <div class="controls-bar reveal">
         <div class="tabs-group">
@@ -1073,14 +1337,10 @@ main {
       <button class="modal-close" data-close="auth-modal"><i class="fa-solid fa-xmark"></i></button>
       <div class="modal-header">
         <h2><i class="fa-solid fa-key text-accent"></i> Access the Core</h2>
-        <p>Sign in to vote and suggest features.</p>
-      </div>
-      <div class="auth-tabs">
-        <button class="auth-tab active" data-auth="signin">Sign In</button>
-        <button class="auth-tab" data-auth="signup">Sign Up</button>
+        <p>Log in to vote and suggest features.</p>
       </div>
       <div class="modal-body">
-        <p id="auth-mode-copy" style="margin:0;color:var(--muted);font-size:13px;line-height:1.55;">Continue with Google to sign in.</p>
+        <p style="margin:0;color:var(--muted);font-size:13px;line-height:1.55;">Continue with Google to log in.</p>
         <button class="btn ghost" id="google-signin-btn" style="width:100%;justify-content:center;gap:10px;padding:12px 14px;">
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -1088,7 +1348,7 @@ main {
             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
           </svg>
-          <span id="google-btn-text">Continue with Google</span>
+          <span id="google-btn-text">Log In with Google</span>
         </button>
         <div class="form-error hidden" id="auth-error"></div>
       </div>
@@ -1195,10 +1455,13 @@ const state = {
   currentTab:      'roadmap',
   statusFilter:    'all',
   user:            null,
+  isAdmin:         false,
   features:        [],
   userVotes:       new Set(),
-  authMode:        'signin',
+  commentsByFeature: {},
   activeFeatureId: null,
+  expandedFeatureId: null,
+  editingFeatureId: null,
 };
 
 // ── HELPERS ────────────────────────────────────────────────
@@ -1210,6 +1473,31 @@ function escHtml(str) {
   const d = document.createElement('div');
   d.appendChild(document.createTextNode(str || ''));
   return d.innerHTML;
+}
+
+function isMobileCommentsFallback() {
+  return window.matchMedia('(max-width: 639px)').matches;
+}
+
+function normalizeStatusLabel(status) {
+  const labels = { planned: 'Planned', in_progress: 'In Progress', completed: 'Completed' };
+  return labels[status] || status;
+}
+
+// ── ADMIN STATUS MANAGEMENT ───────────────────────────────
+async function checkAdminStatus() {
+  if (!state.user) return false;
+  try {
+    const { data, error } = await db.rpc('get_my_admin_status');
+    if (error) {
+      console.warn('Admin check failed:', error.message);
+      return false;
+    }
+    return data === true;
+  } catch (e) {
+    console.warn('Admin check exception:', e);
+    return false;
+  }
 }
 
 // ── INIT ───────────────────────────────────────────────────
@@ -1229,13 +1517,19 @@ async function init() {
   if (session?.user) {
     state.user = session.user;
     await loadUserVotes();
+    state.isAdmin = await checkAdminStatus();
   }
   renderAuthNav();
 
-  db.auth.onAuthStateChange(async (_event, session) => {
+  db.auth.onAuthStateChange(async (event, session) => {
     state.user = session?.user ?? null;
-    if (state.user) await loadUserVotes();
-    else state.userVotes.clear();
+    if (state.user) {
+      await loadUserVotes();
+      state.isAdmin = await checkAdminStatus();
+    } else {
+      state.userVotes.clear();
+      state.isAdmin = false;
+    }
     renderAuthNav();
     renderFeatures();
   });
@@ -1248,7 +1542,14 @@ async function init() {
   bindAuthModal();
   bindSuggestModal();
   bindCommentsModal();
+  bindCommentActions();
   bindReveal();
+  window.addEventListener('resize', () => {
+    if (isMobileCommentsFallback() && state.expandedFeatureId) {
+      state.expandedFeatureId = null;
+      renderFeatures();
+    }
+  });
 
   // Load data
   await loadFeatures();
@@ -1306,30 +1607,11 @@ async function handleSignOut() {
 }
 
 // ── AUTH MODAL ─────────────────────────────────────────────
-function openAuthModal(mode = 'signin') {
-  state.authMode = mode;
-  setAuthMode(mode);
+function openAuthModal() {
   openModal('auth-modal');
 }
 
-function setAuthMode(mode) {
-  state.authMode = mode;
-  $$('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.auth === mode));
-  const copyEl = $('#auth-mode-copy');
-  if (copyEl) {
-    copyEl.textContent = mode === 'signin'
-      ? 'Continue with Google to sign in.'
-      : 'Continue with Google to create your account.';
-  }
-  const errEl = $('#auth-error');
-  if (errEl) errEl.classList.add('hidden');
-}
-
 function bindAuthModal() {
-  $$('.auth-tab').forEach(tab => {
-    tab.addEventListener('click', () => setAuthMode(tab.dataset.auth));
-  });
-
   $('#google-signin-btn')?.addEventListener('click', async () => {
     const btn = $('#google-signin-btn');
     const txt = $('#google-btn-text');
@@ -1339,7 +1621,7 @@ function bindAuthModal() {
     if (txt) txt.textContent = 'Redirecting…';
 
     try {
-      sessionStorage.setItem('auth_mode', state.authMode);
+      sessionStorage.setItem('auth_mode', 'login');
       const { error } = await db.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -1350,7 +1632,7 @@ function bindAuthModal() {
     } catch (error) {
       showFormError(errEl, error?.message || 'Failed to sign in with Google.');
       btn.disabled = false;
-      if (txt) txt.textContent = 'Continue with Google';
+      if (txt) txt.textContent = 'Log In with Google';
     }
   });
 }
@@ -1360,7 +1642,7 @@ async function loadFeatures() {
   showSkeleton(true);
 
   let query = db.from('features').select(`
-    id, title, description, status, votes_count, created_at,
+    id, title, description, status, votes_count, created_at, created_by,
     feature_comments(count)
   `);
 
@@ -1407,6 +1689,10 @@ function renderFeatures() {
   // Clear everything except skeleton (already hidden)
   $$('.feature-card', list).forEach(c => c.remove());
 
+  if (state.expandedFeatureId && !state.features.some(f => f.id === state.expandedFeatureId)) {
+    state.expandedFeatureId = null;
+  }
+
   if (!state.features.length) {
     empty.classList.remove('hidden');
     return;
@@ -1424,13 +1710,14 @@ function renderFeatures() {
 
 function buildCard(feature, index) {
   const voted        = state.userVotes.has(feature.id);
-  const commentCount = feature.feature_comments?.[0]?.count ?? 0;
-  const statusLabels = { planned: 'Planned', in_progress: 'In Progress', completed: 'Completed' };
-  const statusLabel  = statusLabels[feature.status] || feature.status;
+  const commentCount = Number(feature.feature_comments?.[0]?.count ?? 0);
+  const statusLabel  = normalizeStatusLabel(feature.status);
   const date         = new Date(feature.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const isExpanded   = !isMobileCommentsFallback() && state.expandedFeatureId === feature.id;
+  const isOwner      = !!state.user && feature.created_by === state.user.id;
 
   const card = document.createElement('div');
-  card.className = 'feature-card reveal';
+  card.className = `feature-card reveal${isExpanded ? ' expanded' : ''}`;
   card.dataset.id = feature.id;
   card.style.animationDelay = `${index * 45}ms`;
 
@@ -1452,11 +1739,64 @@ function buildCard(feature, index) {
       <div class="card-footer">
         <div class="card-meta">
           <span class="badge badge--${feature.status}">${statusLabel}</span>
-          <button class="comment-btn" data-id="${feature.id}">
-            <i class="fa-regular fa-comment"></i> ${commentCount}
-          </button>
+          ${isOwner ? `
+          <div class="owner-actions">
+            <button class="owner-action-btn" data-owner-edit="${feature.id}" title="Edit your suggestion">
+              <i class="fa-regular fa-pen-to-square"></i> Edit
+            </button>
+            <button class="owner-action-btn" data-owner-delete="${feature.id}" title="Delete your suggestion">
+              <i class="fa-regular fa-trash-can"></i> Delete
+            </button>
+          </div>` : ''}
         </div>
-        <span class="card-date">${date}</span>
+        <div class="card-actions">
+          <button class="comment-chip" data-id="${feature.id}" title="View comments">
+            <i class="fa-regular fa-comment"></i> <span class="comment-count" id="cc-${feature.id}">${commentCount}</span>
+          </button>
+          <button class="expand-btn" data-id="${feature.id}" aria-label="Expand feature details">
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <span class="card-date">${date}</span>
+        </div>
+      </div>
+      ${state.isAdmin ? `
+      <div class="admin-controls">
+        <i class="fa-solid fa-crown" style="color:#f5a623;font-size:11px;"></i>
+        <span class="admin-label">Set status:</span>
+        <div class="admin-status-btns">
+          <button class="status-pick ${feature.status === 'planned' ? 'active' : ''}" data-id="${feature.id}" data-status="planned">Planned</button>
+          <button class="status-pick ${feature.status === 'in_progress' ? 'active' : ''}" data-id="${feature.id}" data-status="in_progress">In Progress</button>
+          <button class="status-pick ${feature.status === 'completed' ? 'active' : ''}" data-id="${feature.id}" data-status="completed">Completed</button>
+        </div>
+      </div>` : ''}
+    </div>
+    <div class="feature-details" id="details-${feature.id}">
+      <div class="feature-details-inner">
+        <p class="feature-full-desc">${escHtml(feature.description || 'No extra details provided yet.')}</p>
+        <div class="feature-meta-row">
+          <span class="meta-pill"><i class="fa-regular fa-calendar"></i> Suggested on ${date}</span>
+          <span class="meta-pill" id="meta-votes-${feature.id}"><i class="fa-solid fa-chevron-up"></i> ${feature.votes_count} votes</span>
+          <span class="badge badge--${feature.status}" id="detail-status-${feature.id}">${statusLabel}</span>
+        </div>
+        <div class="inline-comments">
+          <div class="inline-comments-head">
+            <span><i class="fa-solid fa-comments text-accent"></i> Comments</span>
+            <span class="badge-pill" id="inline-count-${feature.id}">${commentCount}</span>
+          </div>
+          <div class="inline-comments-list" id="inline-comments-${feature.id}">
+            <div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>
+          </div>
+          ${state.user ? `
+          <div class="inline-comments-compose">
+            <textarea class="form-input form-textarea" id="inline-comment-input-${feature.id}" placeholder="Write a comment… (Ctrl+Enter to post)" rows="2"></textarea>
+            <button class="btn primary" id="inline-comment-btn-${feature.id}" data-id="${feature.id}" style="padding:10px 16px;white-space:nowrap;">Post</button>
+          </div>` : `
+          <div class="inline-auth-nudge">
+            <i class="fa-solid fa-lock text-accent"></i>
+            <span>Sign in to comment</span>
+            <button class="btn ghost inline-signin-btn" data-id="${feature.id}" style="padding:6px 14px;font-size:13px;">Sign In</button>
+          </div>`}
+        </div>
       </div>
     </div>
   `;
@@ -1466,12 +1806,198 @@ function buildCard(feature, index) {
     handleVote(feature.id);
   });
 
-  card.querySelector('.comment-btn').addEventListener('click', (e) => {
+  card.querySelector('.comment-chip').addEventListener('click', (e) => {
     e.stopPropagation();
-    openComments(feature.id, feature.title);
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id, true);
   });
 
+  card.querySelector('.expand-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id);
+  });
+
+  card.querySelector('.card-body').addEventListener('click', (e) => {
+    if (e.target.closest('button, select, textarea, input, a, label')) return;
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id);
+  });
+
+  if (state.isAdmin) {
+    card.querySelectorAll('.status-pick').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateFeatureStatus(feature.id, btn.dataset.status);
+      });
+    });
+  }
+
+  card.querySelector(`[data-owner-edit="${feature.id}"]`)?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openSuggestModalForEdit(feature.id);
+  });
+  card.querySelector(`[data-owner-delete="${feature.id}"]`)?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await deleteOwnFeature(feature.id);
+  });
+
+  card.querySelector('.inline-signin-btn')?.addEventListener('click', () => openAuthModal());
+  card.querySelector(`#inline-comment-btn-${feature.id}`)?.addEventListener('click', () => submitInlineComment(feature.id));
+  card.querySelector(`#inline-comment-input-${feature.id}`)?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitInlineComment(feature.id);
+  });
+
+  if (isExpanded) {
+    requestAnimationFrame(() => {
+      setExpandedState(card, true, false);
+      loadInlineComments(feature.id);
+    });
+  }
+
   return card;
+}
+
+// ── EXPANDABLE CARDS ──────────────────────────────────────
+function setExpandedState(card, expanded, animate = true) {
+  const details = $('.feature-details', card);
+  if (!details) return;
+
+  card.classList.toggle('expanded', expanded);
+  if (!expanded) {
+    details.style.maxHeight = '0px';
+    return;
+  }
+
+  if (!animate) {
+    details.style.maxHeight = 'none';
+    return;
+  }
+
+  details.style.maxHeight = `${details.scrollHeight}px`;
+}
+
+function refreshExpandedHeight(featureId) {
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card || !card.classList.contains('expanded')) return;
+  const details = $('.feature-details', card);
+  if (!details) return;
+  details.style.maxHeight = `${details.scrollHeight}px`;
+}
+
+function toggleFeatureExpand(featureId, forceOpen = false) {
+  if (isMobileCommentsFallback()) return;
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card) return;
+  const shouldOpen = forceOpen || state.expandedFeatureId !== featureId;
+
+  if (!shouldOpen) {
+    setExpandedState(card, false);
+    state.expandedFeatureId = null;
+    return;
+  }
+
+  if (state.expandedFeatureId && state.expandedFeatureId !== featureId) {
+    const prev = $(`.feature-card[data-id="${state.expandedFeatureId}"]`);
+    if (prev) setExpandedState(prev, false);
+  }
+
+  state.expandedFeatureId = featureId;
+  setExpandedState(card, true);
+  loadInlineComments(featureId);
+}
+
+// ── ADMIN STATUS MANAGEMENT ───────────────────────────────
+function removeFeatureFromCurrentView(featureId) {
+  const idx = state.features.findIndex(f => f.id === featureId);
+  if (idx === -1) return;
+  state.features.splice(idx, 1);
+  if (state.expandedFeatureId === featureId) state.expandedFeatureId = null;
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card) {
+    renderFeatures();
+    updateStats();
+    return;
+  }
+  card.classList.add('removing');
+  setTimeout(() => {
+    card.remove();
+    if (!state.features.length) $('#empty-state')?.classList.remove('hidden');
+    updateStats();
+  }, 250);
+}
+
+async function updateFeatureStatus(featureId, newStatus) {
+  if (!state.isAdmin) return;
+  const statusLabels = { planned: 'Planned', in_progress: 'In Progress', completed: 'Completed' };
+
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature) return;
+  const prevStatus = feature.status;
+
+  // Optimistic: update badge immediately
+  const badge = document.querySelector(`.feature-card[data-id="${featureId}"] .badge`);
+  if (badge) {
+    badge.className = `badge badge--${newStatus}`;
+    badge.textContent = statusLabels[newStatus];
+  }
+  const detailBadge = document.querySelector(`#detail-status-${featureId}`);
+  if (detailBadge) {
+    detailBadge.className = `badge badge--${newStatus}`;
+    detailBadge.textContent = statusLabels[newStatus];
+  }
+
+  // Highlight active button
+  document.querySelectorAll(`.status-pick[data-id="${featureId}"]`).forEach(b => {
+    b.classList.toggle('active', b.dataset.status === newStatus);
+  });
+
+  const { error } = await db
+    .from('features')
+    .update({ status: newStatus })
+    .eq('id', featureId);
+
+  if (error) {
+    feature.status = prevStatus;
+    showToast('Failed to update status.', '<i class="fa-solid fa-xmark"></i>');
+    await loadFeatures();
+    return;
+  }
+
+  // Update local state
+  feature.status = newStatus;
+
+  const shouldRemove =
+    (state.currentTab === 'roadmap' && newStatus === 'completed') ||
+    (state.currentTab === 'implemented' && newStatus !== 'completed') ||
+    (state.currentTab === 'roadmap' && state.statusFilter !== 'all' && newStatus !== state.statusFilter);
+
+  if (shouldRemove) {
+    const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+    if (card) {
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.97)';
+      card.style.transition = 'all 0.4s ease';
+      setTimeout(() => {
+        card.remove();
+        state.features = state.features.filter(f => f.id !== featureId);
+        if (!state.features.length) $('#empty-state')?.classList.remove('hidden');
+        updateStats();
+      }, 420);
+    }
+  }
+
+  showToast(`Status updated to ${statusLabels[newStatus]}`, '<i class="fa-solid fa-crown" style="color:#f5a623"></i>');
+  updateStats();
 }
 
 async function updateStats() {
@@ -1495,7 +2021,7 @@ async function updateStats() {
 
 // ── VOTING ─────────────────────────────────────────────────
 async function handleVote(featureId) {
-  if (!state.user) { openAuthModal('signin'); return; }
+  if (!state.user) { openAuthModal(); return; }
 
   const btn        = $(`.vote-btn[data-id="${featureId}"]`);
   const countEl    = $(`#vc-${featureId}`);
@@ -1526,7 +2052,10 @@ async function handleVote(featureId) {
     countEl.textContent = data.votes_count;
     const feat = state.features.find(f => f.id === featureId);
     if (feat) feat.votes_count = data.votes_count;
+    const votesMeta = $(`#meta-votes-${featureId}`);
+    if (votesMeta) votesMeta.innerHTML = `<i class="fa-solid fa-chevron-up"></i> ${data.votes_count} votes`;
     showToast(data.voted ? 'Vote added!' : 'Vote removed.', data.voted ? '<i class="fa-solid fa-chevron-up text-accent"></i>' : '○');
+    updateStats();
   }
 
   btn.disabled = false;
@@ -1535,7 +2064,16 @@ async function handleVote(featureId) {
 // ── SUGGEST FEATURE ────────────────────────────────────────
 function bindFAB() {
   $('#fab-suggest')?.addEventListener('click', () => {
-    if (!state.user) { openAuthModal('signin'); return; }
+    if (!state.user) { openAuthModal(); return; }
+    state.editingFeatureId = null;
+    $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
+    const header = $('#suggest-modal .modal-header h2');
+    if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
+    $('#feature-title').value = '';
+    $('#feature-desc').value  = '';
+    $('#title-count').textContent = '0 / 100';
+    $('#desc-count').textContent  = '0 / 500';
+    $('#suggest-error')?.classList.add('hidden');
     openModal('suggest-modal');
   });
 }
@@ -1550,10 +2088,53 @@ function bindSuggestModal() {
   $('#submit-feature')?.addEventListener('click', submitFeature);
 }
 
+function openSuggestModalForEdit(featureId) {
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature || !state.user || feature.created_by !== state.user.id) return;
+
+  state.editingFeatureId = featureId;
+  $('#feature-title').value = feature.title || '';
+  $('#feature-desc').value = feature.description || '';
+  $('#title-count').textContent = `${(feature.title || '').length} / 100`;
+  $('#desc-count').textContent = `${(feature.description || '').length} / 500`;
+  $('#suggest-error')?.classList.add('hidden');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-regular fa-pen-to-square text-accent"></i> Edit Your Suggestion';
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Save Changes');
+  openModal('suggest-modal');
+}
+
+async function deleteOwnFeature(featureId) {
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature || !state.user || feature.created_by !== state.user.id) return;
+
+  if (!window.confirm('Delete this suggestion? This cannot be undone.')) return;
+
+  const { error } = await db
+    .from('features')
+    .delete()
+    .eq('id', featureId)
+    .eq('created_by', state.user.id);
+
+  if (error) {
+    showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  if (state.activeFeatureId === featureId) {
+    closeModal('comments-modal');
+    state.activeFeatureId = null;
+  }
+
+  removeFeatureFromCurrentView(featureId);
+  showToast('Suggestion deleted.', '<i class="fa-regular fa-trash-can"></i>');
+}
+
 async function submitFeature() {
   const title   = $('#feature-title')?.value.trim();
   const desc    = $('#feature-desc')?.value.trim();
   const errEl   = $('#suggest-error');
+  const wasEditing = Boolean(state.editingFeatureId);
 
   if (!title || title.length < 5) { showFormError(errEl, 'Title must be at least 5 characters.'); return; }
   if (!desc)                       { showFormError(errEl, 'Description is required.'); return; }
@@ -1565,12 +2146,28 @@ async function submitFeature() {
   txtEl?.classList.add('hidden');
   spinEl?.classList.remove('hidden');
 
-  const { data, error } = await db.from('features').insert({
-    title,
-    description: desc,
-    status: 'planned',
-    created_by: state.user.id,
-  }).select().single();
+  let data;
+  let error;
+  if (state.editingFeatureId) {
+    ({ data, error } = await db
+      .from('features')
+      .update({ title, description: desc })
+      .eq('id', state.editingFeatureId)
+      .eq('created_by', state.user.id)
+      .select()
+      .single());
+  } else {
+    ({ data, error } = await db
+      .from('features')
+      .insert({
+        title,
+        description: desc,
+        status: 'planned',
+        created_by: state.user.id,
+      })
+      .select()
+      .single());
+  }
 
   btn.disabled = false;
   txtEl?.classList.remove('hidden');
@@ -1586,12 +2183,21 @@ async function submitFeature() {
   $('#title-count').textContent = '0 / 100';
   $('#desc-count').textContent  = '0 / 500';
   errEl?.classList.add('hidden');
+  state.editingFeatureId = null;
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
 
   closeModal('suggest-modal');
-  showToast('Feature submitted! Thanks for the idea.', '<i class="fa-solid fa-lightbulb text-accent"></i>');
+  showToast(wasEditing ? 'Suggestion updated.' : 'Feature submitted! Thanks for the idea.', '<i class="fa-solid fa-lightbulb text-accent"></i>');
 
-  if (state.currentTab === 'roadmap') {
-    state.features.unshift({ ...data, feature_comments: [{ count: 0 }] });
+  if (data) {
+    if (state.features.some(f => f.id === data.id)) {
+      const idx = state.features.findIndex(f => f.id === data.id);
+      state.features[idx] = { ...state.features[idx], ...data };
+    } else if (state.currentTab === 'roadmap') {
+      state.features.unshift({ ...data, feature_comments: [{ count: 0 }] });
+    }
     renderFeatures();
     updateStats();
   }
@@ -1603,6 +2209,159 @@ function bindCommentsModal() {
   $('#comment-input')?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitComment();
   });
+}
+
+function bindCommentActions() {
+  document.addEventListener('click', async (e) => {
+    const editBtn = e.target.closest('.comment-edit-btn');
+    if (editBtn) {
+      await editOwnComment(editBtn.dataset.feature, editBtn.dataset.comment);
+      return;
+    }
+    const deleteBtn = e.target.closest('.comment-delete-btn');
+    if (deleteBtn) {
+      await deleteOwnComment(deleteBtn.dataset.feature, deleteBtn.dataset.comment);
+    }
+  });
+}
+
+async function editOwnComment(featureId, commentId) {
+  if (!state.user || !featureId || !commentId) return;
+  const comments = state.commentsByFeature[featureId] || [];
+  const comment = comments.find(c => c.id === commentId && c.user_id === state.user.id);
+  if (!comment) {
+    showToast('You can only edit your own comment.', '<i class="fa-solid fa-lock"></i>');
+    return;
+  }
+
+  const nextContent = window.prompt('Edit your comment:', comment.content || '');
+  if (nextContent === null) return;
+  const trimmed = nextContent.trim();
+  if (!trimmed) {
+    showToast('Comment cannot be empty.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  const { data, error } = await db
+    .from('feature_comments')
+    .update({ content: trimmed })
+    .eq('id', commentId)
+    .eq('user_id', state.user.id)
+    .select()
+    .single();
+
+  if (error || !data) {
+    showToast('Failed to update comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  const idx = comments.findIndex(c => c.id === commentId);
+  if (idx !== -1) comments[idx] = data;
+  state.commentsByFeature[featureId] = comments;
+  refreshCommentViews(featureId);
+  showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
+}
+
+async function deleteOwnComment(featureId, commentId) {
+  if (!state.user || !featureId || !commentId) return;
+  const comments = state.commentsByFeature[featureId] || [];
+  const comment = comments.find(c => c.id === commentId && c.user_id === state.user.id);
+  if (!comment) {
+    showToast('You can only delete your own comment.', '<i class="fa-solid fa-lock"></i>');
+    return;
+  }
+
+  if (!window.confirm('Delete this comment?')) return;
+
+  const { error } = await db
+    .from('feature_comments')
+    .delete()
+    .eq('id', commentId)
+    .eq('user_id', state.user.id);
+
+  if (error) {
+    showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
+  refreshCommentViews(featureId);
+  showToast('Comment deleted.', '<i class="fa-regular fa-trash-can"></i>');
+}
+
+function refreshCommentViews(featureId) {
+  const comments = state.commentsByFeature[featureId] || [];
+  const inlineList = $(`#inline-comments-${featureId}`);
+  if (inlineList) {
+    inlineList.innerHTML = renderCommentCollection(comments, featureId);
+    inlineList.scrollTop = inlineList.scrollHeight;
+  }
+
+  if (state.activeFeatureId === featureId) {
+    const modalList = $('#comments-list');
+    if (modalList) {
+      modalList.innerHTML = renderCommentCollection(comments, featureId);
+      modalList.scrollTop = modalList.scrollHeight;
+    }
+  }
+
+  updateCommentCountUI(featureId, comments.length);
+  refreshExpandedHeight(featureId);
+}
+
+async function fetchComments(featureId, force = false) {
+  if (!force && Array.isArray(state.commentsByFeature[featureId])) {
+    return { comments: state.commentsByFeature[featureId], error: null };
+  }
+
+  const { data, error } = await db
+    .from('feature_comments')
+    .select('id, content, created_at, user_id')
+    .eq('feature_id', featureId)
+    .order('created_at', { ascending: true });
+
+  if (!error) state.commentsByFeature[featureId] = data || [];
+  return { comments: data || [], error };
+}
+
+function renderCommentCollection(comments = [], featureId) {
+  if (!comments.length) {
+    return '<div class="comments-empty"><i class="fa-regular fa-comment-dots"></i><br>No comments yet — be the first!</div>';
+  }
+  return comments.map(c => buildCommentEl(c, featureId).outerHTML).join('');
+}
+
+function updateCommentCountUI(featureId, nextCount) {
+  const count = Number(nextCount || 0);
+  const chip = $(`#cc-${featureId}`);
+  if (chip) chip.textContent = count;
+  const inlineBadge = $(`#inline-count-${featureId}`);
+  if (inlineBadge) inlineBadge.textContent = count;
+  const modalBadge = $('#comments-count-badge');
+  if (state.activeFeatureId === featureId && modalBadge) modalBadge.textContent = count;
+
+  const feature = state.features.find(f => f.id === featureId);
+  if (feature) {
+    if (!feature.feature_comments?.[0]) feature.feature_comments = [{ count: 0 }];
+    feature.feature_comments[0].count = count;
+  }
+}
+
+async function loadInlineComments(featureId) {
+  const list = $(`#inline-comments-${featureId}`);
+  if (!list) return;
+
+  list.innerHTML = '<div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>';
+  const { comments, error } = await fetchComments(featureId);
+  if (error) {
+    list.innerHTML = '<div class="comments-empty">Failed to load comments.</div>';
+    return;
+  }
+
+  list.innerHTML = renderCommentCollection(comments, featureId);
+  updateCommentCountUI(featureId, comments.length);
+  list.scrollTop = list.scrollHeight;
+  refreshExpandedHeight(featureId);
 }
 
 async function openComments(featureId, title) {
@@ -1624,7 +2383,7 @@ async function openComments(featureId, title) {
     // Re-bind sign-in inside nudge
     const siBtn = $('#comments-sign-in-btn');
     if (siBtn) {
-      siBtn.onclick = () => { closeModal('comments-modal'); openAuthModal('signin'); };
+      siBtn.onclick = () => { closeModal('comments-modal'); openAuthModal(); };
     }
   }
 
@@ -1634,38 +2393,24 @@ async function openComments(featureId, title) {
 async function loadComments(featureId) {
   const list = $('#comments-list');
   list.innerHTML = '<div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>';
-
-  const { data, error } = await db
-    .from('feature_comments')
-    .select('id, content, created_at, user_id')
-    .eq('feature_id', featureId)
-    .order('created_at', { ascending: true });
-
+  const { comments, error } = await fetchComments(featureId);
   if (error) {
     list.innerHTML = '<div class="comments-empty">Failed to load comments.</div>';
     return;
   }
 
-  const comments = data || [];
-  const badge = $('#comments-count-badge');
-  if (badge) badge.textContent = comments.length;
-
-  if (!comments.length) {
-    list.innerHTML = '<div class="comments-empty"><i class="fa-regular fa-comment-dots"></i><br>No comments yet — be the first!</div>';
-    return;
-  }
-
-  list.innerHTML = '';
-  comments.forEach(c => list.appendChild(buildCommentEl(c)));
+  list.innerHTML = renderCommentCollection(comments, featureId);
+  updateCommentCountUI(featureId, comments.length);
   list.scrollTop = list.scrollHeight;
 }
 
-function buildCommentEl(comment) {
+function buildCommentEl(comment, featureId) {
   const el      = document.createElement('div');
   el.className  = 'comment-item';
   const uid     = comment.user_id?.slice(0, 6) || '??????';
   const initial = uid[0]?.toUpperCase() || 'U';
   const date    = new Date(comment.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const canManage = state.user && comment.user_id === state.user.id;
 
   el.innerHTML = `
     <div class="comment-avatar">${initial}</div>
@@ -1673,6 +2418,11 @@ function buildCommentEl(comment) {
       <div class="comment-meta">
         <span class="comment-author">User #${uid}</span>
         <span>${date}</span>
+        ${canManage ? `
+        <span class="comment-actions">
+          <button class="comment-action-btn comment-edit-btn" data-comment="${comment.id}" data-feature="${featureId}" title="Edit comment"><i class="fa-regular fa-pen-to-square"></i></button>
+          <button class="comment-action-btn comment-delete-btn" data-comment="${comment.id}" data-feature="${featureId}" title="Delete comment"><i class="fa-regular fa-trash-can"></i></button>
+        </span>` : ''}
       </div>
       <p class="comment-text">${escHtml(comment.content)}</p>
     </div>
@@ -1705,27 +2455,64 @@ async function submitComment() {
   }
 
   input.value = '';
-  const list  = $('#comments-list');
-  const emptyEl = list.querySelector('.comments-empty');
-  if (emptyEl) emptyEl.remove();
+  const cached = state.commentsByFeature[state.activeFeatureId] || [];
+  cached.push(data);
+  state.commentsByFeature[state.activeFeatureId] = cached;
+  await loadComments(state.activeFeatureId);
+  const inlineList = $(`#inline-comments-${state.activeFeatureId}`);
+  if (inlineList) inlineList.innerHTML = renderCommentCollection(cached, state.activeFeatureId);
+  updateCommentCountUI(state.activeFeatureId, cached.length);
+  showToast('Comment posted!', '<i class="fa-solid fa-check"></i>');
+}
 
-  list.appendChild(buildCommentEl(data));
-  list.scrollTop = list.scrollHeight;
+async function submitInlineComment(featureId) {
+  if (!state.user) {
+    openAuthModal();
+    return;
+  }
+  const input = $(`#inline-comment-input-${featureId}`);
+  const btn = $(`#inline-comment-btn-${featureId}`);
+  const content = input?.value.trim();
+  if (!content || !btn) return;
 
-  const badge = $('#comments-count-badge');
-  if (badge) badge.textContent = parseInt(badge.textContent || '0') + 1;
+  btn.disabled = true;
+  btn.textContent = '…';
 
-  // Update count on card
-  const cardBtn = $(`.comment-btn[data-id="${state.activeFeatureId}"]`);
-  if (cardBtn) {
-    const feat = state.features.find(f => f.id === state.activeFeatureId);
-    if (feat) {
-      if (!feat.feature_comments?.[0]) feat.feature_comments = [{ count: 0 }];
-      feat.feature_comments[0].count++;
-      cardBtn.innerHTML = `<i class="fa-regular fa-comment"></i> ${feat.feature_comments[0].count}`;
+  const { data, error } = await db.from('feature_comments').insert({
+    feature_id: featureId,
+    user_id: state.user.id,
+    content,
+  }).select().single();
+
+  btn.disabled = false;
+  btn.textContent = 'Post';
+
+  if (error) {
+    showToast('Failed to post comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  input.value = '';
+  const cached = state.commentsByFeature[featureId] || [];
+  cached.push(data);
+  state.commentsByFeature[featureId] = cached;
+
+  const list = $(`#inline-comments-${featureId}`);
+  if (list) {
+    list.innerHTML = renderCommentCollection(cached, featureId);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  if (state.activeFeatureId === featureId) {
+    const modalList = $('#comments-list');
+    if (modalList && !$('#comments-modal')?.classList.contains('hidden')) {
+      modalList.innerHTML = renderCommentCollection(cached, featureId);
+      modalList.scrollTop = modalList.scrollHeight;
     }
   }
 
+  updateCommentCountUI(featureId, cached.length);
+  refreshExpandedHeight(featureId);
   showToast('Comment posted!', '<i class="fa-solid fa-check"></i>');
 }
 
@@ -1764,13 +2551,25 @@ function bindFilters() {
 
 // ── MODAL UTILITIES ────────────────────────────────────────
 function openModal(id) {
-  $(`#${id}`)?.classList.remove('hidden');
+  const modal = $(`#${id}`);
+  if (!modal) return;
+  modal.classList.remove('hidden', 'is-closing');
+  requestAnimationFrame(() => modal.classList.add('is-open'));
   document.body.style.overflow = 'hidden';
 }
 
 function closeModal(id) {
-  $(`#${id}`)?.classList.add('hidden');
-  document.body.style.overflow = '';
+  const modal = $(`#${id}`);
+  if (!modal || modal.classList.contains('hidden')) return;
+  modal.classList.remove('is-open');
+  modal.classList.add('is-closing');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.classList.remove('is-closing');
+    if (!$$('.modal-overlay.is-open').length) {
+      document.body.style.overflow = '';
+    }
+  }, 240);
 }
 
 function bindModalClosers() {

@@ -149,25 +149,6 @@
                                     </ul>
 
                                 </div>
-
-
-
-                                <div class="auth-content-text d-none" id="loginContent">
-                                    <h3><i class="fa-solid fa-shield-halved"></i> Welcome Back</h3>
-
-                                    <p>Log in to manage your team project, track progress, and access your dashboard. Your secure workspace awaits.</p>
-
-                                    <ul class="mt-1rem pl-1-25rem">
-                                        <li>Access your project dashboard</li>
-
-                                        <li>Manage team settings</li>
-
-                                        <li>Track development progress</li>
-
-                                        <li>Update project information</li>
-                                    </ul>
-
-                                </div>
                             </div>
 
                             <div class="info-block">
@@ -184,12 +165,6 @@
                                 <h2 id="formTitle">Access the Core</h2>
 
                                 <p class="form-desc" id="formDesc">Sign in with your SQU Google account</p>
-
-                                <div class="auth-tabs">
-                                    <button class="auth-tab active" id="signupTab" type="button">New User</button>
-
-                                    <button class="auth-tab" id="loginTab" type="button">Existing User</button>
-                                </div>
 
                                 <div id="authMessage" class="auth-msg-box d-none">
                                     <!-- Messages will be displayed here -->
@@ -215,7 +190,7 @@
 
                                     </svg>
 
-                                    <span id="btnText">Continue with Google</span>
+                                    <span id="btnText">Log In with Google</span>
                                 </button>
 
                                 <div class="squ-notice">
@@ -269,25 +244,13 @@
         <script>
             const sb = window.supabaseClient;
 
-            let currentMode = 'signup'; // default mode
+            const currentMode = 'login';
 
             let suppressSignedOutNote = false;
 
 
 
             // DOM elements
-
-            const signupTab = document.getElementById('signupTab');
-
-            const loginTab = document.getElementById('loginTab');
-
-            const signupContent = document.getElementById('signupContent');
-
-            const loginContent = document.getElementById('loginContent');
-
-            const formTitle = document.getElementById('formTitle');
-
-            const formDesc = document.getElementById('formDesc');
 
             const googleBtn = document.getElementById('googleSignInBtn');
 
@@ -389,46 +352,6 @@
 
             });
 
-            // Switch between signup and login modes
-
-            function switchMode(mode) {
-
-                currentMode = mode;
-
-
-
-                if (mode === 'signup') {
-
-                    signupTab.classList.add('active');
-
-                    loginTab.classList.remove('active');
-
-                    signupContent.style.display = 'block';
-
-                    loginContent.style.display = 'none';
-
-                    formTitle.textContent = 'Access the Core';
-
-                    formDesc.textContent = 'Sign in with your SQU Google account';
-
-                } else {
-
-                    signupTab.classList.remove('active');
-
-                    loginTab.classList.add('active');
-
-                    signupContent.style.display = 'none';
-
-                    loginContent.style.display = 'block';
-
-                    formTitle.textContent = 'Welcome Back';
-
-                    formDesc.textContent = 'Sign in to access your dashboard';
-
-                }
-
-            }
-
             // Show message
 
             function showMessage(text, isError = false) {
@@ -479,7 +402,7 @@
 
                 googleBtn.disabled = false;
 
-                btnText.textContent = 'Continue with Google';
+                btnText.textContent = 'Log In with Google';
 
             }
 
@@ -539,17 +462,13 @@
 
                     googleBtn.disabled = false;
 
-                    btnText.textContent = 'Continue with Google';
+                    btnText.textContent = 'Log In with Google';
 
                 }
 
             }
 
             // Event listeners
-
-            signupTab.addEventListener('click', () => switchMode('signup'));
-
-            loginTab.addEventListener('click', () => switchMode('login'));
 
             googleBtn.addEventListener('click', signInWithGoogle);
 
