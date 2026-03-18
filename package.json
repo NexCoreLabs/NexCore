@@ -23,6 +23,7 @@
   "dependencies": {
     "@google/genai": "^1.43.0",
     "@supabase/supabase-js": "^2.94.1",
-    "@vercel/speed-insights": "^2.0.0"
+    "@vercel/speed-insights": "^2.0.0",
+    "vercel": "^50.33.0"
   }
 }
