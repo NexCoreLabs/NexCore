@@ -1,4 +1,76 @@
-﻿[
+[
+  {
+    "id": "v2-5-0",
+    "version": "v2.5.0",
+    "date": "2026-03-14",
+    "summary": "Major UI overhaul, new components, and core performance improvements.",
+    "user_updates": {
+      "new": [
+        "Dedicated releases page to track project history",
+        "New granular cookie consent manager",
+        "Category chips for easier project filtering"
+      ],
+      "improvements": [
+        "Completely redesigned project detail pages",
+        "Custom version selection dropdown",
+        "Improved loading speed with minified assets"
+      ],
+      "fixes": [
+        "Enhanced link security across the platform",
+        "Refined icon sets and layout consistency"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "Implemented core JS functionality for site interactions",
+        "Added social media meta tags and Apple Touch Icon support"
+      ],
+      "database_changes": [],
+      "api_updates": [],
+      "internal_improvements": [
+        "Removed BOM characters and fixed string interpolation",
+        "Standardized code formatting and layout"
+      ]
+    },
+    "is_major_release": true,
+    "major_details": {
+      "title": "v2.5.0 — UI & Performance Update",
+      "why_it_matters": "This release significantly improves the visual experience and performance of NexCore while adding essential transparency features like the releases page.",
+      "description": "Users can now explore projects with much better clarity and filter them by category, while developers benefit from a cleaner and more secure codebase.",
+      "highlights": [
+        "Full UI redesign for project explorers",
+        "Enhanced cookie and privacy management",
+        "Optimized asset delivery for faster loads"
+      ],
+      "screenshots": []
+    }
+  },
+  {
+    "id": "v2-4-1",
+    "version": "v2.4.1",
+    "date": "2026-03-07",
+    "summary": "Service worker update and bug fixes.",
+    "user_updates": {
+      "new": [],
+      "improvements": [
+        "Updated service worker for better reliability"
+      ],
+      "fixes": [
+        "Addressed known bugs and performance issues"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "Service worker logic refined"
+      ],
+      "database_changes": [],
+      "api_updates": [],
+      "internal_improvements": [
+        "General bug fixes"
+      ]
+    },
+    "is_major_release": false
+  },
   {
     "id": "v2-4-0",
     "version": "v2.4.0",
