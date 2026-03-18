@@ -349,26 +349,19 @@
             <div>
               <label class="field" for="contactEmail">
                 <input id="contactEmail" type="email" placeholder="Contact Email: your@email.com" autocomplete="email">
-
               </label>
-
-              <p class="help-text">Public email shown in creator contact section.</p>
             </div>
 
             <div>
               <label class="field" for="phoneNumber">
                 <input id="phoneNumber" type="tel" placeholder="Phone Number: +968 XXXXXXXX" autocomplete="tel">
-
               </label>
-
               <p class="help-text">Shown publicly only when provided.</p>
             </div>
 
             <div class="row">
               <button class="btn primary ghost" id="saveContactBtn" type="submit">
-
                 <i class="fa-solid fa-floppy-disk"></i> Save Contact Info
-
               </button>
             </div>
 
@@ -1226,9 +1219,8 @@
 
           : "N/A";
 
-        const txtContent = `
+        const txtContent = `NexCore Labs - Account Data Export
 
-NexCore Labs - Account Data Export
 Export Time: ${new Date().toISOString()}
 
 --- Account Information ---
@@ -1355,9 +1347,7 @@ Last Sign In: ${lastSignIn}`;
 
         // Export TXT (human-readable)
 
-        let txtContent = `
-
-NexCore Labs - Projects Export
+        let txtContent = `NexCore Labs - Projects Export
 
 Export Time: ${new Date().toISOString()}
 
@@ -1365,7 +1355,7 @@ User ID: ${session.user.id}
 
 Email: ${session.user.email || "N/A"}
 
---- Projects Summary ---
+---
 
 Total Projects: ${projectCount}`;
 
@@ -1375,13 +1365,13 @@ Total Projects: ${projectCount}`;
 
         } else {
 
-          txtContent += "========================================\n";
+          txtContent += "\n";
 
           projects.forEach((project, index) => {
 
             txtContent += `\nProject #${index + 1}\n`;
 
-            txtContent += `-------------------\n`;
+            txtContent += `\n`;
 
             txtContent += `ID: ${project.id || "N/A"}\n`;
 
@@ -1455,7 +1445,7 @@ Total Projects: ${projectCount}`;
 
         }
 
-        txtContent += `\n========================================\nEnd of Export\n========================================\n`;
+        txtContent += `\nEnd of Export - NexCore Labs`;
 
         downloadText(`${baseFilename}.txt`, txtContent);
 
