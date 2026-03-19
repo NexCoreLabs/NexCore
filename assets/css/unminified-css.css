@@ -609,6 +609,7 @@ article.info-card:hover {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 14px;
   margin-top: 18px;
+  border-radius: 12px;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
 }
@@ -944,6 +945,7 @@ article.info-card:hover {
   margin-top: 18px;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
+  border-radius: 10px;
 }
 
 .tool-card {

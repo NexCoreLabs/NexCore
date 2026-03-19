@@ -108,6 +108,8 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .kpis .stat {
@@ -117,8 +119,7 @@
   text-align: center;
   min-width: 80px;
   border: 1px solid rgba(255,255,255,0.04);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+
 }
 
 .kpis strong {
@@ -136,7 +137,7 @@
 }
 
 .kpis .stat:hover {
-  transform: scale(1.08);
+  transform: scale(1.04);
   background: rgba(110,231,243,0.07);
 }
 
@@ -159,6 +160,8 @@
   overflow: visible;
   transform: translateY(0);
   transition: transform .45s cubic-bezier(.2,.9,.3,1);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .glass-card:hover { transform: translateY(-8px) rotate(-0.2deg); }
@@ -220,9 +223,7 @@
 
 /* ─── MAIN / ROADMAP WRAP ─── */
 main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px 120px;
+  padding: 0 24px 0px;
 }
 
 .roadmap-wrap {
@@ -320,6 +321,8 @@ main {
   overflow: hidden;
   animation: cardIn 300ms ease both;
   transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 @keyframes cardIn {
@@ -736,8 +739,8 @@ main {
 /* ─── FLOATING ACTION BUTTON ─── */
 .fab {
   position: fixed;
-  bottom: 28px;
-  right: 28px;
+  bottom: 19px;
+  right: 65px;
   z-index: 99;
   background: linear-gradient(65deg, #6ee7f3 0%, #acd9e5 50%, #6bd3c9 100%);
   background-size: 200% 100%;
@@ -745,7 +748,7 @@ main {
   color: #031017;
   border: none;
   border-radius: 999px;
-  padding: 13px 22px;
+  padding: 12px 20px;
   font-family: Inter, sans-serif;
   font-size: 14px;
   font-weight: 600;
@@ -761,7 +764,7 @@ main {
 .fab:hover {
   background-position: 100% 50%;
   box-shadow: 0 0 25px rgba(115,189,215,0.5), 0 4px 16px rgba(0,0,0,0.5);
-  transform: translateY(-3px) scale(1.02);
+  transform: scale(1.04);
 }
 
 .fab:active { transform: scale(0.97); }
@@ -1193,19 +1196,20 @@ main {
   .kpis { gap: 8px; }
   .kpis .stat { padding: 8px 12px; min-width: 70px; }
   .kpis strong { font-size: 18px; }
-  .controls-bar { flex-direction: column; align-items: flex-start; }
-  .fab { bottom: 16px; right: 16px; }
+  .controls-bar { flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .fab { bottom: 68px; right: 19px; padding: 12px;}
   .fab span { display: none; }
-  .fab { padding: 14px 16px; border-radius: 50%; }
-  main { padding: 0 14px 100px; }
+  main { padding: 0 12px; }
   .feature-details-inner { padding: 12px 14px 14px 14px; }
 }
 
 @media (max-width: 480px) {
   .modal-panel { max-width: 100%; border-radius: 16px; }
+  .hero-inner { padding: 0px; }
   .modal-header, .modal-body { padding-left: 18px; padding-right: 18px; }
   .comments-list, .comments-compose, .comments-auth-nudge { padding-left: 18px; padding-right: 18px; }
   .auth-tabs { padding-left: 18px; padding-right: 18px; }
+  .fab { bottom: 58px; right: 13px; }
   .feature-card { grid-template-columns: 56px 1fr; }
   .inline-comments-compose { flex-direction: column; align-items: stretch; }
   .inline-auth-nudge { flex-wrap: wrap; }
@@ -1406,13 +1410,56 @@ main {
     </div>
   </div>
 
+  <!-- EDIT COMMENT MODAL -->
+  <div class="modal-overlay hidden" id="edit-comment-modal">
+    <div class="modal-panel">
+      <button class="modal-close" data-close="edit-comment-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h2><i class="fa-regular fa-pen-to-square text-accent"></i> Edit Comment</h2>
+        <p>Update your comment and save changes.</p>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span class="field-label">Comment</span>
+          <textarea class="form-input form-textarea" id="edit-comment-input" rows="4" maxlength="600" placeholder="Edit your comment..."></textarea>
+          <span class="char-count" id="edit-comment-count">0 / 600</span>
+        </label>
+        <div class="form-error hidden" id="edit-comment-error"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn ghost" data-close="edit-comment-modal">Cancel</button>
+          <button class="btn primary" id="save-comment-edit-btn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay hidden" id="confirm-modal">
+    <div class="modal-panel">
+      <button class="modal-close" data-close="confirm-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h2 id="confirm-modal-title"><i class="fa-solid fa-triangle-exclamation" style="color:#ff7878;"></i> Confirm Action</h2>
+        <p id="confirm-modal-message">Are you sure you want to continue?</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-error hidden" id="confirm-modal-error"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn ghost" data-close="confirm-modal" id="confirm-cancel-btn">Cancel</button>
+          <button class="btn primary" id="confirm-modal-btn" style="background:rgba(255,120,120,0.14);border-color:rgba(255,120,120,0.3);color:#ff9a9a;">
+            <span id="confirm-modal-btn-text">Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST -->
   <div class="toast hidden" id="toast">
     <span id="toast-icon" class="text-accent">✓</span>
     <span id="toast-msg"></span>
   </div>
 
-    <div class="nexcore-sign" style="margin-top: 40px;">
+    <div class="nexcore-sign" style="margin-top: 80px;">
       <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
     </div>
   </main>
@@ -1449,6 +1496,8 @@ main {
 
   <script src="assets/js/auth-ui.js"></script>
 
+  <script src="assets/js/cookies.js" defer></script>
+
   <script src="version.js"></script>
   <script>
 const state = {
@@ -1462,6 +1511,8 @@ const state = {
   activeFeatureId: null,
   expandedFeatureId: null,
   editingFeatureId: null,
+  editingCommentRef: null,
+  pendingConfirmAction: null,
 };
 
 // ── HELPERS ────────────────────────────────────────────────
@@ -1543,6 +1594,8 @@ async function init() {
   bindSuggestModal();
   bindCommentsModal();
   bindCommentActions();
+  bindEditCommentModal();
+  bindConfirmModal();
   bindReveal();
   window.addEventListener('resize', () => {
     if (isMobileCommentsFallback() && state.expandedFeatureId) {
@@ -2107,27 +2160,31 @@ function openSuggestModalForEdit(featureId) {
 async function deleteOwnFeature(featureId) {
   const feature = state.features.find(f => f.id === featureId);
   if (!feature || !state.user || feature.created_by !== state.user.id) return;
+  openConfirmModal({
+    title: 'Delete Suggestion',
+    message: 'This will permanently remove your feature suggestion.',
+    confirmText: 'Delete Suggestion',
+    onConfirm: async () => {
+      const { error } = await db
+        .from('features')
+        .delete()
+        .eq('id', featureId)
+        .eq('created_by', state.user.id);
 
-  if (!window.confirm('Delete this suggestion? This cannot be undone.')) return;
+      if (error) {
+        showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw error;
+      }
 
-  const { error } = await db
-    .from('features')
-    .delete()
-    .eq('id', featureId)
-    .eq('created_by', state.user.id);
+      if (state.activeFeatureId === featureId) {
+        closeModal('comments-modal');
+        state.activeFeatureId = null;
+      }
 
-  if (error) {
-    showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
-    return;
-  }
-
-  if (state.activeFeatureId === featureId) {
-    closeModal('comments-modal');
-    state.activeFeatureId = null;
-  }
-
-  removeFeatureFromCurrentView(featureId);
-  showToast('Suggestion deleted.', '<i class="fa-regular fa-trash-can"></i>');
+      removeFeatureFromCurrentView(featureId);
+      showToast('Suggestion deleted.', '<i class="fa-regular fa-trash-can"></i>');
+    }
+  });
 }
 
 async function submitFeature() {
@@ -2233,33 +2290,11 @@ async function editOwnComment(featureId, commentId) {
     showToast('You can only edit your own comment.', '<i class="fa-solid fa-lock"></i>');
     return;
   }
-
-  const nextContent = window.prompt('Edit your comment:', comment.content || '');
-  if (nextContent === null) return;
-  const trimmed = nextContent.trim();
-  if (!trimmed) {
-    showToast('Comment cannot be empty.', '<i class="fa-solid fa-circle-exclamation"></i>');
-    return;
-  }
-
-  const { data, error } = await db
-    .from('feature_comments')
-    .update({ content: trimmed })
-    .eq('id', commentId)
-    .eq('user_id', state.user.id)
-    .select()
-    .single();
-
-  if (error || !data) {
-    showToast('Failed to update comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
-    return;
-  }
-
-  const idx = comments.findIndex(c => c.id === commentId);
-  if (idx !== -1) comments[idx] = data;
-  state.commentsByFeature[featureId] = comments;
-  refreshCommentViews(featureId);
-  showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
+  state.editingCommentRef = { featureId, commentId };
+  $('#edit-comment-input').value = comment.content || '';
+  $('#edit-comment-count').textContent = `${(comment.content || '').length} / 600`;
+  $('#edit-comment-error')?.classList.add('hidden');
+  openModal('edit-comment-modal');
 }
 
 async function deleteOwnComment(featureId, commentId) {
@@ -2270,23 +2305,115 @@ async function deleteOwnComment(featureId, commentId) {
     showToast('You can only delete your own comment.', '<i class="fa-solid fa-lock"></i>');
     return;
   }
+  openConfirmModal({
+    title: 'Delete Comment',
+    message: 'This comment will be permanently deleted.',
+    confirmText: 'Delete Comment',
+    onConfirm: async () => {
+      const { error } = await db
+        .from('feature_comments')
+        .delete()
+        .eq('id', commentId)
+        .eq('user_id', state.user.id);
 
-  if (!window.confirm('Delete this comment?')) return;
+      if (error) {
+        showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw error;
+      }
 
-  const { error } = await db
-    .from('feature_comments')
-    .delete()
-    .eq('id', commentId)
-    .eq('user_id', state.user.id);
+      state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
+      refreshCommentViews(featureId);
+      showToast('Comment deleted.', '<i class="fa-regular fa-trash-can"></i>');
+    }
+  });
+}
 
-  if (error) {
-    showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
-    return;
-  }
+function bindEditCommentModal() {
+  $('#edit-comment-input')?.addEventListener('input', function() {
+    $('#edit-comment-count').textContent = `${this.value.length} / 600`;
+  });
 
-  state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
-  refreshCommentViews(featureId);
-  showToast('Comment deleted.', '<i class="fa-regular fa-trash-can"></i>');
+  $('#save-comment-edit-btn')?.addEventListener('click', async () => {
+    const ref = state.editingCommentRef;
+    const input = $('#edit-comment-input');
+    const errEl = $('#edit-comment-error');
+    if (!ref || !input) return;
+
+    const trimmed = input.value.trim();
+    if (!trimmed) {
+      showFormError(errEl, 'Comment cannot be empty.');
+      return;
+    }
+
+    const btn = $('#save-comment-edit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    errEl?.classList.add('hidden');
+
+    const { data, error } = await db
+      .from('feature_comments')
+      .update({ content: trimmed })
+      .eq('id', ref.commentId)
+      .eq('user_id', state.user.id)
+      .select()
+      .single();
+
+    btn.disabled = false;
+    btn.textContent = 'Save Changes';
+
+    if (error || !data) {
+      showFormError(errEl, 'Failed to update comment. Please try again.');
+      return;
+    }
+
+    const comments = state.commentsByFeature[ref.featureId] || [];
+    const idx = comments.findIndex(c => c.id === ref.commentId);
+    if (idx !== -1) comments[idx] = data;
+    state.commentsByFeature[ref.featureId] = comments;
+    state.editingCommentRef = null;
+    closeModal('edit-comment-modal');
+    refreshCommentViews(ref.featureId);
+    showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
+  });
+}
+
+function bindConfirmModal() {
+  $('#confirm-modal-btn')?.addEventListener('click', async () => {
+    if (!state.pendingConfirmAction) return;
+    const btn = $('#confirm-modal-btn');
+    const txt = $('#confirm-modal-btn-text');
+    const err = $('#confirm-modal-error');
+    btn.disabled = true;
+    if (txt) txt.textContent = 'Processing...';
+    err?.classList.add('hidden');
+
+    try {
+      await state.pendingConfirmAction();
+      state.pendingConfirmAction = null;
+      closeModal('confirm-modal');
+    } catch (e) {
+      if (err) {
+        err.textContent = e?.message || 'Failed to complete action.';
+        err.classList.remove('hidden');
+      }
+    } finally {
+      btn.disabled = false;
+      if (txt) txt.textContent = 'Delete';
+    }
+  });
+}
+
+function openConfirmModal({ title, message, confirmText = 'Delete', onConfirm }) {
+  state.pendingConfirmAction = onConfirm;
+  const titleEl = $('#confirm-modal-title');
+  const msgEl = $('#confirm-modal-message');
+  const txt = $('#confirm-modal-btn-text');
+  const err = $('#confirm-modal-error');
+  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#ff7878;"></i> ${escHtml(title || 'Confirm Action')}`;
+  if (msgEl) msgEl.textContent = message || 'Are you sure you want to continue?';
+  if (txt) txt.textContent = confirmText;
+  err?.classList.add('hidden');
+  openModal('confirm-modal');
 }
 
 function refreshCommentViews(featureId) {
@@ -2561,6 +2688,8 @@ function openModal(id) {
 function closeModal(id) {
   const modal = $(`#${id}`);
   if (!modal || modal.classList.contains('hidden')) return;
+  if (id === 'confirm-modal') state.pendingConfirmAction = null;
+  if (id === 'edit-comment-modal') state.editingCommentRef = null;
   modal.classList.remove('is-open');
   modal.classList.add('is-closing');
   setTimeout(() => {
