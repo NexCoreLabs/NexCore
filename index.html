@@ -57,60 +57,66 @@
             window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
         </script>
         <script defer src="/_vercel/insights/script.js"></script>
+        <!-- Vercel Speed Insights -->
+        <script>
+            window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+        </script>
+        <script defer src="/_vercel/speed-insights/script.js"></script>
     </head>
 
 <body>
 
   <div class="background">
-      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+    <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
 
-      <div id="spotLight" class="spot-light"></div>
+    <div id="spotLight" class="spot-light"></div>
   </div>
 
-<header class="navbar">
-  <div class="nav-container">
-    <div class="logo">
-      <h1 id="logo">NexCore <span>Labs</span></h1>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1 id="logo">NexCore <span>Labs</span></h1>
+      </div>
+
+      <div class="dropdown">
+        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+        </div>
+
+        <div id="myDropdown" class="dropdown-content">
+          <a href="auth.html" class="magic-signup fade" title="Sign in to your account"><i class="fa-solid fa-key"></i> Access the Core</a>
+          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+
+          <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
+          <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="index.html#tools" class="mt-0" title="Tools & Systems"><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Systems</a>
+          <a href="index.html#about" title="About NexCore Labs"><i class="fa-solid fa-circle-info"></i> About Us</a>
+          <a href="index.html#team" title="NexCore Labs Team"><i class="fa-solid fa-users"></i> Our Team</a>
+          <a href="index.html#contact" title="Contact NexCore Labs"><i class="fa-solid fa-paper-plane"></i> Contact Us</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="roadmap.html" class="fade mt-0" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
+          <a href="releases.html" class="fade" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="faq.html" class="fade mt-0" title="FAQ & Support"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
+          <a href="terms.html" class="fade" title="Terms of Service"><i class="fa-solid fa-file-contract"></i> Terms</a>
+          <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        </div>
+      </div>
     </div>
-
-    <div class="dropdown">
-     <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
-      <span class="dot" aria-hidden="true"></span>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="dot" aria-hidden="true"></span>
-     </div>
-
-     <div id="myDropdown" class="dropdown-content">
-         <a href="auth.html" class="magic-signup fade" title="Sign in to your account">Access the Core</a>
-         <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
-
-         <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
-         <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
-         <div class="div-menu-line"></div>
-
-         <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs">How to Use</a>
-
-         <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
-
-         <div class="div-menu-line"></div>
-
-         <a href="index.html#tools" class="mt-0" title="Tools & Systems">Tools & Systems</a>
-         <a href="index.html#about" title="About NexCore Labs">About Us</a>
-         <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
-         <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
-         <div class="div-menu-line"></div>
-
-         <a href="faq.html" class="fade mt-0" title="FAQ & Support">FAQ</a>
-        <a href="releases.html" class="fade mt-0" title="Releases & Updates">Releases / Updates</a>
-         <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-         <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-     </div>
-    </div>
-  </div>
-</header>
+  </header>
 
   <main>
     <!-- HERO -->
@@ -120,7 +126,8 @@
         <div class="hero-left">
           <h1 class="title">At the Core of Every Idea</h1>
 
-          <p class="lead">NexCore Labs — student-driven digital solutions, rapid prototypes and polished showcases for SQU students' projects.</p>
+          <p class="lead">NexCore Labs — student-driven digital solutions, rapid prototypes and polished showcases for
+            SQU students' projects.</p>
 
           <div class="hero-actions">
             <a class="btn primary" href="index.html#about">Learn More</a>
@@ -140,11 +147,22 @@
               <p class="muted">Planning · Development · Monitoring</p>
 
               <div class="kpis">
-                <a href="hub.html#projects"><div class="stat"><strong id="projectCount">00+</strong><span><i class="fa-solid fa-diagram-project"></i> projects</span><div class="tooltip">All ongoing projects currently active</div></div></a>
+                <a href="hub.html#projects">
+                  <div class="stat"><strong id="projectCount">00+</strong><span><i
+                        class="fa-solid fa-diagram-project"></i> projects</span>
+                    <div class="tooltip">All ongoing projects currently active</div>
+                  </div>
+                </a>
 
-                <div class="stat"><strong id="tasks">360+</strong><span><i class="fa-solid fa-bars-progress"></i> tasks</span><div class="tooltip">We’ve completed 360+ small actionable items</div></div>
+                <div class="stat"><strong id="tasks">360+</strong><span><i class="fa-solid fa-bars-progress"></i>
+                    tasks</span>
+                  <div class="tooltip">We’ve completed 360+ small actionable items</div>
+                </div>
 
-                <div class="stat"><strong id="support">48h</strong><span><i class="fa-solid fa-headset"></i> support</span><div class="tooltip">Our support responds within 48-hours</div></div>
+                <div class="stat"><strong id="support">48h</strong><span><i class="fa-solid fa-headset"></i>
+                    support</span>
+                  <div class="tooltip">Our support responds within 48-hours</div>
+                </div>
               </div>
             </div>
           </div>
@@ -160,7 +178,8 @@
       <div class="container">
         <h2 class="section-title">About NexCore Labs</h2>
 
-        <p class="section-lead">We take student projects and turn them into clean, presentable and deployable pages — fast is the main goal. We emphasize clarity of message, speed of delivery, and maintainability.</p>
+        <p class="section-lead">We take student projects and turn them into clean, presentable and deployable pages —
+          fast is the main goal. We emphasize clarity of message, speed of delivery, and maintainability.</p>
 
         <div class="cards-grid">
           <article class="info-card reveal">
@@ -206,63 +225,91 @@
         <p class="section-lead">Explore the technologies powering our projects and workflow.</p>
 
         <div class="tools-grid reveal">
-          <div class="tool-card"><span>ChatGPT</span><img src="assets/images/openai.webp" loading="lazy" alt="ChatGPT"></div>
+          <div class="tool-card" title="ChatGPT"><span>ChatGPT</span><img src="assets/images/openai.webp" loading="lazy" alt="ChatGPT">
+          </div>
 
-          <div class="tool-card"><span>xAI</span><img id="xai" src="assets/images/xai.webp" loading="lazy" alt="Grok AI"></div>
+          <div class="tool-card" title="xAI"><span>xAI</span><img id="xai" src="assets/images/xai.webp" loading="lazy"
+              alt="Grok AI"></div>
 
-          <div class="tool-card"><span>Google Gemini</span><img id="googleGemini" src="assets/images/google-gemini.webp" loading="lazy" alt="Google Gemini"></div>
+          <div class="tool-card" title="Google Gemini"><span>Google Gemini</span><img id="googleGemini" src="assets/images/google-gemini.webp"
+              loading="lazy" alt="Google Gemini"></div>
 
-          <div class="tool-card"><span>Google AI Studio</span><img id="googleAIStudio" src="assets/images/google-aistudio.webp" loading="lazy" alt="Google AI Studio"></div>
+          <div class="tool-card" title="Google AI Studio"><span>Google AI Studio</span><img id="googleAIStudio"
+              src="assets/images/google-aistudio.webp" loading="lazy" alt="Google AI Studio"></div>
 
-          <div class="tool-card"><span>Google Cloud Console</span><img id="googleCloudConsole" src="assets/images/google-could-console.webp" loading="lazy" alt="Google Cloud Console"></div>
+          <div class="tool-card" title="Google Cloud Console"><span>Google Cloud Console</span><img id="googleCloudConsole"
+              src="assets/images/google-could-console.webp" loading="lazy" alt="Google Cloud Console"></div>
 
-          <div class="tool-card"><span>Microsoft Copilot</span><img src="assets/images/ms-copilot.webp" loading="lazy" alt="Microsoft Copilot"></div>
+          <div class="tool-card" title="Microsoft Copilot"><span>Microsoft Copilot</span><img src="assets/images/ms-copilot.webp" loading="lazy"
+              alt="Microsoft Copilot"></div>
 
-          <div class="tool-card"><span>GitHub</span><img src="assets/images/github.webp" loading="lazy" alt="GitHub"></div>
+          <div class="tool-card" title="GitHub"><span>GitHub</span><img src="assets/images/github.webp" loading="lazy" alt="GitHub">
+          </div>
 
-          <div class="tool-card"><span>Vercel</span><img src="assets/images/vercel.webp" loading="lazy" alt="Vercel"></div>
+          <div class="tool-card" title="Vercel"><span>Vercel</span><img src="assets/images/vercel.webp" loading="lazy" alt="Vercel">
+          </div>
 
-          <div class="tool-card"><span>Visual Studio Code</span><img src="assets/images/vscode.webp" loading="lazy" alt="VS Code"></div>
+          <div class="tool-card" title="Visual Studio Code"><span>Visual Studio Code</span><img src="assets/images/vscode.webp" loading="lazy"
+              alt="VS Code"></div>
 
-          <div class="tool-card"><span>UptimeRobot</span><img src="assets/images/uptimerobot.webp" loading="lazy" alt="UptimeRobot"></div>
+          <div class="tool-card" title="UptimeRobot"><span>UptimeRobot</span><img src="assets/images/uptimerobot.webp" loading="lazy"
+              alt="UptimeRobot"></div>
 
-          <div class="tool-card"><span>OpenGraph</span><img src="assets/images/opengraph.webp" loading="lazy" alt="OpenGraph"></div>
+          <div class="tool-card" title="OpenGraph"><span>OpenGraph</span><img src="assets/images/opengraph.webp" loading="lazy"
+              alt="OpenGraph"></div>
 
-          <div class="tool-card"><span>Supabase</span><img src="assets/images/supabase.webp" loading="lazy" alt="Supabase"></div>
+          <div class="tool-card" title="Supabase"><span>Supabase</span><img src="assets/images/supabase.webp" loading="lazy"
+              alt="Supabase"></div>
 
-          <div class="tool-card"><span>Google Analytics</span><img src="assets/images/googleanalytics.webp" loading="lazy" alt="Google Analytics"></div>
+          <div class="tool-card" title="Google Analytics"><span>Google Analytics</span><img src="assets/images/googleanalytics.webp"
+              loading="lazy" alt="Google Analytics"></div>
 
-          <div class="tool-card"><span>Google Search Console</span><img src="assets/images/googlesearchconsole.webp" loading="lazy" alt="Google Search Console"></div>
+          <div class="tool-card" title="Google Search Console"><span>Google Search Console</span><img src="assets/images/googlesearchconsole.webp"
+              loading="lazy" alt="Google Search Console"></div>
 
-          <div class="tool-card"><span>PageSpeed Insights</span><img src="assets/images/pagespeed.webp" loading="lazy" alt="PageSpeed Insights"></div>
+          <div class="tool-card" title="PageSpeed Insights"><span>PageSpeed Insights</span><img src="assets/images/pagespeed.webp" loading="lazy"
+              alt="PageSpeed Insights"></div>
 
-          <div class="tool-card"><span>Cloudflare</span><img src="assets/images/cloudflare.webp" loading="lazy" alt="Cloudflare"></div>
+          <div class="tool-card" title="Cloudflare"><span>Cloudflare</span><img src="assets/images/cloudflare.webp" loading="lazy"
+              alt="Cloudflare"></div>
 
-          <div class="tool-card"><span>XML Sitemaps</span><img src="assets/images/xmlsitemaps.webp" loading="lazy" alt="XML Sitemaps"></div>
+          <div class="tool-card" title="XML Sitemaps"><span>XML Sitemaps</span><img src="assets/images/xmlsitemaps.webp" loading="lazy"
+              alt="XML Sitemaps"></div>
 
-          <div class="tool-card"><span>Web3Forms</span><img src="assets/images/web3forms.webp" loading="lazy" alt="Web3Forms"></div>
+          <div class="tool-card" title="Web3Forms"><span>Web3Forms</span><img src="assets/images/web3forms.webp" loading="lazy"
+              alt="Web3Forms"></div>
 
-          <div class="tool-card"><span>Trello</span><img src="assets/images/trello.webp" loading="lazy" alt="Trello"></div>
+          <div class="tool-card" title="Trello"><span>Trello</span><img src="assets/images/trello.webp" loading="lazy" alt="Trello">
+          </div>
 
-          <div class="tool-card"><span>Audacity</span><img src="assets/images/audacity.webp" loading="lazy" alt="Audacity"></div>
+          <div class="tool-card" title="Audacity"><span>Audacity</span><img src="assets/images/audacity.webp" loading="lazy"
+              alt="Audacity"></div>
 
-          <div class="tool-card"><span>Google Font</span><img src="assets/images/googlefont.webp" loading="lazy" alt="Google Font"></div>
+          <div class="tool-card" title="Google Font"><span>Google Font</span><img src="assets/images/googlefont.webp" loading="lazy"
+              alt="Google Font"></div>
 
-          <div class="tool-card"><span>Inkscape</span><img src="assets/images/inkscape.webp" loading="lazy" alt="Inkscape"></div>
+          <div class="tool-card" title="Inkscape"><span>Inkscape</span><img src="assets/images/inkscape.webp" loading="lazy"
+              alt="Inkscape"></div>
 
-          <div class="tool-card"><span>DaVinci Resolve</span><img src="assets/images/davinciresolve.webp" loading="lazy" alt="DaVinci Resolve"></div>
+          <div class="tool-card" title="DaVinci Resolve"><span>DaVinci Resolve</span><img src="assets/images/davinciresolve.webp" loading="lazy"
+              alt="DaVinci Resolve"></div>
 
-          <div class="tool-card"><span>Shots</span><img src="assets/images/shots.webp" loading="lazy" alt="Shots"></div>
+          <div class="tool-card" title="Shots"><span>Shots</span><img src="assets/images/shots.webp" loading="lazy" alt="Shots"></div>
 
-          <div class="tool-card"><span>WebUtility</span><img src="assets/images/webutility.webp" loading="lazy" alt="WebUtility"></div>
+          <div class="tool-card" title="WebUtility"><span>WebUtility</span><img src="assets/images/webutility.webp" loading="lazy"
+              alt="WebUtility"></div>
 
-          <div class="tool-card"><span>Compress-Or-Die</span><img src="assets/images/compressordie.webp" loading="lazy" alt="Compress-Or-Die"></div>
+          <div class="tool-card" title="Compress-Or-Die"><span>Compress-Or-Die</span><img src="assets/images/compressordie.webp" loading="lazy"
+              alt="Compress-Or-Die"></div>
 
-          <div class="tool-card"><span>Uiverse</span><img src="assets/images/uiverse.webp" loading="lazy" alt="Uiverse"></div>
+          <div class="tool-card" title="Uiverse"><span>Uiverse</span><img src="assets/images/uiverse.webp" loading="lazy" alt="Uiverse">
+          </div>
 
-          <div class="tool-card"><span>Flaticon</span><img src="assets/images/flaticon.webp" loading="lazy" alt="Flaticon"></div>
+          <div class="tool-card" title="Flaticon"><span>Flaticon</span><img src="assets/images/flaticon.webp" loading="lazy"
+              alt="Flaticon"></div>
 
-          <div class="tool-card"><span>Font Awesome</span><img src="assets/images/fontawesome.webp" loading="lazy" alt="Font Awesome"></div>
+          <div class="tool-card" title="Font Awesome"><span>Font Awesome</span><img src="assets/images/fontawesome.webp" loading="lazy"
+              alt="Font Awesome"></div>
         </div>
       </div>
     </section>
@@ -277,56 +324,67 @@
 
         <div class="team-grid reveal">
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgiwe8wn01zhs60mfmiu60fj" target="_blank" rel="noopener" title="Al-Faris Mujahid AlZakwani Contact Profile"><img src="assets/images/ceopic.webp" alt="Leader Picture - Al-Faris Mujahid AlZakwani" width="60"></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgiwe8wn01zhs60mfmiu60fj" target="_blank" rel="noopener"
+                title="Al-Faris Mujahid AlZakwani Contact Profile"><img src="assets/images/ceopic.webp"
+                  alt="Leader Picture - Al-Faris Mujahid AlZakwani" width="60"></a></div>
 
-              <h4>Al-Faris Mujahid AlZakwani<br><sup>Chairman</sup></h4>
+            <h4>Al-Faris Mujahid AlZakwani<br><sup>Chairman</sup></h4>
 
-              <p class="muted">Project Manager & Lead Developer</p>
+            <p class="muted">Project Manager & Lead Developer</p>
 
-              <a class="social" href="https://x.com/AlFarisMujahid_" target="_blank" rel="noopener"><i class="fa-brands fa-x-twitter" title="X"></i></a>
-              <a class="social" href="https://github.com/faris-zak" target="_blank" rel="noopener"><i class="fa-brands fa-github" title="GitHub"></i></a>
-              <a class="social" href="https://www.linkedin.com/in/al-faris-mujahid-alzakwani-b013283b3" target="_blank" rel="noopener"><i class="fa-brands fa-linkedin" title="LinkedIn"></i></a>
-              <a class="social" href="https://g.dev/Al-FarisAlZakwani" target="_blank" rel="noopener"><i class="fi fi-brands-google" title="Google Dev."></i></a>
+            <a class="social" href="https://x.com/AlFarisMujahid_" target="_blank" rel="noopener"><i
+                class="fa-brands fa-x-twitter" title="X"></i></a>
+            <a class="social" href="https://github.com/faris-zak" target="_blank" rel="noopener"><i
+                class="fa-brands fa-github" title="GitHub"></i></a>
+            <a class="social" href="https://www.linkedin.com/in/al-faris-mujahid-alzakwani-b013283b3" target="_blank"
+              rel="noopener"><i class="fa-brands fa-linkedin" title="LinkedIn"></i></a>
+            <a class="social" href="https://g.dev/Al-FarisAlZakwani" target="_blank" rel="noopener"><i
+                class="fi fi-brands-google" title="Google Dev."></i></a>
           </div>
 
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgj73hwc03qss60m11k9dxi2" target="_blank" rel="noopener" title="Al-Mukhtar AlAbri Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgj73hwc03qss60m11k9dxi2" target="_blank" rel="noopener"
+                title="Al-Mukhtar AlAbri Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
 
-              <h4>Al-Mukhtar AlAbri <br><sup>IT & Business Intelligence</sup></h4>
+            <h4>Al-Mukhtar AlAbri <br><sup>IT & Business Intelligence</sup></h4>
 
-              <p class="muted">Team Coordinator</p>
+            <p class="muted">Team Coordinator</p>
           </div>
 
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgj7rwqz0hies60mmtf2i2f6" target="_blank" rel="noopener" title="Talal AlKalbani Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgj7rwqz0hies60mmtf2i2f6" target="_blank" rel="noopener"
+                title="Talal AlKalbani Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
 
-              <h4>Talal AlKalbani <br><sup>Technical Operations</sup></h4>
+            <h4>Talal AlKalbani <br><sup>Technical Operations</sup></h4>
 
-              <p class="muted">Technical Support Specialist</p>
+            <p class="muted">Technical Support Specialist</p>
           </div>
 
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgvx2o9703lrs60mmrehgetc" target="_blank" rel="noopener" title="Mohammed AlHarrasi Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgvx2o9703lrs60mmrehgetc" target="_blank" rel="noopener"
+                title="Mohammed AlHarrasi Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
 
-              <h4>Mohammed AlHarrasi <br><sup>Media & Communications</sup></h4>
+            <h4>Mohammed AlHarrasi <br><sup>Media & Communications</sup></h4>
 
-              <p class="muted">Media Manager</p>
+            <p class="muted">Media Manager</p>
           </div>
 
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgj6pduk01mbs60lca2kz7xf" target="_blank" rel="noopener" title="Mohammed AlAsmi Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgj6pduk01mbs60lca2kz7xf" target="_blank" rel="noopener"
+                title="Mohammed AlAsmi Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
 
-              <h4>Mohammed AlAsmi <br><sup>Data & Analytics</sup></h4>
+            <h4>Mohammed AlAsmi <br><sup>Data & Analytics</sup></h4>
 
-              <p class="muted">Data Analyst</p>
+            <p class="muted">Data Analyst</p>
           </div>
 
           <div class="member">
-              <div class="avatar"><a href="https://blinq.me/cmgw32zrr5lzfs60tp73sssot" target="_blank" rel="noopener" title="Sultan AlShibli Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
+            <div class="avatar"><a href="https://blinq.me/cmgw32zrr5lzfs60tp73sssot" target="_blank" rel="noopener"
+                title="Sultan AlShibli Contact Profile"><i class="fa-solid fa-lightbulb"></i></a></div>
 
-              <h4>Sultan AlShibli <br><sup>Research & Innovation</sup></h4>
+            <h4>Sultan AlShibli <br><sup>Research & Innovation</sup></h4>
 
-              <p class="muted">Thinker & Researcher</p>
+            <p class="muted">Thinker & Researcher</p>
           </div>
         </div>
       </div>
@@ -345,49 +403,55 @@
             <p>Oman · Sultan Qaboos University</p>
 
             <div class="socials">
-              <a class="social" href="https://github.com/NexCoreLabs" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
-              <a class="social" href="https://x.com/nexcorelabs" target="_blank" rel="noopener" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-              <a class="social" href="https://instagram.com/nexcorelabs" target="_blank" rel="noopener" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-              <a class="social" href="https://wa.link/2vs9an" target="_blank" rel="noopener" title="WhatsApp"><i class="fi fi-brands-whatsapp"></i></a>
+              <a class="social" href="https://github.com/NexCoreLabs" target="_blank" rel="noopener" title="GitHub"><i
+                  class="fa-brands fa-github"></i></a>
+              <a class="social" href="https://x.com/nexcorelabs" target="_blank" rel="noopener" title="X (Twitter)"><i
+                  class="fa-brands fa-x-twitter"></i></a>
+              <a class="social" href="https://instagram.com/nexcorelabs" target="_blank" rel="noopener"
+                title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a class="social" href="https://wa.link/2vs9an" target="_blank" rel="noopener" title="WhatsApp"><i
+                  class="fi fi-brands-whatsapp"></i></a>
             </div>
 
-            <a class="social discord" href="https://discord.gg/ExtGSwy5Pn" target="_blank" rel="noopener">Join our <i class="fa-brands fa-discord"></i> Server</a>
+            <a class="social discord" href="https://discord.gg/ExtGSwy5Pn" target="_blank" rel="noopener" title="Discord">Join our <i
+                class="fa-brands fa-discord"></i> Server</a>
           </div>
 
-            <form id="contactForm" class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
-                <input type="hidden" name="access_key" value="ba811578-09f0-4f90-b1eb-7acc03fe745d">
+          <form id="contactForm" class="contact-form reveal" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="ba811578-09f0-4f90-b1eb-7acc03fe745d">
 
-                <input type="hidden" name="from_name" value="NexCore Website">
+            <input type="hidden" name="from_name" value="NexCore Website">
 
-                <input type="hidden" name="subject" value="New Submission from NexCore Website">
+            <input type="hidden" name="subject" value="New Submission from NexCore Website">
 
-                <input type="hidden" name="redirect" value="https://nexcorelabs.vercel.app/thanks.html">
+            <input type="hidden" name="redirect" value="https://nexcorelabs.vercel.app/thanks.html">
 
-                <input type="checkbox" name="botcheck" class="hidden" title="Bot Check">
+            <input type="checkbox" name="botcheck" class="hidden" title="Bot Check">
 
-                <label class="field">
-                  <input name="name" id="name" type="text" placeholder="Your Name" autocomplete="given-name">
+            <label class="field">
+              <input name="name" id="name" type="text" placeholder="Your Name" autocomplete="given-name">
 
-                </label>
+            </label>
 
-                <label class="field">
-                  <input name="email" id="email" type="email" placeholder="Your Email" autocomplete="off" required>
+            <label class="field">
+              <input name="email" id="email" type="email" placeholder="Your Email" autocomplete="off" required>
 
-                </label>
+            </label>
 
-                <label class="field">
-                  <textarea name="message" id="message" rows="4" placeholder="Message to nexcorelabs@outlook.com" autocomplete="off" required></textarea>
+            <label class="field">
+              <textarea name="message" id="message" rows="4" placeholder="Message to nexcorelabs@outlook.com"
+                autocomplete="off" required></textarea>
 
-                </label>
+            </label>
 
-                <div class="form-actions">
-                  <button type="submit" class="btn primary">Send Message</button>
+            <div class="form-actions">
+              <button type="submit" class="btn primary">Send Message</button>
 
-                  <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
-                </div>
+              <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
+            </div>
 
-                <p class="notice" id="formNotice" aria-live="polite"></p>
-            </form>
+            <p class="notice" id="formNotice" aria-live="polite"></p>
+          </form>
 
         </div>
       </div>
@@ -402,13 +466,15 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="f-left">
-        <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart text-accent"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+        <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal"><i
+            class="fa-solid fa-heart text-accent"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
 
         <br>
 
         <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
 
-          <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
+          <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener"
+            class="license-link">
 
             <i class="fa-solid fa-scale-balanced"></i> MIT License
 

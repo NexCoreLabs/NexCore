@@ -43,6 +43,11 @@
   <priority>0.80</priority>
 </url>
 <url>
+  <loc>https://nexcorelabs.vercel.app/roadmap.html</loc>
+  <lastmod>2026-03-19T00:00:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>https://nexcorelabs.vercel.app/terms.html</loc>
   <lastmod>2026-02-03T18:25:15+00:00</lastmod>
   <priority>0.80</priority>

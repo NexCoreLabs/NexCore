@@ -47,6 +47,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- Vercel Web Analytics -->
+        <script>
+            window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+        </script>
+        <script defer src="/_vercel/insights/script.js"></script>
+        <!-- Vercel Speed Insights -->
+        <script>
+            window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+        </script>
+        <script defer src="/_vercel/speed-insights/script.js"></script>
 
     <style>
         .mt-0 { margin-top: 0 !important; }
@@ -85,31 +95,32 @@
 
 
 
-                    <div id="myDropdown" class="dropdown-content">
-                        <a href="hub.html" class="magic-signup fade" title="Back to Hub">Back to Hub</a>
-                        <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+        <div id="myDropdown" class="dropdown-content">
+          <a href="auth.html" class="magic-signup fade" title="Sign in to your account"><i class="fa-solid fa-key"></i> Access the Core</a>
+          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
 
-                        <a href="hub.html" class="fade" title="NexCore Labs Hub">Hub</a>
-                        <a href="hub.html#projects" class="fade" title="Projects">Projects</a>
-                        <div class="div-menu-line"></div>
+          <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
+          <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
 
-                        <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs">How to Use</a>
+          <div class="div-menu-line"></div>
 
-                        <!-- <a href="pricing.html" class="fade" title="Pricing Plans">Pricing</a> -->
+          <a href="index.html#tools" class="mt-0" title="Tools & Systems"><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Systems</a>
+          <a href="index.html#about" title="About NexCore Labs"><i class="fa-solid fa-circle-info"></i> About Us</a>
+          <a href="index.html#team" title="NexCore Labs Team"><i class="fa-solid fa-users"></i> Our Team</a>
+          <a href="index.html#contact" title="Contact NexCore Labs"><i class="fa-solid fa-paper-plane"></i> Contact Us</a>
 
-                        <div class="div-menu-line"></div>
+          <div class="div-menu-line"></div>
 
-                        <a href="index.html#tools" title="Tools & Systems" style="margin-top: 0;">Tools & Systems</a>
-                        <a href="index.html#about" title="About NexCore Labs">About Us</a>
-                        <a href="index.html#team" title="NexCore Labs Team">Our Team</a>
-                        <a href="index.html#contact" title="Contact NexCore Labs">Contact Us</a>
-                        <div class="div-menu-line"></div>
+          <a href="roadmap.html" class="fade mt-0" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
+          <a href="releases.html" class="fade" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
 
-                        <a href="faq.html" class="fade mt-0" title="FAQ & Support">FAQ</a>
-        <a href="releases.html" class="fade mt-0" title="Releases & Updates">Releases / Updates</a>
-                        <a href="terms.html" class="fade" title="Terms of Service">Terms</a>
-                        <a href="privacy-policy.html" class="fade" title="Privacy Policy">Privacy Policy</a>
-                    </div>
+          <div class="div-menu-line"></div>
+
+          <a href="faq.html" class="fade mt-0" title="FAQ & Support"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
+          <a href="terms.html" class="fade" title="Terms of Service"><i class="fa-solid fa-file-contract"></i> Terms</a>
+          <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        </div>
                 </div>
             </div>
         </header>
@@ -138,25 +149,6 @@
                                     </ul>
 
                                 </div>
-
-
-
-                                <div class="auth-content-text d-none" id="loginContent">
-                                    <h3><i class="fa-solid fa-shield-halved"></i> Welcome Back</h3>
-
-                                    <p>Log in to manage your team project, track progress, and access your dashboard. Your secure workspace awaits.</p>
-
-                                    <ul class="mt-1rem pl-1-25rem">
-                                        <li>Access your project dashboard</li>
-
-                                        <li>Manage team settings</li>
-
-                                        <li>Track development progress</li>
-
-                                        <li>Update project information</li>
-                                    </ul>
-
-                                </div>
                             </div>
 
                             <div class="info-block">
@@ -173,12 +165,6 @@
                                 <h2 id="formTitle">Access the Core</h2>
 
                                 <p class="form-desc" id="formDesc">Sign in with your SQU Google account</p>
-
-                                <div class="auth-tabs">
-                                    <button class="auth-tab active" id="signupTab" type="button">New User</button>
-
-                                    <button class="auth-tab" id="loginTab" type="button">Existing User</button>
-                                </div>
 
                                 <div id="authMessage" class="auth-msg-box d-none">
                                     <!-- Messages will be displayed here -->
@@ -204,7 +190,7 @@
 
                                     </svg>
 
-                                    <span id="btnText">Continue with Google</span>
+                                    <span id="btnText">Log In with Google</span>
                                 </button>
 
                                 <div class="squ-notice">
@@ -228,7 +214,7 @@
         <footer class="site-footer">
             <div class="container footer-inner">
                 <div class="f-left">
-                    <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+                    <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
 
                     <br>
 
@@ -258,25 +244,13 @@
         <script>
             const sb = window.supabaseClient;
 
-            let currentMode = 'signup'; // default mode
+            const currentMode = 'login';
 
             let suppressSignedOutNote = false;
 
 
 
             // DOM elements
-
-            const signupTab = document.getElementById('signupTab');
-
-            const loginTab = document.getElementById('loginTab');
-
-            const signupContent = document.getElementById('signupContent');
-
-            const loginContent = document.getElementById('loginContent');
-
-            const formTitle = document.getElementById('formTitle');
-
-            const formDesc = document.getElementById('formDesc');
 
             const googleBtn = document.getElementById('googleSignInBtn');
 
@@ -378,46 +352,6 @@
 
             });
 
-            // Switch between signup and login modes
-
-            function switchMode(mode) {
-
-                currentMode = mode;
-
-
-
-                if (mode === 'signup') {
-
-                    signupTab.classList.add('active');
-
-                    loginTab.classList.remove('active');
-
-                    signupContent.style.display = 'block';
-
-                    loginContent.style.display = 'none';
-
-                    formTitle.textContent = 'Access the Core';
-
-                    formDesc.textContent = 'Sign in with your SQU Google account';
-
-                } else {
-
-                    signupTab.classList.remove('active');
-
-                    loginTab.classList.add('active');
-
-                    signupContent.style.display = 'none';
-
-                    loginContent.style.display = 'block';
-
-                    formTitle.textContent = 'Welcome Back';
-
-                    formDesc.textContent = 'Sign in to access your dashboard';
-
-                }
-
-            }
-
             // Show message
 
             function showMessage(text, isError = false) {
@@ -468,7 +402,7 @@
 
                 googleBtn.disabled = false;
 
-                btnText.textContent = 'Continue with Google';
+                btnText.textContent = 'Log In with Google';
 
             }
 
@@ -528,17 +462,13 @@
 
                     googleBtn.disabled = false;
 
-                    btnText.textContent = 'Continue with Google';
+                    btnText.textContent = 'Log In with Google';
 
                 }
 
             }
 
             // Event listeners
-
-            signupTab.addEventListener('click', () => switchMode('signup'));
-
-            loginTab.addEventListener('click', () => switchMode('login'));
 
             googleBtn.addEventListener('click', signInWithGoogle);
 

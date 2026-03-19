@@ -1,7 +1,41 @@
 # 🧾 Changelog
 
+## v2.6.0 - 19 Mar 2026
+### Roadmap & Feature Requests:
+
+- Introduced a new Feature Requests & Roadmap page (roadmap.html) allowing users to suggest ideas and track progress.
+- Implemented anonymous suggestion submission and guest voting capabilities.
+- Added admin review workflows for pending features and inline comment management.
+
+
+### User Interface & Experience:
+
+- Global Styling Refactor: Introduced a new style.css for consistent global styling and restructured navigation links across core pages.
+- Interactive Components: Added core interactive JavaScript for enhanced UI responsiveness.
+- Animations: Implemented smooth expand/collapse animations for the FAQ and release notes sections.
+- Modals: Introduced new modals for editing comments and confirmation actions, featuring backdrop filters and refined button interactions.
+- Navigation: Enhanced navigation menus with Font Awesome icons for better visual cues.
+
+
+### Functionality & Refinement:
+
+- Comment Management: Added the ability to save comments using Ctrl/Cmd + Enter.
+- Authentication: Refactored authentication into a dedicated login-only page.
+- Accessibility: Improved accessibility by adding titles to PayPal links and standardizing Vercel analytics script placement.
+- Cleanup: Removed comment editing functionality (including associated modals and logic) and cleaned up extraneous blank lines in account settings.
+
+
+### Technical & DevOps:
+
+- Monitoring: Integrated Vercel Speed Insights and standardized analytics across all HTML pages.
+- Dependencies: Added the vercel package dependency to the project.
+- Data Management: Initialized release history data in assets/data/releases.json.
+
+---
+
 ## v2.5.0 - 14 Mar 2026
 ### UI Overhaul:
+
 - Added styling for project categories, filters, and explorer components.
 - Implemented category chips for project filtering.
 - Added comprehensive styling for project detail pages, including sections for stats, social links, QR codes, and creator profiles.

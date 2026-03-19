@@ -1,11 +1,13 @@
 /* Improved Service Worker — robust caching, offline fallback, and runtime strategies */
-const CACHE_VERSION = 'v2.5.0';
+const CACHE_VERSION = 'v2.6.0';
 const CACHE_NAME = `nexcore-cache-${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/hub.html',
+  '/project.html',
+  '/roadmap.html',
   '/releases.html',
   '/thanks.html',
   '/googleb60d962a5a64f048.html',
@@ -18,10 +20,16 @@ const PRECACHE_URLS = [
   '/terms.html',
   '/offline.html',
 
+  '/assets/css/style.css',
   '/assets/css/unminified-css.css',
-  '/assets/css/releases.css',
+  '/assets/css/cookies.css',
+  '/assets/css/project-categories.css',
+  '/assets/js/script.js',
   '/assets/js/unminified-js.js',
-  '/assets/js/releases.js',
+  '/assets/js/cookie-consent.js',
+  '/assets/js/cookies.js',
+  '/assets/js/project-categories.js',
+  '/assets/js/supabase-client.js',
   '/assets/data/releases.json',
   '/version.js',
 
@@ -93,15 +101,26 @@ self.addEventListener('fetch', (event) => {
     event.respondWith((async () => {
       try {
         const preloadResp = await event.preloadResponse;
-        if (preloadResp) return preloadResp;
+        if (preloadResp) {
+          if (url.origin === self.location.origin && preloadResp.ok) {
+            const cache = await caches.open(CACHE_NAME);
+            cache.put(request, preloadResp.clone());
+          }
+          return preloadResp;
+        }
 
         const networkResp = await fetch(request);
-        const cache = await caches.open(CACHE_NAME);
-        cache.put('/index.html', networkResp.clone());
+        if (url.origin === self.location.origin && networkResp.ok) {
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(request, networkResp.clone());
+        }
         return networkResp;
       } catch (err) {
         const cache = await caches.open(CACHE_NAME);
-        const cached = await cache.match('/index.html') || cache.match('/offline.html');
+        const cached = await cache.match(request)
+          || await cache.match(url.pathname)
+          || await cache.match('/index.html')
+          || await cache.match('/offline.html');
         return cached || Response.error();
       }
     })());
@@ -124,7 +143,7 @@ self.addEventListener('fetch', (event) => {
       } catch (err) {
         // Return a tiny transparent placeholder image (1x1) to prevent broken UI
         return new Response(
-          'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>',
+          '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>',
           { headers: { 'Content-Type': 'image/svg+xml' } }
         );
       }

@@ -1,0 +1,2919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <!-- Cookie Consent Manager v2 -->
+
+        <link rel="stylesheet" href="assets/css/cookies.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="NexCore Labs">
+        <meta name="keywords" content="NexCore Labs, page development, HTML, CSS, JavaScript, innovation, technology, creative projects, Oman, university tech teams, front-end development, Sultan Qaboos University, roadmap, feature requests, user feedback, product development, software development, project management, agile development, software roadmap, product roadmap">
+        <meta name="theme-color" content="#0a0b1c">
+        <meta name="mobile-web-app-capable" content="yes">
+
+          <title>NexCore Labs - Feature Requests &amp; Roadmap</title>
+
+
+        <meta name="description" content="Vote on features, suggest ideas, and track progress on NexCore Labs roadmap.">
+
+        <!-- Facebook Meta Tags -->
+
+        <meta property="og:url" content="https://nexcorelabs.vercel.app/roadmap.html">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="NexCore Labs - Feature Requests &amp; Roadmap">
+        <meta property="og:description" content="Vote on features, suggest ideas, and track progress on NexCore Labs roadmap.">
+        <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+        <!-- Twitter Meta Tags -->
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+        <meta property="twitter:url" content="https://nexcorelabs.vercel.app/roadmap.html">
+        <meta name="twitter:title" content="NexCore Labs - Feature Requests &amp; Roadmap">
+        <meta name="twitter:description" content="Vote on features, suggest ideas, and track progress on NexCore Labs roadmap.">
+        <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+        <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
+        <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+
+        <link rel="stylesheet" href="assets/css/style.css">
+
+        <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+/* ─── HERO ─── */
+.hero {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-bottom: 60px;
+  overflow: hidden;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.hero-left { flex: 1; min-width: 300px; max-width: 640px; }
+
+.hero-eyebrow {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #6ee7f3;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.title {
+  font-size: 44px;
+  line-height: 1.05;
+  margin: 0 0 20px;
+  font-weight: 800;
+  letter-spacing: -0.6px;
+  color: #eaf6fb;
+}
+
+.text-accent { color: #6ee7f3 !important; }
+
+.lead {
+  color: var(--muted);
+  font-size: 17px;
+  margin-bottom: 36px;
+  max-width: 54ch;
+  line-height: 1.65;
+}
+
+/* KPI stats row */
+.kpis {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-radius: 10px;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.kpis .stat {
+  background: rgba(255,255,255,0.02);
+  padding: 12px 18px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 80px;
+  border: 1px solid rgba(255,255,255,0.04);
+
+}
+
+.kpis strong {
+  display: block;
+  font-size: 22px;
+  color: #fff;
+  font-weight: 700;
+}
+
+.kpis span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.kpis .stat:hover {
+  transform: scale(1.04);
+  background: rgba(110,231,243,0.07);
+}
+
+/* Hero right — glass card */
+.hero-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glass-card {
+  width: 320px;
+  border-radius: 18px;
+  padding: 22px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: visible;
+  transform: translateY(0);
+  transition: transform .45s cubic-bezier(.2,.9,.3,1);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.glass-card:hover { transform: translateY(-8px) rotate(-0.2deg); }
+
+.card-wave {
+  position: absolute;
+  right: -30%; top: -40%;
+  width: 200%; height: 200%;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(115,189,215,0.07), transparent 8%),
+    radial-gradient(circle at 60% 60%, rgba(172,217,229,0.05), transparent 10%);
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+
+.card-content h4 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  color: #eaf6fb;
+}
+
+/* Status overview inside card */
+.status-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.so-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.so-row strong {
+  margin-left: auto;
+  color: #eaf6fb;
+  font-size: 15px;
+}
+
+.so-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.so-planned { background: #4a9eff; box-shadow: 0 0 6px rgba(74,158,255,0.5); }
+.so-inprog  { background: #f5a623; box-shadow: 0 0 6px rgba(245,166,35,0.5); animation: dotPulse 2s ease-in-out infinite; }
+.so-done    { background: #4ade80; box-shadow: 0 0 6px rgba(74,222,128,0.5); }
+
+@keyframes dotPulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(245,166,35,0.4); }
+  50%       { box-shadow: 0 0 10px rgba(245,166,35,0.8); }
+}
+
+/* ─── MAIN / ROADMAP WRAP ─── */
+main {
+  padding: 0 24px 0px;
+}
+
+.roadmap-wrap {
+  padding-top: 20px;
+}
+
+/* ─── CONTROLS BAR ─── */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.tabs-group {
+  display: flex;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 4px;
+  gap: 4px;
+  text-align: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.3px;
+
+}
+
+.tab-btn.active {
+  background: rgba(110,231,243,0.1);
+  color: #6ee7f3;
+  border: 1px solid rgba(110,231,243,0.2);
+}
+
+.tab-btn:hover:not(.active) {
+  color: #eaf6fb;
+  background: rgba(255,255,255,0.04);
+}
+
+.filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+
+.chip.active, .chip:hover {
+  border-color: rgba(110,231,243,0.45);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
+/* ─── FEATURE LIST ─── */
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ─── FEATURE CARD ─── */
+.feature-card {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgba(2,6,23,0.5);
+  overflow: hidden;
+  animation: cardIn 300ms ease both;
+  transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.feature-card:hover {
+  border-color: rgba(110,231,243,0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(2,6,23,0.7);
+}
+
+/* Vote column */
+.card-vote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 8px;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  gap: 5px;
+}
+
+.vote-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all .2s ease;
+}
+
+.vote-btn:hover {
+  border-color: rgba(110,231,243,0.5);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(110,231,243,0.2);
+}
+
+.vote-btn.voted {
+  border-color: #6ee7f3;
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.12);
+  box-shadow: 0 0 12px rgba(110,231,243,0.3);
+}
+
+.vote-btn.voted:hover {
+  border-color: rgba(110,231,243,0.3);
+  background: rgba(110,231,243,0.04);
+  color: var(--muted);
+  box-shadow: none;
+}
+
+.vote-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.vote-count {
+  font-size: 15px;
+  font-weight: 700;
+  color: #eaf6fb;
+  line-height: 1;
+  transition: all .25s ease;
+}
+
+.vote-count.bump { animation: countBump 350ms ease; }
+
+@keyframes countBump {
+  0%   { transform: scale(1);    color: #eaf6fb; }
+  40%  { transform: scale(1.4);  color: #6ee7f3; }
+  100% { transform: scale(1);    color: #eaf6fb; }
+}
+
+/* Card body */
+.card-body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #eaf6fb;
+  letter-spacing: -0.1px;
+  line-height: 1.35;
+}
+
+.card-desc {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Status badges */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge--planned {
+  background: rgba(74,158,255,0.12);
+  color: #4a9eff;
+  border: 1px solid rgba(74,158,255,0.25);
+}
+
+.badge--in_progress {
+  background: rgba(245,166,35,0.12);
+  color: #f5a623;
+  border: 1px solid rgba(245,166,35,0.25);
+  animation: badgePulse 2.5s ease-in-out infinite;
+}
+
+.badge--completed {
+  background: rgba(74,222,128,0.12);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,0.25);
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 4px rgba(245,166,35,0.1); }
+  50%       { box-shadow: 0 0 10px rgba(245,166,35,0.3); }
+}
+
+/* ── ADMIN CONTROLS ── */
+.admin-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  background: rgba(245,166,35,0.04);
+  border: 1px solid rgba(245,166,35,0.15);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-label {
+  font-size: 11px;
+  color: #f5a623;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-status-btns {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.status-pick {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+}
+
+.status-pick:hover {
+  border-color: rgba(110,231,243,0.4);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.06);
+}
+
+.status-pick.active {
+  border-color: #6ee7f3;
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.1);
+}
+
+/* ── EXPANDABLE CARDS ── */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.comment-chip {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.comment-chip:hover {
+  border-color: rgba(110,231,243,0.3);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.06);
+}
+
+.expand-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .24s ease;
+}
+
+.expand-btn i {
+  transition: transform .24s ease;
+}
+
+.feature-card.expanded .expand-btn i {
+  transform: rotate(180deg);
+}
+
+.expand-btn:hover {
+  border-color: rgba(110,231,243,0.4);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
+.card-date {
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+.feature-details {
+  grid-column: 1 / -1;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .35s cubic-bezier(.2,.9,.3,1);
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(110,231,243,0.15);
+}
+
+.feature-details-inner {
+  padding: 14px 18px 16px 86px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feature-full-desc {
+  margin: 0;
+  font-size: 13.5px;
+  color: #c8d5e4;
+  line-height: 1.62;
+}
+
+.feature-meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.meta-pill {
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.02);
+  white-space: nowrap;
+}
+
+.inline-comments {
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  background: rgba(4,8,18,0.45);
+  overflow: hidden;
+}
+
+.inline-comments-head {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #eaf6fb;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.inline-comments-list {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inline-comments-list::-webkit-scrollbar { width: 4px; }
+.inline-comments-list::-webkit-scrollbar-thumb { background: rgba(110,231,243,0.25); border-radius: 2px; }
+
+.inline-comments-compose {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 10px 12px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.inline-comments-compose .form-textarea {
+  resize: none;
+  min-height: 64px;
+  flex: 1;
+}
+
+.inline-auth-nudge {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.feature-card.removing {
+  pointer-events: none;
+  animation: cardOut 260ms ease forwards;
+}
+
+@keyframes cardOut {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.985);
+  }
+}
+
+/* ─── SKELETON ─── */
+.skeleton-card {
+  height: 96px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.04) 50%, transparent 100%);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--muted);
+}
+
+/* ─── FLOATING ACTION BUTTON ─── */
+.fab {
+  position: fixed;
+  bottom: 19px;
+  right: 65px;
+  z-index: 99;
+  background: linear-gradient(65deg, #6ee7f3 0%, #acd9e5 50%, #6bd3c9 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color: #031017;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 30px rgba(110,231,243,0.3), 0 4px 12px rgba(0,0,0,0.4);
+  letter-spacing: 0.5px;
+  transition: background-position 2s cubic-bezier(.2,.9,.3,1), box-shadow .3s, transform .2s;
+}
+
+.fab:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 0 25px rgba(115,189,215,0.5), 0 4px 16px rgba(0,0,0,0.5);
+  transform: scale(1.02);
+}
+
+.fab:active { transform: scale(0.97); }
+
+/* ─── MODALS ─── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(2,6,23,0.75);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+
+.modal-overlay.hidden {
+  display: flex !important;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.modal-overlay.is-closing {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.modal-panel {
+  background: rgba(10,11,28,0.95);
+  border: 1px solid rgba(110,231,243,0.12);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.04);
+  opacity: 0;
+  transform: scale(0.96) translateY(14px);
+  transition: transform 260ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
+}
+
+.modal-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #6ee7f3, transparent);
+  opacity: 0.4;
+  border-radius: 18px 18px 0 0;
+  pointer-events: none;
+}
+
+.modal-wide { max-width: 560px; }
+.modal-overlay.is-open .modal-panel {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  z-index: 2;
+}
+
+.modal-close:hover {
+  background: rgba(255,255,255,0.08);
+  color: #eaf6fb;
+  border-color: rgba(255,255,255,0.15);
+}
+
+.modal-header {
+  padding: 26px 26px 0;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  color: #eaf6fb;
+  margin: 0 0 6px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-header p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.modal-body {
+  padding: 20px 26px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Auth tabs */
+.auth-tabs {
+  display: flex;
+  gap: 0;
+  padding: 16px 26px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  margin: 8px 0 0;
+}
+
+.auth-tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all .25s ease;
+  margin-bottom: -1px;
+}
+
+.auth-tab.active {
+  color: #6ee7f3;
+  border-bottom-color: #6ee7f3;
+}
+
+.auth-tab:hover:not(.active) { color: #eaf6fb; }
+
+/* ─── FORM ELEMENTS ─── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.form-input {
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 14px;
+  font-family: Inter, sans-serif;
+  padding: 12px 16px;
+  color: #eaf6fb;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid #6ee7f3;
+  background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  resize: vertical;
+  max-width: 100%;
+}
+
+.form-input::placeholder { color: rgba(154,163,178,0.6); }
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(110,231,243,0.5);
+  box-shadow: 0 0 0 3px rgba(110,231,243,0.08), 0 4px 16px rgba(0,0,0,0.3);
+  font-size: 15px;
+}
+
+.form-input:hover { border-bottom-color: #6bd3c9; }
+
+.form-textarea { min-height: 80px; resize: vertical; }
+
+.char-count {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+  opacity: 0.6;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #ff7878;
+  background: rgba(255,107,107,0.08);
+  border: 1px solid rgba(255,107,107,0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+/* ─── BADGE / PILL ─── */
+.badge-pill {
+  background: rgba(110,231,243,0.1);
+  border: 1px solid rgba(110,231,243,0.25);
+  color: #6ee7f3;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* ─── COMMENTS ─── */
+.comments-list {
+  min-height: 100px;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 8px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.comments-list::-webkit-scrollbar { width: 4px; }
+.comments-list::-webkit-scrollbar-thumb { background: rgba(110,231,243,0.25); border-radius: 2px; }
+
+.comments-loading {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 28px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.comments-empty {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.comment-item {
+  display: flex;
+  gap: 10px;
+  animation: cardIn 200ms ease both;
+}
+
+.comment-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6ee7f3, #3ac5c0);
+  color: #031017;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.comment-body { flex: 1; }
+
+.comment-meta {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.comment-author { color: #acd9e5; font-weight: 600; }
+
+.comment-text {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.comment-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comment-action-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+
+.comment-action-btn:hover {
+  border-color: rgba(110,231,243,0.35);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
+.owner-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.owner-action-btn {
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  border-radius: 999px;
+  font-size: 11px;
+  padding: 4px 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.owner-action-btn:hover {
+  border-color: rgba(110,231,243,0.35);
+  color: #6ee7f3;
+  background: rgba(110,231,243,0.08);
+}
+
+.comments-compose {
+  padding: 14px 26px 26px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.comments-compose .form-textarea { resize: none; flex: 1; }
+
+.comments-auth-nudge {
+  padding: 14px 26px 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Option D additions */
+.anon-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(110,231,243,0.06);
+  border: 1px solid rgba(110,231,243,0.18);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #acd9e5;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.anon-notice i { color: #6ee7f3; flex-shrink: 0; margin-top: 2px; }
+
+.anon-comment-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.anon-comment-block i { color: #6ee7f3; }
+
+.badge--pending {
+  background: rgba(255,204,102,0.12);
+  border: 1px solid rgba(255,204,102,0.35);
+  color: #ffcc66;
+}
+
+.submitter-info {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pending-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.guest-vote-label {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.6;
+  letter-spacing: 0.3px;
+}
+
+/* ─── TOAST ─── */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(10,11,28,0.95);
+  border: 1px solid rgba(110,231,243,0.2);
+  color: #eaf6fb;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 11px 22px;
+  border-radius: 999px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(110,231,243,0.06);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 999;
+  animation: toastIn 300ms cubic-bezier(.2,.9,.3,1) forwards;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.toast.hidden { display: none; }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ─── REVEAL ANIMATION ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px) scale(0.997);
+  transition: all .68s cubic-bezier(.2,.9,.3,1);
+  will-change: transform, opacity;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@keyframes flow {
+  0%, 100% { opacity: 0.4; transform: scaleX(0.8); }
+  50%       { opacity: 1;   transform: scaleX(1); }
+}
+
+/* ─── UTILITY ─── */
+.hidden { display: none !important; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 780px) {
+  .hero { padding: 100px 12px 60px; }
+  .hero-inner { gap: 28px; }
+  .title { font-size: 32px; }
+  .lead { font-size: 16px; }
+  .hero-right { display: none; }
+  .kpis { gap: 8px; }
+  .kpis .stat { padding: 8px 12px; min-width: 70px; }
+  .kpis strong { font-size: 18px; }
+  .controls-bar { flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .fab { bottom: 68px; right: 19px; padding: 12px;}
+  .fab span { display: none; }
+  main { padding: 0 12px; }
+  .feature-details-inner { padding: 12px 14px 14px 14px; }
+}
+
+@media (max-width: 480px) {
+  .modal-panel { max-width: 100%; border-radius: 16px; }
+  .hero-inner { padding: 0px; }
+  .modal-header, .modal-body { padding-left: 18px; padding-right: 18px; }
+  .comments-list, .comments-compose, .comments-auth-nudge { padding-left: 18px; padding-right: 18px; }
+  .auth-tabs { padding-left: 18px; padding-right: 18px; }
+  .fab { bottom: 58px; right: 13px; }
+  .feature-card { grid-template-columns: 56px 1fr; }
+  .inline-comments-compose { flex-direction: column; align-items: stretch; }
+  .inline-auth-nudge { flex-wrap: wrap; }
+}
+  </style>
+</head>
+<body>
+
+  <div class="background">
+    <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+
+    <div id="spotLight" class="spot-light"></div>
+  </div>
+
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1 id="logo">NexCore <span>Labs</span></h1>
+      </div>
+
+      <div class="dropdown">
+        <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+        </div>
+
+        <div id="myDropdown" class="dropdown-content">
+          <a href="auth.html" class="magic-signup fade" title="Sign in to your account"><i class="fa-solid fa-key"></i> Access the Core</a>
+          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+
+          <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
+          <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="index.html#tools" class="mt-0" title="Tools & Systems"><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Systems</a>
+          <a href="index.html#about" title="About NexCore Labs"><i class="fa-solid fa-circle-info"></i> About Us</a>
+          <a href="index.html#team" title="NexCore Labs Team"><i class="fa-solid fa-users"></i> Our Team</a>
+          <a href="index.html#contact" title="Contact NexCore Labs"><i class="fa-solid fa-paper-plane"></i> Contact Us</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="roadmap.html" class="fade mt-0" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
+          <a href="releases.html" class="fade" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="faq.html" class="fade mt-0" title="FAQ & Support"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
+          <a href="terms.html" class="fade" title="Terms of Service"><i class="fa-solid fa-file-contract"></i> Terms</a>
+          <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <p class="hero-eyebrow"><i class="fa-solid fa-circle-dot"></i> Public Roadmap</p>
+        <h1 class="title">Shape What We<br><span class="text-accent">Build Next</span></h1>
+        <p class="lead">Vote on features, suggest ideas, and track progress — your input drives what ships next at NexCore Labs.</p>
+        <div class="kpis reveal">
+          <div class="stat"><strong id="stat-total">—</strong><span>Requests</span></div>
+          <div class="stat"><strong id="stat-votes">—</strong><span>Total Votes</span></div>
+          <div class="stat"><strong id="stat-done">—</strong><span>Shipped</span></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="glass-card" id="glassCard">
+          <div class="card-wave"></div>
+          <div class="card-content">
+            <h4><i class="fa-solid fa-chart-gantt text-accent"></i> Status Pipeline</h4>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 14px;">Live feature overview</p>
+            <div class="status-overview">
+              <div class="so-row"><span class="so-dot so-planned"></span><span>Planned</span><strong id="count-planned">—</strong></div>
+              <div class="so-row"><span class="so-dot so-inprog"></span><span>In Progress</span><strong id="count-inprog">—</strong></div>
+              <div class="so-row"><span class="so-dot so-done"></span><span>Completed</span><strong id="count-done">—</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <div class="roadmap-wrap">
+      <div class="controls-bar reveal">
+        <div class="tabs-group">
+          <button class="tab-btn active" data-tab="roadmap"><i class="fa-solid fa-map fa-fw"></i> Roadmap</button>
+          <button class="tab-btn" data-tab="implemented"><i class="fa-solid fa-circle-check fa-fw"></i> Implemented</button>
+          <button class="tab-btn hidden" id="pending-tab-btn" data-tab="pending"><i class="fa-solid fa-hourglass-half fa-fw"></i> Pending</button>
+        </div>
+        <div class="filter-chips" id="status-filter">
+          <button class="chip active" data-filter="all">All</button>
+          <button class="chip" data-filter="planned">Planned</button>
+          <button class="chip" data-filter="in_progress">In Progress</button>
+        </div>
+      </div>
+
+      <div id="features-list" class="features-list">
+        <div id="skeleton-wrap">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+
+      <div class="empty-state hidden" id="empty-state">
+        <i class="fa-solid fa-inbox" style="font-size:48px;color:var(--muted);"></i>
+        <p style="font-size:18px;margin:12px 0 4px;">No features here yet</p>
+        <small style="color:var(--muted);">Be the first to suggest one!</small>
+      </div>
+    </div>
+
+  <!-- FAB -->
+  <button class="fab" id="fab-suggest" aria-label="Suggest a feature">
+    <i class="fa-solid fa-pen-to-square"></i>
+    <span>Suggest Feature</span>
+  </button>
+
+  <!-- AUTH MODAL -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-panel">
+      <button class="modal-close" data-close="auth-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-key text-accent"></i> Access the Core</h2>
+        <p>Log in to vote and suggest features.</p>
+      </div>
+      <div class="modal-body">
+        <p style="margin:0;color:var(--muted);font-size:13px;line-height:1.55;">Continue with Google to log in.</p>
+        <button class="btn ghost" id="google-signin-btn" style="width:100%;justify-content:center;gap:10px;padding:12px 14px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+          </svg>
+          <span id="google-btn-text">Log In with Google</span>
+        </button>
+        <div class="form-error hidden" id="auth-error"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUGGEST MODAL -->
+  <div class="modal-overlay hidden" id="suggest-modal">
+    <div class="modal-panel">
+      <button class="modal-close" data-close="suggest-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h2><i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature</h2>
+        <p>Share your idea and let the community decide.</p>
+      </div>
+      <div class="modal-body">
+        <label class="field">
+          <span class="field-label">Title <span style="color:#ff7878">*</span></span>
+          <input class="form-input" type="text" id="feature-title" placeholder="e.g. Dark mode support" maxlength="100" />
+          <span class="char-count" id="title-count">0 / 100</span>
+        </label>
+        <label class="field">
+          <span class="field-label">Description <span style="color:#ff7878">*</span></span>
+          <textarea class="form-input form-textarea" id="feature-desc" placeholder="Describe why this feature matters…" rows="4" maxlength="500"></textarea>
+          <span class="char-count" id="desc-count">0 / 500</span>
+        </label>
+        <div id="anonFields" class="hidden">
+          <p class="anon-notice">
+            <i class="fa-solid fa-circle-info"></i>
+            You're suggesting anonymously. Your suggestion will be reviewed before appearing publicly. Optionally add your details below.
+          </p>
+          <input class="form-input" type="text" id="anonName" placeholder="Your name (optional)" maxlength="80" />
+          <input class="form-input" type="email" id="anonEmail" placeholder="Your email (optional)" maxlength="120" style="margin-top:10px;" />
+        </div>
+        <div class="form-error hidden" id="suggest-error"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+          <button class="btn ghost" data-close="suggest-modal">Cancel</button>
+          <button class="btn primary" id="submit-feature"><span class="btn-text">Submit Feature</span><span class="btn-spinner hidden"></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMENTS MODAL -->
+  <div class="modal-overlay hidden" id="comments-modal">
+    <div class="modal-panel modal-wide">
+      <button class="modal-close" data-close="comments-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <h2 id="comments-feature-title"><i class="fa-solid fa-comments text-accent"></i> Comments</h2>
+        <span class="badge-pill" id="comments-count-badge">0</span>
+      </div>
+      <div class="comments-list" id="comments-list">
+        <div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>
+      </div>
+      <div class="comments-compose" id="comments-compose">
+        <textarea class="form-input form-textarea" id="comment-input" placeholder="Write a comment… (Ctrl+Enter to post)" rows="2"></textarea>
+        <button class="btn primary" style="padding:10px 20px;white-space:nowrap;" id="submit-comment">Post</button>
+      </div>
+      <div class="comments-auth-nudge anon-comment-block hidden" id="comments-auth-nudge">
+        <i class="fa-solid fa-lock text-accent"></i>
+        <span>Sign in with your SQU account to leave a comment.</span>
+        <button class="btn ghost" style="padding:6px 14px;font-size:13px;" id="comments-sign-in-btn">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay hidden" id="confirm-modal">
+    <div class="modal-panel">
+      <button class="modal-close" data-close="confirm-modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h2 id="confirm-modal-title"><i class="fa-solid fa-triangle-exclamation" style="color:#ff7878;"></i> Confirm Action</h2>
+        <p id="confirm-modal-message">Are you sure you want to continue?</p>
+      </div>
+      <div class="modal-body">
+        <div class="form-error hidden" id="confirm-modal-error"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button class="btn ghost" data-close="confirm-modal" id="confirm-cancel-btn">Cancel</button>
+          <button class="btn primary" id="confirm-modal-btn" style="background:rgba(255,120,120,0.14);border-color:rgba(255,120,120,0.3);color:#ff9a9a;">
+            <span id="confirm-modal-btn-text">Delete</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast">
+    <span id="toast-icon" class="text-accent">✓</span>
+    <span id="toast-msg"></span>
+  </div>
+
+    <div class="nexcore-sign" style="margin-top: 80px;">
+      <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="f-left">
+        <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal"><i
+            class="fa-solid fa-heart text-accent"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+
+        <br>
+
+        <small title="All Rights Reserved">NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+
+          <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener"
+            class="license-link">
+
+            <i class="fa-solid fa-scale-balanced"></i> MIT License
+
+          </a>
+        </small>
+
+      </div>
+
+      <div class="f-right footer-line"></div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js"></script>
+
+  <!-- <script src="assets/js/unminified-js.js"></script> -->
+
+  <script src="assets/js/supabase-client.js"></script>
+
+  <script src="assets/js/auth-ui.js"></script>
+
+  <script src="assets/js/cookies.js" defer></script>
+
+  <script src="version.js"></script>
+  <script>
+function getAnonFingerprint() {
+  const KEY = 'nexcore_anon_fp';
+  let fp = localStorage.getItem(KEY);
+  if (!fp || fp.length < 8) {
+    fp = Array.from(crypto.getRandomValues(new Uint8Array(16)))
+      .map((b) => b.toString(16).padStart(2, '0')).join('');
+    localStorage.setItem(KEY, fp);
+  }
+  return fp;
+}
+
+const state = {
+  currentTab:      'roadmap',
+  statusFilter:    'all',
+  user:            null,
+  isAdmin:         false,
+  features:        [],
+  pendingFeatures: [],
+  userVotes:       new Set(),
+  anonFingerprint: getAnonFingerprint(),
+  anonVotes:       new Set(),
+  commentsByFeature: {},
+  activeFeatureId: null,
+  expandedFeatureId: null,
+  editingFeatureId: null,
+  pendingConfirmAction: null,
+  pendingConfirmLabel: 'Delete',
+};
+
+// ── HELPERS ────────────────────────────────────────────────
+const db = window.supabaseClient;
+const $  = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+
+function escHtml(str) {
+  const d = document.createElement('div');
+  d.appendChild(document.createTextNode(str || ''));
+  return d.innerHTML;
+}
+
+function isMobileCommentsFallback() {
+  return window.matchMedia('(max-width: 639px)').matches;
+}
+
+function normalizeStatusLabel(status) {
+  const labels = { planned: 'Planned', in_progress: 'In Progress', completed: 'Completed' };
+  return labels[status] || status;
+}
+
+// ── ADMIN STATUS MANAGEMENT ───────────────────────────────
+async function checkAdminStatus() {
+  if (!state.user) return false;
+  try {
+    const { data, error } = await db.rpc('get_my_admin_status');
+    if (error) {
+      console.warn('Admin check failed:', error.message);
+      return false;
+    }
+    return data === true;
+  } catch (e) {
+    console.warn('Admin check exception:', e);
+    return false;
+  }
+}
+
+// ── INIT ───────────────────────────────────────────────────
+async function init() {
+  if (!db) {
+    console.error('Supabase client is unavailable. Check script loading order.');
+    showToast('Roadmap is temporarily unavailable.', '<i class="fa-solid fa-triangle-exclamation"></i>');
+    return;
+  }
+
+  // Footer year
+  const yr = document.getElementById('year');
+  if (yr) yr.textContent = new Date().getFullYear();
+
+  // Auth session
+  const { data: { session } } = await db.auth.getSession();
+  if (session?.user) {
+    state.user = session.user;
+    await loadUserVotes();
+    state.isAdmin = await checkAdminStatus();
+  }
+  renderAuthNav();
+
+  db.auth.onAuthStateChange(async (event, session) => {
+    state.user = session?.user ?? null;
+    if (state.user) {
+      await loadUserVotes();
+      state.isAdmin = await checkAdminStatus();
+    } else {
+      state.userVotes.clear();
+      state.isAdmin = false;
+    }
+    renderAuthNav();
+    await loadFeatures();
+  });
+
+  // Bind everything
+  bindTabs();
+  bindFilters();
+  bindFAB();
+  bindModalClosers();
+  bindAuthModal();
+  bindSuggestModal();
+  bindCommentsModal();
+  bindCommentActions();
+  bindConfirmModal();
+  bindReveal();
+  window.addEventListener('resize', () => {
+    if (isMobileCommentsFallback() && state.expandedFeatureId) {
+      state.expandedFeatureId = null;
+      renderFeatures();
+    }
+  });
+
+  // Load data
+  loadAnonVotes();
+  await loadFeatures();
+}
+
+// ── REVEAL OBSERVER ────────────────────────────────────────
+function bindReveal() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  $$('.reveal').forEach(el => obs.observe(el));
+}
+
+// ── NAV DROPDOWN (core-menu dots) ──────────────────────────
+function bindNavDropdown() {
+  const menu = $('#coreMenu');
+  const drop = $('#myDropdown');
+  if (!menu || !drop) return;
+
+  menu.addEventListener('click', () => {
+    menu.classList.toggle('active');
+    const isOpen = menu.classList.contains('active');
+    drop.style.visibility = isOpen ? 'visible' : 'hidden';
+    drop.style.opacity    = isOpen ? '1' : '0';
+    drop.style.transform  = isOpen ? 'translateY(10px)' : 'translateY(0)';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target) && !drop.contains(e.target)) {
+      menu.classList.remove('active');
+      drop.style.visibility = 'hidden';
+      drop.style.opacity    = '0';
+      drop.style.transform  = 'translateY(0)';
+    }
+  });
+}
+
+// ── AUTH NAV ───────────────────────────────────────────────
+function renderAuthNav() {
+  const suggestBtn = $('#fab-suggest');
+  const pendingTabBtn = $('#pending-tab-btn');
+  if (!suggestBtn) return;
+  suggestBtn.title = state.user
+    ? 'Suggest a feature'
+    : 'Suggest anonymously';
+  if (pendingTabBtn) {
+    pendingTabBtn.classList.toggle('hidden', !state.isAdmin);
+    if (!state.isAdmin && state.currentTab === 'pending') {
+      state.currentTab = 'roadmap';
+      $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === 'roadmap'));
+    }
+  }
+}
+
+async function handleSignOut() {
+  await db.auth.signOut();
+  showToast('Signed out successfully.', '<i class="fa-solid fa-right-from-bracket"></i>');
+}
+
+// ── AUTH MODAL ─────────────────────────────────────────────
+function openAuthModal() {
+  openModal('auth-modal');
+}
+
+function bindAuthModal() {
+  $('#google-signin-btn')?.addEventListener('click', async () => {
+    const btn = $('#google-signin-btn');
+    const txt = $('#google-btn-text');
+    const errEl = $('#auth-error');
+    errEl?.classList.add('hidden');
+    btn.disabled = true;
+    if (txt) txt.textContent = 'Redirecting…';
+
+    try {
+      sessionStorage.setItem('auth_mode', 'login');
+      const { error } = await db.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard.html`
+        }
+      });
+      if (error) throw error;
+    } catch (error) {
+      showFormError(errEl, error?.message || 'Failed to sign in with Google.');
+      btn.disabled = false;
+      if (txt) txt.textContent = 'Log In with Google';
+    }
+  });
+}
+
+// ── FEATURES ──────────────────────────────────────────────
+async function loadFeatures() {
+  showSkeleton(true);
+
+  if (state.currentTab === 'pending') {
+    showSkeleton(false);
+    state.pendingFeatures = await loadPendingFeatures();
+    state.features = [];
+    renderFeatures();
+    updateStats();
+    return;
+  }
+
+  let query = db.from('features').select(`
+    id, title, description, status, votes_count, created_at, created_by,
+    feature_comments(count)
+  `);
+
+  if (state.currentTab === 'roadmap') {
+    query = query.neq('status', 'completed');
+  } else {
+    query = query.eq('status', 'completed');
+  }
+
+  if (state.currentTab === 'roadmap' && state.statusFilter !== 'all') {
+    query = query.eq('status', state.statusFilter);
+  }
+
+  const orderCol = state.currentTab === 'implemented' ? 'created_at' : 'votes_count';
+  query = query.order(orderCol, { ascending: false });
+
+  const { data, error } = await query;
+
+  showSkeleton(false);
+
+  if (error) {
+    console.error('Error loading features:', error);
+    showToast('Failed to load features.', '<i class="fa-solid fa-triangle-exclamation"></i>');
+    return;
+  }
+
+  state.features = data || [];
+  updateStats();
+  renderFeatures();
+}
+
+async function loadPendingFeatures() {
+  if (!state.isAdmin) return [];
+  const { data, error } = await db.rpc('get_pending_suggestions');
+  if (error) {
+    console.warn('Pending suggestions fetch failed:', error.message);
+    return [];
+  }
+  return data || [];
+}
+
+async function loadUserVotes() {
+  if (!state.user) return;
+  const { data } = await db
+    .from('feature_votes')
+    .select('feature_id')
+    .eq('user_id', state.user.id);
+  state.userVotes = new Set((data || []).map(v => v.feature_id));
+}
+
+function loadAnonVotes() {
+  const raw = localStorage.getItem('nexcore_anon_votes');
+  state.anonVotes = new Set(raw ? JSON.parse(raw) : []);
+}
+
+function saveAnonVotes() {
+  localStorage.setItem('nexcore_anon_votes', JSON.stringify([...state.anonVotes]));
+}
+
+function renderFeatures() {
+  const list  = $('#features-list');
+  const empty = $('#empty-state');
+  // Clear everything except skeleton (already hidden)
+  $$('.feature-card', list).forEach(c => c.remove());
+
+  if (state.currentTab === 'pending') {
+    const pending = state.pendingFeatures || [];
+    if (!pending.length) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+    pending.forEach((feature, i) => {
+      const card = buildPendingCard(feature, i);
+      list.appendChild(card);
+    });
+    bindReveal();
+    return;
+  }
+
+  if (state.expandedFeatureId && !state.features.some(f => f.id === state.expandedFeatureId)) {
+    state.expandedFeatureId = null;
+  }
+
+  if (!state.features.length) {
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  state.features.forEach((feature, i) => {
+    const card = buildCard(feature, i);
+    list.appendChild(card);
+  });
+
+  // Re-observe new cards for reveal
+  bindReveal();
+}
+
+function buildCard(feature, index) {
+  const voted        = state.user ? state.userVotes.has(feature.id) : state.anonVotes.has(feature.id);
+  const commentCount = Number(feature.feature_comments?.[0]?.count ?? 0);
+  const statusLabel  = normalizeStatusLabel(feature.status);
+  const date         = new Date(feature.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const isExpanded   = !isMobileCommentsFallback() && state.expandedFeatureId === feature.id;
+  const isOwner      = !!state.user && feature.created_by === state.user.id;
+
+  const card = document.createElement('div');
+  card.className = `feature-card reveal${isExpanded ? ' expanded' : ''}`;
+  card.dataset.id = feature.id;
+  card.style.animationDelay = `${index * 45}ms`;
+
+  card.innerHTML = `
+    <div class="card-vote">
+      <button
+        class="vote-btn${voted ? ' voted' : ''}"
+        data-id="${feature.id}"
+        aria-label="${voted ? 'Remove vote' : 'Upvote this feature'}"
+        title="${state.user ? (voted ? 'Remove vote' : 'Upvote this feature') : 'Vote as guest'}"
+      >
+        <i class="fa-solid fa-chevron-up"></i>
+      </button>
+      <span class="vote-count" id="vc-${feature.id}">${feature.votes_count}</span>
+      ${!state.user ? '<span class="guest-vote-label">guest vote</span>' : ''}
+    </div>
+    <div class="card-body">
+      <h3 class="card-title">${escHtml(feature.title)}</h3>
+      <p class="card-desc">${escHtml(feature.description || '')}</p>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="badge badge--${feature.status}">${statusLabel}</span>
+          ${isOwner ? `
+          <div class="owner-actions">
+            <button class="owner-action-btn" data-owner-edit="${feature.id}" title="Edit your suggestion">
+              <i class="fa-regular fa-pen-to-square"></i> Edit
+            </button>
+            <button class="owner-action-btn" data-owner-delete="${feature.id}" title="Delete your suggestion">
+              <i class="fa-regular fa-trash-can"></i> Delete
+            </button>
+          </div>` : ''}
+        </div>
+        <div class="card-actions">
+          <button class="comment-chip" data-id="${feature.id}" title="View comments">
+            <i class="fa-regular fa-comment"></i> <span class="comment-count" id="cc-${feature.id}">${commentCount}</span>
+          </button>
+          <button class="expand-btn" data-id="${feature.id}" aria-label="Expand feature details">
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <span class="card-date">${date}</span>
+        </div>
+      </div>
+      ${state.isAdmin ? `
+      <div class="admin-controls">
+        <i class="fa-solid fa-crown" style="color:#f5a623;font-size:11px;"></i>
+        <span class="admin-label">Set status:</span>
+        <div class="admin-status-btns">
+          <button class="status-pick ${feature.status === 'planned' ? 'active' : ''}" data-id="${feature.id}" data-status="planned">Planned</button>
+          <button class="status-pick ${feature.status === 'in_progress' ? 'active' : ''}" data-id="${feature.id}" data-status="in_progress">In Progress</button>
+          <button class="status-pick ${feature.status === 'completed' ? 'active' : ''}" data-id="${feature.id}" data-status="completed">Completed</button>
+        </div>
+      </div>` : ''}
+    </div>
+    <div class="feature-details" id="details-${feature.id}">
+      <div class="feature-details-inner">
+        <p class="feature-full-desc">${escHtml(feature.description || 'No extra details provided yet.')}</p>
+        <div class="feature-meta-row">
+          <span class="meta-pill"><i class="fa-regular fa-calendar"></i> Suggested on ${date}</span>
+          <span class="meta-pill" id="meta-votes-${feature.id}"><i class="fa-solid fa-chevron-up"></i> ${feature.votes_count} votes</span>
+          <span class="badge badge--${feature.status}" id="detail-status-${feature.id}">${statusLabel}</span>
+        </div>
+        <div class="inline-comments">
+          <div class="inline-comments-head">
+            <span><i class="fa-solid fa-comments text-accent"></i> Comments</span>
+            <span class="badge-pill" id="inline-count-${feature.id}">${commentCount}</span>
+          </div>
+          <div class="inline-comments-list" id="inline-comments-${feature.id}">
+            <div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>
+          </div>
+          ${state.user ? `
+          <div class="inline-comments-compose">
+            <textarea class="form-input form-textarea" id="inline-comment-input-${feature.id}" placeholder="Write a comment… (Ctrl+Enter to post)" rows="2"></textarea>
+            <button class="btn primary" id="inline-comment-btn-${feature.id}" data-id="${feature.id}" style="padding:10px 16px;white-space:nowrap;">Post</button>
+          </div>` : `
+          <div class="inline-auth-nudge anon-comment-block">
+            <i class="fa-solid fa-lock text-accent"></i>
+            <span>Sign in to comment</span>
+            <button class="btn ghost inline-signin-btn" data-id="${feature.id}" style="padding:6px 14px;font-size:13px;">Sign In</button>
+          </div>`}
+        </div>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('.vote-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    handleVote(feature.id);
+  });
+
+  card.querySelector('.comment-chip').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id, true);
+  });
+
+  card.querySelector('.expand-btn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id);
+  });
+
+  card.querySelector('.card-body').addEventListener('click', (e) => {
+    if (e.target.closest('button, select, textarea, input, a, label')) return;
+    if (isMobileCommentsFallback()) {
+      openComments(feature.id, feature.title);
+      return;
+    }
+    toggleFeatureExpand(feature.id);
+  });
+
+  if (state.isAdmin) {
+    card.querySelectorAll('.status-pick').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        updateFeatureStatus(feature.id, btn.dataset.status);
+      });
+    });
+  }
+
+  card.querySelector(`[data-owner-edit="${feature.id}"]`)?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openSuggestModalForEdit(feature.id);
+  });
+  card.querySelector(`[data-owner-delete="${feature.id}"]`)?.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await deleteOwnFeature(feature.id);
+  });
+
+  card.querySelector('.inline-signin-btn')?.addEventListener('click', () => openAuthModal());
+  card.querySelector(`#inline-comment-btn-${feature.id}`)?.addEventListener('click', () => submitInlineComment(feature.id));
+  card.querySelector(`#inline-comment-input-${feature.id}`)?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitInlineComment(feature.id);
+  });
+
+  if (isExpanded) {
+    requestAnimationFrame(() => {
+      setExpandedState(card, true, false);
+      loadInlineComments(feature.id);
+    });
+  }
+
+  return card;
+}
+
+function buildPendingCard(feature, index) {
+  const card = document.createElement('div');
+  card.className = 'feature-card pending-card reveal';
+  card.dataset.id = feature.id;
+  card.style.animationDelay = `${index * 45}ms`;
+  const submitterName = escHtml(feature.submitter_name || '');
+  const submitterEmail = escHtml(feature.submitter_email || '');
+
+  card.innerHTML = `
+    <div class="card-body" style="grid-column:1 / -1;">
+      <div class="card-footer">
+        <h3 class="card-title">${escHtml(feature.title)}</h3>
+        <span class="badge badge--pending">Pending</span>
+      </div>
+      <p class="card-desc" style="-webkit-line-clamp: unset;">${escHtml(feature.description || '')}</p>
+      ${feature.submitter_name || feature.submitter_email ? `
+      <p class="submitter-info">
+        <i class="fa-solid fa-user"></i>
+        ${submitterName} ${feature.submitter_email ? `&lt;${submitterEmail}&gt;` : ''}
+      </p>` : '<p class="submitter-info">Anonymous submission</p>'}
+      <div class="pending-actions">
+        <button class="btn primary" data-approve="${feature.id}">
+          <i class="fa-solid fa-check"></i> Approve
+        </button>
+        <button class="btn ghost" data-reject="${feature.id}" style="border-color:rgba(255,120,120,0.35);color:#ff9a9a;">
+          <i class="fa-solid fa-xmark"></i> Reject
+        </button>
+      </div>
+    </div>
+  `;
+
+  card.querySelector(`[data-approve="${feature.id}"]`)?.addEventListener('click', () => moderateSuggestion(feature.id, true));
+  card.querySelector(`[data-reject="${feature.id}"]`)?.addEventListener('click', () => moderateSuggestion(feature.id, false));
+  return card;
+}
+
+// ── EXPANDABLE CARDS ──────────────────────────────────────
+function setExpandedState(card, expanded, animate = true) {
+  const details = $('.feature-details', card);
+  if (!details) return;
+
+  card.classList.toggle('expanded', expanded);
+  if (!expanded) {
+    details.style.maxHeight = '0px';
+    return;
+  }
+
+  if (!animate) {
+    details.style.maxHeight = 'none';
+    return;
+  }
+
+  details.style.maxHeight = `${details.scrollHeight}px`;
+}
+
+function refreshExpandedHeight(featureId) {
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card || !card.classList.contains('expanded')) return;
+  const details = $('.feature-details', card);
+  if (!details) return;
+  details.style.maxHeight = `${details.scrollHeight}px`;
+}
+
+function toggleFeatureExpand(featureId, forceOpen = false) {
+  if (isMobileCommentsFallback()) return;
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card) return;
+  const shouldOpen = forceOpen || state.expandedFeatureId !== featureId;
+
+  if (!shouldOpen) {
+    setExpandedState(card, false);
+    state.expandedFeatureId = null;
+    return;
+  }
+
+  if (state.expandedFeatureId && state.expandedFeatureId !== featureId) {
+    const prev = $(`.feature-card[data-id="${state.expandedFeatureId}"]`);
+    if (prev) setExpandedState(prev, false);
+  }
+
+  state.expandedFeatureId = featureId;
+  setExpandedState(card, true);
+  loadInlineComments(featureId);
+}
+
+// ── ADMIN STATUS MANAGEMENT ───────────────────────────────
+function removeFeatureFromCurrentView(featureId) {
+  const idx = state.features.findIndex(f => f.id === featureId);
+  if (idx === -1) return;
+  state.features.splice(idx, 1);
+  if (state.expandedFeatureId === featureId) state.expandedFeatureId = null;
+  const card = $(`.feature-card[data-id="${featureId}"]`);
+  if (!card) {
+    renderFeatures();
+    updateStats();
+    return;
+  }
+  card.classList.add('removing');
+  setTimeout(() => {
+    card.remove();
+    if (!state.features.length) $('#empty-state')?.classList.remove('hidden');
+    updateStats();
+  }, 250);
+}
+
+async function updateFeatureStatus(featureId, newStatus) {
+  if (!state.isAdmin) return;
+  const statusLabels = { planned: 'Planned', in_progress: 'In Progress', completed: 'Completed' };
+
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature) return;
+  const prevStatus = feature.status;
+
+  // Optimistic: update badge immediately
+  const badge = document.querySelector(`.feature-card[data-id="${featureId}"] .badge`);
+  if (badge) {
+    badge.className = `badge badge--${newStatus}`;
+    badge.textContent = statusLabels[newStatus];
+  }
+  const detailBadge = document.querySelector(`#detail-status-${featureId}`);
+  if (detailBadge) {
+    detailBadge.className = `badge badge--${newStatus}`;
+    detailBadge.textContent = statusLabels[newStatus];
+  }
+
+  // Highlight active button
+  document.querySelectorAll(`.status-pick[data-id="${featureId}"]`).forEach(b => {
+    b.classList.toggle('active', b.dataset.status === newStatus);
+  });
+
+  const { error } = await db
+    .from('features')
+    .update({ status: newStatus })
+    .eq('id', featureId);
+
+  if (error) {
+    feature.status = prevStatus;
+    showToast('Failed to update status.', '<i class="fa-solid fa-xmark"></i>');
+    await loadFeatures();
+    return;
+  }
+
+  // Update local state
+  feature.status = newStatus;
+
+  const shouldRemove =
+    (state.currentTab === 'roadmap' && newStatus === 'completed') ||
+    (state.currentTab === 'implemented' && newStatus !== 'completed') ||
+    (state.currentTab === 'roadmap' && state.statusFilter !== 'all' && newStatus !== state.statusFilter);
+
+  if (shouldRemove) {
+    const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+    if (card) {
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.97)';
+      card.style.transition = 'all 0.4s ease';
+      setTimeout(() => {
+        card.remove();
+        state.features = state.features.filter(f => f.id !== featureId);
+        if (!state.features.length) $('#empty-state')?.classList.remove('hidden');
+        updateStats();
+      }, 420);
+    }
+  }
+
+  showToast(`Status updated to ${statusLabels[newStatus]}`, '<i class="fa-solid fa-crown" style="color:#f5a623"></i>');
+  updateStats();
+}
+
+async function moderateSuggestion(featureId, approve) {
+  const { error } = await db.rpc('moderate_suggestion', {
+    p_feature_id: featureId,
+    p_approve: approve
+  });
+  if (error) {
+    showToast('Action failed.', '<i class="fa-solid fa-xmark"></i>');
+    return;
+  }
+  showToast(
+    approve ? 'Suggestion approved and now live!' : 'Suggestion rejected.',
+    approve ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-trash-can"></i>'
+  );
+
+  const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+  if (card) {
+    card.style.opacity = '0';
+    card.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => card.remove(), 320);
+  }
+  state.pendingFeatures = state.pendingFeatures.filter((f) => f.id !== featureId);
+  if (!state.pendingFeatures.length && state.currentTab === 'pending') {
+    $('#empty-state')?.classList.remove('hidden');
+  }
+  if (approve) {
+    await loadFeatures();
+  }
+  updateStats();
+}
+
+async function updateStats() {
+  const { data } = await db.from('features').select('status,votes_count');
+  if (!data) return;
+  const total = data.length;
+  const votes = data.reduce((s, f) => s + Number(f.votes_count || 0), 0);
+  const counts = { planned: 0, in_progress: 0, completed: 0 };
+  data.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
+
+  $('#stat-total') && ($('#stat-total').textContent = total);
+  $('#stat-votes') && ($('#stat-votes').textContent = votes);
+  $('#count-planned') && ($('#count-planned').textContent = counts.planned);
+  $('#count-inprog')  && ($('#count-inprog').textContent  = counts.in_progress);
+  $('#count-done')    && ($('#count-done').textContent    = counts.completed);
+  $('#stat-done')     && ($('#stat-done').textContent     = counts.completed);
+}
+
+// ── VOTING ─────────────────────────────────────────────────
+async function handleVote(featureId) {
+  const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+  const countEl = card?.querySelector('.vote-count');
+  const btn = card?.querySelector('.vote-btn');
+  const votesMeta = $(`#meta-votes-${featureId}`);
+
+  if (state.user) {
+    const alreadyVoted = state.userVotes.has(featureId);
+    const delta = alreadyVoted ? -1 : 1;
+    if (countEl) countEl.textContent = parseInt(countEl.textContent, 10) + delta;
+    if (btn) btn.classList.toggle('voted', !alreadyVoted);
+
+    const { data, error } = await db.rpc('toggle_feature_vote', {
+      p_feature_id: featureId,
+      p_user_id: state.user.id
+    });
+    if (error) { renderFeatures(); return; }
+
+    data.voted ? state.userVotes.add(featureId) : state.userVotes.delete(featureId);
+    if (countEl) countEl.textContent = data.votes_count;
+    if (votesMeta) votesMeta.innerHTML = `<i class="fa-solid fa-chevron-up"></i> ${data.votes_count} votes`;
+    const feat = state.features.find(f => f.id === featureId);
+    if (feat) feat.votes_count = data.votes_count;
+  } else {
+    const alreadyVoted = state.anonVotes.has(featureId);
+    const delta = alreadyVoted ? -1 : 1;
+    if (countEl) countEl.textContent = parseInt(countEl.textContent, 10) + delta;
+    if (btn) btn.classList.toggle('voted', !alreadyVoted);
+
+    const { data, error } = await db.rpc('toggle_anon_vote', {
+      p_feature_id: featureId,
+      p_fingerprint: state.anonFingerprint
+    });
+    if (error) { renderFeatures(); return; }
+
+    data.voted ? state.anonVotes.add(featureId) : state.anonVotes.delete(featureId);
+    saveAnonVotes();
+    if (countEl) countEl.textContent = data.votes_count;
+    if (votesMeta) votesMeta.innerHTML = `<i class="fa-solid fa-chevron-up"></i> ${data.votes_count} votes`;
+    const feat = state.features.find(f => f.id === featureId);
+    if (feat) feat.votes_count = data.votes_count;
+  }
+
+  updateStats();
+}
+
+// ── SUGGEST FEATURE ────────────────────────────────────────
+function bindFAB() {
+  $('#fab-suggest')?.addEventListener('click', openSuggestModal);
+}
+
+function bindSuggestModal() {
+  $('#feature-title')?.addEventListener('input', function() {
+    $('#title-count').textContent = `${this.value.length} / 100`;
+  });
+  $('#feature-desc')?.addEventListener('input', function() {
+    $('#desc-count').textContent = `${this.value.length} / 500`;
+  });
+  $('#submit-feature')?.addEventListener('click', submitFeature);
+}
+
+function openSuggestModal() {
+  state.editingFeatureId = null;
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
+  $('#feature-title').value = '';
+  $('#feature-desc').value  = '';
+  $('#anonName') && ($('#anonName').value = '');
+  $('#anonEmail') && ($('#anonEmail').value = '');
+  $('#title-count').textContent = '0 / 100';
+  $('#desc-count').textContent  = '0 / 500';
+  $('#suggest-error')?.classList.add('hidden');
+  $('#anonFields')?.classList.toggle('hidden', !!state.user);
+  openModal('suggest-modal');
+}
+
+function openSuggestModalForEdit(featureId) {
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature || !state.user || feature.created_by !== state.user.id) return;
+
+  state.editingFeatureId = featureId;
+  $('#feature-title').value = feature.title || '';
+  $('#feature-desc').value = feature.description || '';
+  $('#title-count').textContent = `${(feature.title || '').length} / 100`;
+  $('#desc-count').textContent = `${(feature.description || '').length} / 500`;
+  $('#suggest-error')?.classList.add('hidden');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-regular fa-pen-to-square text-accent"></i> Edit Your Suggestion';
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Save Changes');
+  $('#anonFields')?.classList.add('hidden');
+  openModal('suggest-modal');
+}
+
+async function deleteOwnFeature(featureId) {
+  const feature = state.features.find(f => f.id === featureId);
+  if (!feature || !state.user || feature.created_by !== state.user.id) return;
+  openConfirmModal({
+    title: 'Delete Suggestion',
+    message: 'This will permanently remove your feature suggestion.',
+    confirmText: 'Delete Suggestion',
+    onConfirm: async () => {
+      const { error, count } = await db
+        .from('features')
+        .delete({ count: 'exact' })
+        .eq('id', featureId)
+        .eq('created_by', state.user.id);
+
+      if (error) {
+        showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw error;
+      }
+      if (count === 0) {
+        // Soft delete happened, row not actually removed but state changes
+      }
+
+      if (state.activeFeatureId === featureId) {
+        closeModal('comments-modal');
+        state.activeFeatureId = null;
+      }
+
+      removeFeatureFromCurrentView(featureId);
+      showToast('Suggestion deleted.', '<i class="fa-regular fa-trash-can"></i>');
+    }
+  });
+}
+
+async function submitFeature() {
+  const title   = $('#feature-title')?.value.trim();
+  const desc    = $('#feature-desc')?.value.trim();
+  const errEl   = $('#suggest-error');
+  const wasEditing = Boolean(state.editingFeatureId);
+
+  if (!title || title.length < 3) { showFormError(errEl, 'Title must be at least 3 characters.'); return; }
+  if (!desc)                      { showFormError(errEl, 'Description is required.'); return; }
+
+  const btn    = $('#submit-feature');
+  const txtEl  = btn.querySelector('.btn-text');
+  const spinEl = btn.querySelector('.btn-spinner');
+  btn.disabled = true;
+  txtEl?.classList.add('hidden');
+  spinEl?.classList.remove('hidden');
+
+  let data;
+  let error;
+  if (state.editingFeatureId) {
+    ({ data, error } = await db
+      .from('features')
+      .update({ title, description: desc })
+      .eq('id', state.editingFeatureId)
+      .eq('created_by', state.user.id)
+      .select()
+      .single());
+  } else if (state.user) {
+    ({ data, error } = await db
+      .from('features')
+      .insert({
+        title,
+        description: desc,
+        status: 'planned',
+        created_by: state.user.id,
+        is_approved: true,
+        is_anonymous: false,
+      })
+      .select()
+      .single());
+  } else {
+    const name = $('#anonName')?.value.trim() || null;
+    const email = $('#anonEmail')?.value.trim() || null;
+    ({ error } = await db.rpc('submit_anon_suggestion', {
+      p_title: title,
+      p_description: desc,
+      p_submitter_name: name,
+      p_submitter_email: email
+    }));
+  }
+
+  btn.disabled = false;
+  txtEl?.classList.remove('hidden');
+  spinEl?.classList.add('hidden');
+
+  if (error) {
+    showFormError(errEl, 'Submission failed. Please try again.');
+    return;
+  }
+
+  $('#feature-title').value = '';
+  $('#feature-desc').value  = '';
+  $('#title-count').textContent = '0 / 100';
+  $('#desc-count').textContent  = '0 / 500';
+  errEl?.classList.add('hidden');
+  state.editingFeatureId = null;
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
+
+  closeModal('suggest-modal');
+  if (!state.user && !wasEditing) {
+    showToast('Suggestion submitted! It will appear after review.', '<i class="fa-solid fa-clock"></i>');
+  } else {
+    showToast(wasEditing ? 'Suggestion updated.' : 'Feature added to the roadmap!', '<i class="fa-solid fa-lightbulb text-accent"></i>');
+  }
+
+  if (data && state.user) {
+    if (state.features.some(f => f.id === data.id)) {
+      const idx = state.features.findIndex(f => f.id === data.id);
+      state.features[idx] = { ...state.features[idx], ...data };
+    } else if (state.currentTab === 'roadmap') {
+      state.features.unshift({ ...data, feature_comments: [{ count: 0 }] });
+    }
+    renderFeatures();
+    updateStats();
+  }
+}
+
+// ── COMMENTS ───────────────────────────────────────────────
+function bindCommentsModal() {
+  $('#submit-comment')?.addEventListener('click', submitComment);
+  $('#comment-input')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitComment();
+  });
+}
+
+function bindCommentActions() {
+  document.addEventListener('click', async (e) => {
+    const deleteBtn = e.target.closest('.comment-delete-btn');
+    if (deleteBtn) {
+      await deleteOwnComment(deleteBtn.dataset.feature, deleteBtn.dataset.comment);
+    }
+  });
+}
+
+async function deleteOwnComment(featureId, commentId) {
+  if (!state.user || !featureId || !commentId) return;
+  const comments = state.commentsByFeature[featureId] || [];
+  const comment = comments.find(c => c.id === commentId && c.user_id === state.user.id);
+  if (!comment) {
+    showToast('You can only delete your own comment.', '<i class="fa-solid fa-lock"></i>');
+    return;
+  }
+  openConfirmModal({
+    title: 'Delete Comment',
+    message: 'This comment will be permanently deleted.',
+    confirmText: 'Delete Comment',
+    onConfirm: async () => {
+      const { error, count } = await db
+        .from('feature_comments')
+        .delete({ count: 'exact' })
+        .eq('id', commentId)
+        .eq('user_id', state.user.id);
+
+      if (error) {
+        showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw error;
+      }
+      if (count === 0) {
+        // Soft delete happened, row not actually removed but state changes
+      }
+
+      state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
+      refreshCommentViews(featureId);
+      showToast('Comment deleted.', '<i class="fa-regular fa-trash-can"></i>');
+    }
+  });
+}
+
+function bindConfirmModal() {
+  $('#confirm-modal-btn')?.addEventListener('click', async () => {
+    if (!state.pendingConfirmAction) return;
+    const btn = $('#confirm-modal-btn');
+    if (btn.dataset.processing === '1') return;
+    const txt = $('#confirm-modal-btn-text');
+    const err = $('#confirm-modal-error');
+    btn.disabled = true;
+    btn.dataset.processing = '1';
+    if (txt) txt.textContent = 'Processing...';
+    err?.classList.add('hidden');
+
+    try {
+      await Promise.resolve(state.pendingConfirmAction());
+      state.pendingConfirmAction = null;
+      btn.dataset.processing = '0';
+      btn.disabled = false;
+      if (txt) txt.textContent = state.pendingConfirmLabel || 'Delete';
+      closeModal('confirm-modal');
+    } catch (e) {
+      if (err) {
+        err.textContent = e?.message || 'Failed to complete action.';
+        err.classList.remove('hidden');
+      }
+    } finally {
+      if (btn.dataset.processing !== '0') {
+        btn.disabled = false;
+        btn.dataset.processing = '0';
+        if (txt) txt.textContent = state.pendingConfirmLabel || 'Delete';
+      }
+    }
+  });
+}
+
+function openConfirmModal({ title, message, confirmText = 'Delete', onConfirm }) {
+  state.pendingConfirmAction = onConfirm;
+  state.pendingConfirmLabel = confirmText;
+  const titleEl = $('#confirm-modal-title');
+  const msgEl = $('#confirm-modal-message');
+  const btn = $('#confirm-modal-btn');
+  const txt = $('#confirm-modal-btn-text');
+  const err = $('#confirm-modal-error');
+  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#ff7878;"></i> ${escHtml(title || 'Confirm Action')}`;
+  if (msgEl) msgEl.textContent = message || 'Are you sure you want to continue?';
+  if (txt) txt.textContent = confirmText;
+  if (btn) {
+    btn.disabled = false;
+    btn.dataset.processing = '0';
+  }
+  err?.classList.add('hidden');
+  openModal('confirm-modal');
+}
+
+function refreshCommentViews(featureId) {
+  const comments = state.commentsByFeature[featureId] || [];
+  const inlineList = $(`#inline-comments-${featureId}`);
+  if (inlineList) {
+    inlineList.innerHTML = renderCommentCollection(comments, featureId);
+    inlineList.scrollTop = inlineList.scrollHeight;
+  }
+
+  if (state.activeFeatureId === featureId) {
+    const modalList = $('#comments-list');
+    if (modalList) {
+      modalList.innerHTML = renderCommentCollection(comments, featureId);
+      modalList.scrollTop = modalList.scrollHeight;
+    }
+  }
+
+  updateCommentCountUI(featureId, comments.length);
+  refreshExpandedHeight(featureId);
+}
+
+async function fetchComments(featureId, force = false) {
+  if (!force && Array.isArray(state.commentsByFeature[featureId])) {
+    return { comments: state.commentsByFeature[featureId], error: null };
+  }
+
+  const { data, error } = await db
+    .from('feature_comments')
+    .select('id, content, created_at, user_id')
+    .eq('feature_id', featureId)
+    .order('created_at', { ascending: true });
+
+  if (!error) state.commentsByFeature[featureId] = data || [];
+  return { comments: data || [], error };
+}
+
+function renderCommentCollection(comments = [], featureId) {
+  if (!comments.length) {
+    return '<div class="comments-empty"><i class="fa-regular fa-comment-dots"></i><br>No comments yet — be the first!</div>';
+  }
+  return comments.map(c => buildCommentEl(c, featureId).outerHTML).join('');
+}
+
+function updateCommentCountUI(featureId, nextCount) {
+  const count = Number(nextCount || 0);
+  const chip = $(`#cc-${featureId}`);
+  if (chip) chip.textContent = count;
+  const inlineBadge = $(`#inline-count-${featureId}`);
+  if (inlineBadge) inlineBadge.textContent = count;
+  const modalBadge = $('#comments-count-badge');
+  if (state.activeFeatureId === featureId && modalBadge) modalBadge.textContent = count;
+
+  const feature = state.features.find(f => f.id === featureId);
+  if (feature) {
+    if (!feature.feature_comments?.[0]) feature.feature_comments = [{ count: 0 }];
+    feature.feature_comments[0].count = count;
+  }
+}
+
+async function loadInlineComments(featureId) {
+  const list = $(`#inline-comments-${featureId}`);
+  if (!list) return;
+
+  list.innerHTML = '<div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>';
+  const { comments, error } = await fetchComments(featureId);
+  if (error) {
+    list.innerHTML = '<div class="comments-empty">Failed to load comments.</div>';
+    return;
+  }
+
+  list.innerHTML = renderCommentCollection(comments, featureId);
+  updateCommentCountUI(featureId, comments.length);
+  list.scrollTop = list.scrollHeight;
+  refreshExpandedHeight(featureId);
+}
+
+async function openComments(featureId, title) {
+  state.activeFeatureId = featureId;
+  const titleEl = $('#comments-feature-title');
+  if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-comments text-accent"></i> ${escHtml(title)}`;
+
+  openModal('comments-modal');
+
+  const compose = $('#comments-compose');
+  const nudge   = $('#comments-auth-nudge');
+
+  if (state.user) {
+    compose?.classList.remove('hidden');
+    nudge?.classList.add('hidden');
+  } else {
+    compose?.classList.add('hidden');
+    nudge?.classList.remove('hidden');
+    // Re-bind sign-in inside nudge
+    const siBtn = $('#comments-sign-in-btn');
+    if (siBtn) {
+      siBtn.onclick = () => { closeModal('comments-modal'); openAuthModal(); };
+    }
+  }
+
+  await loadComments(featureId);
+}
+
+async function loadComments(featureId) {
+  const list = $('#comments-list');
+  list.innerHTML = '<div class="comments-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading comments…</div>';
+  const { comments, error } = await fetchComments(featureId);
+  if (error) {
+    list.innerHTML = '<div class="comments-empty">Failed to load comments.</div>';
+    return;
+  }
+
+  list.innerHTML = renderCommentCollection(comments, featureId);
+  updateCommentCountUI(featureId, comments.length);
+  list.scrollTop = list.scrollHeight;
+}
+
+function buildCommentEl(comment, featureId) {
+  const el      = document.createElement('div');
+  el.className  = 'comment-item';
+  const uid     = comment.user_id?.slice(0, 6) || '??????';
+  const initial = uid[0]?.toUpperCase() || 'U';
+  const date    = new Date(comment.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const canManage = state.user && comment.user_id === state.user.id;
+
+  el.innerHTML = `
+    <div class="comment-avatar">${initial}</div>
+    <div class="comment-body">
+      <div class="comment-meta">
+        <span class="comment-author">User #${uid}</span>
+        <span>${date}</span>
+        ${canManage ? `
+        <span class="comment-actions">
+          <button class="comment-action-btn comment-delete-btn" data-comment="${comment.id}" data-feature="${featureId}" title="Delete comment"><i class="fa-regular fa-trash-can"></i></button>
+        </span>` : ''}
+      </div>
+      <p class="comment-text">${escHtml(comment.content)}</p>
+    </div>
+  `;
+  return el;
+}
+
+async function submitComment() {
+  if (!state.user || !state.activeFeatureId) return;
+  const input   = $('#comment-input');
+  const content = input?.value.trim();
+  if (!content) return;
+
+  const btn     = $('#submit-comment');
+  btn.disabled  = true;
+  btn.textContent = '…';
+
+  const { data, error } = await db.from('feature_comments').insert({
+    feature_id: state.activeFeatureId,
+    user_id: state.user.id,
+    content,
+  }).select().single();
+
+  btn.disabled    = false;
+  btn.textContent = 'Post';
+
+  if (error) {
+    showToast('Failed to post comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  input.value = '';
+  const cached = state.commentsByFeature[state.activeFeatureId] || [];
+  cached.push(data);
+  state.commentsByFeature[state.activeFeatureId] = cached;
+  await loadComments(state.activeFeatureId);
+  const inlineList = $(`#inline-comments-${state.activeFeatureId}`);
+  if (inlineList) inlineList.innerHTML = renderCommentCollection(cached, state.activeFeatureId);
+  updateCommentCountUI(state.activeFeatureId, cached.length);
+  showToast('Comment posted!', '<i class="fa-solid fa-check"></i>');
+}
+
+async function submitInlineComment(featureId) {
+  if (!state.user) {
+    openAuthModal();
+    return;
+  }
+  const input = $(`#inline-comment-input-${featureId}`);
+  const btn = $(`#inline-comment-btn-${featureId}`);
+  const content = input?.value.trim();
+  if (!content || !btn) return;
+
+  btn.disabled = true;
+  btn.textContent = '…';
+
+  const { data, error } = await db.from('feature_comments').insert({
+    feature_id: featureId,
+    user_id: state.user.id,
+    content,
+  }).select().single();
+
+  btn.disabled = false;
+  btn.textContent = 'Post';
+
+  if (error) {
+    showToast('Failed to post comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
+    return;
+  }
+
+  input.value = '';
+  const cached = state.commentsByFeature[featureId] || [];
+  cached.push(data);
+  state.commentsByFeature[featureId] = cached;
+
+  const list = $(`#inline-comments-${featureId}`);
+  if (list) {
+    list.innerHTML = renderCommentCollection(cached, featureId);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  if (state.activeFeatureId === featureId) {
+    const modalList = $('#comments-list');
+    if (modalList && !$('#comments-modal')?.classList.contains('hidden')) {
+      modalList.innerHTML = renderCommentCollection(cached, featureId);
+      modalList.scrollTop = modalList.scrollHeight;
+    }
+  }
+
+  updateCommentCountUI(featureId, cached.length);
+  refreshExpandedHeight(featureId);
+  showToast('Comment posted!', '<i class="fa-solid fa-check"></i>');
+}
+
+// ── TABS & FILTERS ─────────────────────────────────────────
+function bindTabs() {
+  $$('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.dataset.tab === state.currentTab) return;
+      $$('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.currentTab = btn.dataset.tab;
+
+      const filterBar = $('#status-filter');
+      if (filterBar) {
+        filterBar.style.display = state.currentTab === 'roadmap' ? 'flex' : 'none';
+      }
+
+      if (state.currentTab !== 'roadmap') {
+        state.statusFilter = 'all';
+        $$('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
+      }
+      loadFeatures();
+    });
+  });
+}
+
+function bindFilters() {
+  $$('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.dataset.filter === state.statusFilter) return;
+      $$('.chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      state.statusFilter = chip.dataset.filter;
+      loadFeatures();
+    });
+  });
+}
+
+// ── MODAL UTILITIES ────────────────────────────────────────
+function openModal(id) {
+  const modal = $(`#${id}`);
+  if (!modal) return;
+  modal.classList.remove('hidden', 'is-closing');
+  requestAnimationFrame(() => modal.classList.add('is-open'));
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  const modal = $(`#${id}`);
+  if (!modal || modal.classList.contains('hidden')) return;
+  if (id === 'confirm-modal') {
+    const confirmBtn = $('#confirm-modal-btn');
+    if (confirmBtn?.dataset.processing === '1') return;
+  }
+  if (id === 'confirm-modal') state.pendingConfirmAction = null;
+  modal.classList.remove('is-open');
+  modal.classList.add('is-closing');
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    modal.classList.remove('is-closing');
+    if (!$$('.modal-overlay.is-open').length) {
+      document.body.style.overflow = '';
+    }
+  }, 240);
+}
+
+function bindModalClosers() {
+  $$('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.dataset.close));
+  });
+  $$('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal(overlay.id);
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      $$('.modal-overlay:not(.hidden)').forEach(o => closeModal(o.id));
+    }
+  });
+}
+
+// ── SKELETON ───────────────────────────────────────────────
+function showSkeleton(visible) {
+  const skel = $('#skeleton-wrap');
+  if (!skel) return;
+  if (visible) {
+    skel.style.display = 'flex';
+    skel.style.flexDirection = 'column';
+    skel.style.gap = '10px';
+  } else {
+    skel.style.display = 'none';
+  }
+  $$('.feature-card').forEach(c => {
+    if (visible) c.remove();
+  });
+}
+
+// ── TOAST ──────────────────────────────────────────────────
+let toastTimer;
+function showToast(message, iconHtml = '<i class="fa-solid fa-check text-accent"></i>') {
+  const toast = $('#toast');
+  const iconEl = $('#toast-icon');
+  const msgEl  = $('#toast-msg');
+  if (!toast) return;
+
+  iconEl.innerHTML = iconHtml;
+  msgEl.textContent = message;
+  toast.classList.remove('hidden');
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add('hidden'), 3200);
+}
+
+// ── FORM ERROR ─────────────────────────────────────────────
+function showFormError(el, msg) {
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+// ── BOOT ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

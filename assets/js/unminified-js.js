@@ -18,18 +18,26 @@ async function trackVisit() {
 window.addEventListener("load", trackVisit);
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Attach signature scroll top listener early
   const setupSign = () => {
     const sign = document.querySelector(".nexcore-sign") || document.getElementById("nexcoreSign");
     if (sign) {
-      sign.style.cursor = "pointer";
-      sign.onclick = (e) => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        // Fallback for immediate jump
+      sign.style.cursor = "default";
+      sign.style.transition = "opacity 0.3s ease";
+      
+      sign.addEventListener("click", (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+        
+        // Fallback for browsers that don't support smooth scroll or if interrupted
         setTimeout(() => {
-          if (window.scrollY > 0) window.scrollTo(0, 0);
-        }, 500);
-      };
+          if (window.scrollY > 0) {
+            window.scrollTo(0, 0);
+          }
+        }, 600);
+      });
     }
   };
   setupSign();
