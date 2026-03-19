@@ -247,10 +247,6 @@ main {
   border-radius: 10px;
   padding: 4px;
   gap: 4px;
-  text-align: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  overflow: hidden;
 }
 
 .tab-btn {
@@ -267,8 +263,7 @@ main {
   align-items: center;
   gap: 6px;
   letter-spacing: 0.3px;
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
+
 }
 
 .tab-btn.active {
@@ -2603,31 +2598,23 @@ function bindEditCommentModal() {
         return;
       }
 
-      const { data, error } = await db
+      const { error } = await db
         .from('feature_comments')
         .update({ content: trimmed })
         .eq('id', ref.commentId)
-        .eq('user_id', state.user.id)
-        .select('id, content, created_at, user_id')
-        .maybeSingle();
+        .eq('user_id', state.user.id);
 
       if (error) {
         showFormError(errEl, error?.message || 'Failed to update comment. Please try again.');
         return;
       }
-      if (!data) {
-        showFormError(errEl, 'Edit was not saved to the server. Please sign in again and retry.');
-        return;
-      }
 
       const comments = state.commentsByFeature[ref.featureId] || [];
       const idx = comments.findIndex(c => c.id === ref.commentId);
-      if (idx !== -1) comments[idx] = { ...comments[idx], ...data };
+      if (idx !== -1) comments[idx] = { ...comments[idx], content: trimmed };
       state.commentsByFeature[ref.featureId] = comments;
       state.editingCommentRef = null;
       closeModal('edit-comment-modal');
-      refreshCommentViews(ref.featureId);
-      await fetchComments(ref.featureId, true);
       refreshCommentViews(ref.featureId);
       showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
     } catch (e) {
