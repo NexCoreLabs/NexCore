@@ -764,9 +764,9 @@
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
-                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.5.0</strong></span>
-                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>14 Mar 2026</strong></span>
-                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>10</strong> releases</span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.6.0</strong></span>
+                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>19 Mar 2026</strong></span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>11</strong> releases</span>
             </div>
         </div>
 
@@ -802,6 +802,7 @@
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
                 <div class="rl-nav-panel">
+                    <a class="rl-nav-item"href="#v260" data-version="v2.6.0"><span class="rl-dot-min"></span>v2.6.0</a>
                     <a class="rl-nav-item"href="#v250" data-version="v2.5.0"><span class="rl-dot-min"></span>v2.5.0</a>
                     <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
                     <a class="rl-nav-item"href="#v240" data-version="v2.4.0"><span class="rl-dot-min"></span>v2.4.0</a>
@@ -818,14 +819,88 @@
             <!-- Timeline -->
             <div class="rl-tl" id="rlTl">
 
+                <!-- v2.6.0 -->
+                <div class="rl-card open" id="v260" data-version="v2.6.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.6.0</span>
+                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>19 Mar 2026</div>
+                            <div class="rl-summary">Feature voting roadmap launch, guest suggestion flow, and global UX refinements across core pages.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u260">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d260">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u260">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Launched the new <strong>Feature Requests &amp; Roadmap</strong> board (<span class="ct">roadmap.html</span>) to suggest ideas and track implementation progress.</li>
+                                    <li>Added <strong>anonymous suggestion submission</strong> and <strong>guest voting</strong> flows.</li>
+                                    <li>Introduced admin review workflows for pending suggestions and inline comment moderation.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Global styling refactor with new <span class="ct">assets/css/style.css</span> and cleaner nav links across core pages.</li>
+                                    <li>Smoother expand/collapse interactions in FAQ and Releases sections.</li>
+                                    <li>Modal interactions refreshed with blur effects and more polished transitions.</li>
+                                    <li>Navigation menus upgraded with Font Awesome visual cues.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Fixed suggestion deletion so it is applied in Supabase (no more delete-only-in-UI behavior after refresh).</li>
+                                    <li>Fixed unstable delete flows that could get stuck, with confirmation modals now closing automatically after successful actions.</li>
+                                    <li>Resolved comment-edit save issues by removing the unstable edit-comment path and keeping the comment flow stable.</li>
+                                    <li>Authentication flow simplified to a dedicated login-only page.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d260">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Integrated Vercel Speed Insights and standardized analytics placement across HTML pages.</li>
+                                    <li>Initialized release history data in <span class="ct">assets/data/releases.json</span>.</li>
+                                    <li>Updated <span class="ct">service-worker.js</span> cache strategy and precache manifest to avoid stale or missing asset cache entries.</li>
+                                    <li>Added <span class="ct">vercel</span> package dependency and consolidated UI scripting in core pages.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Accessibility polish: added PayPal link titles and normalized analytics snippet placement.</li>
+                                    <li>Cleaned up blank-line noise in account settings files to keep diffs focused.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <!-- v2.5.0 -->
-                <div class="rl-card open" id="v250" data-version="v2.5.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-card" id="v250" data-version="v2.5.0" data-tags="feature,improvement,developer,fix">
                 <div class="rl-box">
                     <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
                         <div class="rl-head-body">
                             <div class="rl-head-top">
                                 <span class="rl-ver">v2.5.0</span>
-                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
                             </div>
                             <div class="rl-date"><i class="fa-regular fa-calendar"></i>14 Mar 2026</div>
                             <div class="rl-summary">Major UI refresh, releases hub, and performance polish across the platform.</div>
@@ -1442,7 +1517,7 @@
     <div class="rl-changelog-modal" id="rlChangelogModal" aria-hidden="true">
         <div class="rl-changelog-panel" role="dialog" aria-modal="true" aria-labelledby="rlChangelogTitle">
             <div class="rl-changelog-head">
-                <h2 class="rl-changelog-title" id="rlChangelogTitle"><i class="fa-solid fa-file-lines"></i> Changelog</h2>
+                <h2 class="rl-changelog-title" id="rlChangelogTitle"><i class="fa-solid fa-file-lines"></i><a href="https://github.com/NexCoreLabs/NexCore/blob/main/CHANGELOG.md" target="_blank" rel="noopener"> CHANGELOG.md</a></h2>
                 <button class="rl-changelog-close" id="rlChangelogClose" aria-label="Close changelog"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="rl-changelog-body" id="rlChangelogBody">Loading changelog...</div>
@@ -1691,6 +1766,7 @@
         (function () {
             const KEY = 'nexcore_rl_visit';
             const DATES = {
+                'v2.6.0': new Date('2026-03-19'),
                 'v2.5.0': new Date('2026-03-14'),
                 'v2.4.1': new Date('2026-03-07'),
                 'v2.4.0': new Date('2026-03-07'),
