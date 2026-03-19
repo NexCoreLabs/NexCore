@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
           <!-- Cookie Consent Manager v2 -->
 
         <link rel="stylesheet" href="assets/css/cookies.css">
@@ -1135,6 +1134,64 @@ main {
   color: var(--muted);
 }
 
+/* Option D additions */
+.anon-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(110,231,243,0.06);
+  border: 1px solid rgba(110,231,243,0.18);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #acd9e5;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+.anon-notice i { color: #6ee7f3; flex-shrink: 0; margin-top: 2px; }
+
+.anon-comment-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px;
+  font-size: 13.5px;
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+.anon-comment-block i { color: #6ee7f3; }
+
+.badge--pending {
+  background: rgba(255,204,102,0.12);
+  border: 1px solid rgba(255,204,102,0.35);
+  color: #ffcc66;
+}
+
+.submitter-info {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 6px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pending-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.guest-vote-label {
+  font-size: 10px;
+  color: var(--muted);
+  opacity: 0.6;
+  letter-spacing: 0.3px;
+}
+
 /* ─── TOAST ─── */
 .toast {
   position: fixed;
@@ -1305,6 +1362,7 @@ main {
         <div class="tabs-group">
           <button class="tab-btn active" data-tab="roadmap"><i class="fa-solid fa-map fa-fw"></i> Roadmap</button>
           <button class="tab-btn" data-tab="implemented"><i class="fa-solid fa-circle-check fa-fw"></i> Implemented</button>
+          <button class="tab-btn hidden" id="pending-tab-btn" data-tab="pending"><i class="fa-solid fa-hourglass-half fa-fw"></i> Pending</button>
         </div>
         <div class="filter-chips" id="status-filter">
           <button class="chip active" data-filter="all">All</button>
@@ -1378,6 +1436,14 @@ main {
           <textarea class="form-input form-textarea" id="feature-desc" placeholder="Describe why this feature matters…" rows="4" maxlength="500"></textarea>
           <span class="char-count" id="desc-count">0 / 500</span>
         </label>
+        <div id="anonFields" class="hidden">
+          <p class="anon-notice">
+            <i class="fa-solid fa-circle-info"></i>
+            You're suggesting anonymously. Your suggestion will be reviewed before appearing publicly. Optionally add your details below.
+          </p>
+          <input class="form-input" type="text" id="anonName" placeholder="Your name (optional)" maxlength="80" />
+          <input class="form-input" type="email" id="anonEmail" placeholder="Your email (optional)" maxlength="120" style="margin-top:10px;" />
+        </div>
         <div class="form-error hidden" id="suggest-error"></div>
         <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
           <button class="btn ghost" data-close="suggest-modal">Cancel</button>
@@ -1402,9 +1468,9 @@ main {
         <textarea class="form-input form-textarea" id="comment-input" placeholder="Write a comment… (Ctrl+Enter to post)" rows="2"></textarea>
         <button class="btn primary" style="padding:10px 20px;white-space:nowrap;" id="submit-comment">Post</button>
       </div>
-      <div class="comments-auth-nudge hidden" id="comments-auth-nudge">
+      <div class="comments-auth-nudge anon-comment-block hidden" id="comments-auth-nudge">
         <i class="fa-solid fa-lock text-accent"></i>
-        <span>Sign in to leave a comment</span>
+        <span>Sign in with your SQU account to leave a comment.</span>
         <button class="btn ghost" style="padding:6px 14px;font-size:13px;" id="comments-sign-in-btn">Sign In</button>
       </div>
     </div>
@@ -1500,13 +1566,27 @@ main {
 
   <script src="version.js"></script>
   <script>
+function getAnonFingerprint() {
+  const KEY = 'nexcore_anon_fp';
+  let fp = localStorage.getItem(KEY);
+  if (!fp || fp.length < 8) {
+    fp = Array.from(crypto.getRandomValues(new Uint8Array(16)))
+      .map((b) => b.toString(16).padStart(2, '0')).join('');
+    localStorage.setItem(KEY, fp);
+  }
+  return fp;
+}
+
 const state = {
   currentTab:      'roadmap',
   statusFilter:    'all',
   user:            null,
   isAdmin:         false,
   features:        [],
+  pendingFeatures: [],
   userVotes:       new Set(),
+  anonFingerprint: getAnonFingerprint(),
+  anonVotes:       new Set(),
   commentsByFeature: {},
   activeFeatureId: null,
   expandedFeatureId: null,
@@ -1582,7 +1662,7 @@ async function init() {
       state.isAdmin = false;
     }
     renderAuthNav();
-    renderFeatures();
+    await loadFeatures();
   });
 
   // Bind everything
@@ -1605,6 +1685,7 @@ async function init() {
   });
 
   // Load data
+  loadAnonVotes();
   await loadFeatures();
 }
 
@@ -1648,10 +1729,18 @@ function bindNavDropdown() {
 // ── AUTH NAV ───────────────────────────────────────────────
 function renderAuthNav() {
   const suggestBtn = $('#fab-suggest');
+  const pendingTabBtn = $('#pending-tab-btn');
   if (!suggestBtn) return;
   suggestBtn.title = state.user
     ? 'Suggest a feature'
-    : 'Sign in to suggest a feature';
+    : 'Suggest anonymously';
+  if (pendingTabBtn) {
+    pendingTabBtn.classList.toggle('hidden', !state.isAdmin);
+    if (!state.isAdmin && state.currentTab === 'pending') {
+      state.currentTab = 'roadmap';
+      $$('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === 'roadmap'));
+    }
+  }
 }
 
 async function handleSignOut() {
@@ -1694,6 +1783,15 @@ function bindAuthModal() {
 async function loadFeatures() {
   showSkeleton(true);
 
+  if (state.currentTab === 'pending') {
+    showSkeleton(false);
+    state.pendingFeatures = await loadPendingFeatures();
+    state.features = [];
+    renderFeatures();
+    updateStats();
+    return;
+  }
+
   let query = db.from('features').select(`
     id, title, description, status, votes_count, created_at, created_by,
     feature_comments(count)
@@ -1727,6 +1825,16 @@ async function loadFeatures() {
   renderFeatures();
 }
 
+async function loadPendingFeatures() {
+  if (!state.isAdmin) return [];
+  const { data, error } = await db.rpc('get_pending_suggestions');
+  if (error) {
+    console.warn('Pending suggestions fetch failed:', error.message);
+    return [];
+  }
+  return data || [];
+}
+
 async function loadUserVotes() {
   if (!state.user) return;
   const { data } = await db
@@ -1736,11 +1844,35 @@ async function loadUserVotes() {
   state.userVotes = new Set((data || []).map(v => v.feature_id));
 }
 
+function loadAnonVotes() {
+  const raw = localStorage.getItem('nexcore_anon_votes');
+  state.anonVotes = new Set(raw ? JSON.parse(raw) : []);
+}
+
+function saveAnonVotes() {
+  localStorage.setItem('nexcore_anon_votes', JSON.stringify([...state.anonVotes]));
+}
+
 function renderFeatures() {
   const list  = $('#features-list');
   const empty = $('#empty-state');
   // Clear everything except skeleton (already hidden)
   $$('.feature-card', list).forEach(c => c.remove());
+
+  if (state.currentTab === 'pending') {
+    const pending = state.pendingFeatures || [];
+    if (!pending.length) {
+      empty.classList.remove('hidden');
+      return;
+    }
+    empty.classList.add('hidden');
+    pending.forEach((feature, i) => {
+      const card = buildPendingCard(feature, i);
+      list.appendChild(card);
+    });
+    bindReveal();
+    return;
+  }
 
   if (state.expandedFeatureId && !state.features.some(f => f.id === state.expandedFeatureId)) {
     state.expandedFeatureId = null;
@@ -1762,7 +1894,7 @@ function renderFeatures() {
 }
 
 function buildCard(feature, index) {
-  const voted        = state.userVotes.has(feature.id);
+  const voted        = state.user ? state.userVotes.has(feature.id) : state.anonVotes.has(feature.id);
   const commentCount = Number(feature.feature_comments?.[0]?.count ?? 0);
   const statusLabel  = normalizeStatusLabel(feature.status);
   const date         = new Date(feature.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1780,11 +1912,12 @@ function buildCard(feature, index) {
         class="vote-btn${voted ? ' voted' : ''}"
         data-id="${feature.id}"
         aria-label="${voted ? 'Remove vote' : 'Upvote this feature'}"
-        ${!state.user ? 'disabled title="Sign in to vote"' : ''}
+        title="${state.user ? (voted ? 'Remove vote' : 'Upvote this feature') : 'Vote as guest'}"
       >
         <i class="fa-solid fa-chevron-up"></i>
       </button>
       <span class="vote-count" id="vc-${feature.id}">${feature.votes_count}</span>
+      ${!state.user ? '<span class="guest-vote-label">guest vote</span>' : ''}
     </div>
     <div class="card-body">
       <h3 class="card-title">${escHtml(feature.title)}</h3>
@@ -1844,7 +1977,7 @@ function buildCard(feature, index) {
             <textarea class="form-input form-textarea" id="inline-comment-input-${feature.id}" placeholder="Write a comment… (Ctrl+Enter to post)" rows="2"></textarea>
             <button class="btn primary" id="inline-comment-btn-${feature.id}" data-id="${feature.id}" style="padding:10px 16px;white-space:nowrap;">Post</button>
           </div>` : `
-          <div class="inline-auth-nudge">
+          <div class="inline-auth-nudge anon-comment-block">
             <i class="fa-solid fa-lock text-accent"></i>
             <span>Sign in to comment</span>
             <button class="btn ghost inline-signin-btn" data-id="${feature.id}" style="padding:6px 14px;font-size:13px;">Sign In</button>
@@ -1917,6 +2050,42 @@ function buildCard(feature, index) {
     });
   }
 
+  return card;
+}
+
+function buildPendingCard(feature, index) {
+  const card = document.createElement('div');
+  card.className = 'feature-card pending-card reveal';
+  card.dataset.id = feature.id;
+  card.style.animationDelay = `${index * 45}ms`;
+  const submitterName = escHtml(feature.submitter_name || '');
+  const submitterEmail = escHtml(feature.submitter_email || '');
+
+  card.innerHTML = `
+    <div class="card-body" style="grid-column:1 / -1;">
+      <div class="card-footer">
+        <h3 class="card-title">${escHtml(feature.title)}</h3>
+        <span class="badge badge--pending">Pending</span>
+      </div>
+      <p class="card-desc" style="-webkit-line-clamp: unset;">${escHtml(feature.description || '')}</p>
+      ${feature.submitter_name || feature.submitter_email ? `
+      <p class="submitter-info">
+        <i class="fa-solid fa-user"></i>
+        ${submitterName} ${feature.submitter_email ? `&lt;${submitterEmail}&gt;` : ''}
+      </p>` : '<p class="submitter-info">Anonymous submission</p>'}
+      <div class="pending-actions">
+        <button class="btn primary" data-approve="${feature.id}">
+          <i class="fa-solid fa-check"></i> Approve
+        </button>
+        <button class="btn ghost" data-reject="${feature.id}" style="border-color:rgba(255,120,120,0.35);color:#ff9a9a;">
+          <i class="fa-solid fa-xmark"></i> Reject
+        </button>
+      </div>
+    </div>
+  `;
+
+  card.querySelector(`[data-approve="${feature.id}"]`)?.addEventListener('click', () => moderateSuggestion(feature.id, true));
+  card.querySelector(`[data-reject="${feature.id}"]`)?.addEventListener('click', () => moderateSuggestion(feature.id, false));
   return card;
 }
 
@@ -2053,82 +2222,102 @@ async function updateFeatureStatus(featureId, newStatus) {
   updateStats();
 }
 
+async function moderateSuggestion(featureId, approve) {
+  const { error } = await db.rpc('moderate_suggestion', {
+    p_feature_id: featureId,
+    p_approve: approve
+  });
+  if (error) {
+    showToast('Action failed.', '<i class="fa-solid fa-xmark"></i>');
+    return;
+  }
+  showToast(
+    approve ? 'Suggestion approved and now live!' : 'Suggestion rejected.',
+    approve ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-trash-can"></i>'
+  );
+
+  const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+  if (card) {
+    card.style.opacity = '0';
+    card.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => card.remove(), 320);
+  }
+  state.pendingFeatures = state.pendingFeatures.filter((f) => f.id !== featureId);
+  if (!state.pendingFeatures.length && state.currentTab === 'pending') {
+    $('#empty-state')?.classList.remove('hidden');
+  }
+  if (approve) {
+    await loadFeatures();
+  }
+  updateStats();
+}
+
 async function updateStats() {
-  const total = state.features.length;
-  const votes = state.features.reduce((s, f) => s + f.votes_count, 0);
+  const { data } = await db.from('features').select('status,votes_count');
+  if (!data) return;
+  const total = data.length;
+  const votes = data.reduce((s, f) => s + Number(f.votes_count || 0), 0);
+  const counts = { planned: 0, in_progress: 0, completed: 0 };
+  data.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
 
   $('#stat-total') && ($('#stat-total').textContent = total);
   $('#stat-votes') && ($('#stat-votes').textContent = votes);
-
-  // Full counts for hero card
-  const { data } = await db.from('features').select('status');
-  if (data) {
-    const counts = { planned: 0, in_progress: 0, completed: 0 };
-    data.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
-    $('#count-planned') && ($('#count-planned').textContent = counts.planned);
-    $('#count-inprog')  && ($('#count-inprog').textContent  = counts.in_progress);
-    $('#count-done')    && ($('#count-done').textContent    = counts.completed);
-    $('#stat-done')     && ($('#stat-done').textContent     = counts.completed);
-  }
+  $('#count-planned') && ($('#count-planned').textContent = counts.planned);
+  $('#count-inprog')  && ($('#count-inprog').textContent  = counts.in_progress);
+  $('#count-done')    && ($('#count-done').textContent    = counts.completed);
+  $('#stat-done')     && ($('#stat-done').textContent     = counts.completed);
 }
 
 // ── VOTING ─────────────────────────────────────────────────
 async function handleVote(featureId) {
-  if (!state.user) { openAuthModal(); return; }
+  const card = document.querySelector(`.feature-card[data-id="${featureId}"]`);
+  const countEl = card?.querySelector('.vote-count');
+  const btn = card?.querySelector('.vote-btn');
+  const votesMeta = $(`#meta-votes-${featureId}`);
 
-  const btn        = $(`.vote-btn[data-id="${featureId}"]`);
-  const countEl    = $(`#vc-${featureId}`);
-  const alreadyVoted = state.userVotes.has(featureId);
+  if (state.user) {
+    const alreadyVoted = state.userVotes.has(featureId);
+    const delta = alreadyVoted ? -1 : 1;
+    if (countEl) countEl.textContent = parseInt(countEl.textContent, 10) + delta;
+    if (btn) btn.classList.toggle('voted', !alreadyVoted);
 
-  // Optimistic
-  btn.disabled = true;
-  const cur = parseInt(countEl.textContent, 10);
-  countEl.textContent = alreadyVoted ? cur - 1 : cur + 1;
-  countEl.classList.add('bump');
-  setTimeout(() => countEl.classList.remove('bump'), 400);
+    const { data, error } = await db.rpc('toggle_feature_vote', {
+      p_feature_id: featureId,
+      p_user_id: state.user.id
+    });
+    if (error) { renderFeatures(); return; }
 
-  if (alreadyVoted) { btn.classList.remove('voted'); state.userVotes.delete(featureId); }
-  else              { btn.classList.add('voted');    state.userVotes.add(featureId); }
-
-  const { data, error } = await db.rpc('toggle_feature_vote', {
-    p_feature_id: featureId,
-    p_user_id: state.user.id
-  });
-
-  if (error) {
-    // Rollback
-    countEl.textContent = cur;
-    if (alreadyVoted) { btn.classList.add('voted'); state.userVotes.add(featureId); }
-    else              { btn.classList.remove('voted'); state.userVotes.delete(featureId); }
-    showToast('Vote failed. Please try again.', '<i class="fa-solid fa-circle-exclamation"></i>');
-  } else {
-    countEl.textContent = data.votes_count;
+    data.voted ? state.userVotes.add(featureId) : state.userVotes.delete(featureId);
+    if (countEl) countEl.textContent = data.votes_count;
+    if (votesMeta) votesMeta.innerHTML = `<i class="fa-solid fa-chevron-up"></i> ${data.votes_count} votes`;
     const feat = state.features.find(f => f.id === featureId);
     if (feat) feat.votes_count = data.votes_count;
-    const votesMeta = $(`#meta-votes-${featureId}`);
+  } else {
+    const alreadyVoted = state.anonVotes.has(featureId);
+    const delta = alreadyVoted ? -1 : 1;
+    if (countEl) countEl.textContent = parseInt(countEl.textContent, 10) + delta;
+    if (btn) btn.classList.toggle('voted', !alreadyVoted);
+
+    const { data, error } = await db.rpc('toggle_anon_vote', {
+      p_feature_id: featureId,
+      p_fingerprint: state.anonFingerprint
+    });
+    if (error) { renderFeatures(); return; }
+
+    data.voted ? state.anonVotes.add(featureId) : state.anonVotes.delete(featureId);
+    saveAnonVotes();
+    if (countEl) countEl.textContent = data.votes_count;
     if (votesMeta) votesMeta.innerHTML = `<i class="fa-solid fa-chevron-up"></i> ${data.votes_count} votes`;
-    showToast(data.voted ? 'Vote added!' : 'Vote removed.', data.voted ? '<i class="fa-solid fa-chevron-up text-accent"></i>' : '○');
-    updateStats();
+    const feat = state.features.find(f => f.id === featureId);
+    if (feat) feat.votes_count = data.votes_count;
   }
 
-  btn.disabled = false;
+  updateStats();
 }
 
 // ── SUGGEST FEATURE ────────────────────────────────────────
 function bindFAB() {
-  $('#fab-suggest')?.addEventListener('click', () => {
-    if (!state.user) { openAuthModal(); return; }
-    state.editingFeatureId = null;
-    $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
-    const header = $('#suggest-modal .modal-header h2');
-    if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
-    $('#feature-title').value = '';
-    $('#feature-desc').value  = '';
-    $('#title-count').textContent = '0 / 100';
-    $('#desc-count').textContent  = '0 / 500';
-    $('#suggest-error')?.classList.add('hidden');
-    openModal('suggest-modal');
-  });
+  $('#fab-suggest')?.addEventListener('click', openSuggestModal);
 }
 
 function bindSuggestModal() {
@@ -2139,6 +2328,22 @@ function bindSuggestModal() {
     $('#desc-count').textContent = `${this.value.length} / 500`;
   });
   $('#submit-feature')?.addEventListener('click', submitFeature);
+}
+
+function openSuggestModal() {
+  state.editingFeatureId = null;
+  $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Submit Feature');
+  const header = $('#suggest-modal .modal-header h2');
+  if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
+  $('#feature-title').value = '';
+  $('#feature-desc').value  = '';
+  $('#anonName') && ($('#anonName').value = '');
+  $('#anonEmail') && ($('#anonEmail').value = '');
+  $('#title-count').textContent = '0 / 100';
+  $('#desc-count').textContent  = '0 / 500';
+  $('#suggest-error')?.classList.add('hidden');
+  $('#anonFields')?.classList.toggle('hidden', !!state.user);
+  openModal('suggest-modal');
 }
 
 function openSuggestModalForEdit(featureId) {
@@ -2154,6 +2359,7 @@ function openSuggestModalForEdit(featureId) {
   const header = $('#suggest-modal .modal-header h2');
   if (header) header.innerHTML = '<i class="fa-regular fa-pen-to-square text-accent"></i> Edit Your Suggestion';
   $('#submit-feature .btn-text') && ($('#submit-feature .btn-text').textContent = 'Save Changes');
+  $('#anonFields')?.classList.add('hidden');
   openModal('suggest-modal');
 }
 
@@ -2193,8 +2399,8 @@ async function submitFeature() {
   const errEl   = $('#suggest-error');
   const wasEditing = Boolean(state.editingFeatureId);
 
-  if (!title || title.length < 5) { showFormError(errEl, 'Title must be at least 5 characters.'); return; }
-  if (!desc)                       { showFormError(errEl, 'Description is required.'); return; }
+  if (!title || title.length < 3) { showFormError(errEl, 'Title must be at least 3 characters.'); return; }
+  if (!desc)                      { showFormError(errEl, 'Description is required.'); return; }
 
   const btn    = $('#submit-feature');
   const txtEl  = btn.querySelector('.btn-text');
@@ -2213,7 +2419,7 @@ async function submitFeature() {
       .eq('created_by', state.user.id)
       .select()
       .single());
-  } else {
+  } else if (state.user) {
     ({ data, error } = await db
       .from('features')
       .insert({
@@ -2221,9 +2427,20 @@ async function submitFeature() {
         description: desc,
         status: 'planned',
         created_by: state.user.id,
+        is_approved: true,
+        is_anonymous: false,
       })
       .select()
       .single());
+  } else {
+    const name = $('#anonName')?.value.trim() || null;
+    const email = $('#anonEmail')?.value.trim() || null;
+    ({ error } = await db.rpc('submit_anon_suggestion', {
+      p_title: title,
+      p_description: desc,
+      p_submitter_name: name,
+      p_submitter_email: email
+    }));
   }
 
   btn.disabled = false;
@@ -2246,9 +2463,13 @@ async function submitFeature() {
   if (header) header.innerHTML = '<i class="fa-solid fa-lightbulb text-accent"></i> Suggest a Feature';
 
   closeModal('suggest-modal');
-  showToast(wasEditing ? 'Suggestion updated.' : 'Feature submitted! Thanks for the idea.', '<i class="fa-solid fa-lightbulb text-accent"></i>');
+  if (!state.user && !wasEditing) {
+    showToast('Suggestion submitted! It will appear after review.', '<i class="fa-solid fa-clock"></i>');
+  } else {
+    showToast(wasEditing ? 'Suggestion updated.' : 'Feature added to the roadmap!', '<i class="fa-solid fa-lightbulb text-accent"></i>');
+  }
 
-  if (data) {
+  if (data && state.user) {
     if (state.features.some(f => f.id === data.id)) {
       const idx = state.features.findIndex(f => f.id === data.id);
       state.features[idx] = { ...state.features[idx], ...data };
@@ -2654,11 +2875,13 @@ function bindTabs() {
 
       const filterBar = $('#status-filter');
       if (filterBar) {
-        filterBar.style.display = state.currentTab === 'implemented' ? 'none' : 'flex';
+        filterBar.style.display = state.currentTab === 'roadmap' ? 'flex' : 'none';
       }
 
-      state.statusFilter = 'all';
-      $$('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
+      if (state.currentTab !== 'roadmap') {
+        state.statusFilter = 'all';
+        $$('.chip').forEach(c => c.classList.toggle('active', c.dataset.filter === 'all'));
+      }
       loadFeatures();
     });
   });
