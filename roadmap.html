@@ -1593,6 +1593,7 @@ const state = {
   editingFeatureId: null,
   editingCommentRef: null,
   pendingConfirmAction: null,
+  pendingConfirmLabel: 'Delete',
 };
 
 // ── HELPERS ────────────────────────────────────────────────
@@ -2554,6 +2555,13 @@ function bindEditCommentModal() {
     $('#edit-comment-count').textContent = `${this.value.length} / 600`;
   });
 
+  $('#edit-comment-input')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      $('#save-comment-edit-btn')?.click();
+    }
+  });
+
   $('#save-comment-edit-btn')?.addEventListener('click', async () => {
     const ref = state.editingCommentRef;
     const input = $('#edit-comment-input');
@@ -2570,31 +2578,40 @@ function bindEditCommentModal() {
     btn.disabled = true;
     btn.textContent = 'Saving...';
     errEl?.classList.add('hidden');
+    try {
+      if (!state.user?.id) {
+        showFormError(errEl, 'Your session expired. Please sign in again.');
+        return;
+      }
 
-    const { data, error } = await db
-      .from('feature_comments')
-      .update({ content: trimmed })
-      .eq('id', ref.commentId)
-      .eq('user_id', state.user.id)
-      .select()
-      .single();
+      const { data, error } = await db
+        .from('feature_comments')
+        .update({ content: trimmed })
+        .eq('id', ref.commentId)
+        .eq('user_id', state.user.id)
+        .select()
+        .single();
 
-    btn.disabled = false;
-    btn.textContent = 'Save Changes';
+      if (error || !data) {
+        showFormError(errEl, error?.message || 'Failed to update comment. Please try again.');
+        return;
+      }
 
-    if (error || !data) {
-      showFormError(errEl, 'Failed to update comment. Please try again.');
-      return;
+      const comments = state.commentsByFeature[ref.featureId] || [];
+      const idx = comments.findIndex(c => c.id === ref.commentId);
+      if (idx !== -1) comments[idx] = data;
+      state.commentsByFeature[ref.featureId] = comments;
+      state.editingCommentRef = null;
+      closeModal('edit-comment-modal');
+      refreshCommentViews(ref.featureId);
+      showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
+    } catch (e) {
+      console.error('Edit comment failed:', e);
+      showFormError(errEl, 'Something went wrong while saving. Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save Changes';
     }
-
-    const comments = state.commentsByFeature[ref.featureId] || [];
-    const idx = comments.findIndex(c => c.id === ref.commentId);
-    if (idx !== -1) comments[idx] = data;
-    state.commentsByFeature[ref.featureId] = comments;
-    state.editingCommentRef = null;
-    closeModal('edit-comment-modal');
-    refreshCommentViews(ref.featureId);
-    showToast('Comment updated.', '<i class="fa-regular fa-pen-to-square"></i>');
   });
 }
 
@@ -2602,14 +2619,16 @@ function bindConfirmModal() {
   $('#confirm-modal-btn')?.addEventListener('click', async () => {
     if (!state.pendingConfirmAction) return;
     const btn = $('#confirm-modal-btn');
+    if (btn.dataset.processing === '1') return;
     const txt = $('#confirm-modal-btn-text');
     const err = $('#confirm-modal-error');
     btn.disabled = true;
+    btn.dataset.processing = '1';
     if (txt) txt.textContent = 'Processing...';
     err?.classList.add('hidden');
 
     try {
-      await state.pendingConfirmAction();
+      await Promise.resolve(state.pendingConfirmAction());
       state.pendingConfirmAction = null;
       closeModal('confirm-modal');
     } catch (e) {
@@ -2619,20 +2638,27 @@ function bindConfirmModal() {
       }
     } finally {
       btn.disabled = false;
-      if (txt) txt.textContent = 'Delete';
+      btn.dataset.processing = '0';
+      if (txt) txt.textContent = state.pendingConfirmLabel || 'Delete';
     }
   });
 }
 
 function openConfirmModal({ title, message, confirmText = 'Delete', onConfirm }) {
   state.pendingConfirmAction = onConfirm;
+  state.pendingConfirmLabel = confirmText;
   const titleEl = $('#confirm-modal-title');
   const msgEl = $('#confirm-modal-message');
+  const btn = $('#confirm-modal-btn');
   const txt = $('#confirm-modal-btn-text');
   const err = $('#confirm-modal-error');
   if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation" style="color:#ff7878;"></i> ${escHtml(title || 'Confirm Action')}`;
   if (msgEl) msgEl.textContent = message || 'Are you sure you want to continue?';
   if (txt) txt.textContent = confirmText;
+  if (btn) {
+    btn.disabled = false;
+    btn.dataset.processing = '0';
+  }
   err?.classList.add('hidden');
   openModal('confirm-modal');
 }
@@ -2911,6 +2937,10 @@ function openModal(id) {
 function closeModal(id) {
   const modal = $(`#${id}`);
   if (!modal || modal.classList.contains('hidden')) return;
+  if (id === 'confirm-modal') {
+    const confirmBtn = $('#confirm-modal-btn');
+    if (confirmBtn?.dataset.processing === '1') return;
+  }
   if (id === 'confirm-modal') state.pendingConfirmAction = null;
   if (id === 'edit-comment-modal') state.editingCommentRef = null;
   modal.classList.remove('is-open');
