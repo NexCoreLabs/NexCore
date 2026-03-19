@@ -2361,7 +2361,7 @@ async function deleteOwnFeature(featureId) {
         showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw error;
       }
-      if (!count) {
+      if (count === 0) {
         const e = new Error('Delete not permitted yet (row not removed).');
         showToast('Delete failed on server. Suggestion was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw e;
@@ -2506,7 +2506,7 @@ async function deleteOwnComment(featureId, commentId) {
         showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw error;
       }
-      if (!count) {
+      if (count === 0) {
         const e = new Error('Delete not permitted yet (row not removed).');
         showToast('Delete failed on server. Comment was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw e;
