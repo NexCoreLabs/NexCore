@@ -1307,12 +1307,6 @@ main {
 
           <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
           <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
-          <a href="roadmap.html" class="fade" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
-          <div class="div-menu-line"></div>
-
-          <a href="how-to-use.html" class="fade mt-0" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
-
-          <!-- <a href="pricing.html" class="fade" title="Pricing Plans"><i class="fa-solid fa-tags"></i> Pricing</a> -->
 
           <div class="div-menu-line"></div>
 
@@ -1320,10 +1314,16 @@ main {
           <a href="index.html#about" title="About NexCore Labs"><i class="fa-solid fa-circle-info"></i> About Us</a>
           <a href="index.html#team" title="NexCore Labs Team"><i class="fa-solid fa-users"></i> Our Team</a>
           <a href="index.html#contact" title="Contact NexCore Labs"><i class="fa-solid fa-paper-plane"></i> Contact Us</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="roadmap.html" class="fade mt-0" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
+          <a href="releases.html" class="fade" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
+
           <div class="div-menu-line"></div>
 
           <a href="faq.html" class="fade mt-0" title="FAQ & Support"><i class="fa-solid fa-circle-question"></i> FAQ</a>
-          <a href="releases.html" class="fade mt-0" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
+          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
           <a href="terms.html" class="fade" title="Terms of Service"><i class="fa-solid fa-file-contract"></i> Terms</a>
           <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
         </div>
@@ -2351,15 +2351,20 @@ async function deleteOwnFeature(featureId) {
     message: 'This will permanently remove your feature suggestion.',
     confirmText: 'Delete Suggestion',
     onConfirm: async () => {
-      const { error } = await db
+      const { error, count } = await db
         .from('features')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('id', featureId)
         .eq('created_by', state.user.id);
 
       if (error) {
         showToast('Failed to delete suggestion.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw error;
+      }
+      if (!count) {
+        const e = new Error('Delete not permitted yet (row not removed).');
+        showToast('Delete failed on server. Suggestion was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw e;
       }
 
       if (state.activeFeatureId === featureId) {
@@ -2491,15 +2496,20 @@ async function deleteOwnComment(featureId, commentId) {
     message: 'This comment will be permanently deleted.',
     confirmText: 'Delete Comment',
     onConfirm: async () => {
-      const { error } = await db
+      const { error, count } = await db
         .from('feature_comments')
-        .delete()
+        .delete({ count: 'exact' })
         .eq('id', commentId)
         .eq('user_id', state.user.id);
 
       if (error) {
         showToast('Failed to delete comment.', '<i class="fa-solid fa-circle-exclamation"></i>');
         throw error;
+      }
+      if (!count) {
+        const e = new Error('Delete not permitted yet (row not removed).');
+        showToast('Delete failed on server. Comment was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
+        throw e;
       }
 
       state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
