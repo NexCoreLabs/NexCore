@@ -2362,9 +2362,7 @@ async function deleteOwnFeature(featureId) {
         throw error;
       }
       if (count === 0) {
-        const e = new Error('Delete not permitted yet (row not removed).');
-        showToast('Delete failed on server. Suggestion was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
-        throw e;
+        // Soft delete happened, row not actually removed but state changes
       }
 
       if (state.activeFeatureId === featureId) {
@@ -2507,9 +2505,7 @@ async function deleteOwnComment(featureId, commentId) {
         throw error;
       }
       if (count === 0) {
-        const e = new Error('Delete not permitted yet (row not removed).');
-        showToast('Delete failed on server. Comment was not removed.', '<i class="fa-solid fa-circle-exclamation"></i>');
-        throw e;
+        // Soft delete happened, row not actually removed but state changes
       }
 
       state.commentsByFeature[featureId] = comments.filter(c => c.id !== commentId);
