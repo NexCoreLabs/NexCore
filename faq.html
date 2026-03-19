@@ -826,6 +826,29 @@
 
             });
 
+            function setFaqExpanded(item, expanded) {
+                const answer = item.querySelector('.faq-answer');
+                if (!answer) return;
+
+                item.classList.toggle('active', expanded);
+                item.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+                if (expanded) {
+                    answer.style.maxHeight = `${answer.scrollHeight}px`;
+                } else {
+                    answer.style.maxHeight = '0px';
+                }
+            }
+
+            // Initialize smooth heights for active items
+            container.querySelectorAll('.faq-item').forEach(item => {
+                setFaqExpanded(item, item.classList.contains('active'));
+            });
+
+            window.addEventListener('resize', () => {
+                container.querySelectorAll('.faq-item.active').forEach(item => setFaqExpanded(item, true));
+            });
+
             function updateNoResultsAndButtons(matchesCountPerSection, searchTerm) {
 
                 const totalMatches = Array.from(matchesCountPerSection.values()).reduce((a, b) => a + b, 0);
@@ -1016,9 +1039,8 @@
 
                 if (!item || !container.contains(item)) return;
 
-                item.classList.toggle('active');
-
-                item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+                const isActive = item.classList.contains('active');
+                setFaqExpanded(item, !isActive);
 
             });
 
@@ -1032,9 +1054,8 @@
 
                     e.preventDefault();
 
-                    item.classList.toggle('active');
-
-                    item.setAttribute('aria-expanded', item.classList.contains('active') ? 'true' : 'false');
+                    const isActive = item.classList.contains('active');
+                    setFaqExpanded(item, !isActive);
 
                 }
 

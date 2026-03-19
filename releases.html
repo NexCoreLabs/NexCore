@@ -240,107 +240,6 @@
             flex-direction: column;
             gap: 2px;
         }
-        .rl-nav-select-wrap {
-            position: relative;
-            width: 100%;
-            display: none;
-        }
-        .rl-nav-select-native {
-            position: absolute;
-            opacity: 0;
-            pointer-events: none;
-            width: 0;
-            height: 0;
-        }
-        .rl-nav-select-trigger {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.35);
-            border: 1px solid rgba(110, 231, 243, 0.22);
-            border-radius: 10px;
-            color: #e6eef3;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            -webkit-user-select: none;
-            user-select: none;
-            transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-        }
-        .rl-nav-select-trigger:hover {
-            background: rgba(110, 231, 243, 0.06);
-            border-color: rgba(110, 231, 243, 0.45);
-        }
-        .rl-nav-select-wrap.open .rl-nav-select-trigger, .rl-nav-select-trigger:focus {
-            border-color: #6ee7f3;
-            box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.15);
-            background: rgba(110, 231, 243, 0.06);
-        }
-        .rl-nav-select-chevron {
-            width: 0; height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid rgba(110, 231, 243, 0.75);
-            transition: transform 0.22s var(--spring), border-top-color 0.18s;
-            flex-shrink: 0;
-        }
-        .rl-nav-select-wrap.open .rl-nav-select-chevron {
-            transform: rotate(180deg);
-            border-top-color: #6ee7f3;
-        }
-        .rl-nav-select-panel {
-            position: fixed;
-            background: rgba(8, 10, 22, 0.5);
-            -webkit-backdrop-filter: blur(3px);
-            backdrop-filter: blur(3px);
-            border: 1px solid rgba(110, 231, 243, 0.6);
-            border-radius: 12px;
-            padding: 6px;
-            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.8), 0 0 0 1px rgba(110, 231, 243, 0.08);
-            z-index: 99999;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(-6px) scale(0.97);
-            transform-origin: top center;
-            transition: opacity 0.2s ease, transform 0.22s var(--spring);
-            max-height: 340px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(110, 231, 243, 0.45) transparent;
-        }
-        .rl-nav-select-panel.open {
-            opacity: 1;
-            pointer-events: all;
-            transform: translateY(0) scale(1);
-        }
-        .rl-nav-select-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 12px;
-            border-radius: 8px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: rgba(230, 238, 243, 0.8);
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
-        }
-        .rl-nav-select-option:hover {
-            background: rgba(110, 231, 243, 0.08);
-            color: #e6eef3;
-        }
-        .rl-nav-select-option.selected {
-            color: #6ee7f3;
-            background: rgba(110, 231, 243, 0.1);
-        }
-        .rl-nav-select-option.dimmed {
-            display: none;
-        }
-
         .rl-nav-label {
             font-size: 0.67rem;
             font-weight: 700;
@@ -529,10 +428,17 @@
 
         /* ── card body (collapsible) ── */
         .rl-body {
-            display: none;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-6px);
             border-top: 1px solid rgba(255,255,255,0.052);
+            transition: max-height .35s var(--spring), opacity .24s ease, transform .24s ease;
         }
-        .rl-card.open .rl-body { display: block; }
+        .rl-card.open .rl-body {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* major note */
         .rl-major-note {
@@ -643,6 +549,99 @@
         .rl-empty.hidden { display: none; }
         .rl-empty i { font-size: 2rem; color: rgba(110,231,243,0.22); margin-bottom: 13px; display: block; }
 
+        /* Changelog modal */
+        .rl-changelog-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(2, 6, 23, 0.72);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s ease;
+        }
+        .rl-changelog-modal.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .rl-changelog-panel {
+            width: min(920px, 96vw);
+            max-height: min(86vh, 820px);
+            background: rgba(10,11,28,0.95);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 14px;
+            box-shadow: 0 24px 70px rgba(0,0,0,0.65);
+            overflow: hidden;
+            transform: translateY(14px) scale(0.98);
+            transition: transform .24s var(--spring);
+            display: flex;
+            flex-direction: column;
+        }
+        .rl-changelog-modal.open .rl-changelog-panel {
+            transform: translateY(0) scale(1);
+        }
+        .rl-changelog-head {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .rl-changelog-title {
+            margin: 0;
+            font-size: 1rem;
+            color: var(--text-hi);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .rl-changelog-close {
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.02);
+            color: var(--text-mid);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .rl-changelog-close:hover {
+            color: var(--accent);
+            border-color: rgba(110,231,243,0.35);
+        }
+        .rl-changelog-body {
+            padding: 16px;
+            overflow: auto;
+            line-height: 1.65;
+            color: var(--text-mid);
+        }
+        .rl-changelog-body h1,
+        .rl-changelog-body h2,
+        .rl-changelog-body h3 {
+            color: var(--text-hi);
+            margin: 0 0 10px;
+        }
+        .rl-changelog-body ul {
+            margin: 0 0 12px;
+            padding-left: 20px;
+        }
+        .rl-changelog-body p {
+            margin: 0 0 12px;
+        }
+        .rl-changelog-body code {
+            font-family: var(--mono);
+            background: rgba(110,231,243,0.08);
+            border: 1px solid rgba(110,231,243,0.16);
+            border-radius: 6px;
+            padding: 1px 6px;
+            color: var(--accent);
+        }
+
         @media screen and (min-width: 1200px) {
             .rl-wrap { max-width: 1140px;
         }}
@@ -663,7 +662,6 @@
             .rl-nav-label { display: none; }
             .rl-nav-item { display: none; }
             .rl-dot-maj, .rl-dot-min { display: none; }
-            .rl-nav-select-wrap { display: block; }
         }
 
         @media (max-width: 540px) {
@@ -755,7 +753,7 @@
 
         <!-- Hero -->
         <div class="rl-hero">
-            <div class="rl-eyebrow"><span class="rl-eyebrow-dot"></span> <a href="CHANGELOG.md" title="View changelog">Changelog</a></div>
+            <div class="rl-eyebrow"><span class="rl-eyebrow-dot"></span> <a href="#" id="openChangelogBtn" title="View changelog">Changelog</a></div>
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
@@ -796,15 +794,6 @@
             <!-- Sidebar nav -->
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
-                <div class="rl-nav-select-wrap" id="rlVersionSelectWrap">
-                    <select class="rl-nav-select-native" id="rlVersionSelect" aria-label="Select release version"></select>
-                    <div class="rl-nav-select-trigger" id="rlVersionSelectTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
-                        <span id="rlVersionSelectLabel">Select Version</span>
-                        <span class="rl-nav-select-chevron"></span>
-                    </div>
-                    <div class="rl-nav-select-panel" role="listbox" id="rlVersionSelectPanel"></div>
-                </div>
-
                 <div class="rl-nav-panel">
                     <a class="rl-nav-item"href="#v250" data-version="v2.5.0"><span class="rl-dot-min"></span>v2.5.0</a>
                     <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
@@ -1443,6 +1432,16 @@
         </div>
     </footer>
 
+    <div class="rl-changelog-modal" id="rlChangelogModal" aria-hidden="true">
+        <div class="rl-changelog-panel" role="dialog" aria-modal="true" aria-labelledby="rlChangelogTitle">
+            <div class="rl-changelog-head">
+                <h2 class="rl-changelog-title" id="rlChangelogTitle"><i class="fa-solid fa-file-lines"></i> Changelog</h2>
+                <button class="rl-changelog-close" id="rlChangelogClose" aria-label="Close changelog"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="rl-changelog-body" id="rlChangelogBody">Loading changelog...</div>
+        </div>
+    </div>
+
     <script src="assets/js/script.js"></script>
     <!-- <script src="assets/js/release.js"></script> -->
     <script src="assets/js/supabase-client.js"></script>
@@ -1453,8 +1452,142 @@
         document.getElementById('year').textContent = new Date().getFullYear();
         document.body.classList.add('mode-user');
 
+        const changelogBtn = document.getElementById('openChangelogBtn');
+        const changelogModal = document.getElementById('rlChangelogModal');
+        const changelogClose = document.getElementById('rlChangelogClose');
+        const changelogBody = document.getElementById('rlChangelogBody');
+        let changelogLoaded = false;
+
+        function escHtml(v) {
+            return String(v || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function inlineMarkdown(text) {
+            return text
+                .replace(/`([^`]+)`/g, '<code>$1</code>')
+                .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+        }
+
+        function renderMarkdown(md) {
+            const lines = String(md || '').replace(/\r\n/g, '\n').split('\n');
+            const html = [];
+            let inList = false;
+            for (const raw of lines) {
+                const line = raw.trimEnd();
+                if (!line.trim()) {
+                    if (inList) { html.push('</ul>'); inList = false; }
+                    continue;
+                }
+                if (line.startsWith('# ')) {
+                    if (inList) { html.push('</ul>'); inList = false; }
+                    html.push(`<h1>${inlineMarkdown(escHtml(line.slice(2)))}</h1>`);
+                    continue;
+                }
+                if (line.startsWith('## ')) {
+                    if (inList) { html.push('</ul>'); inList = false; }
+                    html.push(`<h2>${inlineMarkdown(escHtml(line.slice(3)))}</h2>`);
+                    continue;
+                }
+                if (line.startsWith('### ')) {
+                    if (inList) { html.push('</ul>'); inList = false; }
+                    html.push(`<h3>${inlineMarkdown(escHtml(line.slice(4)))}</h3>`);
+                    continue;
+                }
+                if (line.startsWith('- ') || line.startsWith('* ')) {
+                    if (!inList) { html.push('<ul>'); inList = true; }
+                    html.push(`<li>${inlineMarkdown(escHtml(line.slice(2)))}</li>`);
+                    continue;
+                }
+                if (inList) { html.push('</ul>'); inList = false; }
+                html.push(`<p>${inlineMarkdown(escHtml(line))}</p>`);
+            }
+            if (inList) html.push('</ul>');
+            return html.join('');
+        }
+
+        async function loadChangelogContent() {
+            if (changelogLoaded) return;
+            changelogBody.innerHTML = '<p><i class="fa-solid fa-circle-notch fa-spin"></i> Loading changelog...</p>';
+            try {
+                const response = await fetch('CHANGELOG.md');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const md = await response.text();
+                changelogBody.innerHTML = renderMarkdown(md);
+                changelogLoaded = true;
+            } catch (err) {
+                changelogBody.innerHTML = `<p>Couldn’t load changelog right now.</p>
+                <p><a href="CHANGELOG.md" target="_blank" rel="noopener">Open raw CHANGELOG.md</a></p>`;
+            }
+        }
+
+        async function openChangelogModal() {
+            await loadChangelogContent();
+            changelogModal.classList.add('open');
+            changelogModal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeChangelogModal() {
+            changelogModal.classList.remove('open');
+            changelogModal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        changelogBtn?.addEventListener('click', async (e) => {
+            e.preventDefault();
+            await openChangelogModal();
+        });
+        changelogClose?.addEventListener('click', closeChangelogModal);
+        changelogModal?.addEventListener('click', (e) => {
+            if (e.target === changelogModal) closeChangelogModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && changelogModal?.classList.contains('open')) {
+                closeChangelogModal();
+            }
+        });
+
         /* ── toggle open/close ── */
-        function toggleCard(card) { card.classList.toggle('open'); }
+        function toggleCard(card) {
+            if (!card) return;
+            const body = card.querySelector('.rl-body');
+            if (!body) return;
+            const isOpen = card.classList.contains('open');
+
+            if (isOpen) {
+                body.style.maxHeight = `${body.scrollHeight}px`;
+                requestAnimationFrame(() => {
+                    card.classList.remove('open');
+                    body.style.maxHeight = '0px';
+                });
+                return;
+            }
+
+            card.classList.add('open');
+            body.style.maxHeight = '0px';
+            requestAnimationFrame(() => {
+                body.style.maxHeight = `${body.scrollHeight}px`;
+            });
+        }
+
+        function syncOpenCardHeights() {
+            document.querySelectorAll('.rl-card').forEach(card => {
+                const body = card.querySelector('.rl-body');
+                if (!body) return;
+                if (card.classList.contains('open')) {
+                    body.style.maxHeight = `${body.scrollHeight}px`;
+                } else {
+                    body.style.maxHeight = '0px';
+                }
+            });
+        }
+
+        syncOpenCardHeights();
+        window.addEventListener('resize', syncOpenCardHeights);
 
         /* ── mode switch ── */
         let currentMode = 'user';
@@ -1495,138 +1628,15 @@
 
         /* ── filter pills ── */
         let currentFilter = 'all';
-        const versionSelect = document.getElementById('rlVersionSelect');
-        const versionSelectWrap = document.getElementById('rlVersionSelectWrap');
-        const versionSelectTrigger = document.getElementById('rlVersionSelectTrigger');
-        const versionSelectLabel = document.getElementById('rlVersionSelectLabel');
-        const versionSelectPanel = document.getElementById('rlVersionSelectPanel');
-
-        function buildVersionSelect() {
-            if (!versionSelect || !versionSelectWrap) return;
-            const items = Array.from(document.querySelectorAll('.rl-nav-item'));
-            
-            // Native select fallback
-            versionSelect.innerHTML = items.map(item => {
-                const href = item.getAttribute('href');
-                const label = item.dataset.version || item.textContent.trim();
-                return `<option value="${href}">${label}</option>`;
-            }).join('');
-
-            // Custom panel options
-            versionSelectPanel.innerHTML = items.map(item => {
-                const href = item.getAttribute('href');
-                const label = item.dataset.version || item.textContent.trim();
-                return `<div class="rl-nav-select-option" role="option" tabindex="0" data-value="${href}">${label}</div>`;
-            }).join('');
-
-            // Move panel to body to fix z-index issues
-            document.body.appendChild(versionSelectPanel);
-
-            function reposition() {
-                const rect = versionSelectTrigger.getBoundingClientRect();
-                versionSelectPanel.style.top = `${rect.bottom + 6}px`;
-                versionSelectPanel.style.left = `${rect.left}px`;
-                versionSelectPanel.style.minWidth = `${rect.width}px`;
+        function jumpToVersion(selector) {
+            const target = document.querySelector(selector);
+            if (!target) return;
+            const y = target.getBoundingClientRect().top + window.scrollY - 92;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+            target.classList.add('open');
+            if (window.location.hash !== selector) {
+                history.replaceState(null, '', selector);
             }
-
-            function openPanel() {
-                reposition();
-                versionSelectWrap.classList.add('open');
-                versionSelectPanel.classList.add('open');
-                versionSelectTrigger.setAttribute('aria-expanded', 'true');
-            }
-
-            function closePanel() {
-                versionSelectWrap.classList.remove('open');
-                versionSelectPanel.classList.remove('open');
-                versionSelectTrigger.setAttribute('aria-expanded', 'false');
-            }
-
-            function applySelected(val) {
-                versionSelect.value = val;
-                
-                versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
-                    opt.classList.toggle('selected', opt.dataset.value === val);
-                });
-                
-                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
-                if (selectedEl) {
-                    versionSelectLabel.textContent = selectedEl.textContent;
-                }
-
-                const target = document.querySelector(val);
-                if (!target) return;
-                const y = target.getBoundingClientRect().top + window.scrollY - 92;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-                target.classList.add('open');
-            }
-
-            versionSelectTrigger.addEventListener('click', () => {
-                if (versionSelectPanel.classList.contains('open')) closePanel();
-                else openPanel();
-            });
-
-            versionSelectTrigger.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPanel(); }
-                if (e.key === 'Escape') closePanel();
-            });
-
-            versionSelectPanel.addEventListener('click', e => {
-                const opt = e.target.closest('.rl-nav-select-option');
-                if (!opt) return;
-                applySelected(opt.dataset.value);
-                closePanel();
-            });
-
-            versionSelectPanel.addEventListener('keydown', e => {
-                const opt = e.target.closest('.rl-nav-select-option');
-                if (!opt) return;
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    applySelected(opt.dataset.value);
-                    closePanel();
-                }
-            });
-
-            document.addEventListener('click', e => {
-                if (!versionSelectWrap.contains(e.target) && !versionSelectPanel.contains(e.target)) {
-                    closePanel();
-                }
-            });
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closePanel();
-            });
-
-            window.addEventListener('scroll', () => {
-                if (versionSelectPanel.classList.contains('open')) reposition();
-            }, true);
-            window.addEventListener('resize', () => {
-                if (versionSelectPanel.classList.contains('open')) reposition();
-            });
-
-            if (items.length > 0) {
-                const firstHref = items[0].getAttribute('href');
-                versionSelect.value = firstHref;
-                const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${firstHref}"]`);
-                if (selectedEl) {
-                    selectedEl.classList.add('selected');
-                    versionSelectLabel.textContent = selectedEl.textContent;
-                }
-            }
-        }
-
-        function syncSelectDisabled() {
-            if (!versionSelect) return;
-            const options = Array.from(versionSelect.options);
-            options.forEach(option => {
-                const item = document.querySelector(`.rl-nav-item[href="${option.value}"]`);
-                const isDimmed = item ? item.classList.contains('dimmed') : false;
-                option.disabled = isDimmed;
-                if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
-                    const customOpt = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${option.value}"]`);
-                    if (customOpt) customOpt.classList.toggle('dimmed', isDimmed);
-                }
-            });
         }
 
         document.querySelectorAll('.rl-pill').forEach(pill => {
@@ -1647,7 +1657,6 @@
                 if (nav) nav.classList.toggle('dimmed', !show);
             });
             document.getElementById('rlEmpty').classList.toggle('hidden', visible > 0);
-            syncSelectDisabled();
         }
 
         /* ── version nav scroll spy + smooth jump ── */
@@ -1659,20 +1668,6 @@
             document.querySelectorAll('.rl-nav-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.version === cur);
             });
-            if (versionSelect && cur) {
-                const active = document.querySelector(`.rl-nav-item[data-version="${cur}"]`);
-                if (active) {
-                    const val = active.getAttribute('href');
-                    versionSelect.value = val;
-                    if (typeof versionSelectPanel !== 'undefined' && versionSelectPanel) {
-                        versionSelectPanel.querySelectorAll('.rl-nav-select-option').forEach(opt => {
-                            opt.classList.toggle('selected', opt.dataset.value === val);
-                        });
-                        const selectedEl = versionSelectPanel.querySelector(`.rl-nav-select-option[data-value="${val}"]`);
-                        if (selectedEl) versionSelectLabel.textContent = selectedEl.textContent;
-                    }
-                }
-            }
         }
         window.addEventListener('scroll', updateNavSpy, { passive: true });
         updateNavSpy();
@@ -1680,16 +1675,9 @@
         document.querySelectorAll('.rl-nav-item').forEach(item => {
             item.addEventListener('click', e => {
                 e.preventDefault();
-                const target = document.querySelector(item.getAttribute('href'));
-                if (!target) return;
-                const y = target.getBoundingClientRect().top + window.scrollY - 92;
-                window.scrollTo({ top: y, behavior: 'smooth' });
-                target.classList.add('open');
+                jumpToVersion(item.getAttribute('href'));
             });
         });
-
-        buildVersionSelect();
-        syncSelectDisabled();
         updateNavSpy();
 
         /* ── what's new since last visit ── */

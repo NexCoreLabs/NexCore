@@ -589,11 +589,31 @@
 
         const faqItems = document.querySelectorAll('.faq-item');
 
+        function setHowToFaqExpanded(item, expanded) {
+            const answer = item.querySelector('p');
+            if (!answer) return;
+            item.classList.toggle('active', expanded);
+            answer.style.maxHeight = expanded ? `${answer.scrollHeight}px` : '0px';
+        }
+
+        faqItems.forEach(item => {
+            setHowToFaqExpanded(item, item.classList.contains('active'));
+        });
+
+        window.addEventListener('resize', () => {
+            faqItems.forEach(item => {
+                if (item.classList.contains('active')) {
+                    setHowToFaqExpanded(item, true);
+                }
+            });
+        });
+
         faqItems.forEach(item => {
 
             item.addEventListener('click', function() {
 
-                this.classList.toggle('active');
+                const isActive = this.classList.contains('active');
+                setHowToFaqExpanded(this, !isActive);
 
             });
 

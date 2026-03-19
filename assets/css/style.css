@@ -2229,12 +2229,17 @@ textarea:focus {
 
 .faq-item p {
     margin-top: 10px;
-    display: none;
-    color: #cbd5e0
+    color: #cbd5e0;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-4px);
+    transition: max-height .32s ease, opacity .24s ease, transform .24s ease
 }
 
 .faq-item.active p {
-    display: block
+    opacity: 1;
+    transform: translateY(0)
 }
 
 .highlight {
@@ -2483,11 +2488,16 @@ strong {
     color: #cbd5e0;
     margin-top: 15px;
     line-height: 1.8;
-    display: none
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-4px);
+    transition: max-height .34s ease, opacity .24s ease, transform .24s ease
 }
 
 .faq-item.active .faq-answer {
-    display: block
+    opacity: 1;
+    transform: translateY(0)
 }
 
 .faq-answer a {
