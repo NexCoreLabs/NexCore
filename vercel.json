@@ -12,6 +12,7 @@
     { "source": "/releases", "destination": "/releases.html" },
     { "source": "/roadmap", "destination": "/roadmap.html" },
     { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/thanks", "destination": "/thanks.html" }
+    { "source": "/thanks", "destination": "/thanks.html" },
+    { "source": "/ai-chat", "destination": "/ai-chat.html" }
   ]
 }
