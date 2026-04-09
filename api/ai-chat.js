@@ -27,6 +27,7 @@ const CHAT_MODEL      = process.env.GEMINI_CHAT_MODEL  || 'models/gemini-2.5-fla
 const EMBED_MODEL     = process.env.GEMINI_EMBED_MODEL || 'gemini-embedding-001';
 const EMBED_DIMENSIONS = parseInt(process.env.GEMINI_EMBED_DIMENSIONS || '768', 10);
 const DAILY_LIMIT     = parseInt(process.env.AI_CHAT_DAILY_LIMIT || '10', 10);
+const CHAT_RETRY_DELAY_MS = parseInt(process.env.GEMINI_CHAT_RETRY_DELAY_MS || '1200', 10);
 
 // Max characters we pass as context to Gemini (approx 6 000 tokens)
 const MAX_CONTEXT_CHARS = 4000;
@@ -212,15 +213,39 @@ Answer:`;
   // ── Step 5: Call Gemini for the final response ───────────────────────────
   let replyText;
   try {
-    const genResult = await genAi.models.generateContent({
-      model: CHAT_MODEL,
-      contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
-      generationConfig: {
-        temperature: 0.65,
-        maxOutputTokens: 512,
-        topP: 0.9
-      }
-    });
+    let genResult;
+    try {
+      genResult = await genAi.models.generateContent({
+        model: CHAT_MODEL,
+        contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+        generationConfig: {
+          temperature: 0.65,
+          maxOutputTokens: 512,
+          topP: 0.9
+        }
+      });
+    } catch (firstErr) {
+      const msg = String(firstErr?.message || '');
+      const isUnavailable =
+        msg.includes('"code":503') ||
+        msg.includes('UNAVAILABLE') ||
+        msg.toLowerCase().includes('high demand');
+
+      if (!isUnavailable) throw firstErr;
+
+      console.warn('[ai-chat] Gemini high demand, retrying once...');
+      await sleep(CHAT_RETRY_DELAY_MS);
+
+      genResult = await genAi.models.generateContent({
+        model: CHAT_MODEL,
+        contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+        generationConfig: {
+          temperature: 0.65,
+          maxOutputTokens: 512,
+          topP: 0.9
+        }
+      });
+    }
 
     replyText = genResult?.text || genResult?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
@@ -229,11 +254,23 @@ Answer:`;
     }
   } catch (genErr) {
     console.error('[ai-chat] Gemini generation error:', genErr.message);
+    const genMsg = String(genErr?.message || '');
 
-    if (genErr.message?.includes('429') || genErr.message?.includes('quota')) {
+    if (genMsg.includes('429') || genMsg.toLowerCase().includes('quota')) {
       return res.status(503).json({
         error: 'AI temporarily unavailable',
         message: 'The AI service is at capacity. Please try again in a moment.'
+      });
+    }
+
+    if (
+      genMsg.includes('"code":503') ||
+      genMsg.includes('UNAVAILABLE') ||
+      genMsg.toLowerCase().includes('high demand')
+    ) {
+      return res.status(503).json({
+        error: 'AI temporarily unavailable',
+        message: 'The AI model is under high demand right now. Please retry in a few seconds.'
       });
     }
 
@@ -252,3 +289,6 @@ Answer:`;
     sources:   knowledgeChunks.map(c => ({ title: c.title, source: c.source }))
   });
 };
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
