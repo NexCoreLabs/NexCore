@@ -5,7 +5,7 @@
  * Flow:
  *   1. Authenticate user via JWT
  *   2. Enforce daily rate limit (consume_ai_chat_use RPC)
- *   3. Generate query embedding via Gemini text-embedding-004
+ *   3. Generate query embedding via Gemini embedding model
  *   4. Semantic search over ai_knowledge via search_knowledge RPC
  *   5. Build context prompt and call Gemini for a response
  *   6. Return { reply, used, remaining }
@@ -20,11 +20,12 @@ const { GoogleGenAI } = require('@google/genai');
 // ─── Environment ──────────────────────────────────────────────────────────────
 const SUPABASE_URL     = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
-const GEMINI_API_KEY   = process.env.GEMINI_CHAT_API_KEY;
+const GEMINI_API_KEY   = process.env.GEMINI_CHAT_API_KEY || process.env.GEMINI_API_KEY;
 
 // Chat model — prefer flash for low latency / cost
 const CHAT_MODEL      = process.env.GEMINI_CHAT_MODEL  || 'models/gemini-2.5-flash';
-const EMBED_MODEL     = 'text-embedding-004';          // 768d — requires v1 API (not v1beta)
+const EMBED_MODEL     = process.env.GEMINI_EMBED_MODEL || 'models/gemini-embedding-001';
+const EMBED_DIMENSIONS = parseInt(process.env.GEMINI_EMBED_DIMENSIONS || '768', 10);
 const DAILY_LIMIT     = parseInt(process.env.AI_CHAT_DAILY_LIMIT || '10', 10);
 
 // Max characters we pass as context to Gemini (approx 6 000 tokens)
@@ -123,7 +124,7 @@ module.exports = async (req, res) => {
   const remaining = usageData?.remaining ?? 0;
 
   // ── Gemini client ────────────────────────────────────────────────────────
-  // httpOptions apiVersion v1 is required for text-embedding-004 (not available on v1beta)
+  // Use v1 API for current Gemini embedding endpoints
   const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY, httpOptions: { apiVersion: 'v1' } });
 
   // ── Step 1: Generate embedding for the user query ────────────────────────
@@ -131,7 +132,11 @@ module.exports = async (req, res) => {
   try {
     const embedResult = await ai.models.embedContent({
       model: EMBED_MODEL,
-      contents: userMessage
+      contents: userMessage,
+      config: {
+        outputDimensionality: EMBED_DIMENSIONS,
+        taskType: 'RETRIEVAL_QUERY'
+      }
     });
 
     // Defensive extraction — handles different SDK response shapes
@@ -145,6 +150,12 @@ module.exports = async (req, res) => {
     }
   } catch (embedErr) {
     console.error('[ai-chat] Embedding error:', embedErr.message);
+    if (embedErr.message?.includes('NOT_FOUND') || embedErr.message?.includes('not found')) {
+      return res.status(500).json({
+        error: 'Embedding model unavailable',
+        details: `Embedding model "${EMBED_MODEL}" is unavailable. Set GEMINI_EMBED_MODEL to a valid model (for example: models/gemini-embedding-001).`
+      });
+    }
     return res.status(500).json({
       error: 'Failed to generate query embedding',
       details: embedErr.message
