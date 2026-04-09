@@ -24,7 +24,7 @@ const GEMINI_API_KEY   = process.env.GEMINI_CHAT_API_KEY || process.env.GEMINI_A
 
 // Chat model — prefer flash for low latency / cost
 const CHAT_MODEL      = process.env.GEMINI_CHAT_MODEL  || 'models/gemini-2.5-flash';
-const EMBED_MODEL     = process.env.GEMINI_EMBED_MODEL || 'models/gemini-embedding-001';
+const EMBED_MODEL     = process.env.GEMINI_EMBED_MODEL || 'gemini-embedding-001';
 const EMBED_DIMENSIONS = parseInt(process.env.GEMINI_EMBED_DIMENSIONS || '768', 10);
 const DAILY_LIMIT     = parseInt(process.env.AI_CHAT_DAILY_LIMIT || '10', 10);
 
@@ -123,14 +123,14 @@ module.exports = async (req, res) => {
   const used      = usageData?.used      ?? 0;
   const remaining = usageData?.remaining ?? 0;
 
-  // ── Gemini client ────────────────────────────────────────────────────────
-  // Use v1 API for current Gemini embedding endpoints
-  const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY, httpOptions: { apiVersion: 'v1' } });
+  // ── Gemini clients ───────────────────────────────────────────────────────
+  const genAi = new GoogleGenAI({ apiKey: GEMINI_API_KEY, httpOptions: { apiVersion: 'v1' } });
+  const embedAi = new GoogleGenAI({ apiKey: GEMINI_API_KEY, httpOptions: { apiVersion: 'v1beta' } });
 
   // ── Step 1: Generate embedding for the user query ────────────────────────
-  let queryEmbedding;
+  let queryEmbedding = null;
   try {
-    const embedResult = await ai.models.embedContent({
+    const embedResult = await embedAi.models.embedContent({
       model: EMBED_MODEL,
       contents: userMessage,
       config: {
@@ -150,28 +150,24 @@ module.exports = async (req, res) => {
     }
   } catch (embedErr) {
     console.error('[ai-chat] Embedding error:', embedErr.message);
-    if (embedErr.message?.includes('NOT_FOUND') || embedErr.message?.includes('not found')) {
-      return res.status(500).json({
-        error: 'Embedding model unavailable',
-        details: `Embedding model "${EMBED_MODEL}" is unavailable. Set GEMINI_EMBED_MODEL to a valid model (for example: models/gemini-embedding-001).`
-      });
-    }
-    return res.status(500).json({
-      error: 'Failed to generate query embedding',
-      details: embedErr.message
-    });
+    // Non-fatal fallback: if embeddings fail, continue without RAG context.
+    queryEmbedding = null;
   }
 
   // ── Step 2: Semantic search — retrieve top-5 knowledge chunks ────────────
   let knowledgeChunks = [];
   try {
-    const { data: chunks, error: searchError } = await supabase.rpc('search_knowledge', {
-      query_embedding: queryEmbedding,
-      match_count: 5
-    });
+    if (!queryEmbedding) {
+      knowledgeChunks = [];
+    } else {
+      const { data: chunks, error: searchError } = await supabase.rpc('search_knowledge', {
+        query_embedding: queryEmbedding,
+        match_count: 5
+      });
 
-    if (searchError) throw new Error(searchError.message);
-    knowledgeChunks = chunks || [];
+      if (searchError) throw new Error(searchError.message);
+      knowledgeChunks = chunks || [];
+    }
   } catch (searchErr) {
     console.error('[ai-chat] Search error:', searchErr.message);
     // Non-fatal: continue with empty context rather than failing the request
@@ -216,7 +212,7 @@ Answer:`;
   // ── Step 5: Call Gemini for the final response ───────────────────────────
   let replyText;
   try {
-    const genResult = await ai.models.generateContent({
+    const genResult = await genAi.models.generateContent({
       model: CHAT_MODEL,
       contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
       generationConfig: {
