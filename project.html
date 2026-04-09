@@ -28,6 +28,7 @@
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/ai-chat.css">
     <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
     <link rel="stylesheet" href="assets/css/project-categories.css">
     <link rel="manifest" href="manifest.json">
@@ -1077,6 +1078,7 @@
     <script src="assets/js/supabase-client.js"></script>
 
     <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/js/ai-chat.js"></script>
 
     <script src="assets/js/project-categories.js"></script>
 
@@ -1157,6 +1159,12 @@
                 document.getElementById('projectId').textContent = project.public_id || 'Proj-#';
 
                 document.getElementById('projectName').textContent = project.name || 'Untitled Project';
+
+                // Expose project context so the AI chat widget can answer questions about this project
+                window.nexcoreProjectContext = {
+                    title:       project.name             || '',
+                    description: project.page_description || ''
+                };
 
                 document.getElementById('pageDescription').textContent = project.page_description || 'No description available.';
 

@@ -1,5 +1,10 @@
 # 🧾 Changelog
 
+## v2.7.0 - 11 Apr 2026
+###
+
+---
+
 ## v2.6.0 - 19 Mar 2026
 ### Roadmap & Feature Requests:
 
