@@ -23,7 +23,7 @@ const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const GEMINI_API_KEY   = process.env.GEMINI_CHAT_API_KEY;
 
 // Chat model — prefer flash for low latency / cost
-const CHAT_MODEL      = process.env.GEMINI_CHAT_MODEL  || 'models/gemini-1.5-flash';
+const CHAT_MODEL      = process.env.GEMINI_CHAT_MODEL  || 'models/gemini-2.5-flash';
 const EMBED_MODEL     = 'text-embedding-004';          // 768d — requires v1 API (not v1beta)
 const DAILY_LIMIT     = parseInt(process.env.AI_CHAT_DAILY_LIMIT || '10', 10);
 
