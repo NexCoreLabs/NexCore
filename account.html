@@ -587,9 +587,9 @@
 
 
 
-          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type <strong style="font-family: 'Courier New', monospace; color: #ff7878;">DELETE</strong> to confirm:</label>
+          <label for="confirmDeleteInput" style="display:block;margin-bottom:8px;opacity:.9">Type your username (<strong id="confirmUsernameHint" style="font-family: 'Courier New', monospace; color: #ff7878;"></strong>) to confirm:</label>
 
-          <input type="text" id="confirmDeleteInput" placeholder="DELETE" autocomplete="off">
+          <input type="text" id="confirmDeleteInput" placeholder="" autocomplete="off">
 
 
 
@@ -1525,6 +1525,14 @@ Total Projects: ${projectCount}`;
 
       document.getElementById("confirmDeleteBtn").disabled = true;
 
+      // Set username hint from current user's email
+      const email = currentUser?.email || "";
+      const username = email.split("@")[0] || "";
+      const hint = document.getElementById("confirmUsernameHint");
+      if (hint) hint.textContent = username;
+      const input = document.getElementById("confirmDeleteInput");
+      if (input) input.placeholder = username;
+
       setMsg("modalMsg", "", false);
 
       requestAnimationFrame(() => modal.classList.add("open"));
@@ -1551,9 +1559,10 @@ Total Projects: ${projectCount}`;
 
       const btn = document.getElementById("confirmDeleteBtn");
 
+      const email = currentUser?.email || "";
+      const username = email.split("@")[0];
 
-
-      btn.disabled = !(input === "DELETE" && checkbox);
+      btn.disabled = !(username && input === username && checkbox);
 
     }
 

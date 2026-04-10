@@ -99,17 +99,17 @@ a {
     padding: 12px 20px;
     position: relative;
     border-radius: 30px;
-    border: 1px solid hsla(0, 0%, 100%, .03);
+    border: 2px solid hsla(0, 0%, 100%, .03);
     box-shadow: 0 8px 32px 0 rgba(115, 189, 215, .06), inset 0 0 20px hsla(0, 0%, 100%, .1);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    background: rgba(10, 11, 28, .8);
+    background: rgba(10, 11, 28, .7);
     margin-top: 20px;
     margin-left: 40px;
     margin-right: 40px;
 }
 
-.nav-container:before {
+.navbar::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -117,7 +117,7 @@ a {
     -webkit-backdrop-filter: blur(3px);
     backdrop-filter: blur(3px);
     filter: blur(30px);
-    z-index: -1
+    z-index: -1;
 }
 
 .logo {
