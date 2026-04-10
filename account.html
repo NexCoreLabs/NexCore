@@ -330,9 +330,7 @@
             <span class="info-value" id="userId">Loading...</span>
 
             <button class="btn copy" id="copyUserIdBtn" title="Copy User ID">
-
-              <i class="fa-solid fa-copy"></i> Copy
-
+              <i class="fa-solid fa-copy"></i>
             </button>
           </div>
 
@@ -418,7 +416,7 @@
 
             <button class="btn primary ghost" id="exportProjectsBtn">
 
-              <i class="fa-solid fa-folder-open"></i> Export My Projects
+              <i class="fa-solid fa-folder-open"></i> Export My Project
 
             </button>
           </div>
@@ -1201,7 +1199,7 @@
 
         const timestamp = `${dateStr}_${timeStr.substring(0, 4)}`; // YYYY-MM-DD_HHmm
 
-        const baseFilename = `nexcorelabs_account_${user.id.substring(0, 8)}_${timestamp}`;
+        const baseFilename = `nexcorelabs_account_${user.email.substring(0, 7)}_(${timestamp})`;
 
         // Export JSON
 
@@ -1341,7 +1339,7 @@ Last Sign In: ${lastSignIn}`;
 
         const timestamp = `${dateStr}_${timeStr.substring(0, 4)}`; // YYYY-MM-DD_HHmm
 
-        const baseFilename = `nexcorelabs_projects_${session.user.id.substring(0, 8)}_${timestamp}`;
+        const baseFilename = `nexcorelabs_project_${session.user.email.substring(0, 7)}_(${timestamp})`;
 
         const exportData = {
 
@@ -1485,7 +1483,7 @@ Total Projects: ${projectCount}`;
 
         btn.disabled = false;
 
-        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects';
+        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Project';
 
       } catch (error) {
 
@@ -1495,7 +1493,7 @@ Total Projects: ${projectCount}`;
 
         btn.disabled = false;
 
-        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Projects';
+        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Export My Project';
 
       }
 
@@ -1735,7 +1733,7 @@ Total Projects: ${projectCount}`;
 
         btn.classList.add("copied");
 
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i>';
 
 
 
