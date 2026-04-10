@@ -225,14 +225,20 @@ module.exports = async (req, res) => {
   }
 
   // ── Step 4: Build the final prompt ──────────────────────────────────────
-  let systemInstruction = `You are the NexCore AI Assistant — a helpful, knowledgeable assistant for the NexCore Labs platform. NexCore Labs is a project-showcasing platform for Sultan Qaboos University (SQU) students in Oman.
+  let systemInstruction = `You are the NexCore AI Assistant — a focused assistant exclusively for the NexCore Labs platform. NexCore Labs is a project-showcasing platform for Sultan Qaboos University (SQU) students in Oman.
 
-Your personality:
-- Friendly, clear, and concise
-- Always honest — if you don't know something, say so
-- Focus on NexCore platform features, SQU information, and student projects
-- Keep answers under 250 words unless a longer answer is clearly needed
-- Format responses using markdown: use **bold** for key terms, bullet lists for multiple items`;
+## STRICT SCOPE — topics you are allowed to answer:
+- NexCore Labs: platform features, how to submit or view projects, accounts, AI tools, FAQs
+- SQU (Sultan Qaboos University): colleges, programs, admission, grading, campus life
+- Student projects listed on NexCore Labs (use the search_projects or get_project_details tools for live data)
+- Direct follow-up questions that relate to the above topics
+
+## HARD RULES — never break these:
+- If a question is outside the allowed scope, reply ONLY with: "I can only help with NexCore Labs and SQU topics. Is there something about the platform or university I can assist with?"
+- Do NOT answer general coding help, world events, science, math, opinions, or anything unrelated — even if the user insists
+- Do NOT make up project names, statistics, or features — use your tools to fetch live data when needed
+- Keep every answer under 150 words. Be direct — no lengthy intros or filler text
+- Format with **bold** for key terms; use bullet lists only for 3 or more items`;
 
   if (projectContext) {
     systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;
@@ -249,46 +255,162 @@ Your personality:
     { role: 'user', parts: [{ text: userTurn }] }
   ];
 
-  // ── Step 5: Call Gemini for the final response ───────────────────────────
-  let replyText;
-  try {
-    let genResult;
-    try {
-      genResult = await genAi.models.generateContent({
-        model: CHAT_MODEL,
-        systemInstruction,
-        contents,
-        generationConfig: {
-          temperature: 0.65,
-          maxOutputTokens: 512,
-          topP: 0.9
+  // ── Tool declarations for function calling ────────────────────────────────
+  const tools = [{
+    functionDeclarations: [
+      {
+        name: 'search_projects',
+        description: 'Search published student projects on NexCore Labs by keyword. Use when asked about specific projects, categories, or discovering projects on the platform.',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            query:    { type: 'STRING',  description: 'Search term matched against project name and description' },
+            category: { type: 'STRING',  description: 'Optional category filter (e.g. "AI", "Web Development")' },
+            limit:    { type: 'INTEGER', description: 'Max results to return (default 5, max 8)' }
+          },
+          required: ['query']
         }
-      });
+      },
+      {
+        name: 'get_project_details',
+        description: 'Get full public details of a specific project by its URL slug. Use when a user asks about a particular named project.',
+        parameters: {
+          type: 'OBJECT',
+          properties: {
+            slug: { type: 'STRING', description: 'The URL slug of the project to look up' }
+          },
+          required: ['slug']
+        }
+      },
+      {
+        name: 'get_platform_stats',
+        description: 'Get live NexCore Labs statistics: total published project count and the 3 most recent projects. Use when asked "how many projects are there?" or similar platform-wide questions.',
+        parameters: { type: 'OBJECT', properties: {} }
+      }
+    ]
+  }];
+
+  // ── Tool executor (uses user-auth Supabase client — RLS enforced) ─────────
+  const executeTool = async (name, args) => {
+    try {
+      if (name === 'search_projects') {
+        const limit = Math.min(parseInt(args.limit || 5, 10), 8);
+        let q = supabase
+          .from('projects')
+          .select('name, slug, description, category')
+          .eq('published', true)
+          .limit(limit);
+        if (args.query) {
+          q = q.or(`name.ilike.%${args.query}%,description.ilike.%${args.query}%`);
+        }
+        if (args.category) {
+          q = q.ilike('category', `%${args.category}%`);
+        }
+        const { data } = await q;
+        return {
+          results: (data || []).map(p => ({
+            name:        p.name,
+            slug:        p.slug,
+            description: (p.description || '').slice(0, 200),
+            category:    p.category
+          })),
+          count: (data || []).length
+        };
+      }
+
+      if (name === 'get_project_details') {
+        const { data } = await supabase
+          .from('projects')
+          .select('name, slug, description, category, website, github_url')
+          .eq('slug', String(args.slug || '').slice(0, 100))
+          .eq('published', true)
+          .maybeSingle();
+        if (!data) return { error: 'Project not found' };
+        return {
+          name:        data.name,
+          slug:        data.slug,
+          description: (data.description || '').slice(0, 500),
+          category:    data.category,
+          website:     data.website    || null,
+          github_url:  data.github_url || null
+        };
+      }
+
+      if (name === 'get_platform_stats') {
+        const [countRes, newestRes] = await Promise.all([
+          supabase.from('projects').select('*', { count: 'exact', head: true }).eq('published', true),
+          supabase.from('projects').select('name, slug, category').eq('published', true)
+            .order('created_at', { ascending: false }).limit(3)
+        ]);
+        return {
+          total_projects:  countRes.count ?? 0,
+          newest_projects: newestRes.data || []
+        };
+      }
+    } catch (toolErr) {
+      console.error(`[ai-chat] Tool "${name}" error:`, toolErr.message);
+      return { error: 'Tool execution failed' };
+    }
+    return { error: 'Unknown tool' };
+  };
+
+  // ── Helper: single Gemini call with 503 retry ─────────────────────────────
+  const callGemini = async (opts) => {
+    try {
+      return await genAi.models.generateContent(opts);
     } catch (firstErr) {
       const msg = String(firstErr?.message || '');
       const isUnavailable =
         msg.includes('"code":503') ||
         msg.includes('UNAVAILABLE') ||
         msg.toLowerCase().includes('high demand');
-
       if (!isUnavailable) throw firstErr;
-
       console.warn('[ai-chat] Gemini high demand, retrying once...');
       await sleep(CHAT_RETRY_DELAY_MS);
+      return await genAi.models.generateContent(opts);
+    }
+  };
 
-      genResult = await genAi.models.generateContent({
-        model: CHAT_MODEL,
-        systemInstruction,
-        contents,
-        generationConfig: {
-          temperature: 0.65,
-          maxOutputTokens: 512,
-          topP: 0.9
-        }
+  const genOpts = {
+    model: CHAT_MODEL,
+    systemInstruction,
+    tools,
+    generationConfig: { temperature: 0.4, maxOutputTokens: 350, topP: 0.85 }
+  };
+
+  // ── Step 5: Agentic loop — Gemini calls tools until it has a final reply ──
+  let replyText;
+  try {
+    let genResult;
+    const MAX_TOOL_ROUNDS = 3;
+
+    for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
+      genResult = await callGemini({ ...genOpts, contents });
+      const part = genResult?.candidates?.[0]?.content?.parts?.[0];
+
+      // No function call → final text answer
+      if (!part?.functionCall) break;
+
+      if (round === MAX_TOOL_ROUNDS) {
+        console.warn('[ai-chat] Tool round cap reached');
+        break;
+      }
+
+      const { name, args } = part.functionCall;
+      console.log(`[ai-chat] Tool call: ${name}`, args);
+      const toolResult = await executeTool(name, args);
+
+      // Append model function-call turn + tool result for next iteration
+      contents.push({ role: 'model', parts: [{ functionCall: { name, args } }] });
+      contents.push({
+        role: 'user',
+        parts: [{ functionResponse: { name, response: { result: toolResult } } }]
       });
     }
 
-    replyText = genResult?.text || genResult?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    replyText =
+      genResult?.text ||
+      genResult?.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     if (!replyText) {
       throw new Error('Gemini returned empty response');

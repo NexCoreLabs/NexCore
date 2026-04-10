@@ -42,7 +42,7 @@
 
   <style>
 
-    .wrap{max-width:680px;margin:60px auto;padding:16px}
+    .wrap{max-width:680px;margin:110px auto;padding:16px}
 
     .box{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;margin:14px 0;background:rgba(10,11,28,.35);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
 
@@ -412,7 +412,7 @@
                 <div class="ai-usage-bar" id="aiUsageBar" style="width:0%"></div>
               </div>
               <div class="ai-usage-numbers">
-                <span id="aiUsedLabel">0 used</span>
+                <span id="aiUsedLabel">0 used </span>
                 <span id="aiMaxLabel">— / —</span>
               </div>
             </div>
@@ -1833,7 +1833,7 @@ Total Projects: ${projectCount}`;
 
         document.getElementById('aiUsageText').textContent =
           rem > 0 ? `${rem} message${rem === 1 ? '' : 's'} remaining` : 'Daily limit reached';
-        document.getElementById('aiUsedLabel').textContent = `${used} used`;
+        document.getElementById('aiUsedLabel').textContent = `${used} used - ${pct}% usage | `;
         document.getElementById('aiMaxLabel').textContent  = `${max} daily limit`;
 
         const bar = document.getElementById('aiUsageBar');

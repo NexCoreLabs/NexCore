@@ -226,6 +226,7 @@ main {
 
 .roadmap-wrap {
   padding-top: 20px;
+  overflow-x: clip;
 }
 
 /* ─── CONTROLS BAR ─── */
@@ -250,7 +251,7 @@ main {
   text-align: center;
   justify-content: center;
   flex-wrap: wrap;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .tab-btn {
@@ -317,6 +318,7 @@ main {
 .feature-card {
   display: grid;
   grid-template-columns: 68px 1fr;
+  min-width: 0;
   background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: var(--radius);

@@ -55,8 +55,10 @@
 
         .rl-wrap {
             max-width: 980px;
-            margin: 76px auto 80px;
+            margin: 110px auto 80px;
             padding: 0 22px;
+            box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         .rl-hero {
@@ -231,6 +233,7 @@
             grid-template-columns: 162px 1fr;
             gap: 26px;
             align-items: start;
+            min-width: 0;
         }
 
         .rl-nav {
@@ -281,6 +284,9 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            overflow: visible;
+            min-width: 0;
+            width: 100%;
         }
         .rl-tl::before {
             content: '';
@@ -294,6 +300,9 @@
         .rl-card {
             position: relative;
             padding: 0 0 26px 52px;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         .rl-card.hidden { display: none; }
 
@@ -326,6 +335,9 @@
             backdrop-filter: blur(5px);
             overflow: hidden;
             transition: border-color .2s, box-shadow .2s;
+            min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         .rl-box:hover { border-color: var(--border-lit); box-shadow: 0 6px 28px rgba(2,6,23,0.5); }
         .rl-card.major .rl-box {
@@ -343,8 +355,14 @@
             -webkit-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            min-width: 0;
+            box-sizing: border-box;
         }
-        .rl-head-body { flex: 1; min-width: 0; }
+        .rl-head-body {
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+        }
         .rl-head-top {
             display: flex;
             align-items: center;
@@ -651,6 +669,7 @@
                 grid-template-columns: 1fr;
                 gap: 0;
             }
+            .rl-tl { overflow-x: hidden; }
 
             /* horizontal scrollable pill strip */
             .rl-nav {
@@ -665,7 +684,11 @@
         }
 
         @media (max-width: 540px) {
-            .rl-wrap { padding: 0 14px; margin-top: 70px; }
+            .rl-wrap {
+                padding-left: max(14px, calc(env(safe-area-inset-left) + 10px));
+                padding-right: 14px;
+                margin-top: 110px;
+            }
             .rl-hero { padding: 14px 0 34px; }
 
             /* controls stay centred, mode toggle full-width */
@@ -678,10 +701,10 @@
             .rl-nav { flex-wrap: wrap; justify-content: center; }
 
             /* timeline tighter */
-            .rl-tl::before { left: 14px; }
-            .rl-card { padding-left: 38px; padding-bottom: 20px; }
-            .rl-card::before { left: 7px; top: 18px; width: 13px; height: 13px; }
-            .rl-card.major::before { left: 5px; top: 16px; width: 17px; height: 17px; }
+            .rl-tl::before { left: 18px; }
+            .rl-card { padding-left: 46px; padding-bottom: 20px; }
+            .rl-card::before { left: 11px; top: 18px; width: 13px; height: 13px; }
+            .rl-card.major::before { left: 9px; top: 16px; width: 17px; height: 17px; }
             .rl-head { padding: 12px 14px; gap: 9px; }
             .rl-tab-btn { padding: 8px 13px; font-size: 0.79rem; }
             .rl-pane { padding: 13px; }
@@ -731,7 +754,7 @@
 
           <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
           <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
-          <a href="ai-chat.html" class="fade" title="NexCore AI — Ask Anything" style="color:#6ee7f3;"><i class="fa-solid fa-wand-magic-sparkles"></i> NexCore AI</a>
+          <a href="ai-chat.html" class="fade" title="NexCore AI — Ask Anything" style="color:#6ee7f3;"><i class="fa-solid fa-robot"></i> NexCore AI</a>
 
           <div class="div-menu-line"></div>
 
