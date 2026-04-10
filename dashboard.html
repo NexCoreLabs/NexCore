@@ -66,9 +66,7 @@
     .mod-review{color:#ffcc66;border-color:rgba(255,204,102,.45);background:rgba(255,204,102,.12)}
     .mod-unmoderated{color:#cfd8e3;border-color:rgba(207,216,227,.35);background:rgba(207,216,227,.08)}
     .mod-why{margin-left:8px;font-size:.8rem;opacity:.85;cursor:pointer;color:#cfd8e3}
-    .mod-popup{position:fixed;z-index:9999;
-      max-width:360px;padding:10px 12px;border-radius:12px;border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px); color:#fff;font-size:.86rem;line-height:1.45;  box-shadow: 0 -6px 18px rgba(2, 6, 23, 0.5);opacity:0;visibility:hidden;transform:translateY(-6px) scale(.98);pointer-events:none;transition:opacity .22s ease, transform .22s ease, visibility .22s ease}
-    .mod-popup.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+
     .ai-btn {
       position: relative;
       overflow: hidden;
@@ -445,7 +443,6 @@
           Moderation status:
           <span id="moderationBadge" class="mod-badge mod-unmoderated" role="button" tabindex="0">Unmoderated</span>
         </p>
-        <div id="moderationPopup" class="mod-popup" role="status" aria-live="polite"></div>
         <p class="muted">
           View public page:
           <a id="publicLink" href="#" target="_blank" rel="noopener" style="color: #6EE7F3;">open</a>
@@ -763,7 +760,7 @@
     let project = null;
     let currentUserId = null;
     let currentSession = null;
-    let moderationPopupTimer = null;
+
 
     function getUserDisplayName(user) {
       const metadata = user?.user_metadata || {};
@@ -837,39 +834,12 @@
 
     function showModerationWhy() {
       const why = document.getElementById("moderationBadge");
-      const popup = document.getElementById("moderationPopup");
-      if (!why || !popup) return;
+      if (!why) return;
       const reason = (why.dataset.reason || why.title || "No moderation reason available").trim();
-
-      popup.textContent = reason;
-      popup.classList.remove("show");
-
-      const rect = why.getBoundingClientRect();
-      const popupWidth = 360;
-      const margin = 12;
-      const left = Math.max(margin, Math.min(rect.left, window.innerWidth - popupWidth - margin));
-      const top = Math.min(window.innerHeight - 70, rect.bottom + 10);
-
-      popup.style.left = `${left}px`;
-      popup.style.top = `${top}px`;
-
-      setTimeout(() => popup.classList.add("show"), 0);
-
-      if (moderationPopupTimer) clearTimeout(moderationPopupTimer);
-      moderationPopupTimer = setTimeout(() => {
-        popup.classList.remove("show");
-      }, 3500);
+      showToast(reason, true);
     }
 
-    function hideModerationPopup() {
-      const popup = document.getElementById("moderationPopup");
-      if (!popup) return;
-      popup.classList.remove("show");
-      if (moderationPopupTimer) {
-        clearTimeout(moderationPopupTimer);
-        moderationPopupTimer = null;
-      }
-    }
+
 
     function setRemainingUI(el, remaining, max = 3) {
       if (!el) return;
@@ -1105,7 +1075,7 @@
 
       if (!userId) {
         render(null);
-        setPublishStatus("Unable to determine current user session.", "error");
+        showToast("Unable to determine current user session.", true);
         return;
       }
 
@@ -1133,13 +1103,13 @@
       const { data, error } = await query;
 
       if (error) {
-        setPublishStatus(error.message, "error");
+        showToast(error.message, true);
         render(null);
         return;
       }
 
       if (requestedSlug && !data) {
-        setPublishStatus("Project not found or you don't have permission to edit it.", "error");
+        showToast("Project not found or you don't have permission to edit it.", true);
         render(null);
         return;
       }
@@ -1182,10 +1152,10 @@
       setPublishStatus("");
       const name = document.getElementById("newProjectName").value.trim();
       const category = normalizeProjectCategory(document.getElementById("newProjectCategory")?.value);
-      if (!name) return setPublishStatus("Please enter a project name.", "error");
+      if (!name) return showToast("Please enter a project name.", true);
 
       const slug = slugify(name);
-      if (!slug) return setPublishStatus("Invalid project name.", "error");
+      if (!slug) return showToast("Invalid project name.", true);
 
       disableButtons(true);
 
@@ -1225,30 +1195,30 @@
             // Check if it's the one_project_per_user constraint
             if (retry.error.code === '23505' && retry.error.message.includes('one_project_per_user')) {
               disableButtons(false);
-              setPublishStatus("You already have a project. Loading it now...");
+              showToast("You already have a project. Loading it now...");
               await loadMyProject(currentUserId);
               return;
             }
             disableButtons(false);
-            return setPublishStatus(retry.error.message, "error");
+            return showToast(retry.error.message, true);
           }
 
           data = retry.data;
         } else if (error.code === '23505' && error.message.includes('one_project_per_user')) {
           // User already has a project
           disableButtons(false);
-          setPublishStatus("You already have a project. Loading it now...");
+          showToast("You already have a project. Loading it now...");
           await loadMyProject(currentUserId);
           return;
         } else {
           disableButtons(false);
-          return setPublishStatus(error.message, "error");
+          return showToast(error.message, true);
         }
       }
 
       disableButtons(false);
       render(data);
-      setPublishStatus("Project created (draft) ✓ Now edit and publish when ready.");
+      showToast("Project created (draft) ✓ Now edit and publish when ready.");
     }
 
     async function saveCard() {
@@ -1264,8 +1234,8 @@
       const creatorName = getUserDisplayName(currentSession?.user);
       const creatorAvatar = getUserAvatar(currentSession?.user);
 
-      if (!name) return setPublishStatus("Project name is required.", "error");
-      if (!slug) return setPublishStatus("Invalid slug.", "error");
+      if (!name) return showToast("Project name is required.", true);
+      if (!slug) return showToast("Invalid slug.", true);
 
       disableButtons(true);
 
@@ -1288,34 +1258,34 @@
 
       if (error) {
         if (error.code === '23505' && error.message.includes('slug')) {
-          return setPublishStatus("Slug already taken by another project. Please choose a different one.", "error");
+          return showToast("Slug already taken by another project. Please choose a different one.", true);
         }
-        return setPublishStatus(error.message, "error");
+        return showToast(error.message, true);
       }
 
       render(data);
 
       if (wasPublished) {
-        setPublishStatus("Checking moderation after edit...");
+        showToast("Checking moderation after edit...");
         const moderation = await moderateProject("edit_check", true);
         if (!moderation.ok) {
-          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
+          showToast(`Moderation check failed: ${moderation.error}`, true);
           return;
         }
 
         await loadMyProject(currentUserId);
 
         if (moderation.data.decision === "approved") {
-          setPublishStatus("Published ✅");
+          showToast("Published ✅");
         } else if (moderation.data.decision === "blocked") {
-          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+          showToast(`Blocked: ${moderation.data.reason || "Policy violation."}`, true);
         } else {
-          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+          showToast(`Needs review: ${moderation.data.reason || "Manual review required."}`, true);
         }
         return;
       }
 
-      setPublishStatus("Card saved ✓");
+      showToast("Card saved ✓");
     }
 
     async function saveProfile() {
@@ -1357,10 +1327,9 @@
       if (error) return showToast(error.message, true);
 
       if (wasPublished) {
-        setPublishStatus("Checking moderation after edit...");
+        showToast("Checking moderation after edit...");
         const moderation = await moderateProject("edit_check", true);
         if (!moderation.ok) {
-          setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
           showToast("Profile saved, but moderation check failed. Try again.", true);
           return;
         }
@@ -1368,13 +1337,10 @@
         await loadMyProject(currentUserId);
 
         if (moderation.data.decision === "approved") {
-          setPublishStatus("Published ✅");
           showToast("Profile saved ✓ Moderation approved.");
         } else if (moderation.data.decision === "blocked") {
-          setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
           showToast("Profile saved, but project was auto-unpublished (blocked).", true);
         } else {
-          setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
           showToast("Profile saved, but project was auto-unpublished (needs review).", true);
         }
         return;
@@ -1405,30 +1371,30 @@
 
         disableButtons(false);
 
-        if (error) return setPublishStatus(error.message, "error");
+        if (error) return showToast(error.message, true);
 
         render(data);
-        setPublishStatus("Hidden from hub.");
+        showToast("Hidden from hub.");
         return;
       }
 
-      setPublishStatus("Running moderation check...");
+      showToast("Running moderation check...");
       const moderation = await moderateProject("publish_check", true);
       disableButtons(false);
 
       if (!moderation.ok) {
-        setPublishStatus(`Moderation failed: ${moderation.error}`, "warn");
+        showToast(`Moderation failed: ${moderation.error}`, true);
         return;
       }
 
       await loadMyProject(currentUserId);
 
       if (moderation.data.decision === "approved") {
-        setPublishStatus("Published ✅");
+        showToast("Published ✅");
       } else if (moderation.data.decision === "blocked") {
-        setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
+        showToast(`Blocked: ${moderation.data.reason || "Policy violation."}`, true);
       } else {
-        setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
+        showToast(`Needs review: ${moderation.data.reason || "Manual review required."}`, true);
       }
     }
 
@@ -1466,7 +1432,7 @@
       if (error) return showToast(error.message, true);
 
       render(null);
-      setPublishStatus("Project deleted.");
+      showToast("Project deleted.");
     }
 
     document.addEventListener("DOMContentLoaded", async () => {
@@ -1514,18 +1480,6 @@
           }
         });
       }
-
-      document.addEventListener("click", (e) => {
-        const whyEl = document.getElementById("moderationBadge");
-        const popup = document.getElementById("moderationPopup");
-        if (!whyEl || !popup) return;
-        if (!whyEl.contains(e.target) && !popup.contains(e.target)) {
-          hideModerationPopup();
-        }
-      });
-
-      window.addEventListener("scroll", hideModerationPopup, { passive: true });
-      window.addEventListener("resize", hideModerationPopup);
 
       await initAiRemainingUI();
 
