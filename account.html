@@ -68,6 +68,13 @@
 
     .notice-box.warning strong{color: rgb(255,200,120);}
 
+    /* ── AI Usage bar ── */
+    .ai-usage-bar-wrap{margin:14px 0 4px;background:rgba(255,255,255,.06);border-radius:20px;height:8px;overflow:hidden}
+    .ai-usage-bar{height:100%;border-radius:20px;background:linear-gradient(90deg,#6ee7f3,#3ac5c0);transition:width .5s ease}
+    .ai-usage-bar.warn{background:linear-gradient(90deg,#f3c96e,#e09030)}
+    .ai-usage-bar.full{background:linear-gradient(90deg,#ff7878,#cc3333)}
+    .ai-usage-numbers{display:flex;justify-content:space-between;font-size:.8rem;margin-top:6px;opacity:.7}
+
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
 
     .help-text{font-size:.82rem;opacity:.7;margin-top:4px}
@@ -372,8 +379,37 @@
 
         </div>
 
+        </div>
+
         <div class="box">
-          <h3 class="section-title"><i class="fa-solid fa-download"></i> Export Data</h3>
+          <h3 class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6ee7f3"></i> AI Usage Today</h3>
+
+          <p class="muted fs-9">Your NexCore AI chat usage resets every day.</p>
+
+          <div id="aiUsageContent">
+            <div class="info-row" style="flex-direction:column;align-items:flex-start;gap:6px">
+              <div style="width:100%;display:flex;justify-content:space-between;align-items:center">
+                <span class="info-label">Messages used</span>
+                <span class="info-value" id="aiUsageText" style="font-family:inherit">Loading…</span>
+              </div>
+              <div class="ai-usage-bar-wrap" style="width:100%">
+                <div class="ai-usage-bar" id="aiUsageBar" style="width:0%"></div>
+              </div>
+              <div class="ai-usage-numbers">
+                <span id="aiUsedLabel">0 used</span>
+                <span id="aiMaxLabel">— / —</span>
+              </div>
+            </div>
+          </div>
+
+          <p id="aiUsageMsg" style="margin-top:8px"></p>
+
+          <a href="ai-chat.html" class="btn primary ghost" style="margin-top:10px;display:inline-flex;gap:6px;align-items:center">
+            <i class="fa-solid fa-comment-dots"></i> Open AI Chat
+          </a>
+        </div>
+
+        <div class="box">
 
           <p class="muted fs-9">Download your account information and project data in JSON format.</p>
 
@@ -1754,8 +1790,7 @@ Total Projects: ${projectCount}`;
       });
 
       await loadAccountInfo(session);
-
-      // Button event listeners
+      fetchAiUsage(session.access_token);
 
       document.getElementById("logoutBtn").addEventListener("click", logout);
 
@@ -1770,6 +1805,35 @@ Total Projects: ${projectCount}`;
       document.getElementById("exportProjectsBtn").addEventListener("click", exportProjects);
 
       document.getElementById("deleteAccountBtn").addEventListener("click", openDeleteAccountModal);
+
+    async function fetchAiUsage(token) {
+      try {
+        const res = await fetch('/api/ai-chat?usage=1', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const d = await res.json();
+        const used = d.used ?? 0;
+        const max  = d.max  ?? 10;
+        const rem  = d.remaining ?? (max - used);
+        const pct  = Math.min(100, Math.round((used / max) * 100));
+
+        document.getElementById('aiUsageText').textContent =
+          rem > 0 ? `${rem} message${rem === 1 ? '' : 's'} remaining` : 'Daily limit reached';
+        document.getElementById('aiUsedLabel').textContent = `${used} used`;
+        document.getElementById('aiMaxLabel').textContent  = `${max} daily limit`;
+
+        const bar = document.getElementById('aiUsageBar');
+        bar.style.width = pct + '%';
+        bar.className = 'ai-usage-bar' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
+
+        const pill = document.getElementById('aiUsageText');
+        if (rem === 0) pill.style.color = '#ff7878';
+        else if (pct >= 70) pill.style.color = '#f3c96e';
+      } catch (e) {
+        setMsg('aiUsageMsg', 'Could not load AI usage.', true);
+      }
+    }
 
 
 
