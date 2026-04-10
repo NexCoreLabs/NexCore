@@ -320,6 +320,10 @@
     .jc-center{justify-content:center!important}
     .ls-2{letter-spacing:2px!important}
     .img-preview{max-width:240px;border-radius:14px;border: 2px solid rgba(255, 255, 255, 0.06);padding: 12px;}
+    /* ── Toast notification ── */
+    #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);color:#6ee7f3;padding:10px 22px;border-radius:12px;font-size:.875rem;font-weight:500;z-index:10001;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);max-width:min(420px,90vw);text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.55);white-space:pre-line;}
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+    #toast.error{border-color:rgba(255,120,120,.28);color:#ff7878;}
   </style>
   <!-- Vercel Web Analytics -->
   <script>
@@ -651,7 +655,6 @@
             <button class="btn danger" id="deleteBtn" style="margin-left:auto;"><i class="fa-solid fa-trash"></i> Delete Project</button>
           </div>
 
-          <p id="msgProfile" style="margin-top:10px;"></p>
         </div>
       </div>
     </div>
@@ -689,8 +692,6 @@
               <i class="fa-solid fa-trash"></i> Delete Project
             </button>
           </div>
-
-          <p id="delProjModalMsg" style="margin-top:16px;"></p>
         </div>
       </div>
 
@@ -721,6 +722,16 @@
     function setMsg(el, text, isError = false) {
       el.textContent = text || "";
       el.className = isError ? "msg-error" : "msg-success";
+    }
+
+    let _toastTimer = null;
+    function showToast(text, isError = false) {
+      if (!text) return;
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.className = 'show' + (isError ? ' error' : '');
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
     }
 
     function slugify(s) {
@@ -1055,7 +1066,7 @@
         img.src = p.image_url;
         img.style.display = "inline-block";
         img.onerror = () => {
-          setMsg(document.getElementById("msgProfile"), "Image URL is not accessible. Make sure it is public.", true);
+          showToast("Image URL is not accessible. Make sure it is public.", true);
           img.style.display = "none";
         };
       } else {
@@ -1091,7 +1102,6 @@
 
     async function loadMyProject(userId = currentUserId) {
       setPublishStatus("");
-      setMsg(document.getElementById("msgProfile"), "");
 
       if (!userId) {
         render(null);
@@ -1309,8 +1319,6 @@
     }
 
     async function saveProfile() {
-      const msgEl = document.getElementById("msgProfile");
-      setMsg(msgEl, "");
       if (!project) return;
       const wasPublished = isProjectPublished(project);
 
@@ -1346,16 +1354,14 @@
 
       disableButtons(false);
 
-      if (error) return setMsg(msgEl, error.message, true);
-
-      render(data);
+      if (error) return showToast(error.message, true);
 
       if (wasPublished) {
         setPublishStatus("Checking moderation after edit...");
         const moderation = await moderateProject("edit_check", true);
         if (!moderation.ok) {
           setPublishStatus(`Moderation check failed: ${moderation.error}`, "warn");
-          setMsg(msgEl, "Profile saved, but moderation check failed. Try again.", true);
+          showToast("Profile saved, but moderation check failed. Try again.", true);
           return;
         }
 
@@ -1363,18 +1369,18 @@
 
         if (moderation.data.decision === "approved") {
           setPublishStatus("Published ✅");
-          setMsg(msgEl, "Profile saved ✓ Moderation approved.");
+          showToast("Profile saved ✓ Moderation approved.");
         } else if (moderation.data.decision === "blocked") {
           setPublishStatus(`Blocked: ${moderation.data.reason || "Policy violation."}`, "error");
-          setMsg(msgEl, "Profile saved, but project was auto-unpublished (blocked).", true);
+          showToast("Profile saved, but project was auto-unpublished (blocked).", true);
         } else {
           setPublishStatus(`Needs review: ${moderation.data.reason || "Manual review required."}`, "warn");
-          setMsg(msgEl, "Profile saved, but project was auto-unpublished (needs review).", true);
+          showToast("Profile saved, but project was auto-unpublished (needs review).", true);
         }
         return;
       }
 
-      setMsg(msgEl, "Profile saved ✓");
+      showToast("Profile saved ✓");
     }
 
     async function togglePublish() {
@@ -1432,7 +1438,6 @@
       const confirmBtn = document.getElementById("confirmDelProjBtn");
       confirmBtn.disabled = false;
       confirmBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Delete Project';
-      document.getElementById("delProjModalMsg").textContent = "";
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
       requestAnimationFrame(() => modal.classList.add("open"));
@@ -1449,8 +1454,6 @@
       if (!project) return;
       closeDeleteProjectModal();
 
-      const msgEl = document.getElementById("msgProfile");
-      setMsg(msgEl, "");
       disableButtons(true);
 
       const { error } = await sb
@@ -1460,7 +1463,7 @@
 
       disableButtons(false);
 
-      if (error) return setMsg(msgEl, error.message, true);
+      if (error) return showToast(error.message, true);
 
       render(null);
       setPublishStatus("Project deleted.");
@@ -1544,12 +1547,11 @@
       document.getElementById("profileImageUrl").addEventListener("input", (e) => {
         const url = e.target.value.trim();
         const img = document.getElementById("imgPreview");
-        const msgEl = document.getElementById("msgProfile");
         if (url.startsWith("http")) {
           img.src = url;
           img.style.display = "inline-block";
           img.onerror = () => {
-            setMsg(msgEl, "Image URL is not accessible. Make sure it is public.", true);
+            showToast("Image URL is not accessible. Make sure it is public.", true);
             img.style.display = "none";
           };
         } else {
@@ -2008,5 +2010,6 @@
     })();
   </script>
   <script src="assets/js/cookies.js" defer></script>
+  <div id="toast" role="alert" aria-live="assertive"></div>
 </body>
 </html>

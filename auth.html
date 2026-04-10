@@ -66,6 +66,10 @@
         .d-none { display: none !important; }
         .auth-msg-box { padding: 1rem; background: rgba(110, 231, 243, 0.1); border-radius: 8px; margin-bottom: 1rem; color: #6EE7F3; }
         .auth-note-box { padding: 0.875rem; background: rgba(255, 120, 120, 0.12); border: 1px solid rgba(255, 120, 120, 0.3); border-radius: 8px; margin-bottom: 1rem; color: #ff8888; font-size: 0.9rem; line-height: 1.5; }
+        /* ── Toast notification ── */
+        #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);color:#6ee7f3;padding:10px 22px;border-radius:12px;font-size:.875rem;font-weight:500;z-index:10001;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);max-width:min(420px,90vw);text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.55);white-space:pre-line;}
+        #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+        #toast.error{border-color:rgba(255,120,120,.28);color:#ff7878;}
     </style>
     </head>
 
@@ -167,16 +171,6 @@
 
                                 <p class="form-desc" id="formDesc">Sign in with your SQU Google account</p>
 
-                                <div id="authMessage" class="auth-msg-box d-none">
-                                    <!-- Messages will be displayed here -->
-
-                                </div>
-
-                                <div id="authNote" class="auth-note auth-note-box d-none">
-                                    <!-- Error notes will be displayed here -->
-
-                                </div>
-
                                 <button class="google-btn" id="googleSignInBtn">
 
                                     <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -256,10 +250,6 @@
             const googleBtn = document.getElementById('googleSignInBtn');
 
             const btnText = document.getElementById('btnText');
-
-            const authMessage = document.getElementById('authMessage');
-
-            const authNote = document.getElementById('authNote');
 
             // Check if user is already logged in
 
@@ -353,58 +343,26 @@
 
             });
 
-            // Show message
-
-            function showMessage(text, isError = false) {
-
-                authMessage.textContent = text;
-
-                authMessage.style.display = 'block';
-
-                authMessage.style.background = isError ? 'rgba(255, 120, 120, 0.15)' : 'rgba(110, 231, 243, 0.1)';
-
-                authMessage.style.color = isError ? '#ff8888' : '#6EE7F3';
-
-                authMessage.style.borderColor = isError ? 'rgba(255, 120, 120, 0.3)' : 'rgba(110, 231, 243, 0.3)';
-
+            // Toast notification
+            let _toastTimer = null;
+            function showToast(text, isError = false) {
+                if (!text) return;
+                const toast = document.getElementById('toast');
+                toast.textContent = text;
+                toast.className = 'show' + (isError ? ' error' : '');
+                clearTimeout(_toastTimer);
+                _toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
             }
 
-            // Show error note
+            function showMessage(text, isError = false) {
+                showToast(text, isError);
+            }
 
             function showNote(text, isError = false) {
-
-                authNote.textContent = text;
-
-                authNote.style.display = 'block';
-
-
-
-                if (isError) {
-
-                    authNote.style.background = 'rgba(255, 120, 120, 0.12)';
-
-                    authNote.style.borderColor = 'rgba(255, 120, 120, 0.3)';
-
-                    authNote.style.color = '#ff8888';
-
-                } else {
-
-                    authNote.style.background = 'rgba(110, 231, 243, 0.1)';
-
-                    authNote.style.borderColor = 'rgba(110, 231, 243, 0.3)';
-
-                    authNote.style.color = '#6EE7F3';
-
-                }
-
-
-
+                showToast(text, isError);
                 // Re-enable button if it was disabled
-
                 googleBtn.disabled = false;
-
                 btnText.textContent = 'Log In with Google';
-
             }
 
             // Google Sign In
@@ -502,6 +460,8 @@
         <!-- Cookie consent script -->
 
         <script src="assets/js/cookies.js"></script>
+
+    <div id="toast" role="alert" aria-live="assertive"></div>
 
     </body>
 

@@ -177,6 +177,28 @@
 
     .close:hover{background:rgba(255,255,255,.08);color:#fff;}
 
+    /* ── Toast notification ── */
+    #toast{
+      position:fixed;bottom:28px;left:50%;
+      transform:translateX(-50%) translateY(16px);
+      border: 2px solid rgba(255, 255, 255, 0.06);
+      background: rgba(10, 11, 28, 0.6);
+      color:#6ee7f3;
+      padding:10px 22px;
+      border-radius:12px;
+      font-size:.875rem;font-weight:500;
+      z-index:10001;
+      opacity:0;pointer-events:none;
+      transition:opacity .22s,transform .22s;
+      backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+      max-width:min(420px,90vw);
+      text-align:center;
+      box-shadow:0 8px 32px rgba(0,0,0,.55);
+      white-space:pre-line;
+    }
+    #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+    #toast.error{border-color:rgba(255,120,120,.28);color:#ff7878;}
+
     .modal input[type="text"],.modal input[type="checkbox"]{margin:10px 0}
 
     .modal input[type="text"]{
@@ -372,7 +394,6 @@
               </button>
             </div>
 
-            <p id="contactMsg"></p>
           </form>
         </div>
 
@@ -397,7 +418,6 @@
             </div>
           </div>
 
-          <p id="aiUsageMsg" style="margin-top:8px"></p>
         </div>
 
         <div class="box">
@@ -421,7 +441,6 @@
             </button>
           </div>
 
-          <p id="exportMsg"></p>
         </div>
 
         <div class="box">
@@ -434,8 +453,6 @@
             <i class="fa-solid fa-right-from-bracket"></i> Log Out
 
           </button>
-
-          <p id="logoutMsg"></p>
         </div>
 
         <div class="box">
@@ -453,8 +470,6 @@
             <i class="fa-solid fa-trash"></i> Delete My Project
 
           </button>
-
-          <p id="deleteMsg"></p>
         </div>
 
         <div class="box">
@@ -537,7 +552,7 @@
             </button>
           </div>
 
-          <p id="projectModalMsg" style="margin-top:16px;"></p>
+          </div>
         </div>
       </div>
 
@@ -600,9 +615,6 @@
             </button>
           </div>
 
-
-
-          <p id="modalMsg" style="margin-top:16px;"></p>
         </div>
       </div>
 
@@ -646,15 +658,15 @@
     const sb = window.supabaseClient;
 
     let currentUser = null;
+    let _toastTimer = null;
 
-    function setMsg(elId, text, isError = false) {
-
-      const el = document.getElementById(elId);
-
-      el.textContent = text || "";
-
-      el.className = isError ? "msg-error" : "msg-success";
-
+    function setMsg(_elId, text, isError = false) {
+      if (!text) return;
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.className = 'show' + (isError ? ' error' : '');
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
     }
 
     function downloadText(filename, text) {
@@ -1479,7 +1491,7 @@ Total Projects: ${projectCount}`;
 
         downloadText(`${baseFilename}.txt`, txtContent);
 
-        setMsg("exportMsg", `✓ ${projectCount} project(s) exported (JSON + TXT).`);
+        setMsg("exportMsg", `✓ project exported (JSON + TXT).`);
 
         btn.disabled = false;
 
@@ -1874,6 +1886,8 @@ Total Projects: ${projectCount}`;
   </script>
 
   <script src="assets/js/cookies.js" defer></script>
+
+  <div id="toast" role="alert" aria-live="assertive"></div>
 
 </body>
 
