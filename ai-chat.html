@@ -152,12 +152,25 @@
       border: 1px solid rgba(110, 231, 243, 0.14);
       color: #6ee7f3;
       letter-spacing: 0.2px;
+      transition: background 0.35s, border-color 0.35s, color 0.35s;
+    }
+
+    #page-usage-pill.warning {
+      background: rgba(255, 165, 50, 0.10);
+      border-color: rgba(255, 165, 50, 0.30);
+      color: #ffaa44;
+    }
+
+    #page-usage-pill.critical {
+      background: rgba(255, 80, 50, 0.10);
+      border-color: rgba(255, 80, 50, 0.28);
+      color: #ff6a44;
     }
 
     #page-usage-pill.depleted {
-      background: rgba(255, 100, 100, 0.08);
-      border-color: rgba(255, 100, 100, 0.2);
-      color: #ff7878;
+      background: rgba(255, 60, 60, 0.10);
+      border-color: rgba(255, 60, 60, 0.25);
+      color: #ff5555;
     }
 
     /* ── Messages ─────────────────────────────────────────────── */
@@ -666,7 +679,7 @@
 
       const API_ENDPOINT     = '/api/ai-chat';
       const MAX_LEN          = 500;
-      const DAILY_LIMIT      = 10;
+      const DAILY_LIMIT      = 3;
       const MAX_HISTORY_MSGS = 12;
       const STORAGE_KEY      = 'nexai_page_history';
 
@@ -743,7 +756,12 @@
       // ── Usage ─────────────────────────────────────────────────
       function updatePill() {
         elUsagePill.textContent = `${chatRemaining} / ${chatMax} left`;
-        elUsagePill.className = chatRemaining === 0 ? 'depleted' : '';
+        const ratio = chatMax > 0 ? chatRemaining / chatMax : 0;
+        let cls = '';
+        if (chatRemaining === 0)     cls = 'depleted';
+        else if (chatRemaining === 1) cls = 'critical';
+        else if (ratio <= 0.67)       cls = 'warning';
+        elUsagePill.className = cls;
       }
 
       async function fetchUsage() {
