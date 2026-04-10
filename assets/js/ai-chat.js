@@ -556,8 +556,11 @@
     document.getElementById('nexai-close').addEventListener('click', closePanel);
 
     // Close on outside click
+    // Guard: if the clicked element was removed from the DOM before the event
+    // bubbles here (e.g. a suggestion button that calls hideSuggestions()),
+    // document.body.contains() will be false — treat that as an inside click.
     document.addEventListener('click', e => {
-      if (isOpen && !elPanel.contains(e.target) && !elTrigger.contains(e.target)) {
+      if (isOpen && document.body.contains(e.target) && !elPanel.contains(e.target) && !elTrigger.contains(e.target)) {
         closePanel();
       }
     });
