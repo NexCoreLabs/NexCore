@@ -2600,7 +2600,8 @@ strong {
     }
 
     .nav-container {
-        margin: auto
+        margin: auto;
+        margin-top: 28px;
     }
 
     .hero-inner {
