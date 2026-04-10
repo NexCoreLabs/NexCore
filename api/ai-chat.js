@@ -29,10 +29,35 @@ const EMBED_DIMENSIONS = parseInt(process.env.GEMINI_EMBED_DIMENSIONS || '768', 
 const DAILY_LIMIT     = parseInt(process.env.AI_CHAT_DAILY_LIMIT || '10', 10);
 const CHAT_RETRY_DELAY_MS = parseInt(process.env.GEMINI_CHAT_RETRY_DELAY_MS || '1200', 10);
 
+// Restrict CORS to this origin (set ALLOWED_ORIGIN env var in production)
+const ALLOWED_ORIGIN  = process.env.ALLOWED_ORIGIN || '*';
+// Per-minute burst limit per user (serverless-safe; resets per warm instance)
+const MINUTE_LIMIT    = parseInt(process.env.AI_CHAT_MINUTE_LIMIT || '5', 10);
+
 // Max characters we pass as context to Gemini (approx 6 000 tokens)
 const MAX_CONTEXT_CHARS = 4000;
 // Max characters in a user message
 const MAX_MSG_CHARS     = 500;
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Per-minute burst limiter (in-memory; effective within a single serverless instance)
+const minuteMap = new Map(); // userId → { count, windowStart }
+
+function checkMinuteLimit(userId) {
+  const now   = Date.now();
+  const entry = minuteMap.get(userId);
+  if (!entry || now - entry.windowStart > 60_000) {
+    minuteMap.set(userId, { count: 1, windowStart: now });
+    return true;
+  }
+  if (entry.count >= MINUTE_LIMIT) return false;
+  entry.count++;
+  return true;
+}
 
 // ─── Main handler ─────────────────────────────────────────────────────────────
 module.exports = async (req, res) => {
@@ -41,7 +66,7 @@ module.exports = async (req, res) => {
 
   // CORS
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', ALLOWED_ORIGIN);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
   res.setHeader('Access-Control-Allow-Headers',
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
@@ -71,7 +96,15 @@ module.exports = async (req, res) => {
     return res.status(401).json({ error: 'Invalid or expired token' });
   }
 
-  // ── GET: usage check ─────────────────────────────────────────────────────
+  // ── Per-minute burst check (POST only) ───────────────────────────────────
+  if (req.method === 'POST' && !checkMinuteLimit(user.id)) {
+    return res.status(429).json({
+      error: 'Too many requests',
+      message: 'You are sending messages too quickly. Please wait a moment.'
+    });
+  }
+
+  // ── GET: usage check ────────────────────────────────────────────────────────
   if (req.method === 'GET' && String(req.query?.usage || '').trim() === '1') {
     const { data, error } = await supabase.rpc('get_ai_chat_usage', { max_uses: DAILY_LIMIT });
     if (error) {
@@ -103,7 +136,15 @@ module.exports = async (req, res) => {
         description: String(body.projectContext.description || '').slice(0, 800)
       }
     : null;
-
+  // Conversation history from the client (sanitized)
+  const rawHistory = Array.isArray(body.history) ? body.history : [];
+  const history = rawHistory
+    .slice(-12)
+    .filter(h => h && (h.role === 'user' || h.role === 'ai') && typeof h.text === 'string')
+    .map(h => ({
+      role:  h.role === 'ai' ? 'model' : 'user',
+      parts: [{ text: String(h.text).replace(/\0/g, '').slice(0, MAX_MSG_CHARS) }]
+    }));
   // ── Rate limit ───────────────────────────────────────────────────────────
   const { data: usageData, error: usageError } = await supabase.rpc('consume_ai_chat_use', {
     max_uses: DAILY_LIMIT
@@ -184,7 +225,7 @@ module.exports = async (req, res) => {
   }
 
   // ── Step 4: Build the final prompt ──────────────────────────────────────
-  let systemContext = `You are the NexCore AI Assistant — a helpful, knowledgeable assistant for the NexCore Labs platform. NexCore Labs is a project-showcasing platform for Sultan Qaboos University (SQU) students in Oman.
+  let systemInstruction = `You are the NexCore AI Assistant — a helpful, knowledgeable assistant for the NexCore Labs platform. NexCore Labs is a project-showcasing platform for Sultan Qaboos University (SQU) students in Oman.
 
 Your personality:
 - Friendly, clear, and concise
@@ -194,21 +235,19 @@ Your personality:
 - Use plain text (no markdown syntax like ** or ## in the body)`;
 
   if (projectContext) {
-    systemContext += `\n\nThe user is currently viewing this project:
-Title: ${projectContext.title}
-Description: ${projectContext.description}
-You may reference this project when answering questions about it.`;
+    systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;
   }
 
-  const contextSection = contextBlock
-    ? `\n\nRelevant knowledge retrieved for this question:\n---\n${contextBlock}\n---`
-    : '';
+  // Append RAG context directly to the current user turn
+  const userTurn = contextBlock
+    ? `${userMessage}\n\n[Relevant knowledge for this question]\n${contextBlock}`
+    : userMessage;
 
-  const fullPrompt = `${systemContext}${contextSection}
-
-User question: ${userMessage}
-
-Answer:`;
+  // Build multi-turn contents: prior history + current user message
+  const contents = [
+    ...history,
+    { role: 'user', parts: [{ text: userTurn }] }
+  ];
 
   // ── Step 5: Call Gemini for the final response ───────────────────────────
   let replyText;
@@ -217,7 +256,8 @@ Answer:`;
     try {
       genResult = await genAi.models.generateContent({
         model: CHAT_MODEL,
-        contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+        systemInstruction,
+        contents,
         generationConfig: {
           temperature: 0.65,
           maxOutputTokens: 512,
@@ -238,7 +278,8 @@ Answer:`;
 
       genResult = await genAi.models.generateContent({
         model: CHAT_MODEL,
-        contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+        systemInstruction,
+        contents,
         generationConfig: {
           temperature: 0.65,
           maxOutputTokens: 512,
@@ -289,6 +330,3 @@ Answer:`;
     sources:   knowledgeChunks.map(c => ({ title: c.title, source: c.source }))
   });
 };
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
