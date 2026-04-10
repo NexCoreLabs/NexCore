@@ -1730,11 +1730,17 @@ textarea:focus {
     box-shadow: 0 0 10px 1px #6ee7f3
 }
 
-@media (max-width:420px) {
+@media (max-width:450px) {
     .core-menu {
         --size: 46px;
         --dot-size: 7px;
-        --dot-active-size: 14px
+        --dot-active-size: 12px
+    }
+}
+
+@media (max-width:420px) {
+    .core-menu {
+        --size: 44px;
     }
 
     .nav-container{
