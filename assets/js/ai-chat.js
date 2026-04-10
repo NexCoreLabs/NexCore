@@ -438,12 +438,10 @@
           appendMessage('ai', data.message || 'Daily message limit reached. Try again tomorrow.', null, true);
         } else if (res.status === 401) {
           appendMessage('ai', 'Session expired — please sign in again.', null, true);
+        } else if (res.status === 503) {
+          appendSupportBubble();
         } else {
-          appendErrorWithRetry(
-            res.status === 503
-              ? 'The AI is temporarily unavailable. Please try again in a moment.'
-              : 'Something went wrong. Please try again.'
-          );
+          appendErrorWithRetry('Something went wrong. Please try again.');
         }
         return;
       }
@@ -466,6 +464,40 @@
     } finally {
       setLoading(false);
     }
+  }
+
+  // ── Support bubble (shown when Gemini API quota is exhausted) ───────────────
+  function appendSupportBubble() {
+    const welcome = elMessages.querySelector('.nexai-welcome');
+    if (welcome) welcome.remove();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'nexai-msg ai';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'nexai-bubble nexai-support-bubble';
+    bubble.innerHTML = renderMarkdown(
+      'Our AI credits have run out \u2014 we need a little help to keep the service running. \u2665\n\n' +
+      'If NexCore has been useful to you, consider supporting us so the AI stays available for everyone.'
+    );
+
+    const btn = document.createElement('a');
+    btn.className = 'nexai-support-btn';
+    btn.href = 'https://www.paypal.me/alfarismujahid';
+    btn.target = '_blank';
+    btn.rel = 'noopener noreferrer';
+    btn.innerHTML = '&#9829;&nbsp; Support via PayPal';
+
+    const time = document.createElement('span');
+    time.className = 'nexai-msg-time';
+    time.textContent = formatTime();
+
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(btn);
+    wrapper.appendChild(time);
+    elMessages.appendChild(wrapper);
+    scrollToBottom();
+    messageCount++;
   }
 
   // ── Error bubble with Retry button ───────────────────────────────────────
