@@ -232,7 +232,7 @@ Your personality:
 - Always honest — if you don't know something, say so
 - Focus on NexCore platform features, SQU information, and student projects
 - Keep answers under 250 words unless a longer answer is clearly needed
-- Use plain text (no markdown syntax like ** or ## in the body)`;
+- Format responses using markdown: use **bold** for key terms, bullet lists for multiple items`;
 
   if (projectContext) {
     systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;

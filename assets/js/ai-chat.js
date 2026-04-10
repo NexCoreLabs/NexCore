@@ -201,6 +201,38 @@
   }
 
   /**
+   * Safely convert a subset of markdown to HTML.
+   * HTML entities are escaped first to prevent XSS.
+   */
+  function renderMarkdown(raw) {
+    // 1. Escape all HTML entities
+    let s = raw
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    // 2. Bold: **text**
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // 3. Italic: _text_
+    s = s.replace(/_([^_\n]+?)_/g, '<em>$1</em>');
+
+    // 4. Bullet lists: lines starting with "* " or "- "
+    s = s.replace(/^[*\-]\s+(.+)$/gm, '<li>$1</li>');
+    s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g,
+      m => `<ul>${m.replace(/\n/g, '')}</ul>`);
+
+    // 5. Headings: ## or ###
+    s = s.replace(/^#{2,3}\s+(.+)$/gm, '<strong>$1</strong>');
+
+    // 6. Remaining newlines → <br>
+    s = s.replace(/\n/g, '<br>');
+
+    return s;
+  }
+
+  /**
    * Append a message bubble to the chat.
    * @param {'user'|'ai'} role
    * @param {string} text
@@ -219,7 +251,13 @@
     const bubble = document.createElement('div');
     bubble.className = 'nexai-bubble';
     if (isError) bubble.classList.add('nexai-error-bubble');
-    bubble.textContent = text;
+
+    // Render markdown for AI messages; plain text for user/error messages
+    if (role === 'ai' && !isError) {
+      bubble.innerHTML = renderMarkdown(text);
+    } else {
+      bubble.textContent = text;
+    }
 
     const time = document.createElement('span');
     time.className = 'nexai-msg-time';
