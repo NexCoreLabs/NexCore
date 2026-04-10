@@ -966,8 +966,11 @@
         msgCount++;
       }
 
-      // ── UI state ──────────────────────────────────────────────
       function setLoading(v) {
+        isLoading = v;
+        elInput.disabled = v;
+        elSend.disabled = v;
+      }
 
       // ── Events ────────────────────────────────────────────────
       elInput.addEventListener('keydown', e => {
@@ -990,6 +993,5 @@
 
     })();
   </script>
-
 </body>
 </html>
