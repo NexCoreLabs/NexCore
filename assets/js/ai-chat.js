@@ -43,8 +43,8 @@
   let isLoading       = false;
   let sessionToken    = null;          // cached JWT
   let chatUsed        = 0;
-  let chatRemaining   = 10;
-  let chatMax         = 10;
+  let chatRemaining   = 3;
+  let chatMax         = 3;
   let suggestionsUsed = false;
   let messageCount    = 0;
   let lastFailedMessage = null;        // stored for Retry button

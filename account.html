@@ -1827,7 +1827,7 @@ Total Projects: ${projectCount}`;
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const d = await res.json();
         const used = d.used ?? 0;
-        const max  = d.max  ?? 10;
+        const max  = d.max  ?? 3;
         const rem  = d.remaining ?? (max - used);
         const pct  = Math.min(100, Math.round((used / max) * 100));
 
