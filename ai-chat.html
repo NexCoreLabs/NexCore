@@ -218,6 +218,35 @@
       color: #ffaaaa;
     }
 
+    /* Support bubble (API quota exhausted) */
+    .pmsg-support-bubble {
+      background: rgba(255, 180, 0, 0.05) !important;
+      border-color: rgba(255, 180, 0, 0.18) !important;
+      color: #f0d8a0 !important;
+    }
+
+    .pmsg-support-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 9px 18px;
+      border-radius: 20px;
+      background: #0070ba;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: background 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .pmsg-support-btn:hover {
+      background: #005ea6;
+      transform: translateY(-1px);
+    }
+
+    .pmsg-support-btn:active { transform: scale(0.97); }
+
     .pmsg-meta {
       display: flex;
       align-items: center;
@@ -717,6 +746,20 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       }
 
+      function renderMarkdown(raw) {
+        let s = raw
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/_([^_\n]+?)_/g, '<em>$1</em>');
+        s = s.replace(/^[*\-]\s+(.+)$/gm, '<li>$1</li>');
+        s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g,
+          m => `<ul>${m.replace(/\n/g, '')}</ul>`);
+        s = s.replace(/^#{2,3}\s+(.+)$/gm, '<strong>$1</strong>');
+        s = s.replace(/\n/g, '<br>');
+        return s;
+      }
+
       function appendMsg(role, text, sources, isError) {
         const welcome = elMessages.querySelector('.page-welcome');
         if (welcome) welcome.remove();
@@ -726,7 +769,11 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'pmsg-bubble' + (isError ? ' error' : '');
-        bubble.textContent = text;
+        if (role === 'ai' && !isError) {
+          bubble.innerHTML = renderMarkdown(text);
+        } else {
+          bubble.textContent = text;
+        }
 
         const meta = document.createElement('div');
         meta.className = 'pmsg-meta';
@@ -857,12 +904,15 @@
           hideTyping();
 
           if (!res.ok) {
-            const msg =
-              res.status === 429 ? (data.message || 'Daily message limit reached. Try again tomorrow.') :
-              res.status === 401 ? 'Session expired — please sign in again.' :
-              res.status === 503 ? 'AI is temporarily unavailable. Please try again shortly.' :
-              'Something went wrong. Please try again.';
-            appendMsg('ai', msg, null, true);
+            if (res.status === 429) {
+              appendMsg('ai', data.message || 'Daily message limit reached. Try again tomorrow.', null, true);
+            } else if (res.status === 401) {
+              appendMsg('ai', 'Session expired \u2014 please sign in again.', null, true);
+            } else if (res.status === 503) {
+              appendSupportMsg();
+            } else {
+              appendMsg('ai', 'Something went wrong. Please try again.', null, true);
+            }
             return;
           }
 
@@ -880,13 +930,44 @@
         }
       }
 
+      function appendSupportMsg() {
+        const welcome = elMessages.querySelector('.page-welcome');
+        if (welcome) welcome.remove();
+
+        const wrap = document.createElement('div');
+        wrap.className = 'pmsg ai';
+
+        const bubble = document.createElement('div');
+        bubble.className = 'pmsg-bubble pmsg-support-bubble';
+        bubble.innerHTML = renderMarkdown(
+          'Our AI credits have run out \u2014 we need a little help to keep the service running. \u2665\n\n' +
+          'If NexCore has been useful to you, consider supporting us so the AI stays available for everyone.'
+        );
+
+        const btn = document.createElement('a');
+        btn.className = 'pmsg-support-btn';
+        btn.href = 'https://www.paypal.me/alfarismujahid';
+        btn.target = '_blank';
+        btn.rel = 'noopener noreferrer';
+        btn.innerHTML = '&#9829;&nbsp; Support via PayPal';
+
+        const meta = document.createElement('div');
+        meta.className = 'pmsg-meta';
+        const time = document.createElement('span');
+        time.className = 'pmsg-time';
+        time.textContent = ts();
+        meta.appendChild(time);
+
+        wrap.appendChild(bubble);
+        wrap.appendChild(btn);
+        wrap.appendChild(meta);
+        elMessages.appendChild(wrap);
+        elMessages.scrollTop = elMessages.scrollHeight;
+        msgCount++;
+      }
+
       // ── UI state ──────────────────────────────────────────────
       function setLoading(v) {
-        isLoading = v;
-        elSend.disabled  = v;
-        elInput.disabled = v;
-        elStatus.textContent = v ? 'Thinking…' : 'RAG · Gemini · Knowledge Base';
-      }
 
       // ── Events ────────────────────────────────────────────────
       elInput.addEventListener('keydown', e => {
