@@ -665,9 +665,11 @@
     (function () {
       'use strict';
 
-      const API_ENDPOINT = '/api/ai-chat';
-      const MAX_LEN      = 500;
-      const DAILY_LIMIT  = 10;
+      const API_ENDPOINT     = '/api/ai-chat';
+      const MAX_LEN          = 500;
+      const DAILY_LIMIT      = 10;
+      const MAX_HISTORY_MSGS = 12;
+      const STORAGE_KEY      = 'nexai_page_history';
 
       const SUGGESTIONS = [
         'What is NexCore Labs?',
@@ -695,6 +697,26 @@
       let chatMax         = DAILY_LIMIT;
       let suggestionsUsed = false;
       let msgCount        = 0;
+      let chatHistory     = [];
+
+      // ── History ───────────────────────────────────────────────
+      function loadHistory() {
+        try {
+          const raw = sessionStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const saved = JSON.parse(raw);
+          if (!Array.isArray(saved) || saved.length === 0) return;
+          chatHistory = saved;
+          suggestionsUsed = true;
+          saved.forEach(m => appendMsg(m.role === 'model' ? 'ai' : 'user', m.text));
+        } catch (_) { chatHistory = []; }
+      }
+
+      function saveHistory() {
+        try {
+          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory.slice(-MAX_HISTORY_MSGS)));
+        } catch (_) {}
+      }
 
       // ── Auth ──────────────────────────────────────────────────
       async function getToken() {
@@ -897,7 +919,7 @@
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({ message: text })
+            body: JSON.stringify({ message: text, history: chatHistory.slice(-MAX_HISTORY_MSGS) })
           });
 
           const data = await res.json();
@@ -920,7 +942,11 @@
           chatRemaining = data.remaining ?? chatRemaining;
           chatMax       = data.max       ?? chatMax;
           updatePill();
-          appendMsg('ai', data.reply || 'Sorry, I couldn\'t generate a response.', data.sources);
+          const reply = data.reply || 'Sorry, I couldn\'t generate a response.';
+          appendMsg('ai', reply, data.sources);
+          chatHistory.push({ role: 'user', text });
+          chatHistory.push({ role: 'model', text: reply });
+          saveHistory();
 
         } catch (err) {
           hideTyping();
@@ -989,6 +1015,7 @@
       // ── Init ──────────────────────────────────────────────────
       updatePill();
       checkAuth();
+      loadHistory();
       fetchUsage().then(() => renderSuggestions());
 
     })();
