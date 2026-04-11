@@ -27,9 +27,9 @@
 
 ### Technical & Infrastructure:
 
-URL Rewrites: Added vercel.json to handle clean URL rewrites (e.g., /account instead of /account.html).
-Service Worker: Incremented the service worker cache version to v2.7.0 for better asset management.
-Error Handling: Enhanced retry logic and error handling for Gemini API calls, including support bubbles for quota exhaustion.
+- URL Rewrites: Added vercel.json to handle clean URL rewrites (e.g., /account instead of /account.html).
+- Service Worker: Incremented the service worker cache version to v2.7.0 for better asset management.
+- Error Handling: Enhanced retry logic and error handling for Gemini API calls, including support bubbles for quota exhaustion.
 
 ---
 
