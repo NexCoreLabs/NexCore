@@ -1,5 +1,38 @@
 # 🧾 Changelog
 
+## v2.7.0 - 11 Apr 2026
+### AI Chat & RAG Integration:
+
+- RAG-Powered Assistant: Implemented a new AI chat system using Retrieval-Augmented Generation (RAG) to provide context-aware answers based on project data.
+- Backend API: Added a new api/ai-chat.js endpoint that authenticates via Supabase and integrates with Google Gemini 2.5.
+- Knowledge Base: Introduced a seed script (scripts/seed-knowledge.js) to manage embeddings for the AI knowledge base.
+- Chat Interface: Added a full-page AI chat interface (ai-chat.html) and a floating chat widget accessible across multiple pages.
+- Usage Tracking: Implemented daily chat limits (set to 3) with usage tracking and "usage pills" in the UI to show remaining quota.
+
+
+### User Interface & Feedback:
+
+- Toast Notifications: Replaced the old moderation popups with a modern Toast Notification system for smoother user feedback.
+- Accessibility & Layout: Adjusted the Floating Action Button (FAB) position and navigation container margins for better consistency and accessibility.
+- Responsive Design: Refined media query breakpoints and menu dot sizes to improve mobile responsiveness.
+- Enhanced Modals: Improved the delete confirmation logic and updated confirmation input labels for better clarity.
+
+
+### Account & Dashboard Improvements:
+
+- AI Usage Visibility: Added AI usage tracking and display directly within the account section.
+- UI Polish: Updated section titles with icons and color enhancements in the account settings.
+- Session Management: Implemented chat history management using session storage to persist conversations during a session.
+
+
+### Technical & Infrastructure:
+
+URL Rewrites: Added vercel.json to handle clean URL rewrites (e.g., /account instead of /account.html).
+Service Worker: Incremented the service worker cache version to v2.7.0 for better asset management.
+Error Handling: Enhanced retry logic and error handling for Gemini API calls, including support bubbles for quota exhaustion.
+
+---
+
 ## v2.6.0 - 19 Mar 2026
 ### Roadmap & Feature Requests:
 

@@ -1,12 +1,16 @@
 /* Improved Service Worker — robust caching, offline fallback, and runtime strategies */
-const CACHE_VERSION = 'v2.6.0';
-const CACHE_NAME = `nexcore-cache-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v2.7.0';
+const CACHE_PREFIX = 'nexcore-cache-';
+const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
+const IMAGE_CACHE_PREFIX = 'nexcore-images-';
+const IMAGE_CACHE = `${IMAGE_CACHE_PREFIX}${CACHE_VERSION}`;
 
 const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/hub.html',
   '/project.html',
+  '/ai-chat.html',
   '/roadmap.html',
   '/releases.html',
   '/thanks.html',
@@ -21,10 +25,13 @@ const PRECACHE_URLS = [
   '/offline.html',
 
   '/assets/css/style.css',
+  '/assets/css/ai-chat.css',
   '/assets/css/unminified-css.css',
   '/assets/css/cookies.css',
   '/assets/css/project-categories.css',
   '/assets/js/script.js',
+  '/assets/js/ai-chat.js',
+  '/assets/js/auth-ui.js',
   '/assets/js/unminified-js.js',
   '/assets/js/cookie-consent.js',
   '/assets/js/cookies.js',
@@ -44,7 +51,6 @@ const PRECACHE_URLS = [
 ];
 
 // Maximum entries for runtime caches
-const IMAGE_CACHE = 'nexcore-images';
 const MAX_IMAGE_ENTRIES = 60;
 
 // Utility: trim cache to size
@@ -81,9 +87,18 @@ self.addEventListener('activate', (event) => {
       try { await self.registration.navigationPreload.enable(); } catch (e) { /* ignore */ }
     }
 
-    // Cleanup old caches
+    // Cleanup old caches for both app and image caches.
     const keys = await caches.keys();
-    await Promise.all(keys.filter(k => k !== CACHE_NAME && k !== IMAGE_CACHE).map(k => caches.delete(k)));
+    await Promise.all(
+      keys
+        .filter((k) => {
+          const isAppCache = k.startsWith(CACHE_PREFIX);
+          const isImageCache = k.startsWith(IMAGE_CACHE_PREFIX);
+          if (!isAppCache && !isImageCache) return false;
+          return k !== CACHE_NAME && k !== IMAGE_CACHE;
+        })
+        .map((k) => caches.delete(k))
+    );
 
     await self.clients.claim();
   })());

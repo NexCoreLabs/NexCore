@@ -1,0 +1,611 @@
+/**
+ * NexCore AI Chat Widget — frontend logic
+ *
+ * Self-contained IIFE — no global pollution.
+ *
+ * Features:
+ *  - Floating trigger button with pulse ring
+ *  - Slide-up chat panel
+ *  - User + AI message bubbles with timestamps
+ *  - "AI is typing…" indicator
+ *  - Quick-suggestion buttons (hidden after first use)
+ *  - Source attribution tags
+ *  - Daily usage counter in header
+ *  - Context-aware mode: reads window.nexcoreProjectContext on project pages
+ *  - Conversation history (last 6 turns) sent with each request
+ *  - History persisted in sessionStorage within a tab session
+ *  - Retry button on network / server errors
+ *  - Live character counter (shown near the limit)
+ *  - Auto 401 token refresh and retry once
+ *  - Graceful error handling + rate limit messaging
+ *  - Auto-scroll to latest message
+ *  - Enter to send, Shift+Enter for new line
+ */
+
+(function () {
+  'use strict';
+
+  // ── Config ──────────────────────────────────────────────────────────────
+  const API_ENDPOINT = '/api/ai-chat';
+  const MAX_MSG_LEN  = 500;
+
+  // Quick suggestion buttons shown on first open
+  const SUGGESTIONS = [
+    'What is NexCore?',
+    'How do I submit a project?',
+    'Tell me about SQU colleges',
+    'What is the AI Assist feature?',
+    'SQU admission requirements'
+  ];
+
+  // ── State ───────────────────────────────────────────────────────────────
+  let isOpen          = false;
+  let isLoading       = false;
+  let sessionToken    = null;          // cached JWT
+  let chatUsed        = 0;
+  let chatRemaining   = 3;
+  let chatMax         = 3;
+  let suggestionsUsed = false;
+  let messageCount    = 0;
+  let lastFailedMessage = null;        // stored for Retry button
+  let chatHistory       = [];          // { role: 'user'|'ai', text }[]
+  const MAX_HISTORY_MSGS = 12;         // last 6 turns (12 messages) sent to API
+  const STORAGE_KEY      = 'nexai_history';
+
+  // ── Inject HTML ─────────────────────────────────────────────────────────
+  function buildWidget() {
+    const trigger = document.createElement('button');
+    trigger.id = 'nexai-trigger';
+    trigger.setAttribute('aria-label', 'Open NexCore AI Assistant');
+    trigger.setAttribute('title', 'NexCore AI Assistant');
+    trigger.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        <path d="M8 10h8M8 14h5"/>
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.5 9.5c.5-1 1.5-1.5 2.5-1.5s2 .5 2.5 1.5"/>
+        <line x1="12" y1="16" x2="12" y2="16.5"/>
+      </svg>
+      <span id="nexai-badge" aria-hidden="true"></span>`;
+
+    // Better icon — speech bubble with sparkle
+    trigger.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#6ee7f3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <line x1="8" y1="10" x2="16" y2="10"/>
+        <line x1="8" y1="14" x2="13" y2="14"/>
+      </svg>
+      <span id="nexai-badge" aria-hidden="true"></span>`;
+
+    const panel = document.createElement('div');
+    panel.id = 'nexai-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'NexCore AI Assistant');
+    panel.innerHTML = `
+      <div id="nexai-header">
+        <div class="nexai-avatar" aria-hidden="true">✦</div>
+        <div class="nexai-title">
+          <h3>NexCore AI</h3>
+          <span id="nexai-status">Ready to help</span>
+        </div>
+        <span id="nexai-usage-pill" class="nexai-usage-pill" title="Messages left today"></span>
+        <button id="nexai-close" aria-label="Close AI chat" title="Close">✕</button>
+      </div>
+
+      <div id="nexai-messages" role="log" aria-live="polite" aria-label="Chat messages">
+        <div class="nexai-welcome">
+          <span class="nexai-welcome-icon" aria-hidden="true">✦</span>
+          Hi! I'm the NexCore AI assistant.<br>
+          Ask me anything about the platform, SQU, or projects.
+        </div>
+      </div>
+
+      <div id="nexai-suggestions" aria-label="Quick suggestions"></div>
+
+      <div id="nexai-char-counter" aria-hidden="true"></div>
+
+      <div id="nexai-input-area">
+        <textarea
+          id="nexai-input"
+          rows="1"
+          placeholder="Ask NexCore AI…"
+          maxlength="${MAX_MSG_LEN}"
+          aria-label="Message input"
+          autocomplete="off"
+          spellcheck="true"
+        ></textarea>
+        <button id="nexai-send" aria-label="Send message" title="Send (Enter)">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>`;
+
+    document.body.appendChild(trigger);
+    document.body.appendChild(panel);
+  }
+
+  // ── DOM references (populated after build) ──────────────────────────────
+  let elTrigger, elPanel, elMessages, elInput, elSend,
+      elStatus, elUsagePill, elSuggestions, elBadge, elCharCounter;
+
+  function cacheRefs() {
+    elTrigger     = document.getElementById('nexai-trigger');
+    elPanel       = document.getElementById('nexai-panel');
+    elMessages    = document.getElementById('nexai-messages');
+    elInput       = document.getElementById('nexai-input');
+    elSend        = document.getElementById('nexai-send');
+    elStatus      = document.getElementById('nexai-status');
+    elUsagePill   = document.getElementById('nexai-usage-pill');
+    elSuggestions = document.getElementById('nexai-suggestions');
+    elBadge       = document.getElementById('nexai-badge');
+    elCharCounter = document.getElementById('nexai-char-counter');
+  }
+  // ── Session history ───────────────────────────────────────────────
+  function loadHistory() {
+    try {
+      const stored = sessionStorage.getItem(STORAGE_KEY);
+      if (!stored) return;
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) chatHistory = parsed.slice(-MAX_HISTORY_MSGS);
+    } catch (_) {}
+  }
+
+  function saveHistory() {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(chatHistory.slice(-MAX_HISTORY_MSGS)));
+    } catch (_) {}
+  }
+  // ── Auth token helper ───────────────────────────────────────────────────
+  async function getToken() {
+    if (sessionToken) return sessionToken;
+    const sb = window.supabaseClient;
+    if (!sb) return null;
+    try {
+      const { data } = await sb.auth.getSession();
+      sessionToken = data?.session?.access_token || null;
+      return sessionToken;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // ── Usage display ───────────────────────────────────────────────────────
+  function updateUsagePill() {
+    if (!elUsagePill) return;
+    elUsagePill.textContent = `${chatRemaining} left`;
+    elUsagePill.className = 'nexai-usage-pill' + (chatRemaining === 0 ? ' depleted' : '');
+    elUsagePill.title = `${chatUsed} of ${chatMax} messages used today`;
+  }
+
+  async function fetchUsage() {
+    const token = await getToken();
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_ENDPOINT}?usage=1`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      chatUsed      = data.used      ?? chatUsed;
+      chatRemaining = data.remaining ?? chatRemaining;
+      chatMax       = data.max       ?? chatMax;
+      updateUsagePill();
+    } catch (_) {}
+  }
+
+  // ── Message rendering ───────────────────────────────────────────────────
+  function formatTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  /**
+   * Safely convert a subset of markdown to HTML.
+   * HTML entities are escaped first to prevent XSS.
+   */
+  function renderMarkdown(raw) {
+    // 1. Escape all HTML entities
+    let s = raw
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    // 2. Bold: **text**
+    s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // 3. Italic: _text_
+    s = s.replace(/_([^_\n]+?)_/g, '<em>$1</em>');
+
+    // 4. Bullet lists: lines starting with "* " or "- "
+    s = s.replace(/^[*\-]\s+(.+)$/gm, '<li>$1</li>');
+    s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g,
+      m => `<ul>${m.replace(/\n/g, '')}</ul>`);
+
+    // 5. Headings: ## or ###
+    s = s.replace(/^#{2,3}\s+(.+)$/gm, '<strong>$1</strong>');
+
+    // 6. Remaining newlines → <br>
+    s = s.replace(/\n/g, '<br>');
+
+    return s;
+  }
+
+  /**
+   * Append a message bubble to the chat.
+   * @param {'user'|'ai'} role
+   * @param {string} text
+   * @param {Array}  sources  — optional source array from API
+   * @param {boolean} isError
+   * @returns {HTMLElement} the bubble element (so caller can update it)
+   */
+  function appendMessage(role, text, sources, isError) {
+    // Remove welcome message on first real message
+    const welcome = elMessages.querySelector('.nexai-welcome');
+    if (welcome) welcome.remove();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = `nexai-msg ${role}`;
+
+    const bubble = document.createElement('div');
+    bubble.className = 'nexai-bubble';
+    if (isError) bubble.classList.add('nexai-error-bubble');
+
+    // Render markdown for AI messages; plain text for user/error messages
+    if (role === 'ai' && !isError) {
+      bubble.innerHTML = renderMarkdown(text);
+    } else {
+      bubble.textContent = text;
+    }
+
+    const time = document.createElement('span');
+    time.className = 'nexai-msg-time';
+    time.textContent = formatTime();
+
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(time);
+
+    // Source attribution for AI messages
+    if (role === 'ai' && sources && sources.length > 0 && !isError) {
+      const sourcesEl = document.createElement('div');
+      sourcesEl.className = 'nexai-sources';
+      const uniqueSources = [...new Set(sources.map(s => s.source))];
+      uniqueSources.forEach(src => {
+        const tag = document.createElement('span');
+        tag.className = 'nexai-source-tag';
+        tag.textContent = src;
+        sourcesEl.appendChild(tag);
+      });
+      wrapper.appendChild(sourcesEl);
+    }
+
+    elMessages.appendChild(wrapper);
+    scrollToBottom();
+    messageCount++;
+
+    return bubble;
+  }
+
+  function scrollToBottom() {
+    elMessages.scrollTop = elMessages.scrollHeight;
+  }
+
+  // ── Typing indicator ────────────────────────────────────────────────────
+  let typingEl = null;
+
+  function showTyping() {
+    if (typingEl) return;
+    const el = document.createElement('div');
+    el.className = 'nexai-msg ai';
+    el.innerHTML = `
+      <div class="nexai-typing">
+        <div class="nexai-typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="nexai-typing-label">NexCore AI is thinking…</span>
+      </div>`;
+    elMessages.appendChild(el);
+    typingEl = el;
+    scrollToBottom();
+  }
+
+  function hideTyping() {
+    if (typingEl) {
+      typingEl.remove();
+      typingEl = null;
+    }
+  }
+
+  // ── Quick suggestions ───────────────────────────────────────────────────
+  function renderSuggestions() {
+    if (!elSuggestions || suggestionsUsed) return;
+    elSuggestions.innerHTML = '';
+    SUGGESTIONS.forEach(text => {
+      const btn = document.createElement('button');
+      btn.className = 'nexai-suggestion';
+      btn.textContent = text;
+      btn.addEventListener('click', () => {
+        hideSuggestions();
+        elInput.value = text;
+        sendMessage();
+      });
+      elSuggestions.appendChild(btn);
+    });
+  }
+
+  function hideSuggestions() {
+    if (elSuggestions) elSuggestions.innerHTML = '';
+    suggestionsUsed = true;
+  }
+
+  // ── Auto-resize textarea ────────────────────────────────────────────────
+  function autoResize() {
+    elInput.style.height = 'auto';
+    elInput.style.height = Math.min(elInput.scrollHeight, 90) + 'px';
+  }
+  // ── Character counter ────────────────────────────────────────────
+  function updateCharCounter() {
+    if (!elCharCounter) return;
+    const len  = (elInput.value || '').length;
+    const left = MAX_MSG_LEN - len;
+    if (len < MAX_MSG_LEN * 0.75) {
+      elCharCounter.textContent = '';
+      elCharCounter.className   = '';
+    } else {
+      elCharCounter.textContent = `${left} / ${MAX_MSG_LEN}`;
+      elCharCounter.className   = left < 50 ? 'limit' : 'warn';
+    }
+  }
+  // ── Send message ─────────────────────────────────────────────────────────
+  /**
+   * @param {string} [retryText] — if provided, re-sends that text without
+   *   touching the input or adding a new user bubble (retry path).
+   */
+  async function sendMessage(retryText) {
+    const isRetry = typeof retryText === 'string';
+    const text = isRetry
+      ? retryText
+      : (elInput.value || '').trim().replace(/\0/g, '').slice(0, MAX_MSG_LEN);
+    if (!text || isLoading) return;
+
+    // Check remaining
+    if (chatRemaining <= 0) {
+      appendMessage('ai', 'You\'ve reached your daily message limit. Come back tomorrow!', null, true);
+      return;
+    }
+
+    // Require auth
+    let token = await getToken();
+    if (!token) {
+      appendMessage('ai', 'Please sign in to use the AI assistant.', null, true);
+      return;
+    }
+
+    if (!isRetry) {
+      // Clear input, show user bubble, push to history
+      elInput.value = '';
+      elInput.style.height = 'auto';
+      updateCharCounter();
+      hideSuggestions();
+      appendMessage('user', text);
+      chatHistory.push({ role: 'user', text });
+      saveHistory();
+    }
+
+    lastFailedMessage = text;
+    setLoading(true);
+    showTyping();
+
+    // Build request body
+    const body = { message: text };
+    if (window.nexcoreProjectContext) {
+      body.projectContext = {
+        title:       String(window.nexcoreProjectContext.title       || '').slice(0, 200),
+        description: String(window.nexcoreProjectContext.description || '').slice(0, 800)
+      };
+    }
+
+    // Send conversation history (all turns except the current message at the tail)
+    if (chatHistory.length > 1) {
+      body.history = chatHistory.slice(-(MAX_HISTORY_MSGS + 1), -1);
+    }
+
+    const doFetch = (tok) => fetch(API_ENDPOINT, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${tok}` },
+      body:    JSON.stringify(body)
+    });
+
+    try {
+      let res = await doFetch(token);
+
+      // Auto-retry once on 401: the JWT may have expired mid-session
+      if (res.status === 401) {
+        sessionToken = null;
+        const refreshed = await getToken();
+        if (refreshed) {
+          token = refreshed;
+          res   = await doFetch(token);
+        }
+      }
+
+      const data = await res.json();
+      hideTyping();
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          appendMessage('ai', data.message || 'Daily message limit reached. Try again tomorrow.', null, true);
+        } else if (res.status === 401) {
+          appendMessage('ai', 'Session expired — please sign in again.', null, true);
+        } else if (res.status === 503) {
+          appendSupportBubble();
+        } else {
+          appendErrorWithRetry('Something went wrong. Please try again.');
+        }
+        return;
+      }
+
+      // Success
+      chatUsed      = data.used      ?? chatUsed;
+      chatRemaining = data.remaining ?? chatRemaining;
+      chatMax       = data.max       ?? chatMax;
+      updateUsagePill();
+
+      const replyText = data.reply || 'Sorry, I couldn\'t generate a response.';
+      appendMessage('ai', replyText, data.sources);
+      chatHistory.push({ role: 'ai', text: replyText });
+      saveHistory();
+
+    } catch (netErr) {
+      console.error('[NexCore AI] Request failed:', netErr.message);
+      hideTyping();
+      appendErrorWithRetry('Network error — check your connection and try again.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ── Support bubble (shown when Gemini API quota is exhausted) ───────────────
+  function appendSupportBubble() {
+    const welcome = elMessages.querySelector('.nexai-welcome');
+    if (welcome) welcome.remove();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'nexai-msg ai';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'nexai-bubble nexai-support-bubble';
+    bubble.innerHTML = renderMarkdown(
+      'Our AI credits have run out \u2014 we need a little help to keep the service running. \u2665\n\n' +
+      'If NexCore has been useful to you, consider supporting us so the AI stays available for everyone.'
+    );
+
+    const btn = document.createElement('a');
+    btn.className = 'nexai-support-btn';
+    btn.href = 'https://www.paypal.me/alfarismujahid';
+    btn.target = '_blank';
+    btn.rel = 'noopener noreferrer';
+    btn.innerHTML = '&#9829;&nbsp; Support via PayPal';
+
+    const time = document.createElement('span');
+    time.className = 'nexai-msg-time';
+    time.textContent = formatTime();
+
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(btn);
+    wrapper.appendChild(time);
+    elMessages.appendChild(wrapper);
+    scrollToBottom();
+    messageCount++;
+  }
+
+  // ── Error bubble with Retry button ───────────────────────────────────────
+  function appendErrorWithRetry(errMsg) {
+    const bubble = appendMessage('ai', errMsg, null, true);
+    const btn = document.createElement('button');
+    btn.className = 'nexai-retry-btn';
+    btn.textContent = '↺ Retry';
+    btn.addEventListener('click', () => {
+      btn.closest('.nexai-msg').remove();
+      sendMessage(lastFailedMessage);
+    });
+    bubble.parentElement.appendChild(btn);
+  }
+
+  // ── UI state helpers ────────────────────────────────────────────────────
+  function setLoading(loading) {
+    isLoading = loading;
+    elSend.disabled  = loading;
+    elInput.disabled = loading;
+    elStatus.textContent = loading ? 'Thinking…' : 'Ready to help';
+  }
+
+  // ── Panel toggle ────────────────────────────────────────────────────────
+  function openPanel() {
+    elPanel.classList.add('open');
+    elTrigger.setAttribute('aria-expanded', 'true');
+    isOpen = true;
+
+    // Hide unread badge
+    elBadge.classList.remove('visible');
+
+    // Fetch usage on first open
+    if (messageCount === 0) {
+      fetchUsage();
+      renderSuggestions();
+    }
+
+    // Focus input after transition
+    setTimeout(() => elInput.focus(), 260);
+  }
+
+  function closePanel() {
+    elPanel.classList.remove('open');
+    elTrigger.setAttribute('aria-expanded', 'false');
+    isOpen = false;
+  }
+
+  function togglePanel() {
+    if (isOpen) closePanel(); else openPanel();
+  }
+
+  // ── Event listeners ─────────────────────────────────────────────────────
+  function bindEvents() {
+    elTrigger.addEventListener('click', togglePanel);
+    document.getElementById('nexai-close').addEventListener('click', closePanel);
+
+    // Close on outside click
+    // Guard: if the clicked element was removed from the DOM before the event
+    // bubbles here (e.g. a suggestion button that calls hideSuggestions()),
+    // document.body.contains() will be false — treat that as an inside click.
+    document.addEventListener('click', e => {
+      if (isOpen && document.body.contains(e.target) && !elPanel.contains(e.target) && !elTrigger.contains(e.target)) {
+        closePanel();
+      }
+    });
+
+    // Send on Enter (Shift+Enter = new line)
+    elInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    elInput.addEventListener('input', () => {
+      autoResize();
+      updateCharCounter();
+    });
+    elSend.addEventListener('click', sendMessage);
+
+    // Close on Escape
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && isOpen) closePanel();
+    });
+
+    // Re-fetch token if auth state changes
+    if (window.supabaseClient) {
+      window.supabaseClient.auth.onAuthStateChange(() => {
+        sessionToken = null; // bust cached token
+      });
+    }
+  }
+
+  // ── Init ────────────────────────────────────────────────────────────────
+  function init() {
+    buildWidget();
+    cacheRefs();
+    loadHistory();
+    updateUsagePill();
+    bindEvents();
+  }
+
+  // Wait for DOM
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();

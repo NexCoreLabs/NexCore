@@ -1,0 +1,18 @@
+{
+  "rewrites": [
+    { "source": "/account", "destination": "/account.html" },
+    { "source": "/auth", "destination": "/auth.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/faq", "destination": "/faq.html" },
+    { "source": "/how-to-use", "destination": "/how-to-use.html" },
+    { "source": "/hub", "destination": "/hub.html" },
+    { "source": "/offline", "destination": "/offline.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
+    { "source": "/project", "destination": "/project.html" },
+    { "source": "/releases", "destination": "/releases.html" },
+    { "source": "/roadmap", "destination": "/roadmap.html" },
+    { "source": "/terms", "destination": "/terms.html" },
+    { "source": "/thanks", "destination": "/thanks.html" },
+    { "source": "/ai-chat", "destination": "/ai-chat.html" }
+  ]
+}

@@ -434,7 +434,7 @@
 .ncc-floating-btn {
   position: fixed;
   bottom: 18px;
-  right: 18px;
+  left: 18px;
   z-index: 9998;
   background: rgba(8, 10, 22, 0.2);
   border: 2px solid rgba(255, 255, 255, 0.1);

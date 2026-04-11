@@ -168,9 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const message = form.message.value.trim();
       if (!name || !email || !message) {
         ev.preventDefault();
-        if (notice) notice.textContent = "Please fill all fields.";
+        if (window.showToast) { window.showToast("Please fill all fields.", true); } else if (notice) { notice.textContent = "Please fill all fields."; }
       } else {
-        if (notice) notice.textContent = "Sending...";
+        if (window.showToast) { window.showToast("Sending..."); } else if (notice) { notice.textContent = "Sending..."; }
       }
     });
   }

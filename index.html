@@ -40,6 +40,7 @@
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
 
         <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/ai-chat.css">
 
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
@@ -62,6 +63,11 @@
             window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
         </script>
         <script defer src="/_vercel/speed-insights/script.js"></script>
+        <style>
+        #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);color:#6ee7f3;padding:10px 22px;border-radius:12px;font-size:.875rem;font-weight:500;z-index:10001;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);max-width:min(420px,90vw);text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.55);white-space:pre-line;}
+        #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
+        #toast.error{border-color:rgba(255,120,120,.28);color:#ff7878;}
+        </style>
     </head>
 
 <body>
@@ -94,6 +100,7 @@
 
           <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
           <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+          <a href="ai-chat.html" class="fade" title="NexCore AI — Ask Anything" style="color:#6ee7f3;"><i class="fa-solid fa-wand-magic-sparkles"></i> NexCore AI</a>
 
           <div class="div-menu-line"></div>
 
@@ -450,7 +457,7 @@
               <button type="reset" id="resetBtn" class="btn ghost">Reset</button>
             </div>
 
-            <p class="notice" id="formNotice" aria-live="polite"></p>
+            <p class="notice" id="formNotice" aria-live="polite" style="display:none"></p>
           </form>
 
         </div>
@@ -494,6 +501,7 @@
   <script src="assets/js/supabase-client.js"></script>
 
   <script src="assets/js/auth-ui.js"></script>
+  <script src="assets/js/ai-chat.js"></script>
 
   <script src="version.js"></script>
 
@@ -679,7 +687,23 @@
 
   </script>
 
+  <script>
+    (function(){
+      let _t=null;
+      window.showToast=function(text,isError){
+        if(!text)return;
+        var el=document.getElementById('toast');
+        el.textContent=text;
+        el.className='show'+(isError?' error':'');
+        clearTimeout(_t);
+        _t=setTimeout(function(){el.classList.remove('show');},3800);
+      };
+    })();
+  </script>
+
   <script src="assets/js/cookies.js" defer></script>
+
+  <div id="toast" role="alert" aria-live="assertive"></div>
 
 </body>
 

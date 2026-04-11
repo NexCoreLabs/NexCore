@@ -226,6 +226,7 @@ main {
 
 .roadmap-wrap {
   padding-top: 20px;
+  overflow-x: clip;
 }
 
 /* ─── CONTROLS BAR ─── */
@@ -250,7 +251,7 @@ main {
   text-align: center;
   justify-content: center;
   flex-wrap: wrap;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .tab-btn {
@@ -317,6 +318,7 @@ main {
 .feature-card {
   display: grid;
   grid-template-columns: 68px 1fr;
+  min-width: 0;
   background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0.01));
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: var(--radius);
@@ -742,8 +744,8 @@ main {
 /* ─── FLOATING ACTION BUTTON ─── */
 .fab {
   position: fixed;
-  bottom: 19px;
-  right: 65px;
+  bottom: 18px;
+  right: 19px;
   z-index: 99;
   background: linear-gradient(65deg, #6ee7f3 0%, #acd9e5 50%, #6bd3c9 100%);
   background-size: 200% 100%;
@@ -1258,7 +1260,7 @@ main {
   .kpis .stat { padding: 8px 12px; min-width: 70px; }
   .kpis strong { font-size: 18px; }
   .controls-bar { flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-  .fab { bottom: 68px; right: 19px; padding: 12px;}
+  .fab { bottom: 18px; right: 19px; padding: 12px;}
   .fab span { display: none; }
   main { padding: 0 12px; }
   .feature-details-inner { padding: 12px 14px 14px 14px; }
@@ -1270,7 +1272,7 @@ main {
   .modal-header, .modal-body { padding-left: 18px; padding-right: 18px; }
   .comments-list, .comments-compose, .comments-auth-nudge { padding-left: 18px; padding-right: 18px; }
   .auth-tabs { padding-left: 18px; padding-right: 18px; }
-  .fab { bottom: 58px; right: 13px; }
+  .fab { bottom: 13px; right: 13px; }
   .feature-card { grid-template-columns: 56px 1fr; }
   .inline-comments-compose { flex-direction: column; align-items: stretch; }
   .inline-auth-nudge { flex-wrap: wrap; }
@@ -1307,6 +1309,7 @@ main {
 
           <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
           <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+          <a href="ai-chat.html" class="fade" title="NexCore AI — Ask Anything" style="color:#6ee7f3;"><i class="fa-solid fa-wand-magic-sparkles"></i> NexCore AI</a>
 
           <div class="div-menu-line"></div>
 
