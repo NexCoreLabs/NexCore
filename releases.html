@@ -788,9 +788,9 @@
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
-                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.6.0</strong></span>
-                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>19 Mar 2026</strong></span>
-                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>11</strong> releases</span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.7.0</strong></span>
+                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>11 Apr 2026</strong></span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>12</strong> releases</span>
             </div>
         </div>
 
@@ -826,6 +826,7 @@
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
                 <div class="rl-nav-panel">
+                    <a class="rl-nav-item"href="#v270" data-version="v2.7.0"><span class="rl-dot-min"></span>v2.7.0</a>
                     <a class="rl-nav-item"href="#v260" data-version="v2.6.0"><span class="rl-dot-min"></span>v2.6.0</a>
                     <a class="rl-nav-item"href="#v250" data-version="v2.5.0"><span class="rl-dot-min"></span>v2.5.0</a>
                     <a class="rl-nav-item"href="#v241" data-version="v2.4.1"><span class="rl-dot-min"></span>v2.4.1</a>
@@ -843,14 +844,86 @@
             <!-- Timeline -->
             <div class="rl-tl" id="rlTl">
 
+                <!-- v2.7.0 -->
+                <div class="rl-card open" id="v270" data-version="v2.7.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.7.0</span>
+                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>11 Apr 2026</div>
+                            <div class="rl-summary">RAG-powered AI chat, floating assistant access, usage tracking, and broader interface polish.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u270">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d270">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u270">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Launched a new <strong>AI chat assistant</strong> with context-aware answers powered by project knowledge.</li>
+                                    <li>Added a dedicated <strong>AI Chat</strong> page and a floating chat widget for faster access across the site.</li>
+                                    <li>Conversations now persist during a session, so your chat context stays available while you browse.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>Introduced daily AI usage indicators with remaining quota shown directly in the chat experience.</li>
+                                    <li>Added AI usage visibility inside the account section with clearer section styling and icons.</li>
+                                    <li>Refined floating action button placement, menu spacing, and responsive breakpoints for a cleaner mobile layout.</li>
+                                    <li>Replaced older moderation popups with smoother toast notifications for faster feedback.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Improved delete confirmation behavior with clearer prompts and more reliable confirmation logic.</li>
+                                    <li>Strengthened AI error handling so retry flows and quota-exhausted states provide better guidance.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d270">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Added <span class="ct">api/ai-chat.js</span> with Supabase authentication and Gemini 2.5 integration for the new assistant flow.</li>
+                                    <li>Introduced <span class="ct">scripts/seed-knowledge.js</span> to manage embeddings for the RAG knowledge base.</li>
+                                    <li>Incremented the <span class="ct">service-worker.js</span> cache version to <span class="ct">v2.7.0</span> for cleaner asset updates.</li>
+                                    <li>Added <span class="ct">vercel.json</span> URL rewrites to support cleaner route paths.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Session storage now keeps chat history available through the active browser session.</li>
+                                    <li>Account settings labels and confirmation copy were refreshed for better clarity and consistency.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <!-- v2.6.0 -->
-                <div class="rl-card open" id="v260" data-version="v2.6.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-card" id="v260" data-version="v2.6.0" data-tags="feature,improvement,developer,fix">
                 <div class="rl-box">
                     <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
                         <div class="rl-head-body">
                             <div class="rl-head-top">
                                 <span class="rl-ver">v2.6.0</span>
-                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
                             </div>
                             <div class="rl-date"><i class="fa-regular fa-calendar"></i>19 Mar 2026</div>
                             <div class="rl-summary">Feature voting roadmap launch, guest suggestion flow, and global UX refinements across core pages.</div>
@@ -1790,6 +1863,7 @@
         (function () {
             const KEY = 'nexcore_rl_visit';
             const DATES = {
+                'v2.7.0': new Date('2026-04-11'),
                 'v2.6.0': new Date('2026-03-19'),
                 'v2.5.0': new Date('2026-03-14'),
                 'v2.4.1': new Date('2026-03-07'),
