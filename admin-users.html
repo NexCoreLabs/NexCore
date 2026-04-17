@@ -231,8 +231,9 @@
     <script>
         const sb = window.supabaseClient;
         let currentUserEmail = null;
+        let isAdmin = false;
 
-        // Check if user is authenticated
+        // Check if user is authenticated AND is an admin
         async function checkAuth() {
             const { data: { session } } = await sb.auth.getSession();
             if (!session) {
@@ -240,6 +241,22 @@
                 return false;
             }
             currentUserEmail = session.user.email;
+
+            // Check if user is an admin
+            const { data: adminData, error } = await sb
+                .from('admins')
+                .select('email')
+                .eq('email', currentUserEmail.toLowerCase())
+                .single();
+
+            if (error || !adminData) {
+                // User is not an admin - show error and redirect
+                alert('Access Denied: You must be an administrator to access this page.');
+                window.location.href = '/dashboard.html';
+                return false;
+            }
+
+            isAdmin = true;
             return true;
         }
 
