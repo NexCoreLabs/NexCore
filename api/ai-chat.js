@@ -38,7 +38,7 @@ const MINUTE_LIMIT    = parseInt(process.env.AI_CHAT_MINUTE_LIMIT || '5', 10);
 const MAX_CONTEXT_CHARS = 4000;
 // Max characters in a user message
 const MAX_MSG_CHARS     = 500;
-const MAX_REPLY_WORDS   = parseInt(process.env.AI_CHAT_MAX_REPLY_WORDS || '110', 10);
+const MAX_REPLY_WORDS   = parseInt(process.env.AI_CHAT_MAX_REPLY_WORDS || '60', 10);
 const OUT_OF_SCOPE_REPLY = 'I can only help with NexCore Labs topics. Ask me about the platform, features, or student projects.';
 const NO_EVIDENCE_REPLY = 'I do not have verified NexCore data for that yet. Please ask about a specific feature or project, and I will use available records.';
 
@@ -358,7 +358,7 @@ module.exports = async (req, res) => {
   }
 
   // ── Step 4: Build the final prompt ──────────────────────────────────────
-  let systemInstruction = `You are the NexCore AI Assistant — a focused assistant exclusively for the NexCore Labs platform.
+  let systemInstruction = `You are the NexCore AI Assistant — a focused, concise assistant exclusively for NexCore Labs.
 
 ## STRICT SCOPE — topics you are allowed to answer:
 - NexCore Labs: platform features, how to submit or view projects, accounts, AI tools, FAQs
@@ -373,8 +373,20 @@ module.exports = async (req, res) => {
   3) Explicit projectContext passed by the client
 - If evidence is insufficient, reply EXACTLY: "${NO_EVIDENCE_REPLY}"
 - Do NOT invent project names, numbers, dates, or features
-- Keep every answer under 90 words
-- Format: one direct answer sentence, then optional bullets (max 3) only if needed`;
+
+## TOOL USAGE — use tools proactively:
+- When asked about "projects", "list projects", "how many projects", "show projects" → ALWAYS use get_platform_stats or search_projects
+- When asked about a specific project by name → use search_projects or get_project_details
+- Never say "I don't have access" — try the tools first, they have database access
+- If tools return no results, then say data is unavailable
+
+## RESPONSE STYLE — be extremely concise:
+- Answer in 1-2 direct sentences maximum
+- No explanations of your limitations or what you can't access unless specifically asked
+- No preambles like "I understand..." or "Let me explain..."
+- If you need to use tools (search_projects, get_platform_stats), use them and give the direct answer
+- Use bullets ONLY when listing actual items (projects, features), max 3 items
+- Be helpful but brief — every word counts`;
 
   if (projectContext) {
     systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;
