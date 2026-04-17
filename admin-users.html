@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Approved Users | NexCore Labs</title>
+    <title>Admin Panel | NexCore Labs</title>
 
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/arabic.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -15,9 +16,148 @@
 
     <style>
         .admin-container {
-            max-width: 1000px;
-            margin: 120px auto 40px;
+            max-width: 1400px;
+            margin: 100px auto 40px;
             padding: 20px;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .admin-header h1 {
+            margin: 0 0 10px;
+            color: #eaf6fb;
+        }
+
+        .admin-header .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 180, 50, 0.1);
+            border: 1px solid rgba(255, 180, 50, 0.3);
+            border-radius: 20px;
+            color: #ffb432;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .home-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .home-btn:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.08), rgba(110, 231, 243, 0.03));
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-card.admin {
+            background: linear-gradient(135deg, rgba(255, 180, 50, 0.08), rgba(255, 180, 50, 0.03));
+            border-color: rgba(255, 180, 50, 0.2);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #6ee7f3;
+            margin-bottom: 8px;
+        }
+
+        .stat-card.admin .stat-value {
+            color: #ffb432;
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tab:hover {
+            color: #6ee7f3;
+        }
+
+        .admin-tab.active {
+            color: #6ee7f3;
+            border-bottom-color: #6ee7f3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
 
         .admin-section {
@@ -35,6 +175,9 @@
             margin-top: 0;
             margin-bottom: 20px;
             font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
         .form-group {
@@ -46,10 +189,12 @@
             color: #eaf6fb;
             margin-bottom: 8px;
             font-weight: 500;
+            font-size: 14px;
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             max-width: 100%;
             padding: 12px 16px;
@@ -68,46 +213,91 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #6ee7f3;
             box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.1);
         }
 
-        .users-table {
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .users-table th {
+        .data-table th {
             background: rgba(110, 231, 243, 0.1);
             color: #6ee7f3;
-            padding: 12px;
+            padding: 14px 12px;
             text-align: left;
             font-weight: 600;
+            font-size: 13px;
             border-bottom: 1px solid rgba(110, 231, 243, 0.2);
+            white-space: nowrap;
         }
 
-        .users-table td {
-            padding: 12px;
+        .data-table td {
+            padding: 14px 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             color: #cbd5e0;
+            font-size: 14px;
         }
 
-        .users-table tr:hover {
+        .data-table tr:hover {
             background: rgba(110, 231, 243, 0.03);
+        }
+
+        .data-table .email-col { width: 30%; }
+        .data-table .reason-col { width: 30%; }
+        .data-table .meta-col { width: 25%; }
+        .data-table .actions-col { width: 15%; text-align: center; }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-remove {
             background: rgba(255, 100, 100, 0.1);
             border: 1px solid rgba(255, 100, 100, 0.3);
             color: #ff7878;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
         }
 
         .btn-remove:hover {
@@ -115,11 +305,25 @@
             border-color: #ff7878;
         }
 
+        .btn-copy {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
+
+        .btn-copy:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+        }
+
         .status-message {
             padding: 12px 16px;
             border-radius: 8px;
             margin-bottom: 20px;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .status-success {
@@ -134,26 +338,108 @@
             color: #ff7878;
         }
 
+        .status-info {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
+
         .hidden {
-            display: none;
+            display: none !important;
         }
 
         .loading {
             text-align: center;
             color: #6ee7f3;
-            padding: 20px;
+            padding: 40px 20px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .empty-state {
             text-align: center;
             color: var(--muted);
-            padding: 40px 20px;
+            padding: 60px 20px;
         }
 
-        .email-col { width: 35%; }
-        .reason-col { width: 30%; }
-        .approved-col { width: 20%; }
-        .actions-col { width: 15%; text-align: center; }
+        .empty-state i {
+            font-size: 3.5rem;
+            opacity: 0.3;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .export-btn {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .export-btn:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                margin-top: 80px;
+            }
+
+            .home-btn {
+                position: static;
+                margin-bottom: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-tabs {
+                overflow-x: auto;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 8px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -163,65 +449,212 @@
     </div>
 
     <div class="admin-container">
-        <h1 class="title">Manage Approved Users</h1>
-        <p class="lead">Add or remove approved non-SQU users who can access the platform.</p>
+        <!-- Header -->
+        <div class="admin-header">
+            <a href="/dashboard.html" class="home-btn">
+                <i class="fa-solid fa-house"></i>
+                Home
+            </a>
+            <h1 class="title">Admin Panel</h1>
+            <div class="admin-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span id="currentAdminEmail">Loading...</span>
+            </div>
+        </div>
 
-        <!-- Add User Section -->
-        <div class="admin-section">
-            <h2><i class="fa-solid fa-user-plus"></i> Add Approved User</h2>
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="statApprovedUsers">-</div>
+                <div class="stat-label">Approved Users</div>
+            </div>
+            <div class="stat-card admin">
+                <div class="stat-icon">🛡️</div>
+                <div class="stat-value" id="statAdmins">-</div>
+                <div class="stat-label">Platform Admins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="statTotal">-</div>
+                <div class="stat-label">Total Access Users</div>
+            </div>
+        </div>
 
-            <div id="addStatus" class="status-message hidden"></div>
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="users">
+                <i class="fa-solid fa-users"></i>
+                Approved Users
+            </button>
+            <button class="admin-tab" data-tab="admins">
+                <i class="fa-solid fa-user-shield"></i>
+                Manage Admins
+            </button>
+        </div>
 
-            <form id="addUserForm">
-                <div class="form-group">
-                    <label for="emailInput">Email Address *</label>
+        <!-- Tab: Approved Users -->
+        <div id="tab-users" class="tab-content active">
+            <!-- Add User Section -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-user-plus"></i> Add Approved User</h2>
+
+                <div id="addUserStatus" class="status-message hidden"></div>
+
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="userEmail">Email Address *</label>
+                        <input
+                            type="email"
+                            id="userEmail"
+                            placeholder="user@example.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userReason">Reason / Notes</label>
+                        <textarea
+                            id="userReason"
+                            placeholder="e.g., External collaborator, Industry partner, Research team member"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">
+                            <i class="fa-solid fa-check"></i> Approve User
+                        </button>
+                        <button type="reset" class="btn ghost">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Users List -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-list"></i> Current Approved Users</h2>
+
+                <div class="quick-actions">
+                    <button class="export-btn" onclick="exportUsers()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                     <input
-                        type="email"
-                        id="emailInput"
-                        placeholder="user@example.com"
-                        required
+                        type="text"
+                        id="searchUsers"
+                        placeholder="Search by email, reason, or approved by..."
                     >
                 </div>
 
-                <div class="form-group">
-                    <label for="reasonInput">Reason / Notes</label>
-                    <textarea
-                        id="reasonInput"
-                        placeholder="e.g., External collaborator, Industry partner, etc."
-                    ></textarea>
+                <div id="removeUserStatus" class="status-message hidden"></div>
+
+                <div id="usersLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading users...</p>
                 </div>
 
-                <button type="submit" class="btn primary">
-                    <i class="fa-solid fa-check"></i> Approve User
-                </button>
-            </form>
+                <div id="usersEmpty" class="empty-state hidden">
+                    <i class="fa-solid fa-inbox"></i>
+                    <p>No approved users yet.<br>Add one above to get started.</p>
+                </div>
+
+                <div id="usersTableWrapper" class="table-wrapper hidden">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="email-col">Email</th>
+                                <th class="reason-col">Reason</th>
+                                <th class="meta-col">Approved By / Date</th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <!-- Current Users Section -->
-        <div class="admin-section">
-            <h2><i class="fa-solid fa-users"></i> Current Approved Users</h2>
+        <!-- Tab: Manage Admins -->
+        <div id="tab-admins" class="tab-content">
+            <!-- Add Admin Section -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-user-shield"></i> Add New Admin</h2>
 
-            <div id="removeStatus" class="status-message hidden"></div>
-            <div id="usersLoading" class="loading">
-                <i class="fa-solid fa-spinner fa-spin"></i> Loading users...
+                <div id="addAdminStatus" class="status-message hidden"></div>
+
+                <form id="addAdminForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email Address *</label>
+                        <input
+                            type="email"
+                            id="adminEmail"
+                            placeholder="admin@squ.edu.om"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminNotes">Notes (Optional)</label>
+                        <textarea
+                            id="adminNotes"
+                            placeholder="e.g., Co-administrator, Department head"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">
+                            <i class="fa-solid fa-shield-halved"></i> Add Admin
+                        </button>
+                        <button type="reset" class="btn ghost">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div id="usersEmpty" class="empty-state hidden">
-                <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 10px;"></i>
-                <p>No approved users yet. Add one above to get started.</p>
-            </div>
-            <div id="usersTable" class="hidden">
-                <table class="users-table">
-                    <thead>
-                        <tr>
-                            <th class="email-col">Email</th>
-                            <th class="reason-col">Reason</th>
-                            <th class="approved-col">Approved By</th>
-                            <th class="actions-col">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                    </tbody>
-                </table>
+
+            <!-- Admins List -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-list"></i> Current Admins</h2>
+
+                <div class="quick-actions">
+                    <button class="export-btn" onclick="exportAdmins()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="searchAdmins"
+                        placeholder="Search by email or notes..."
+                    >
+                </div>
+
+                <div id="removeAdminStatus" class="status-message hidden"></div>
+
+                <div id="adminsLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading admins...</p>
+                </div>
+
+                <div id="adminsTableWrapper" class="table-wrapper hidden">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="email-col">Email</th>
+                                <th class="reason-col">Notes</th>
+                                <th class="meta-col">Added By / Date</th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminsTableBody"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -232,8 +665,10 @@
         const sb = window.supabaseClient;
         let currentUserEmail = null;
         let isAdmin = false;
+        let allUsers = [];
+        let allAdmins = [];
 
-        // Check if user is authenticated AND is an admin
+        // Check admin authentication
         async function checkAuth() {
             const { data: { session } } = await sb.auth.getSession();
             if (!session) {
@@ -242,7 +677,6 @@
             }
             currentUserEmail = session.user.email;
 
-            // Check if user is an admin
             const { data: adminData, error } = await sb
                 .from('admins')
                 .select('email')
@@ -250,26 +684,58 @@
                 .single();
 
             if (error || !adminData) {
-                // User is not an admin - show error and redirect
                 alert('Access Denied: You must be an administrator to access this page.');
                 window.location.href = '/dashboard.html';
                 return false;
             }
 
             isAdmin = true;
+            document.getElementById('currentAdminEmail').textContent = currentUserEmail;
             return true;
         }
 
-        // Fetch and display approved users
+        // Tab switching
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(`tab-${tabName}`).classList.add('active');
+            });
+        });
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const [usersRes, adminsRes] = await Promise.all([
+                    sb.from('approved_users').select('email', { count: 'exact', head: true }),
+                    sb.from('admins').select('email', { count: 'exact', head: true })
+                ]);
+
+                const usersCount = usersRes.count || 0;
+                const adminsCount = adminsRes.count || 0;
+
+                document.getElementById('statApprovedUsers').textContent = usersCount;
+                document.getElementById('statAdmins').textContent = adminsCount;
+                document.getElementById('statTotal').textContent = usersCount + adminsCount;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load approved users
         async function loadApprovedUsers() {
             const loading = document.getElementById('usersLoading');
             const empty = document.getElementById('usersEmpty');
-            const table = document.getElementById('usersTable');
+            const wrapper = document.getElementById('usersTableWrapper');
             const tbody = document.getElementById('usersTableBody');
 
             loading.classList.remove('hidden');
             empty.classList.add('hidden');
-            table.classList.add('hidden');
+            wrapper.classList.add('hidden');
 
             try {
                 const { data, error } = await sb
@@ -281,69 +747,99 @@
 
                 if (error) throw error;
 
-                if (!data || data.length === 0) {
+                allUsers = data || [];
+
+                if (allUsers.length === 0) {
                     empty.classList.remove('hidden');
                     return;
                 }
 
-                tbody.innerHTML = '';
-                data.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.email}</td>
-                        <td>${user.reason || '<em style="opacity: 0.5;">No reason provided</em>'}</td>
-                        <td>${user.approved_by || '<em style="opacity: 0.5;">N/A</em>'}</td>
-                        <td class="actions-col">
-                            <button
-                                class="btn-remove"
-                                onclick="removeUser('${user.email}')"
-                                title="Remove user"
-                            >
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                table.classList.remove('hidden');
+                renderUsers(allUsers);
+                wrapper.classList.remove('hidden');
 
             } catch (error) {
                 loading.classList.add('hidden');
-                showStatus('removeStatus', 'Error loading users: ' + error.message, 'error');
+                showStatus('removeUserStatus', 'Error loading users: ' + error.message, 'error');
             }
         }
 
-        // Add new approved user
-        async function addUser(email, reason) {
+        // Render users table
+        function renderUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                const date = new Date(user.created_at).toLocaleDateString();
+                row.innerHTML = `
+                    <td>${user.email}</td>
+                    <td>${user.reason || '<em style="opacity: 0.5;">No reason provided</em>'}</td>
+                    <td>
+                        <div>${user.approved_by || '<em style="opacity: 0.5;">N/A</em>'}</div>
+                        <div style="font-size: 12px; opacity: 0.6; margin-top: 4px;">${date}</div>
+                    </td>
+                    <td class="actions-col">
+                        <button class="btn-action btn-copy" onclick="copyEmail('${user.email}')" title="Copy email">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button class="btn-action btn-remove" onclick="removeUser('${user.email}')" title="Remove user">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Search users
+        document.getElementById('searchUsers').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allUsers.filter(user =>
+                user.email.toLowerCase().includes(query) ||
+                (user.reason && user.reason.toLowerCase().includes(query)) ||
+                (user.approved_by && user.approved_by.toLowerCase().includes(query))
+            );
+            renderUsers(filtered);
+        });
+
+        // Add approved user
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('userEmail').value.trim();
+            const reason = document.getElementById('userReason').value.trim();
+
             try {
-                const { data, error } = await sb
+                const { error } = await sb
                     .from('approved_users')
                     .insert([{
-                        email: email.toLowerCase().trim(),
+                        email: email.toLowerCase(),
                         approved_by: currentUserEmail,
-                        reason: reason.trim() || null
-                    }])
-                    .select();
+                        reason: reason || null
+                    }]);
 
-                if (error) throw error;
+                if (error) {
+                    if (error.code === '23505') {
+                        showStatus('addUserStatus', 'This email is already approved.', 'error');
+                    } else {
+                        throw error;
+                    }
+                    return;
+                }
 
-                showStatus('addStatus', `✓ Successfully added ${email}`, 'success');
+                showStatus('addUserStatus', `✓ Successfully added ${email}`, 'success');
                 document.getElementById('addUserForm').reset();
-                loadApprovedUsers();
+                await loadApprovedUsers();
+                await loadStats();
 
             } catch (error) {
-                let message = error.message;
-                if (error.code === '23505') {
-                    message = 'This email is already approved.';
-                }
-                showStatus('addStatus', 'Error: ' + message, 'error');
+                showStatus('addUserStatus', 'Error: ' + error.message, 'error');
             }
-        }
+        });
 
         // Remove approved user
         async function removeUser(email) {
-            if (!confirm(`Remove ${email} from approved users?`)) return;
+            if (!confirm(`Remove ${email} from approved users?\n\nThey will no longer be able to access the platform.`)) return;
 
             try {
                 const { error } = await sb
@@ -353,18 +849,204 @@
 
                 if (error) throw error;
 
-                showStatus('removeStatus', `✓ Removed ${email}`, 'success');
-                loadApprovedUsers();
+                showStatus('removeUserStatus', `✓ Removed ${email}`, 'success');
+                await loadApprovedUsers();
+                await loadStats();
 
             } catch (error) {
-                showStatus('removeStatus', 'Error: ' + error.message, 'error');
+                showStatus('removeUserStatus', 'Error: ' + error.message, 'error');
             }
+        }
+
+        // Load admins
+        async function loadAdmins() {
+            const loading = document.getElementById('adminsLoading');
+            const wrapper = document.getElementById('adminsTableWrapper');
+            const tbody = document.getElementById('adminsTableBody');
+
+            loading.classList.remove('hidden');
+            wrapper.classList.add('hidden');
+
+            try {
+                const { data, error } = await sb
+                    .from('admins')
+                    .select('*')
+                    .order('added_at', { ascending: false });
+
+                loading.classList.add('hidden');
+
+                if (error) throw error;
+
+                allAdmins = data || [];
+                renderAdmins(allAdmins);
+                wrapper.classList.remove('hidden');
+
+            } catch (error) {
+                loading.classList.add('hidden');
+                showStatus('removeAdminStatus', 'Error loading admins: ' + error.message, 'error');
+            }
+        }
+
+        // Render admins table
+        function renderAdmins(admins) {
+            const tbody = document.getElementById('adminsTableBody');
+            tbody.innerHTML = '';
+
+            admins.forEach(admin => {
+                const row = document.createElement('tr');
+                const date = new Date(admin.added_at).toLocaleDateString();
+                const isSelf = admin.email.toLowerCase() === currentUserEmail.toLowerCase();
+
+                row.innerHTML = `
+                    <td>
+                        ${admin.email}
+                        ${isSelf ? '<span style="color: #6ee7f3; font-size: 11px; margin-left: 8px;">(You)</span>' : ''}
+                    </td>
+                    <td>${admin.notes || '<em style="opacity: 0.5;">No notes</em>'}</td>
+                    <td>
+                        <div>${admin.added_by || '<em style="opacity: 0.5;">System</em>'}</div>
+                        <div style="font-size: 12px; opacity: 0.6; margin-top: 4px;">${date}</div>
+                    </td>
+                    <td class="actions-col">
+                        <button class="btn-action btn-copy" onclick="copyEmail('${admin.email}')" title="Copy email">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        ${!isSelf ? `
+                            <button class="btn-action btn-remove" onclick="removeAdmin('${admin.email}')" title="Remove admin">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Search admins
+        document.getElementById('searchAdmins').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allAdmins.filter(admin =>
+                admin.email.toLowerCase().includes(query) ||
+                (admin.notes && admin.notes.toLowerCase().includes(query)) ||
+                (admin.added_by && admin.added_by.toLowerCase().includes(query))
+            );
+            renderAdmins(filtered);
+        });
+
+        // Add admin
+        document.getElementById('addAdminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const notes = document.getElementById('adminNotes').value.trim();
+
+            try {
+                const { error } = await sb
+                    .from('admins')
+                    .insert([{
+                        email: email.toLowerCase(),
+                        added_by: currentUserEmail,
+                        notes: notes || null
+                    }]);
+
+                if (error) {
+                    if (error.code === '23505') {
+                        showStatus('addAdminStatus', 'This email is already an admin.', 'error');
+                    } else {
+                        throw error;
+                    }
+                    return;
+                }
+
+                showStatus('addAdminStatus', `✓ Successfully added ${email} as admin`, 'success');
+                document.getElementById('addAdminForm').reset();
+                await loadAdmins();
+                await loadStats();
+
+            } catch (error) {
+                showStatus('addAdminStatus', 'Error: ' + error.message, 'error');
+            }
+        });
+
+        // Remove admin
+        async function removeAdmin(email) {
+            if (email.toLowerCase() === currentUserEmail.toLowerCase()) {
+                alert("You cannot remove yourself as an admin.");
+                return;
+            }
+
+            if (!confirm(`Remove ${email} from admins?\n\nThey will no longer have admin access.`)) return;
+
+            try {
+                const { error } = await sb
+                    .from('admins')
+                    .delete()
+                    .eq('email', email);
+
+                if (error) throw error;
+
+                showStatus('removeAdminStatus', `✓ Removed ${email} from admins`, 'success');
+                await loadAdmins();
+                await loadStats();
+
+            } catch (error) {
+                showStatus('removeAdminStatus', 'Error: ' + error.message, 'error');
+            }
+        }
+
+        // Copy email to clipboard
+        async function copyEmail(email) {
+            try {
+                await navigator.clipboard.writeText(email);
+                showStatus('removeUserStatus', `✓ Copied ${email} to clipboard`, 'success');
+            } catch (error) {
+                console.error('Failed to copy:', error);
+            }
+        }
+
+        // Export to CSV
+        function exportUsers() {
+            const csv = [
+                ['Email', 'Reason', 'Approved By', 'Date'],
+                ...allUsers.map(u => [
+                    u.email,
+                    u.reason || '',
+                    u.approved_by || '',
+                    new Date(u.created_at).toISOString()
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            downloadCSV(csv, 'approved-users.csv');
+        }
+
+        function exportAdmins() {
+            const csv = [
+                ['Email', 'Notes', 'Added By', 'Date'],
+                ...allAdmins.map(a => [
+                    a.email,
+                    a.notes || '',
+                    a.added_by || '',
+                    new Date(a.added_at).toISOString()
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            downloadCSV(csv, 'admins.csv');
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
 
         // Show status message
         function showStatus(elementId, message, type) {
             const el = document.getElementById(elementId);
-            el.textContent = message;
+            el.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
             el.className = 'status-message status-' + type;
             el.classList.remove('hidden');
 
@@ -373,24 +1055,20 @@
             }, 5000);
         }
 
-        // Form submission
-        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById('emailInput').value;
-            const reason = document.getElementById('reasonInput').value;
-
-            await addUser(email, reason);
-        });
-
-        // Make removeUser global
+        // Make functions global
         window.removeUser = removeUser;
+        window.removeAdmin = removeAdmin;
+        window.copyEmail = copyEmail;
+        window.exportUsers = exportUsers;
+        window.exportAdmins = exportAdmins;
 
         // Initialize
         (async () => {
             const authenticated = await checkAuth();
             if (authenticated) {
-                loadApprovedUsers();
+                await loadStats();
+                await loadApprovedUsers();
+                await loadAdmins();
             }
         })();
     </script>

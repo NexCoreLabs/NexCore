@@ -156,6 +156,7 @@
         if (document.getElementById('navAuth') &&
             document.getElementById('navDashboard') &&
             document.getElementById('navAccount') &&
+            document.getElementById('navAdmin') &&
             document.getElementById('navUser') &&
             document.getElementById('navLogout')) {
             return;
@@ -172,6 +173,9 @@
                 </a>
                 <a href="dashboard.html" id="navDashboard" class="fade" title="Dashboard" style="display: none;">
                     <i class="fa-solid fa-gauge"></i> Dashboard
+                </a>
+                <a href="admin-users.html" id="navAdmin" class="fade" title="Admin Panel" style="display: none;">
+                    <i class="fa-solid fa-user-shield"></i> Admin Panel
                 </a>
                 <a href="account.html" id="navAccount" class="fade" title="Account Settings" style="display: none;">
                     <i class="fa-solid fa-user-gear"></i> Account Settings
@@ -193,6 +197,25 @@
         }
     }
 
+    /**
+     * Check if user is an admin
+     */
+    async function isUserAdmin(email) {
+        if (!email) return false;
+
+        try {
+            const { data, error } = await sb
+                .from('admins')
+                .select('email')
+                .eq('email', email.toLowerCase())
+                .single();
+
+            return !error && !!data;
+        } catch (err) {
+            return false;
+        }
+    }
+
     // Update UI based on auth state
     async function updateAuthUI() {
         try {
@@ -200,6 +223,7 @@
 
             const navAuth = document.getElementById('navAuth');
             const navDashboard = document.getElementById('navDashboard');
+            const navAdmin = document.getElementById('navAdmin');
             const navAccount = document.getElementById('navAccount');
             const navUser = document.getElementById('navUser');
             const navUserName = document.getElementById('navUserName');
@@ -215,10 +239,19 @@
                 if (!allowedSession) return;
                 await upsertUserProfile(session.user);
 
+                // Check if user is admin
+                const userIsAdmin = await isUserAdmin(session.user.email);
+
                 // User is logged in
                 if (navAuth) navAuth.style.display = 'none';
                 if (navDashboard) navDashboard.style.display = 'block';
                 if (navAccount) navAccount.style.display = 'block';
+
+                // Show admin button only for admins
+                if (navAdmin) {
+                    navAdmin.style.display = userIsAdmin ? 'block' : 'none';
+                }
+
                 if (navUser) {
                     navUser.style.display = 'block';
                     if (navUserName) {
@@ -243,6 +276,7 @@
                 // User is logged out
                 if (navAuth) navAuth.style.display = 'block';
                 if (navDashboard) navDashboard.style.display = 'none';
+                if (navAdmin) navAdmin.style.display = 'none';
                 if (navAccount) navAccount.style.display = 'none';
                 if (navUser) navUser.style.display = 'none';
                 if (navLogout) navLogout.style.display = 'none';
