@@ -371,7 +371,7 @@ module.exports = async (req, res) => {
   1) [Relevant knowledge for this question] context
   2) Tool results from search_projects/get_project_details/get_platform_stats
   3) Explicit projectContext passed by the client
-- If evidence is insufficient, reply EXACTLY: "${NO_EVIDENCE_REPLY}"
+- If evidence is insufficient, reply EXACTLY: "${NO_EVIDENCE_REPLY}" (in the user's language if not English)
 - Do NOT invent project names, numbers, dates, or features
 
 ## TOOL USAGE — use tools proactively:
@@ -386,7 +386,15 @@ module.exports = async (req, res) => {
 - No preambles like "I understand..." or "Let me explain..."
 - If you need to use tools (search_projects, get_platform_stats), use them and give the direct answer
 - Use bullets ONLY when listing actual items (projects, features), max 3 items
-- Be helpful but brief — every word counts`;
+- Be helpful but brief — every word counts
+
+## LANGUAGE — multilingual support:
+- Detect the language of the user's message
+- Respond in the SAME language as the user's question
+- If the user asks in Arabic, respond in Arabic; if English, respond in English
+- Keep technical terms in English (e.g., "NexCore Labs", "Hub", "API", "GitHub")
+- Keep product/feature names in English for consistency
+- Support all major languages: Arabic, English, French, Spanish, etc.`;
 
   if (projectContext) {
     systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;
