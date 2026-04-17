@@ -901,7 +901,7 @@
             <div class="chat-signin-prompt">
               <i class="fa-solid fa-sparkles" style="color:#6ee7f3;font-size:32px;display:block;margin-bottom:14px;"></i>
               <p>Sign in to start chatting with NexCore AI</p>
-              <button id="open-signin-modal-btn" class="btn primary">
+              <button id="open-signin-modal-btn" class="chat-signin-cta">
                 <i class="fa-solid fa-key"></i> Sign In
               </button>
             </div>`;
@@ -909,10 +909,10 @@
           elSuggestions.innerHTML = '';
 
           // Bind the button to open modal
-          requestAnimationFrame(() => {
+          setTimeout(() => {
             const btn = document.getElementById('open-signin-modal-btn');
             if (btn) btn.addEventListener('click', openAuthModal);
-          });
+          }, 0);
         } else {
           // User is authenticated - restore input interface if it was replaced
           if (!document.getElementById('page-input')) {
@@ -935,16 +935,15 @@
                 </button>
               </div>`;
 
-            // Re-cache refs and re-bind events
-            requestAnimationFrame(() => {
+            // Re-bind events immediately after DOM update
+            setTimeout(() => {
               const newInput = document.getElementById('page-input');
               const newSend = document.getElementById('page-send');
               if (newInput && newSend) {
                 newInput.addEventListener('keydown', e => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    const text = (newInput.value || '').trim();
-                    if (text) sendMessage();
+                    sendMessage();
                   }
                 });
                 newInput.addEventListener('input', () => {
@@ -952,8 +951,9 @@
                   newInput.style.height = Math.min(newInput.scrollHeight, 120) + 'px';
                 });
                 newSend.addEventListener('click', sendMessage);
+                newInput.focus(); // Auto-focus the input after restoration
               }
-            });
+            }, 0);
           }
         }
       }
@@ -1310,11 +1310,12 @@
       if (window.supabaseClient) {
         window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
           if (session?.user) {
-            sessionToken = null;
             closeAuthModal();
-            // Re-enable input and reload suggestions
+            // Refresh token and restore interface
             await checkAuth();
             await fetchUsage();
+            // Ensure token is cached before showing suggestions
+            await getToken();
             showSuggestionsIfAuthenticated();
           }
         });
