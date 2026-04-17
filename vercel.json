@@ -13,6 +13,7 @@
     { "source": "/roadmap", "destination": "/roadmap.html" },
     { "source": "/terms", "destination": "/terms.html" },
     { "source": "/thanks", "destination": "/thanks.html" },
-    { "source": "/ai-chat", "destination": "/ai-chat.html" }
+    { "source": "/ai-chat", "destination": "/ai-chat.html" },
+    { "source": "/admin-users", "destination": "/admin-users.html" }
   ]
 }

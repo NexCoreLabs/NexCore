@@ -11,6 +11,7 @@ const PRECACHE_URLS = [
   '/hub.html',
   '/project.html',
   '/ai-chat.html',
+  '/admin-users.html',
   '/roadmap.html',
   '/releases.html',
   '/thanks.html',
