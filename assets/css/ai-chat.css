@@ -398,32 +398,6 @@
   cursor: not-allowed;
 }
 
-#nexai-send {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: none;
-  background: linear-gradient(135deg, #6ee7f3, #3ac5c0);
-  color: #031017;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#nexai-send:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 4px 14px rgba(110, 231, 243, 0.4);
-}
-
-#nexai-send:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
 #nexai-send:disabled {
   opacity: 0.4;
   cursor: not-allowed;

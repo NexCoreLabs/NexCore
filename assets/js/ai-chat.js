@@ -111,7 +111,7 @@
           autocomplete="off"
           spellcheck="true"
         ></textarea>
-        <button id="nexai-send" aria-label="Send message" title="Send (Enter)">
+        <button id="nexai-send" class="btn primary" aria-label="Send message" title="Send (Enter)">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <line x1="22" y1="2" x2="11" y2="13"/>
             <polygon points="22 2 15 22 11 13 2 9 22 2"/>
