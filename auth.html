@@ -186,13 +186,13 @@
 
                                     </svg>
 
-                                    <span id="btnText">Log In with Google</span>
+                                    <span id="btnText">Continue with Google</span>
                                 </button>
 
                                 <div class="squ-notice">
                                     <i class="fa-solid fa-info-circle"></i>
 
-                                    Allowed emails: SQU staff, SQU students, or approved NexCore users.
+                                    Allowed users: SQU affiliates (@student.squ.edu.om / @squ.edu.om) & approved NexCore users.
 
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
 
         <script src="assets/js/supabase-client.js"></script>
 
-        <script src="assets/js/auth-ui.js"></script>
+        <script src="assets/js/auth-ui-db.js"></script>
 
         <script src="version.js"></script>
 
@@ -241,6 +241,17 @@
             const sb = window.supabaseClient;
 
             const currentMode = 'login';
+            const ALLOWED_DOMAINS = ['squ.edu.om', 'student.squ.edu.om'];
+
+            // Whitelist for approved non-SQU users (add specific emails here)
+            const APPROVED_EMAILS = [
+                // Add approved email addresses here, e.g.:
+                // 'johndoe@example.com',
+                // 'partner@company.com',
+            ];
+
+            const AUTH_NOTICE_KEY = 'auth_notice';
+            const RESTRICTED_EMAIL_NOTICE = 'Only SQU email addresses (@student.squ.edu.om / @squ.edu.om) can sign in.';
 
             let suppressSignedOutNote = false;
 
@@ -252,6 +263,43 @@
 
             const btnText = document.getElementById('btnText');
 
+            function isAllowedEmail(email) {
+                if (typeof email !== 'string') return false;
+                const normalized = email.trim().toLowerCase();
+
+                // Check if email is from allowed domain
+                const isDomainAllowed = ALLOWED_DOMAINS.some(domain => normalized.endsWith(`@${domain}`));
+
+                // Check if email is in approved whitelist
+                const isWhitelisted = APPROVED_EMAILS.some(approvedEmail =>
+                    normalized === approvedEmail.toLowerCase()
+                );
+
+                return isDomainAllowed || isWhitelisted;
+            }
+
+            function stashAuthNotice(message) {
+                try {
+                    sessionStorage.setItem(AUTH_NOTICE_KEY, message);
+                } catch (_) {}
+            }
+
+            async function enforceSquEmail(session) {
+                const email = session?.user?.email || '';
+                if (!session?.user || isAllowedEmail(email)) return true;
+
+                stashAuthNotice(RESTRICTED_EMAIL_NOTICE);
+                suppressSignedOutNote = true;
+                try {
+                    await sb.auth.signOut();
+                } catch (_) {}
+                showNote(RESTRICTED_EMAIL_NOTICE, true);
+                try {
+                    sessionStorage.removeItem(AUTH_NOTICE_KEY);
+                } catch (_) {}
+                return false;
+            }
+
             // Check if user is already logged in
 
             async function checkExistingSession() {
@@ -259,6 +307,8 @@
                 const { data: { session } } = await sb.auth.getSession();
 
                 if (session) {
+                    const allowed = await enforceSquEmail(session);
+                    if (!allowed) return false;
 
                     // User is already logged in, redirect to dashboard
 
@@ -285,6 +335,16 @@
                 const error = params.get('error') || hashParams.get('error');
 
                 const errorDescription = params.get('error_description') || hashParams.get('error_description');
+                const authNotice = params.get('auth_notice');
+                const storedNotice = sessionStorage.getItem(AUTH_NOTICE_KEY);
+
+                if (authNotice === 'restricted_email' || storedNotice) {
+                    showNote(storedNotice || RESTRICTED_EMAIL_NOTICE, true);
+                    sessionStorage.removeItem(AUTH_NOTICE_KEY);
+                    const cleanUrl = window.location.pathname;
+                    window.history.replaceState({}, '', cleanUrl);
+                    return true;
+                }
 
 
 
@@ -317,6 +377,8 @@
             sb.auth.onAuthStateChange(async (event, session) => {
 
                 if (event === 'SIGNED_IN' && session) {
+                    const allowed = await enforceSquEmail(session);
+                    if (!allowed) return;
 
                     // Successful sign-in, redirect to dashboard
 
@@ -363,7 +425,7 @@
                 showToast(text, isError);
                 // Re-enable button if it was disabled
                 googleBtn.disabled = false;
-                btnText.textContent = 'Log In with Google';
+                btnText.textContent = 'Continue with Google';
             }
 
             // Google Sign In
@@ -422,7 +484,7 @@
 
                     googleBtn.disabled = false;
 
-                    btnText.textContent = 'Log In with Google';
+                    btnText.textContent = 'Continue with Google';
 
                 }
 

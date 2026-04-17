@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Approved Users | NexCore Labs</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        .admin-container {
+            max-width: 1000px;
+            margin: 120px auto 40px;
+            padding: 20px;
+        }
+
+        .admin-section {
+            background: rgba(10, 11, 28, 0.6);
+            border: 1px solid rgba(110, 231, 243, 0.15);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .admin-section h2 {
+            color: #6ee7f3;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #eaf6fb;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110, 231, 243, 0.1);
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .users-table th {
+            background: rgba(110, 231, 243, 0.1);
+            color: #6ee7f3;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(110, 231, 243, 0.2);
+        }
+
+        .users-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e0;
+        }
+
+        .users-table tr:hover {
+            background: rgba(110, 231, 243, 0.03);
+        }
+
+        .btn-remove {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            color: #ff7878;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 100, 100, 0.2);
+            border-color: #ff7878;
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .status-success {
+            background: rgba(120, 255, 120, 0.1);
+            border: 1px solid rgba(120, 255, 120, 0.3);
+            color: #7fff7f;
+        }
+
+        .status-error {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            color: #ff7878;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6ee7f3;
+            padding: 20px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--muted);
+            padding: 40px 20px;
+        }
+
+        .email-col { width: 35%; }
+        .reason-col { width: 30%; }
+        .approved-col { width: 20%; }
+        .actions-col { width: 15%; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div class="spot-light"></div>
+    </div>
+
+    <div class="admin-container">
+        <h1 class="title">Manage Approved Users</h1>
+        <p class="lead">Add or remove approved non-SQU users who can access the platform.</p>
+
+        <!-- Add User Section -->
+        <div class="admin-section">
+            <h2><i class="fa-solid fa-user-plus"></i> Add Approved User</h2>
+
+            <div id="addStatus" class="status-message hidden"></div>
+
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="emailInput">Email Address *</label>
+                    <input
+                        type="email"
+                        id="emailInput"
+                        placeholder="user@example.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="reasonInput">Reason / Notes</label>
+                    <textarea
+                        id="reasonInput"
+                        placeholder="e.g., External collaborator, Industry partner, etc."
+                    ></textarea>
+                </div>
+
+                <button type="submit" class="btn primary">
+                    <i class="fa-solid fa-check"></i> Approve User
+                </button>
+            </form>
+        </div>
+
+        <!-- Current Users Section -->
+        <div class="admin-section">
+            <h2><i class="fa-solid fa-users"></i> Current Approved Users</h2>
+
+            <div id="removeStatus" class="status-message hidden"></div>
+            <div id="usersLoading" class="loading">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading users...
+            </div>
+            <div id="usersEmpty" class="empty-state hidden">
+                <i class="fa-solid fa-inbox" style="font-size: 3rem; opacity: 0.3; margin-bottom: 10px;"></i>
+                <p>No approved users yet. Add one above to get started.</p>
+            </div>
+            <div id="usersTable" class="hidden">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th class="email-col">Email</th>
+                            <th class="reason-col">Reason</th>
+                            <th class="approved-col">Approved By</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/supabase-client.js"></script>
+
+    <script>
+        const sb = window.supabaseClient;
+        let currentUserEmail = null;
+
+        // Check if user is authenticated
+        async function checkAuth() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                window.location.href = '/auth.html';
+                return false;
+            }
+            currentUserEmail = session.user.email;
+            return true;
+        }
+
+        // Fetch and display approved users
+        async function loadApprovedUsers() {
+            const loading = document.getElementById('usersLoading');
+            const empty = document.getElementById('usersEmpty');
+            const table = document.getElementById('usersTable');
+            const tbody = document.getElementById('usersTableBody');
+
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+            table.classList.add('hidden');
+
+            try {
+                const { data, error } = await sb
+                    .from('approved_users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                loading.classList.add('hidden');
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                data.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.email}</td>
+                        <td>${user.reason || '<em style="opacity: 0.5;">No reason provided</em>'}</td>
+                        <td>${user.approved_by || '<em style="opacity: 0.5;">N/A</em>'}</td>
+                        <td class="actions-col">
+                            <button
+                                class="btn-remove"
+                                onclick="removeUser('${user.email}')"
+                                title="Remove user"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                table.classList.remove('hidden');
+
+            } catch (error) {
+                loading.classList.add('hidden');
+                showStatus('removeStatus', 'Error loading users: ' + error.message, 'error');
+            }
+        }
+
+        // Add new approved user
+        async function addUser(email, reason) {
+            try {
+                const { data, error } = await sb
+                    .from('approved_users')
+                    .insert([{
+                        email: email.toLowerCase().trim(),
+                        approved_by: currentUserEmail,
+                        reason: reason.trim() || null
+                    }])
+                    .select();
+
+                if (error) throw error;
+
+                showStatus('addStatus', `✓ Successfully added ${email}`, 'success');
+                document.getElementById('addUserForm').reset();
+                loadApprovedUsers();
+
+            } catch (error) {
+                let message = error.message;
+                if (error.code === '23505') {
+                    message = 'This email is already approved.';
+                }
+                showStatus('addStatus', 'Error: ' + message, 'error');
+            }
+        }
+
+        // Remove approved user
+        async function removeUser(email) {
+            if (!confirm(`Remove ${email} from approved users?`)) return;
+
+            try {
+                const { error } = await sb
+                    .from('approved_users')
+                    .delete()
+                    .eq('email', email);
+
+                if (error) throw error;
+
+                showStatus('removeStatus', `✓ Removed ${email}`, 'success');
+                loadApprovedUsers();
+
+            } catch (error) {
+                showStatus('removeStatus', 'Error: ' + error.message, 'error');
+            }
+        }
+
+        // Show status message
+        function showStatus(elementId, message, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = 'status-message status-' + type;
+            el.classList.remove('hidden');
+
+            setTimeout(() => {
+                el.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Form submission
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('emailInput').value;
+            const reason = document.getElementById('reasonInput').value;
+
+            await addUser(email, reason);
+        });
+
+        // Make removeUser global
+        window.removeUser = removeUser;
+
+        // Initialize
+        (async () => {
+            const authenticated = await checkAuth();
+            if (authenticated) {
+                loadApprovedUsers();
+            }
+        })();
+    </script>
+</body>
+</html>
