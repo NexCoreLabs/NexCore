@@ -217,13 +217,17 @@
 
     // 4. Bullet lists: lines starting with "* " or "- "
     s = s.replace(/^[*\-]\s+(.+)$/gm, '<li>$1</li>');
+
+    // 5. Inline bullets: text followed by " * item" pattern (e.g., "can: * Showcase")
+    s = s.replace(/\s\*\s+([A-Z][^*\n.]{2,})/g, '<br>• $1');
+
     s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g,
       m => `<ul>${m.replace(/\n/g, '')}</ul>`);
 
-    // 5. Headings: ## or ###
+    // 6. Headings: ## or ###
     s = s.replace(/^#{2,3}\s+(.+)$/gm, '<strong>$1</strong>');
 
-    // 6. Remaining newlines → <br>
+    // 7. Remaining newlines → <br>
     s = s.replace(/\n/g, '<br>');
 
     return s;

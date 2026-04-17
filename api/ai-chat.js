@@ -38,7 +38,7 @@ const MINUTE_LIMIT    = parseInt(process.env.AI_CHAT_MINUTE_LIMIT || '5', 10);
 const MAX_CONTEXT_CHARS = 4000;
 // Max characters in a user message
 const MAX_MSG_CHARS     = 500;
-const MAX_REPLY_WORDS   = parseInt(process.env.AI_CHAT_MAX_REPLY_WORDS || '60', 10);
+const MAX_REPLY_WORDS   = parseInt(process.env.AI_CHAT_MAX_REPLY_WORDS || '75', 10);
 const OUT_OF_SCOPE_REPLY = 'I can only help with NexCore Labs topics. Ask me about the platform, features, or student projects.';
 const NO_EVIDENCE_REPLY = 'I do not have verified NexCore data for that yet. Please ask about a specific feature or project, and I will use available records.';
 
@@ -385,7 +385,8 @@ module.exports = async (req, res) => {
 - No explanations of your limitations or what you can't access unless specifically asked
 - No preambles like "I understand..." or "Let me explain..."
 - If you need to use tools (search_projects, get_platform_stats), use them and give the direct answer
-- Use bullets ONLY when listing actual items (projects, features), max 3 items
+- When listing items, use proper markdown: start each item on a new line with "- " or use **bold** for emphasis
+- Avoid inline asterisks like "can: * item" — use line breaks instead
 - Be helpful but brief — every word counts
 
 ## LANGUAGE — multilingual support:
