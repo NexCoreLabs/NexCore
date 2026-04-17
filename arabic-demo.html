@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Font Demo - Tajawal</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        .demo-section {
+            margin: 40px auto;
+            max-width: 900px;
+            padding: 20px;
+        }
+        .demo-box {
+            background: rgba(110, 231, 243, 0.05);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .demo-title {
+            color: #6ee7f3;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+        .weight-demo {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 15px;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .weight-label {
+            color: var(--muted);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="hero-inner">
+            <div class="demo-section">
+                <h1 class="title">Arabic Font Demo - خط التجوال</h1>
+                <p class="lead">Testing Tajawal font implementation for Arabic text support</p>
+
+                <!-- Basic Arabic Text -->
+                <div class="demo-box">
+                    <div class="demo-title">Basic Arabic Text (lang="ar")</div>
+                    <h2 lang="ar">مرحباً بكم في NexCore Labs</h2>
+                    <p lang="ar">نحن نأخذ مشاريع الطلاب ونحولها إلى صفحات نظيفة وقابلة للنشر - السرعة هي الهدف الرئيسي.</p>
+                </div>
+
+                <!-- Font Weights -->
+                <div class="demo-box">
+                    <div class="demo-title">Font Weights Demonstration</div>
+
+                    <div class="weight-demo">
+                        <span class="weight-label">Light (300)</span>
+                        <p lang="ar" style="font-weight: 300; margin: 0;">خط خفيف - البرمجة والتطوير</p>
+                    </div>
+
+                    <div class="weight-demo">
+                        <span class="weight-label">Regular (400)</span>
+                        <p lang="ar" style="font-weight: 400; margin: 0;">خط عادي - البرمجة والتطوير</p>
+                    </div>
+
+                    <div class="weight-demo">
+                        <span class="weight-label">Medium (500)</span>
+                        <p lang="ar" style="font-weight: 500; margin: 0;">خط متوسط - البرمجة والتطوير</p>
+                    </div>
+
+                    <div class="weight-demo">
+                        <span class="weight-label">Bold (700)</span>
+                        <p lang="ar" style="font-weight: 700; margin: 0;">خط عريض - البرمجة والتطوير</p>
+                    </div>
+
+                    <div class="weight-demo">
+                        <span class="weight-label">Extra Bold (800)</span>
+                        <p lang="ar" style="font-weight: 800; margin: 0;">خط عريض جداً - البرمجة والتطوير</p>
+                    </div>
+                </div>
+
+                <!-- Mixed Content -->
+                <div class="demo-box">
+                    <div class="demo-title">Mixed Content (English + Arabic)</div>
+                    <p class="mixed-content">Welcome to NexCore - مرحباً بكم في NexCore</p>
+                    <p class="mixed-content">Technology - التكنولوجيا | Innovation - الابتكار | Development - التطوير</p>
+                </div>
+
+                <!-- RTL Direction -->
+                <div class="demo-box">
+                    <div class="demo-title">Right-to-Left Direction Test</div>
+                    <div lang="ar">
+                        <h3>قائمة الميزات</h3>
+                        <ul>
+                            <li>واجهة مستخدم حديثة</li>
+                            <li>دعم اللغة العربية الكامل</li>
+                            <li>تصميم متجاوب</li>
+                            <li>أداء عالي</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Buttons and Interactive Elements -->
+                <div class="demo-box">
+                    <div class="demo-title">Interactive Elements</div>
+                    <button class="btn primary" lang="ar">زر رئيسي</button>
+                    <button class="btn ghost" lang="ar">زر ثانوي</button>
+                    <br><br>
+                    <input type="text" placeholder="اكتب هنا..." lang="ar" style="max-width: 100%;">
+                </div>
+
+                <!-- Headers -->
+                <div class="demo-box">
+                    <div class="demo-title">Headers (H1-H6)</div>
+                    <h1 lang="ar">عنوان من المستوى الأول</h1>
+                    <h2 lang="ar">عنوان من المستوى الثاني</h2>
+                    <h3 lang="ar">عنوان من المستوى الثالث</h3>
+                    <h4 lang="ar">عنوان من المستوى الرابع</h4>
+                </div>
+
+                <!-- Full Arabic Section -->
+                <div class="demo-box">
+                    <div class="demo-title">Complete Arabic Section</div>
+                    <section lang="ar">
+                        <h2>حول NexCore Labs</h2>
+                        <p>
+                            NexCore Labs هو فريق تطوير مبتكر يركز على تحويل مشاريع الطلاب إلى تطبيقات ويب احترافية.
+                            نحن نؤمن بقوة التكنولوجيا في تحسين التعليم وتمكين الطلاب من تحقيق أفكارهم.
+                        </p>
+                        <p>
+                            نستخدم أحدث التقنيات والأدوات لضمان أن كل مشروع يتم تطويره بأعلى معايير الجودة والأداء.
+                            هدفنا هو جعل عملية التطوير سريعة وفعالة مع الحفاظ على جودة استثنائية.
+                        </p>
+                    </section>
+                </div>
+
+                <!-- Class-based Arabic -->
+                <div class="demo-box">
+                    <div class="demo-title">Using CSS Classes</div>
+                    <p class="arabic-text">نص عربي باستخدام class="arabic-text"</p>
+                    <p class="font-tajawal">نص عربي باستخدام class="font-tajawal"</p>
+                </div>
+
+                <!-- Back to Home -->
+                <div style="text-align: center; margin-top: 40px;">
+                    <a href="index.html" class="btn primary">العودة إلى الصفحة الرئيسية - Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="background">
+        <div class="spot-light"></div>
+    </div>
+</body>
+</html>

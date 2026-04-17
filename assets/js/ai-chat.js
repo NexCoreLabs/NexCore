@@ -198,6 +198,14 @@
   }
 
   /**
+   * Detect if text contains Arabic characters
+   */
+  function hasArabic(text) {
+    // Arabic Unicode range: \u0600-\u06FF
+    return /[\u0600-\u06FF]/.test(text);
+  }
+
+  /**
    * Safely convert a subset of markdown to HTML.
    * HTML entities are escaped first to prevent XSS.
    */
@@ -252,6 +260,13 @@
     const bubble = document.createElement('div');
     bubble.className = 'nexai-bubble';
     if (isError) bubble.classList.add('nexai-error-bubble');
+
+    // Detect Arabic and set lang attribute for proper font rendering
+    if (hasArabic(text)) {
+      bubble.setAttribute('lang', 'ar');
+      bubble.style.direction = 'rtl';
+      bubble.style.textAlign = 'right';
+    }
 
     // Render markdown for AI messages; plain text for user/error messages
     if (role === 'ai' && !isError) {
@@ -581,6 +596,18 @@
     elInput.addEventListener('input', () => {
       autoResize();
       updateCharCounter();
+
+      // Detect Arabic input and apply appropriate styling
+      const inputText = elInput.value || '';
+      if (hasArabic(inputText)) {
+        elInput.setAttribute('lang', 'ar');
+        elInput.style.direction = 'rtl';
+        elInput.style.textAlign = 'right';
+      } else {
+        elInput.removeAttribute('lang');
+        elInput.style.direction = 'ltr';
+        elInput.style.textAlign = 'left';
+      }
     });
     elSend.addEventListener('click', sendMessage);
 
