@@ -134,6 +134,7 @@
       '        <i class="ncc-chevron" aria-hidden="true">&#9662;</i>',
       '      </summary>',
 
+      '      <div class="ncc-customize-body">',
       '      <div class="ncc-categories">',
 
       // Necessary — locked
@@ -199,6 +200,7 @@
       '      <div class="ncc-actions-bottom">',
       '        <button id="ncc-save" class="ncc-btn ncc-btn-save" type="button">Save preferences</button>',
       '      </div>',
+      '      </div>',// end .ncc-customize-body
 
       '    </details>',
 
@@ -341,6 +343,47 @@
     if (overlay) {
       overlay.addEventListener('click', function (e) {
         if (e.target === overlay) closeModal();
+      });
+    }
+
+    // ── Customize accordion smooth animation ──
+    var details = document.querySelector('.ncc-customize');
+    if (details) {
+      var body = details.querySelector('.ncc-customize-body');
+      var summary = details.querySelector('summary');
+
+      summary.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        if (details.open) {
+          // Closing: animate down then remove [open]
+          body.style.maxHeight = body.scrollHeight + 'px';
+          requestAnimationFrame(function () {
+            body.style.maxHeight = '0';
+            body.style.opacity   = '0';
+          });
+          function onClose() {
+            details.removeAttribute('open');
+            body.removeEventListener('transitionend', onClose);
+          }
+          body.addEventListener('transitionend', onClose);
+        } else {
+          // Opening: add [open] then animate up
+          details.setAttribute('open', '');
+          body.style.maxHeight = '0';
+          body.style.opacity   = '0';
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              body.style.maxHeight = body.scrollHeight + 'px';
+              body.style.opacity   = '1';
+            });
+          });
+          function onOpen() {
+            body.style.maxHeight = 'none';
+            body.removeEventListener('transitionend', onOpen);
+          }
+          body.addEventListener('transitionend', onOpen);
+        }
       });
     }
 

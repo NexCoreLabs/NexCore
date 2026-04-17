@@ -32,10 +32,7 @@
   // Quick suggestion buttons shown on first open
   const SUGGESTIONS = [
     'What is NexCore?',
-    'How do I submit a project?',
-    'Tell me about SQU colleges',
-    'What is the AI Assist feature?',
-    'SQU admission requirements'
+    'How do I create a project?'
   ];
 
   // ── State ───────────────────────────────────────────────────────────────
@@ -92,13 +89,13 @@
         <button id="nexai-close" aria-label="Close AI chat" title="Close">✕</button>
       </div>
 
-      <div id="nexai-messages" role="log" aria-live="polite" aria-label="Chat messages">
-        <div class="nexai-welcome">
-          <span class="nexai-welcome-icon" aria-hidden="true">✦</span>
-          Hi! I'm the NexCore AI assistant.<br>
-          Ask me anything about the platform, SQU, or projects.
+        <div id="nexai-messages" role="log" aria-live="polite" aria-label="Chat messages">
+          <div class="nexai-welcome">
+            <span class="nexai-welcome-icon" aria-hidden="true">✦</span>
+            Hi! I'm the NexCore AI assistant.<br>
+          Ask me about NexCore Labs and student projects.
+          </div>
         </div>
-      </div>
 
       <div id="nexai-suggestions" aria-label="Quick suggestions"></div>
 
@@ -378,7 +375,7 @@
     // Require auth
     let token = await getToken();
     if (!token) {
-      appendMessage('ai', 'Please sign in to use the AI assistant.', null, true);
+      appendMessage('ai', 'Sign in to use the AI assistant. You can do this from the hub or sign-in page.', null, true);
       return;
     }
 
@@ -439,7 +436,11 @@
         } else if (res.status === 401) {
           appendMessage('ai', 'Session expired — please sign in again.', null, true);
         } else if (res.status === 503) {
-          appendSupportBubble();
+          if (data.code === 'quota_exhausted') {
+            appendSupportBubble();
+          } else {
+            appendErrorWithRetry(data.message || 'The AI is temporarily busy. Please try again.');
+          }
         } else {
           appendErrorWithRetry('Something went wrong. Please try again.');
         }
