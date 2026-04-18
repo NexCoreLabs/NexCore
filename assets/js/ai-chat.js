@@ -117,6 +117,12 @@
             <polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
+      </div>
+
+      <div id="nexai-auth-cta" style="display:none;">
+        <button id="nexai-signin-btn" class="nexai-signin-btn">
+          <i class="fa-solid fa-key"></i> Sign in to chat
+        </button>
       </div>`;
 
     document.body.appendChild(trigger);
@@ -125,7 +131,8 @@
 
   // ── DOM references (populated after build) ──────────────────────────────
   let elTrigger, elPanel, elMessages, elInput, elSend,
-      elStatus, elUsagePill, elSuggestions, elBadge, elCharCounter;
+      elStatus, elUsagePill, elSuggestions, elBadge, elCharCounter,
+      elAuthCta;
 
   function cacheRefs() {
     elTrigger     = document.getElementById('nexai-trigger');
@@ -138,6 +145,18 @@
     elSuggestions = document.getElementById('nexai-suggestions');
     elBadge       = document.getElementById('nexai-badge');
     elCharCounter = document.getElementById('nexai-char-counter');
+    elAuthCta     = document.getElementById('nexai-auth-cta');
+
+    const signinBtn = document.getElementById('nexai-signin-btn');
+    if (signinBtn) {
+      signinBtn.addEventListener('click', () => {
+        if (typeof window.nexaiOnAuthRequired === 'function') {
+          window.nexaiOnAuthRequired();
+        } else {
+          window.location.href = '/auth';
+        }
+      });
+    }
   }
   // ── Session history ───────────────────────────────────────────────
   function loadHistory() {
@@ -373,6 +392,33 @@
       elCharCounter.className   = left < 50 ? 'limit' : 'warn';
     }
   }
+  // ── Auth gate helpers ───────────────────────────────────────────────────
+  function lockInput() {
+    if (!elInput || !elSend) return;
+    elInput.disabled = true;
+    elInput.placeholder = 'Sign in to chat…';
+    elSend.disabled = true;
+    elInput.addEventListener('click', onLockedInputClick);
+    if (elAuthCta) elAuthCta.style.display = 'block';
+  }
+
+  function unlockInput() {
+    if (!elInput || !elSend) return;
+    elInput.disabled = false;
+    elInput.placeholder = 'Ask NexCore AI…';
+    elSend.disabled = false;
+    elInput.removeEventListener('click', onLockedInputClick);
+    if (elAuthCta) elAuthCta.style.display = 'none';
+  }
+
+  function onLockedInputClick() {
+    if (typeof window.nexaiOnAuthRequired === 'function') {
+      window.nexaiOnAuthRequired();
+    } else {
+      window.location.href = '/auth.html';
+    }
+  }
+
   // ── Send message ─────────────────────────────────────────────────────────
   /**
    * @param {string} [retryText] — if provided, re-sends that text without
@@ -394,7 +440,11 @@
     // Require auth
     let token = await getToken();
     if (!token) {
-      appendMessage('ai', 'Sign in to use the AI assistant. You can do this from the hub or sign-in page.', null, true);
+      if (typeof window.nexaiOnAuthRequired === 'function') {
+        window.nexaiOnAuthRequired();
+      } else {
+        appendMessage('ai', 'Sign in to use the AI assistant. You can do this from the hub or sign-in page.', null, true);
+      }
       return;
     }
 
@@ -556,8 +606,14 @@
       renderSuggestions();
     }
 
-    // Focus input after transition
-    setTimeout(() => elInput.focus(), 260);
+    // Lock input if not signed in
+    getToken().then(token => {
+      if (!token) {
+        lockInput();
+      } else {
+        setTimeout(() => elInput.focus(), 260);
+      }
+    });
   }
 
   function closePanel() {
@@ -618,8 +674,15 @@
 
     // Re-fetch token if auth state changes
     if (window.supabaseClient) {
-      window.supabaseClient.auth.onAuthStateChange(() => {
+      window.supabaseClient.auth.onAuthStateChange((event, session) => {
         sessionToken = null; // bust cached token
+        if (session?.access_token) {
+          sessionToken = session.access_token;
+          unlockInput();
+          fetchUsage();
+        } else {
+          lockInput();
+        }
       });
     }
   }

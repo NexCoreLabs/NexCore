@@ -1145,11 +1145,11 @@
         <div class="ai-chat-modal-panel">
             <button class="ai-chat-modal-close" id="signinModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             <div class="ai-chat-modal-header">
-                <h2><i class="fa-solid fa-microchip" style="color:#6ee7f3;"></i> Sign in to Generate</h2>
-                <p>Log in to unlock AI-powered insights for this project.</p>
+                <h2><i class="fa-solid fa-key" style="color:#6ee7f3;"></i> Sign in to NexCore</h2>
+                <p>Log in to access AI features on this project.</p>
             </div>
             <div class="ai-chat-modal-body">
-                <p>Continue with Google to generate AI insights about what this project is building.</p>
+                <p id="signinModalDesc">Continue with Google to sign in and use NexCore AI.</p>
                 <button class="google-btn" id="signinGoogleBtn">
                     <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -1836,7 +1836,9 @@
         /* ---- Sign-in Modal for AI Insights ---- */
 
         function openSigninModal(project) {
-            sessionStorage.setItem('pendingInsightsSlug', project.slug);
+            if (project && project.slug) {
+                sessionStorage.setItem('pendingInsightsSlug', project.slug);
+            }
             const modal = document.getElementById('signinModal');
             if (modal) modal.classList.add('open');
             document.body.style.overflow = 'hidden';
@@ -1847,6 +1849,9 @@
             if (modal) modal.classList.remove('open');
             document.body.style.overflow = '';
         }
+
+        // Expose to ai-chat.js widget so it opens this modal instead of an error bubble
+        window.nexaiOnAuthRequired = () => openSigninModal();
 
         (function wireSigninModal() {
             const modal = document.getElementById('signinModal');

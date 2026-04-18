@@ -471,6 +471,40 @@
   color: #ff7878;
 }
 
+/* ── Auth CTA (shown when not signed in) ────────────────────── */
+#nexai-auth-cta {
+  padding: 0 14px 14px;
+  flex-shrink: 0;
+}
+
+.nexai-signin-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(110, 231, 243, 0.12), rgba(110, 231, 243, 0.06));
+  border: 1px solid rgba(110, 231, 243, 0.3);
+  border-radius: 10px;
+  color: #6ee7f3;
+  font-size: 13.5px;
+  font-weight: 600;
+  font-family: Inter, sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.nexai-signin-btn:hover {
+  background: linear-gradient(135deg, rgba(110, 231, 243, 0.2), rgba(110, 231, 243, 0.1));
+  border-color: rgba(110, 231, 243, 0.55);
+  transform: translateY(-1px);
+}
+
+.nexai-signin-btn:active {
+  transform: translateY(0);
+}
+
 /* ── Retry button ───────────────────────────────────────────── */
 .nexai-retry-btn {
   font-size: 11px;
