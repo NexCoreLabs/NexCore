@@ -65,6 +65,15 @@
             window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
         </script>
         <script defer src="/_vercel/speed-insights/script.js"></script>
+        <style>
+            .sort-bar{display:flex;align-items:center; justify-content: center;  gap:10px;margin-bottom:16px; margin-top: 16px; flex-wrap:wrap;}
+            .sort-label{font-size:.8rem;color:var(--muted);white-space:nowrap;opacity:.8;}
+            .sort-options{display:flex;gap:6px;flex-wrap:wrap;}
+            .sort-btn{padding:5px 13px;font-size:.78rem;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:Inter,sans-serif;cursor:pointer;transition:all .2s;}
+            .sort-btn:hover{border-color:rgba(115,189,215,.4);color:var(--primary-accent);}
+            .sort-btn.active{background:rgba(115,189,215,.12);border-color:rgba(115,189,215,.4);color:var(--primary-accent);font-weight:600;}
+            #projects{scroll-margin-top:100px;}
+        </style>
     </head>
 
     <body>
@@ -155,6 +164,16 @@
             <div class="search-bar">
               <input type="text" id="projectSearch" placeholder="Search by name or ID...">
 
+            </div>
+
+            <div class="sort-bar" id="sortBar">
+              <span class="sort-label">Sort:</span>
+              <div class="sort-options">
+                <button class="sort-btn active" data-sort="newest">Newest</button>
+                <button class="sort-btn" data-sort="oldest">Oldest</button>
+                <button class="sort-btn" data-sort="most-viewed">Most Viewed</button>
+                <button class="sort-btn" data-sort="az">A – Z</button>
+              </div>
             </div>
 
             <div class="category-explorer" id="categoryExplorer">
@@ -273,6 +292,8 @@
 
         let currentSearch = '';
 
+        let currentSort = 'newest';
+
         function normalizeCategory(value) {
 
           const normalized = window.ProjectCategories?.normalizeCategory?.(value);
@@ -359,9 +380,16 @@
 
           }
 
+          // Sort
+          const sorted = [...filteredProjects];
+          if (currentSort === 'newest') sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+          else if (currentSort === 'oldest') sorted.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+          else if (currentSort === 'most-viewed') sorted.sort((a, b) => (b.views || 0) - (a.views || 0));
+          else if (currentSort === 'az') sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
           container.innerHTML = '';
 
-          filteredProjects.forEach((project) => {
+          sorted.forEach((project) => {
 
             const link = `/project.html?slug=${encodeURIComponent(project.slug)}`;
 
@@ -437,6 +465,32 @@
             currentSearch = this.value.trim();
 
             applyProjectFilters();
+
+          });
+
+        }
+
+        function initializeSortBar() {
+
+          const sortBar = document.getElementById('sortBar');
+
+          if (!sortBar || sortBar.dataset.bound === '1') return;
+
+          sortBar.dataset.bound = '1';
+
+          sortBar.querySelectorAll('.sort-btn').forEach(btn => {
+
+            btn.addEventListener('click', () => {
+
+              currentSort = btn.dataset.sort;
+
+              sortBar.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+
+              btn.classList.add('active');
+
+              applyProjectFilters();
+
+            });
 
           });
 
@@ -542,6 +596,7 @@
           document.addEventListener('DOMContentLoaded', () => {
 
             initializeSearch();
+            initializeSortBar();
             loadProjects();
 
           });
@@ -549,6 +604,7 @@
         } else {
 
           initializeSearch();
+          initializeSortBar();
           loadProjects();
 
         }
