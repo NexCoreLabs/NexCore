@@ -790,9 +790,9 @@
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
-                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.7.0</strong></span>
-                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>11 Apr 2026</strong></span>
-                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>12</strong> releases</span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.8.0</strong></span>
+                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>18 Apr 2026</strong></span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>13</strong> releases</span>
             </div>
         </div>
 
@@ -828,6 +828,7 @@
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
                 <div class="rl-nav-panel">
+                    <a class="rl-nav-item"href="#v280" data-version="v2.8.0"><span class="rl-dot-min"></span>v2.8.0</a>
                     <a class="rl-nav-item"href="#v270" data-version="v2.7.0"><span class="rl-dot-min"></span>v2.7.0</a>
                     <a class="rl-nav-item"href="#v260" data-version="v2.6.0"><span class="rl-dot-min"></span>v2.6.0</a>
                     <a class="rl-nav-item"href="#v250" data-version="v2.5.0"><span class="rl-dot-min"></span>v2.5.0</a>
@@ -846,6 +847,86 @@
             <!-- Timeline -->
             <div class="rl-tl" id="rlTl">
 
+                <!-- v2.8.0 -->
+                <div class="rl-card open" id="v280" data-version="v2.8.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.8.0</span>
+                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>18 Apr 2026</div>
+                            <div class="rl-summary">Arabic/RTL support, admin panel, project embed system, and AI assistant refinements.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u280">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d280">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u280">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>Full <strong>Arabic language support</strong> with RTL layout, proper typography, and directional styling across all pages.</li>
+                                    <li>New <strong>Embed System</strong> — generate a code snippet directly from any project page to display it on an external website.</li>
+                                    <li>New <strong>Admin Panel</strong> for managing platform users, access control, and system settings.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>AI assistant now responds more naturally and accurately in Arabic.</li>
+                                    <li>AI responses are better formatted and more concise with an improved word-limit policy.</li>
+                                    <li>Sign-in call-to-actions and modals added for AI features to guide new users through onboarding.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Corrected service worker precache references that could cause stale asset loads.</li>
+                                    <li>Updated PayPal link titles for consistent accessibility labeling.</li>
+                                    <li>Improved error logging for email authorization checks to make debugging easier.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d280">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>Added <span class="ct">assets/css/arabic.css</span> with Tajawal font and RTL overrides applied site-wide.</li>
+                                    <li>New <span class="ct">embed.html</span> page with embed code generation, customization options, and live preview.</li>
+                                    <li>New <span class="ct">admin-users.html</span> interface for user and permission management.</li>
+                                    <li>Database-driven Approved Users whitelist controls access to specific platform features.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Added <span class="ct">admin_activity_log</span> table to audit all administrative actions.</li>
+                                    <li>Approved Users system persisted in the database for reliable access control.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>Removed obsolete <span class="ct">ai_knowledge_cleanup.sql</span> and outdated documentation files.</li>
+                                    <li>Added deployment checklist and approved-users implementation guide.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <!-- v2.7.0 -->
                 <div class="rl-card open" id="v270" data-version="v2.7.0" data-tags="feature,improvement,developer,fix">
                 <div class="rl-box">
@@ -853,7 +934,6 @@
                         <div class="rl-head-body">
                             <div class="rl-head-top">
                                 <span class="rl-ver">v2.7.0</span>
-                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
                             </div>
                             <div class="rl-date"><i class="fa-regular fa-calendar"></i>11 Apr 2026</div>
                             <div class="rl-summary">RAG-powered AI chat, floating assistant access, usage tracking, and broader interface polish.</div>
@@ -1865,6 +1945,7 @@
         (function () {
             const KEY = 'nexcore_rl_visit';
             const DATES = {
+                'v2.8.0': new Date('2026-04-18'),
                 'v2.7.0': new Date('2026-04-11'),
                 'v2.6.0': new Date('2026-03-19'),
                 'v2.5.0': new Date('2026-03-14'),

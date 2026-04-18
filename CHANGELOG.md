@@ -1,5 +1,39 @@
 # 🧾 Changelog
 
+## v2.8.0 - 18 Apr 2026
+### Multilingual & RTL Support:
+
+- Arabic Language Integration: Implemented full support for Arabic with the Tajawal font and a dedicated `arabic.css` for RTL (Right-to-Left) styling across all pages.
+- AI Chat Localization: Enhanced the AI assistant's multilingual capabilities for more natural and accurate responses in Arabic.
+
+
+### Administrative & Security Infrastructure:
+
+- Admin Panel: Introduced a new administrative interface (`admin-users.html`) for managing platform users and system settings.
+- User Whitelisting: Implemented a database-driven Approved Users system to control access to specific platform features.
+- Auditing: Added an `admin_activity_log` table to track and audit administrative actions for improved security.
+- Documentation: Added comprehensive guides for approved users, Arabic font implementation, and a new deployment checklist.
+
+
+### Project Sharing & Embedding:
+
+- Embed Functionality: Developed a new Embed System (`embed.html`) that allows users to generate code snippets for displaying NexCore projects on external websites.
+- Embed Panel: Added an interactive panel on project pages to customize and preview embeddable content.
+
+
+### AI Assistant Refinements:
+
+- Response Optimization: Adjusted the `MAX_REPLY_WORDS` limit and improved markdown formatting to ensure AI responses are both detailed and concise.
+- User Onboarding: Added authentication call-to-actions and sign-in modals for AI features and insights to improve conversion.
+
+
+### Technical Maintenance & Cleanup:
+
+- Code Refactoring: Removed obsolete scripts (e.g., `ai_knowledge_cleanup.sql`) and outdated documentation files to streamline the repository.
+- Bug Fixes: Corrected service worker precache references, updated PayPal link titles, and improved error logging for email authorization checks.
+
+---
+
 ## v2.7.0 - 11 Apr 2026
 ### AI Chat & RAG Integration:
 

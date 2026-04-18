@@ -1,5 +1,57 @@
 [
   {
+    "id": "v2-8-0",
+    "version": "v2.8.0",
+    "date": "2026-04-18",
+    "summary": "Arabic/RTL support, admin panel, embed system, and AI assistant refinements.",
+    "user_updates": {
+      "new": [
+        "Full Arabic language support with RTL layout across all pages",
+        "Project embed system — generate code to display projects on external sites",
+        "Admin panel for platform user management and system settings"
+      ],
+      "improvements": [
+        "AI assistant now responds more naturally in Arabic",
+        "AI responses are better formatted and more concise",
+        "Sign-in prompts added for AI features to guide new users"
+      ],
+      "fixes": [
+        "Corrected service worker precache references",
+        "Updated PayPal link titles for consistency",
+        "Improved error logging for email authorization checks"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "Added arabic.css with Tajawal font for RTL support site-wide",
+        "New embed.html with embed code generation and preview panel",
+        "New admin-users.html administrative interface",
+        "Approved Users whitelist system backed by database"
+      ],
+      "database_changes": [
+        "Added admin_activity_log table for auditing admin actions",
+        "Database-driven Approved Users system for feature access control"
+      ],
+      "api_updates": [],
+      "internal_improvements": [
+        "Removed obsolete ai_knowledge_cleanup.sql and outdated docs",
+        "Added deployment checklist and approved users guide"
+      ]
+    },
+    "is_major_release": true,
+    "major_details": {
+      "title": "v2.8.0 — Internationalization & Admin Update",
+      "why_it_matters": "This release opens NexCore to Arabic-speaking users with full RTL support while giving administrators better control over who can access platform features.",
+      "description": "Users get a native Arabic experience and the ability to embed their projects anywhere, while admins gain a dedicated panel and audit logging for tighter governance.",
+      "highlights": [
+        "Full Arabic/RTL interface",
+        "Project embed system",
+        "Admin panel with activity auditing"
+      ],
+      "screenshots": []
+    }
+  },
+  {
     "id": "v2-5-0",
     "version": "v2.5.0",
     "date": "2026-03-14",
