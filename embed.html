@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NexCore Project</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --dark-base: #0a0b1c;
+            --card-bg: #0d1117;
+            --primary-accent: #73bdd7;
+            --light-accent: #acd9e5;
+            --muted: #9aa3b2;
+            --radius: 14px;
+        }
+
+        html, body {
+            height: 100%;
+            background: transparent;
+            font-family: Inter, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            align-items: stretch;
+            justify-content: stretch;
+            padding: 0;
+        }
+
+        .embed-card {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+            overflow: hidden;
+            color: #e2e8f0;
+        }
+
+        .card-body {
+            flex: 1;
+            padding: 18px 20px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .project-name {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #f1f5f9;
+            flex: 1;
+        }
+
+        .public-id {
+            flex-shrink: 0;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 7px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #73bdd7, #3a8fa8);
+            color: #031017;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .category-badge-wrapper {
+            display: flex;
+        }
+
+        .project-desc {
+            font-size: 0.875rem;
+            color: var(--muted);
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.75rem;
+            color: var(--muted);
+            opacity: 0.8;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .meta-item i {
+            font-size: 0.7rem;
+        }
+
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 16px;
+            background: linear-gradient(135deg, rgba(115, 189, 215, 0.15), rgba(115, 189, 215, 0.08));
+            border: 1px solid rgba(115, 189, 215, 0.3);
+            border-radius: 8px;
+            color: var(--primary-accent);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-decoration: none;
+            font-family: Inter, sans-serif;
+            transition: background 0.2s, border-color 0.2s;
+            width: 100%;
+        }
+
+        .view-btn:hover {
+            background: linear-gradient(135deg, rgba(115, 189, 215, 0.25), rgba(115, 189, 215, 0.15));
+            border-color: rgba(115, 189, 215, 0.5);
+        }
+
+        .card-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .powered-by {
+            font-size: 0.72rem;
+            color: rgba(154, 163, 178, 0.6);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+
+        .powered-by:hover {
+            color: var(--primary-accent);
+        }
+
+        .powered-by-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #73bdd7, #3a8fa8);
+            flex-shrink: 0;
+        }
+
+        /* State screens */
+        .state-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 160px;
+            gap: 10px;
+            color: var(--muted);
+            font-size: 0.875rem;
+            padding: 24px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius);
+        }
+
+        .state-screen i {
+            font-size: 1.5rem;
+            opacity: 0.4;
+        }
+
+        .state-screen p {
+            opacity: 0.7;
+            text-align: center;
+        }
+
+        /* Category badge overrides for embed context */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .category-badge svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="/assets/js/supabase-client.js"></script>
+    <script src="/assets/js/project-categories.js"></script>
+
+    <script>
+        const sb = window.supabaseClient;
+
+        function getSlug() {
+            return new URLSearchParams(window.location.search).get('slug') || '';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+        }
+
+        function showLoading() {
+            document.getElementById('root').innerHTML = `
+                <div class="state-screen">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    <p>Loading project...</p>
+                </div>`;
+        }
+
+        function showError(msg) {
+            document.getElementById('root').innerHTML = `
+                <div class="state-screen">
+                    <i class="fas fa-circle-exclamation"></i>
+                    <p>${msg}</p>
+                </div>`;
+        }
+
+        function renderCard(project, views) {
+            const projectUrl = `${window.location.origin}/project?slug=${encodeURIComponent(project.slug)}`;
+            const badgeHtml = window.ProjectCategories
+                ? window.ProjectCategories.buildCategoryBadge(project.category)
+                : `<span class="category-badge">${project.category || ''}</span>`;
+
+            const desc = project.card_description || '';
+            const date = formatDate(project.created_at);
+            const viewCount = views > 0 ? views.toLocaleString() : '0';
+
+            document.getElementById('root').innerHTML = `
+                <div class="embed-card">
+                    <div class="card-body">
+                        <div class="card-header">
+                            <span class="project-name">${escapeHtml(project.name)}</span>
+                            <span class="public-id">${escapeHtml(project.public_id || '')}</span>
+                        </div>
+                        <div class="category-badge-wrapper">${badgeHtml}</div>
+                        ${desc ? `<p class="project-desc">${escapeHtml(desc)}</p>` : ''}
+                        <div class="card-meta">
+                            ${date ? `<span class="meta-item"><i class="fas fa-calendar-alt"></i><span>${date}</span></span>` : ''}
+                            <span class="meta-item"><i class="fas fa-eye"></i><span>${viewCount} views</span></span>
+                        </div>
+                        <a class="view-btn" href="${projectUrl}" target="_blank" rel="noopener">
+                            View on NexCore <i class="fas fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i>
+                        </a>
+                    </div>
+                    <div class="card-footer">
+                        <a class="powered-by" href="${window.location.origin}" target="_blank" rel="noopener">
+                            <span class="powered-by-dot"></span>
+                            Powered by NexCore Labs
+                        </a>
+                    </div>
+                </div>`;
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        async function getViewCount(slug) {
+            try {
+                const { data } = await sb
+                    .from('page_visits_daily')
+                    .select('visits')
+                    .eq('page_path', `/project/${slug}`);
+                return (data || []).reduce((sum, row) => sum + (row.visits || 0), 0);
+            } catch {
+                return 0;
+            }
+        }
+
+        async function trackVisit(slug) {
+            try {
+                await fetch('/api/track-visit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ page_path: `/embed/${slug}` })
+                });
+            } catch { /* non-critical */ }
+        }
+
+        async function init() {
+            const slug = getSlug();
+            if (!slug) {
+                showError('No project specified.');
+                return;
+            }
+
+            showLoading();
+
+            const { data: project, error } = await sb
+                .from('projects')
+                .select('name, public_id, slug, card_description, category, created_at')
+                .eq('slug', slug)
+                .eq('published', true)
+                .single();
+
+            if (error || !project) {
+                showError('Project not found.');
+                return;
+            }
+
+            const views = await getViewCount(slug);
+            renderCard(project, views);
+            trackVisit(slug);
+        }
+
+        init();
+    </script>
+</body>
+</html>
