@@ -30,13 +30,15 @@
         <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
 
         <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+        <link rel="stylesheet" href="assets/css/arabic.css">
 
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="manifest" href="manifest.json">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -76,6 +78,14 @@
     .ai-usage-numbers{display:flex;justify-content:space-between;font-size:.8rem;margin-top:6px;opacity:.7}
 
     .section-title{margin-top:24px;margin-bottom:12px;opacity:.9;font-size:1.1rem;display:flex;align-items:center;gap:8px}
+    .account-info-title{display:flex;align-items:center;gap:10px}
+    .account-avatar{
+      width:28px;height:28px;border-radius:50%;
+      object-fit:cover;object-position:center;
+      border:1px solid rgba(110,231,243,.35);
+      box-shadow:0 0 0 2px rgba(110,231,243,.08);
+      background:rgba(255,255,255,.06);
+    }
 
     .help-text{font-size:.82rem;opacity:.7;margin-top:4px}
 
@@ -332,7 +342,18 @@
         <h1>Account Settings</h1>
 
         <div class="box">
-          <h2 class="mt-0"><i class="fa-solid fa-circle-user" style="color:#6ee7f3"></i> Account Information</h2>
+          <h2 class="mt-0 account-info-title">
+            <img
+              id="accountAvatar"
+              class="account-avatar"
+              src="assets/images/nexcore-icon.png"
+              alt="User profile image"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            >
+            Account Information
+          </h2>
 
           <div class="info-row">
             <span class="info-label">Name:</span>
@@ -416,6 +437,7 @@
                 <span id="aiMaxLabel">— / —</span>
               </div>
             </div>
+            <p id="aiUsageMsg" class="help-text" aria-live="polite"></p>
           </div>
 
         </div>
@@ -651,7 +673,7 @@
 
   <script src="assets/js/supabase-client.js"></script>
 
-  <script src="assets/js/auth-ui.js"></script>
+  <script src="assets/js/auth-ui-db.js"></script>
 
   <script>
 
@@ -717,6 +739,22 @@
 
     }
 
+    function getUserAvatarUrl(user) {
+      if (!user) return null;
+      const metadata = user.user_metadata || {};
+      const direct = metadata.avatar_url || metadata.picture || null;
+      if (direct) return String(direct).trim();
+
+      if (Array.isArray(user.identities)) {
+        for (const identity of user.identities) {
+          const d = identity?.identity_data || {};
+          const candidate = d.avatar_url || d.picture || null;
+          if (candidate) return String(candidate).trim();
+        }
+      }
+      return null;
+    }
+
     async function loadAccountInfo(session) {
 
       let user = session.user;
@@ -738,6 +776,19 @@
       const fullName = (metadata.full_name || metadata.name || metadata.user_name || "").trim();
 
       const displayName = fullName || (user.email ? user.email.split("@")[0] : "N/A");
+
+      const avatarEl = document.getElementById("accountAvatar");
+      if (avatarEl) {
+        const avatarUrl = getUserAvatarUrl(user);
+        if (avatarUrl) {
+          avatarEl.src = avatarUrl;
+        } else {
+          avatarEl.src = "assets/images/nexcore-icon.png";
+        }
+        avatarEl.onerror = () => {
+          avatarEl.src = "assets/images/nexcore-icon.png";
+        };
+      }
 
 
 
@@ -1511,6 +1562,62 @@ Total Projects: ${projectCount}`;
 
     }
 
+    async function fetchAiUsage(token) {
+      const usageTextEl = document.getElementById('aiUsageText');
+      const usedLabelEl = document.getElementById('aiUsedLabel');
+      const maxLabelEl = document.getElementById('aiMaxLabel');
+      const barEl = document.getElementById('aiUsageBar');
+      const msgEl = document.getElementById('aiUsageMsg');
+
+      try {
+        let authToken = token;
+        if (!authToken) {
+          const { data, error } = await sb.auth.getSession();
+          if (error) throw new Error(error.message || 'Session read failed');
+          authToken = data?.session?.access_token || null;
+        }
+        if (!authToken) throw new Error('No active session token');
+
+        const res = await fetch('/api/ai-chat?usage=1', {
+          headers: { Authorization: `Bearer ${authToken}` }
+        });
+
+        let payload = {};
+        try { payload = await res.json(); } catch (_) {}
+        if (!res.ok) {
+          const detail = payload?.error || payload?.message || `HTTP ${res.status}`;
+          throw new Error(detail);
+        }
+
+        const used = Number(payload.used ?? 0);
+        const max = Math.max(1, Number(payload.max ?? 3));
+        const rem = Number(payload.remaining ?? Math.max(0, max - used));
+        const pct = Math.max(0, Math.min(100, Math.round((used / max) * 100)));
+
+        usageTextEl.textContent = rem > 0
+          ? `${rem} message${rem === 1 ? '' : 's'} remaining`
+          : 'Daily limit reached';
+        usedLabelEl.textContent = `${used} used - ${pct}% usage | `;
+        maxLabelEl.textContent = `${max} daily limit`;
+
+        barEl.style.width = `${pct}%`;
+        barEl.className = 'ai-usage-bar' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
+
+        usageTextEl.style.color = rem === 0 ? '#ff7878' : pct >= 70 ? '#f3c96e' : '#6ee7f3';
+        if (msgEl) msgEl.textContent = '';
+      } catch (error) {
+        usageTextEl.textContent = 'Usage unavailable';
+        usedLabelEl.textContent = '—';
+        maxLabelEl.textContent = '—';
+        barEl.style.width = '0%';
+        barEl.className = 'ai-usage-bar';
+        usageTextEl.style.color = '#ff7878';
+        if (msgEl) msgEl.textContent = 'Could not load AI usage right now.';
+        setMsg('aiUsageMsg', 'Could not load AI usage.', true);
+        console.warn('AI usage fetch failed:', error?.message || error);
+      }
+    }
+
     function openDeleteAccountModal() {
 
       const modal = document.getElementById("deleteAccountModal");
@@ -1803,7 +1910,7 @@ Total Projects: ${projectCount}`;
       });
 
       await loadAccountInfo(session);
-      fetchAiUsage(session.access_token);
+      await fetchAiUsage(session.access_token);
 
       document.getElementById("logoutBtn").addEventListener("click", logout);
 
@@ -1818,35 +1925,6 @@ Total Projects: ${projectCount}`;
       document.getElementById("exportProjectsBtn").addEventListener("click", exportProjects);
 
       document.getElementById("deleteAccountBtn").addEventListener("click", openDeleteAccountModal);
-
-    async function fetchAiUsage(token) {
-      try {
-        const res = await fetch('/api/ai-chat?usage=1', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const d = await res.json();
-        const used = d.used ?? 0;
-        const max  = d.max  ?? 3;
-        const rem  = d.remaining ?? (max - used);
-        const pct  = Math.min(100, Math.round((used / max) * 100));
-
-        document.getElementById('aiUsageText').textContent =
-          rem > 0 ? `${rem} message${rem === 1 ? '' : 's'} remaining` : 'Daily limit reached';
-        document.getElementById('aiUsedLabel').textContent = `${used} used - ${pct}% usage | `;
-        document.getElementById('aiMaxLabel').textContent  = `${max} daily limit`;
-
-        const bar = document.getElementById('aiUsageBar');
-        bar.style.width = pct + '%';
-        bar.className = 'ai-usage-bar' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
-
-        const pill = document.getElementById('aiUsageText');
-        if (rem === 0) pill.style.color = '#ff7878';
-        else if (pct >= 70) pill.style.color = '#f3c96e';
-      } catch (e) {
-        setMsg('aiUsageMsg', 'Could not load AI usage.', true);
-      }
-    }
 
 
 

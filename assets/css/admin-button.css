@@ -1,0 +1,15 @@
+/* Admin Panel Button Styling */
+#navAdmin {
+    background: rgba(255, 180, 50, 0.08) !important;
+    border: 1px solid rgba(255, 180, 50, 0.15) !important;
+}
+
+#navAdmin:hover {
+    background: rgba(255, 180, 50, 0.15) !important;
+    border-color: rgba(255, 180, 50, 0.4) !important;
+    box-shadow: 0 0 12px rgba(255, 180, 50, 0.2) !important;
+}
+
+#navAdmin i {
+    color: #ffb432 !important;
+}

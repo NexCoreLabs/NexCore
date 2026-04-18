@@ -12,25 +12,27 @@
 
   <title>NexCore AI — Ask Anything</title>
 
-  <meta name="description" content="Chat with NexCore AI — ask about the platform, SQU, and student projects.">
+  <meta name="description" content="Chat with NexCore AI — ask about the platform and student projects.">
   <meta property="og:url" content="https://nexcorelabs.vercel.app/ai-chat.html">
   <meta property="og:type" content="website">
   <meta property="og:title" content="NexCore AI — Ask Anything">
-  <meta property="og:description" content="Chat with NexCore AI — ask about the platform, SQU, and student projects.">
+  <meta property="og:description" content="Chat with NexCore AI — ask about the platform and student projects.">
   <meta name="twitter:card" content="summary_large_image">
   <meta property="twitter:domain" content="nexcorelabs.vercel.app">
   <meta property="twitter:url" content="https://nexcorelabs.vercel.app/ai-chat.html">
   <meta name="twitter:title" content="NexCore AI — Ask Anything">
-  <meta name="twitter:description" content="Chat with NexCore AI — ask about the platform, SQU, and student projects.">
+  <meta name="twitter:description" content="Chat with NexCore AI — ask about the platform and student projects.">
 
   <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
   <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+  <link rel="stylesheet" href="assets/css/arabic.css">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -57,6 +59,7 @@
     /* ── Page header ──────────────────────────────────────────── */
     .chat-page-header {
       text-align: center;
+      margin-top: 60px;
       margin-bottom: 28px;
       user-select: none;
     }
@@ -437,29 +440,6 @@
     #page-input::placeholder { color: rgba(154, 163, 178, 0.45); }
     #page-input:disabled      { opacity: 0.5; cursor: not-allowed; }
 
-    #page-send {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      border: none;
-      background: linear-gradient(135deg, #6ee7f3, #3ac5c0);
-      color: #031017;
-      cursor: pointer;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    #page-send:hover:not(:disabled) {
-      transform: scale(1.05);
-      box-shadow: 0 0px 16px rgba(110, 231, 243, 0.4);
-    }
-
-    #page-send:active:not(:disabled) { transform: scale(0.98); }
     #page-send:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
 
     #page-send svg {
@@ -475,14 +455,16 @@
     /* ── Sign-in prompt ──────────────────────────────────────── */
     .chat-signin-prompt {
       text-align: center;
-      padding: 24px 20px;
+      padding: 32px 20px;
       color: var(--muted);
       font-size: 14px;
     }
 
-    .chat-signin-prompt a {
-      color: #6ee7f3;
-      font-weight: 600;
+    .chat-signin-prompt p {
+      font-size: 15px;
+      color: #c8d6e5;
+      margin: 0 0 18px;
+      font-weight: 500;
     }
 
     /* ── Capability chips below card ─────────────────────────── */
@@ -509,12 +491,138 @@
 
     .chat-cap i { color: #6ee7f3; font-size: 11px; }
 
+    /* ── Auth Modal ──────────────────────────────────────────── */
+    .ai-chat-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(2, 6, 23, 0.75);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 220ms ease, visibility 220ms ease;
+    }
+
+    .ai-chat-modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .ai-chat-modal-panel {
+      background: rgba(10, 11, 28, 0.95);
+      border: 1px solid rgba(110, 231, 243, 0.12);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 460px;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      opacity: 0;
+      transform: scale(0.96) translateY(14px);
+      transition: transform 260ms cubic-bezier(0.2, 0.9, 0.3, 1), opacity 220ms ease;
+    }
+
+    .ai-chat-modal-overlay.open .ai-chat-modal-panel {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .ai-chat-modal-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #6ee7f3, transparent);
+      opacity: 0.4;
+      border-radius: 18px 18px 0 0;
+      pointer-events: none;
+    }
+
+    .ai-chat-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      z-index: 2;
+    }
+
+    .ai-chat-modal-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #eaf6fb;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .ai-chat-modal-header {
+      padding: 26px 26px 0;
+    }
+
+    .ai-chat-modal-header h2 {
+      font-size: 20px;
+      color: #eaf6fb;
+      margin: 0 0 6px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ai-chat-modal-header p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .ai-chat-modal-body {
+      padding: 20px 26px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ai-chat-modal-body > p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .ai-chat-form-error {
+      font-size: 13px;
+      color: #ff7878;
+      background: rgba(255, 107, 107, 0.08);
+      border: 1px solid rgba(255, 107, 107, 0.2);
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+
+    .ai-chat-form-error.hidden { display: none; }
+
     /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 600px) {
       .chat-page-wrap { padding: 88px 12px 30px; }
       .chat-page-header h1 { font-size: 22px; }
       .chat-card { max-height: calc(100vh - 260px); min-height: 400px; }
       .pmsg { max-width: 92%; }
+      .ai-chat-modal-panel { max-width: 100%; border-radius: 16px; }
+      .ai-chat-modal-header, .ai-chat-modal-body { padding-left: 18px; padding-right: 18px; }
     }
   </style>
 </head>
@@ -581,7 +689,7 @@
       <!-- ── Page header ─────────────────────────────────────── -->
       <div class="chat-page-header reveal">
         <h1>NexCore AI Intelligence</h1>
-        <p>Ask about the platform, SQU, student projects, and more.</p>
+        <p>Ask me anything about NexCore Labs and its projects.</p>
       </div>
 
       <!-- ── Chat card ───────────────────────────────────────── -->
@@ -602,7 +710,7 @@
           <div class="page-welcome">
             <span class="page-welcome-icon" aria-hidden="true">✦</span>
             <p>Hi! I'm the NexCore AI assistant.<br>
-               I can answer questions about NexCore, SQU, and student projects.</p>
+               I can answer questions about NexCore and student projects.</p>
           </div>
         </div>
 
@@ -621,7 +729,7 @@
               autocomplete="off"
               spellcheck="true"
             ></textarea>
-            <button id="page-send" aria-label="Send message" title="Send (Enter)">
+            <button id="page-send" class="btn primary" aria-label="Send message" title="Send (Enter)">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <line x1="22" y1="2" x2="11" y2="13"/>
                 <polygon points="22 2 15 22 11 13 2 9 22 2"/>
@@ -634,20 +742,41 @@
 
       <!-- ── Capability chips ────────────────────────────────── -->
       <div class="chat-capabilities reveal">
-        <span class="chat-cap"><i class="fa-solid fa-building-columns"></i> SQU programs & admission</span>
         <span class="chat-cap"><i class="fa-solid fa-diagram-project"></i> Student project Q&amp;A</span>
         <span class="chat-cap"><i class="fa-solid fa-circle-info"></i> NexCore platform help</span>
-        <span class="chat-cap"><i class="fa-solid fa-magnifying-glass"></i> Semantic knowledge search</span>
       </div>
 
     </div><!-- /.chat-page-wrap -->
   </main>
 
+  <!-- ── AI Chat Auth Modal ─────────────────────────────────── -->
+  <div class="ai-chat-modal-overlay" id="ai-chat-auth-modal">
+    <div class="ai-chat-modal-panel">
+      <button class="ai-chat-modal-close" aria-label="Close sign-in modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="ai-chat-modal-header">
+        <h2><i class="fa-solid fa-lock" style="color:#6ee7f3;"></i> Sign in to Chat</h2>
+        <p>Log in to start asking NexCore AI questions.</p>
+      </div>
+      <div class="ai-chat-modal-body">
+        <p>Continue with Google to sign in and access the AI assistant.</p>
+        <button class="google-btn" id="ai-google-signin-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+          </svg>
+          <span id="ai-google-btn-text">Continue with Google</span>
+        </button>
+        <div class="ai-chat-form-error hidden" id="ai-chat-auth-error"></div>
+      </div>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <div class="container footer-inner">
       <div class="f-left">
-        <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal">
-          <i class="fa-solid fa-heart" style="color:#6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i>
+        <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal" style="color:#6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i>
         </a>
         <br>
         <small>NexCore Labs © <span id="yearFooter"></span>
@@ -667,8 +796,7 @@
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/supabase-client.js"></script>
-  <script src="assets/js/auth-ui.js"></script>
-
+  <script src="assets/js/auth-ui-db.js"></script>
   <script>
     /* ── NexCore AI Chat Page — inline controller ──────────────
        Mirrors the widget logic but operates on full-page elements.
@@ -682,12 +810,20 @@
       const DAILY_LIMIT      = 3;
       const MAX_HISTORY_MSGS = 12;
       const STORAGE_KEY      = 'nexai_page_history';
+      const ALLOWED_DOMAINS  = ['squ.edu.om', 'student.squ.edu.om'];
+
+      // Whitelist for approved non-SQU users
+      const APPROVED_EMAILS = [
+          // Add approved email addresses here, e.g.:
+          // 'johndoe@example.com',
+      ];
+
+      const AUTH_NOTICE_KEY  = 'auth_notice';
+      const RESTRICTED_EMAIL_NOTICE = 'Only SQU email addresses (@student.squ.edu.om / @squ.edu.om) can sign in.';
 
       const SUGGESTIONS = [
         'What is NexCore Labs?',
-        'How do I submit a project?',
-        'Tell me about SQU colleges',
-        'SQU GPA and grading system',
+        'How do I create a project?',
         'What AI features does NexCore have?',
         'Show me example student projects'
       ];
@@ -710,6 +846,70 @@
       let suggestionsUsed = false;
       let msgCount        = 0;
       let chatHistory     = [];
+      let isEnforcingEmail = false;
+
+      function isAllowedEmail(email) {
+        if (typeof email !== 'string') return false;
+        const normalized = email.trim().toLowerCase();
+
+        // Check if email is from allowed domain
+        const isDomainAllowed = ALLOWED_DOMAINS.some(domain => normalized.endsWith(`@${domain}`));
+
+        // Check if email is in approved whitelist
+        const isWhitelisted = APPROVED_EMAILS.some(approvedEmail =>
+            normalized === approvedEmail.toLowerCase()
+        );
+
+        return isDomainAllowed || isWhitelisted;
+      }
+
+      function showRestrictedEmailMessage() {
+        const authErrorEl = document.getElementById('ai-chat-auth-error');
+        const googleBtnEl = document.getElementById('ai-google-signin-btn');
+        const googleTextEl = document.getElementById('ai-google-btn-text');
+        if (authErrorEl) {
+          authErrorEl.textContent = RESTRICTED_EMAIL_NOTICE;
+          authErrorEl.classList.remove('hidden');
+        }
+        if (googleBtnEl) googleBtnEl.disabled = false;
+        if (googleTextEl) googleTextEl.textContent = 'Continue with Google';
+        openAuthModal();
+      }
+
+      function consumeStoredAuthNotice() {
+        const params = new URLSearchParams(window.location.search);
+        const authNotice = params.get('auth_notice');
+        let storedNotice = null;
+        try {
+          storedNotice = sessionStorage.getItem(AUTH_NOTICE_KEY);
+        } catch (_) {}
+
+        if (authNotice === 'restricted_email' || storedNotice) {
+          showRestrictedEmailMessage();
+          try { sessionStorage.removeItem(AUTH_NOTICE_KEY); } catch (_) {}
+          if (window.location.search) {
+            window.history.replaceState({}, '', window.location.pathname);
+          }
+        }
+      }
+
+      async function enforceSquEmail(session) {
+        const email = session?.user?.email || '';
+        if (!session?.user || isAllowedEmail(email)) return true;
+        if (isEnforcingEmail) return false;
+
+        isEnforcingEmail = true;
+        sessionToken = null;
+        try {
+          sessionStorage.setItem(AUTH_NOTICE_KEY, RESTRICTED_EMAIL_NOTICE);
+        } catch (_) {}
+        try {
+          await window.supabaseClient?.auth.signOut();
+        } catch (_) {}
+        showRestrictedEmailMessage();
+        isEnforcingEmail = false;
+        return false;
+      }
 
       // ── History ───────────────────────────────────────────────
       function loadHistory() {
@@ -737,7 +937,10 @@
         if (!sb) return null;
         try {
           const { data } = await sb.auth.getSession();
-          sessionToken = data?.session?.access_token || null;
+          const session = data?.session || null;
+          const allowed = await enforceSquEmail(session);
+          if (!allowed) return null;
+          sessionToken = session?.access_token || null;
           return sessionToken;
         } catch (_) { return null; }
       }
@@ -745,12 +948,79 @@
       async function checkAuth() {
         const token = await getToken();
         if (!token) {
+          // Open modal instead of showing text prompt
+          const modal = document.getElementById('ai-chat-auth-modal');
+          if (modal) modal.classList.add('open');
+          // Disable input while not authenticated
           elInputWrap.innerHTML = `
             <div class="chat-signin-prompt">
-              <i class="fa-solid fa-lock" style="color:#6ee7f3;font-size:20px;display:block;margin-bottom:8px;"></i>
-              <a href="auth.html" class="fade">Sign in</a> to start chatting with NexCore AI.
+              <i class="fa-solid fa-sparkles" style="color:#6ee7f3;font-size:32px;display:block;margin-bottom:14px;"></i>
+              <p>Sign in to start chatting with NexCore AI</p>
+              <button id="open-signin-modal-btn" class="btn primary">
+                <i class="fa-solid fa-key"></i> Sign In
+              </button>
             </div>`;
+          // Clear suggestions for non-authenticated users
+          elSuggestions.innerHTML = '';
+
+          // Bind the button to open modal
+          setTimeout(() => {
+            const btn = document.getElementById('open-signin-modal-btn');
+            if (btn) btn.addEventListener('click', openAuthModal);
+          }, 0);
+        } else {
+          // User is authenticated - restore input interface if it was replaced
+          if (!document.getElementById('page-input')) {
+            elInputWrap.innerHTML = `
+              <div class="chat-input-row">
+                <textarea
+                  id="page-input"
+                  rows="1"
+                  placeholder="Ask NexCore AI anything…"
+                  maxlength="500"
+                  aria-label="Message input"
+                  autocomplete="off"
+                  spellcheck="true"
+                ></textarea>
+                <button id="page-send" aria-label="Send message" title="Send (Enter)">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                </button>
+              </div>`;
+
+            // Re-bind events immediately after DOM update
+            setTimeout(() => {
+              const newInput = document.getElementById('page-input');
+              const newSend = document.getElementById('page-send');
+              if (newInput && newSend) {
+                newInput.addEventListener('keydown', e => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                  }
+                });
+                newInput.addEventListener('input', () => {
+                  newInput.style.height = 'auto';
+                  newInput.style.height = Math.min(newInput.scrollHeight, 120) + 'px';
+                });
+                newSend.addEventListener('click', sendMessage);
+                newInput.focus(); // Auto-focus the input after restoration
+              }
+            }, 0);
+          }
         }
+      }
+
+      function openAuthModal() {
+        const modal = document.getElementById('ai-chat-auth-modal');
+        if (modal) modal.classList.add('open');
+      }
+
+      function closeAuthModal() {
+        const modal = document.getElementById('ai-chat-auth-modal');
+        if (modal) modal.classList.remove('open');
       }
 
       // ── Usage ─────────────────────────────────────────────────
@@ -785,6 +1055,14 @@
         return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       }
 
+      /**
+       * Detect if text contains Arabic characters
+       */
+      function hasArabic(text) {
+        // Arabic Unicode range: \u0600-\u06FF
+        return /[\u0600-\u06FF]/.test(text);
+      }
+
       function renderMarkdown(raw) {
         let s = raw
           .replace(/&/g, '&amp;').replace(/</g, '&lt;')
@@ -808,6 +1086,14 @@
 
         const bubble = document.createElement('div');
         bubble.className = 'pmsg-bubble' + (isError ? ' error' : '');
+
+        // Detect Arabic and set lang attribute for proper font rendering
+        if (hasArabic(text)) {
+          bubble.setAttribute('lang', 'ar');
+          bubble.style.direction = 'rtl';
+          bubble.style.textAlign = 'right';
+        }
+
         if (role === 'ai' && !isError) {
           bubble.innerHTML = renderMarkdown(text);
         } else {
@@ -888,11 +1174,23 @@
           btn.textContent = t;
           btn.addEventListener('click', () => {
             hideSuggestions();
-            elInput.value = t;
-            sendMessage();
+            const input = document.getElementById('page-input');
+            if (input) {
+              input.value = t;
+              sendMessage();
+            }
           });
           elSuggestions.appendChild(btn);
         });
+      }
+
+      function showSuggestionsIfAuthenticated() {
+        const token = sessionToken;
+        if (token && !suggestionsUsed) {
+          renderSuggestions();
+        } else {
+          elSuggestions.innerHTML = '';
+        }
       }
 
       function hideSuggestions() {
@@ -908,7 +1206,10 @@
 
       // ── Send ──────────────────────────────────────────────────
       async function sendMessage() {
-        const text = (elInput.value || '').trim().replace(/\0/g, '').slice(0, MAX_LEN);
+        const input = document.getElementById('page-input');
+        if (!input) return;
+
+        const text = (input.value || '').trim().replace(/\0/g, '').slice(0, MAX_LEN);
         if (!text || isLoading) return;
 
         if (chatRemaining <= 0) {
@@ -922,8 +1223,8 @@
           return;
         }
 
-        elInput.value = '';
-        elInput.style.height = 'auto';
+        input.value = '';
+        input.style.height = 'auto';
         hideSuggestions();
         appendMsg('user', text);
         setLoading(true);
@@ -948,7 +1249,11 @@
             } else if (res.status === 401) {
               appendMsg('ai', 'Session expired \u2014 please sign in again.', null, true);
             } else if (res.status === 503) {
-              appendSupportMsg();
+              if (data.code === 'quota_exhausted') {
+                appendSupportMsg();
+              } else {
+                appendMsg('ai', data.message || 'The AI is temporarily busy. Please try again.', null, true);
+              }
             } else {
               appendMsg('ai', 'Something went wrong. Please try again.', null, true);
             }
@@ -1011,19 +1316,101 @@
 
       function setLoading(v) {
         isLoading = v;
-        elInput.disabled = v;
-        elSend.disabled = v;
+        const input = document.getElementById('page-input');
+        const send = document.getElementById('page-send');
+        if (input) input.disabled = v;
+        if (send) send.disabled = v;
       }
 
       // ── Events ────────────────────────────────────────────────
-      elInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-      });
-      elInput.addEventListener('input', autoResize);
-      elSend.addEventListener('click', sendMessage);
+      if (elInput) {
+        elInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        });
+        elInput.addEventListener('input', () => {
+          autoResize();
+
+          // Detect Arabic input and apply appropriate styling
+          const inputText = elInput.value || '';
+          if (hasArabic(inputText)) {
+            elInput.setAttribute('lang', 'ar');
+            elInput.style.direction = 'rtl';
+            elInput.style.textAlign = 'right';
+          } else {
+            elInput.removeAttribute('lang');
+            elInput.style.direction = 'ltr';
+            elInput.style.textAlign = 'left';
+          }
+        });
+      }
+      if (elSend) {
+        elSend.addEventListener('click', sendMessage);
+      }
+
+      // ── Auth Modal Events ─────────────────────────────────────
+      const authModal = document.getElementById('ai-chat-auth-modal');
+      const closeBtn = authModal?.querySelector('.ai-chat-modal-close');
+      const googleBtn = document.getElementById('ai-google-signin-btn');
+      const googleText = document.getElementById('ai-google-btn-text');
+      const authError = document.getElementById('ai-chat-auth-error');
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeAuthModal);
+      }
+
+      if (authModal) {
+        authModal.addEventListener('click', (e) => {
+          if (e.target === authModal) closeAuthModal();
+        });
+      }
+
+      if (googleBtn) {
+        googleBtn.addEventListener('click', async () => {
+          authError?.classList.add('hidden');
+          googleBtn.disabled = true;
+          if (googleText) googleText.textContent = 'Redirecting…';
+
+          try {
+            const sb = window.supabaseClient;
+            if (!sb) throw new Error('Auth not available');
+            sessionStorage.setItem('auth_mode', 'login');
+            const { error } = await sb.auth.signInWithOAuth({
+              provider: 'google',
+              options: {
+                redirectTo: `${window.location.origin}/ai-chat.html`
+              }
+            });
+            if (error) throw error;
+          } catch (error) {
+            if (authError) {
+              authError.textContent = error?.message || 'Failed to sign in with Google.';
+              authError.classList.remove('hidden');
+            }
+            googleBtn.disabled = false;
+            if (googleText) googleText.textContent = 'Continue with Google';
+          }
+        });
+      }
 
       if (window.supabaseClient) {
-        window.supabaseClient.auth.onAuthStateChange(() => { sessionToken = null; });
+        window.supabaseClient.auth.onAuthStateChange(async (event, session) => {
+          if (event === 'SIGNED_IN' && session?.user) {
+            const allowed = await enforceSquEmail(session);
+            if (!allowed) {
+              await checkAuth();
+              return;
+            }
+          }
+          if (session?.user) {
+            closeAuthModal();
+            // Refresh token and restore interface
+            await checkAuth();
+            await fetchUsage();
+            // Ensure token is cached before showing suggestions
+            await getToken();
+            showSuggestionsIfAuthenticated();
+          }
+        });
       }
 
       // ── Breadcrumb ────────────────────────────────────────────
@@ -1031,9 +1418,10 @@
 
       // ── Init ──────────────────────────────────────────────────
       updatePill();
+      consumeStoredAuthNotice();
       checkAuth();
       loadHistory();
-      fetchUsage().then(() => renderSuggestions());
+      fetchUsage().then(() => showSuggestionsIfAuthenticated());
 
     })();
   </script>

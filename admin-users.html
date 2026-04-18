@@ -1,0 +1,4016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management | NexCore Labs</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 100px auto 40px;
+            padding: 20px;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .admin-header h1 {
+            margin: 0 0 10px;
+            color: #eaf6fb;
+        }
+
+        .admin-header .admin-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 180, 50, 0.1);
+            border: 1px solid rgba(255, 180, 50, 0.3);
+            border-radius: 20px;
+            color: #ffb432;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.08), rgba(110, 231, 243, 0.03));
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(110, 231, 243, 0.4);
+            transform: scale(1.01);
+        }
+
+        .stat-card.admin {
+            background: linear-gradient(135deg, rgba(255, 180, 50, 0.08), rgba(255, 180, 50, 0.03));
+            border-color: rgba(255, 180, 50, 0.2);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #6ee7f3;
+            margin-bottom: 8px;
+        }
+
+        .stat-card.admin .stat-value {
+            color: #ffb432;
+        }
+
+        .stat-card .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .admin-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tab:hover {
+            color: #6ee7f3;
+        }
+
+        .admin-tab.active {
+            color: #6ee7f3;
+            border-bottom-color: #6ee7f3;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .admin-section {
+            background: rgba(10, 11, 28, 0.6);
+            border: 1px solid rgba(110, 231, 243, 0.15);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .admin-section h2 {
+            color: #6ee7f3;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #eaf6fb;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-family: Inter, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 4px rgba(110, 231, 243, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .form-group input:focus::placeholder,
+        .form-group textarea:focus::placeholder {
+            opacity: 0.5;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background: rgba(110, 231, 243, 0.1);
+            color: #6ee7f3;
+            padding: 14px 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+            border-bottom: 1px solid rgba(110, 231, 243, 0.2);
+            white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .data-table th:hover {
+            background: rgba(110, 231, 243, 0.15);
+        }
+
+        .data-table th.sortable {
+            padding-right: 28px;
+        }
+
+        .data-table th .sort-indicator {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            opacity: 0.3;
+            transition: opacity 0.2s;
+        }
+
+        .data-table th.sorted-asc .sort-indicator,
+        .data-table th.sorted-desc .sort-indicator {
+            opacity: 1;
+            color: #6ee7f3;
+        }
+
+        .data-table th.sorted-asc .sort-indicator::after {
+            content: '\f0de'; /* fa-sort-up */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .data-table th.sorted-desc .sort-indicator::after {
+            content: '\f0dd'; /* fa-sort-down */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        .data-table th:not(.sorted-asc):not(.sorted-desc) .sort-indicator::after {
+            content: '\f0dc'; /* fa-sort */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+
+        /* Checkbox column */
+        .data-table .checkbox-col {
+            width: 40px;
+            text-align: center;
+            cursor: default;
+        }
+
+        .data-table .checkbox-col:hover {
+            background: rgba(110, 231, 243, 0.1);
+        }
+
+        .table-checkbox {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #6ee7f3;
+        }
+
+        .data-table tr.selected {
+            background: rgba(110, 231, 243, 0.08);
+        }
+
+        /* Bulk Action Bar */
+        .bulk-action-bar {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.15), rgba(110, 231, 243, 0.08));
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            border-radius: 8px;
+            margin-bottom: 16px;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .bulk-action-bar.active {
+            display: flex;
+        }
+
+        .bulk-action-info {
+            color: #6ee7f3;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bulk-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pagination */
+        .pagination-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding: 16px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .pagination-info {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .pagination {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .pagination-btn {
+            padding: 8px 12px;
+            background: rgba(110, 231, 243, 0.08);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 6px;
+            color: #6ee7f3;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            min-width: 36px;
+            text-align: center;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background: rgba(110, 231, 243, 0.15);
+            border-color: #6ee7f3;
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .pagination-btn.active {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+            font-weight: 600;
+        }
+
+        .page-size-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .page-size-selector select {
+            padding: 6px 10px;
+            background: rgba(110, 231, 243, 0.08);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 6px;
+            color: #6ee7f3;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* Column Visibility Menu */
+        .column-visibility-menu {
+            position: relative;
+            display: inline-block;
+        }
+
+        .column-visibility-btn {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .column-visibility-btn:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+        }
+
+        .column-visibility-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(15, 16, 40, 0.98);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .column-visibility-dropdown.active {
+            display: block;
+        }
+
+        .column-visibility-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: #cbd5e0;
+            font-size: 14px;
+        }
+
+        .column-visibility-option:hover {
+            background: rgba(110, 231, 243, 0.1);
+        }
+
+        .column-visibility-option input {
+            cursor: pointer;
+        }
+
+        .column-visibility-option label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Hidden columns */
+        .data-table th.hidden-column,
+        .data-table td.hidden-column {
+            display: none;
+        }
+
+        /* Activity Log Styles */
+        .activity-timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .activity-item {
+            position: relative;
+            padding: 20px 20px 20px 60px;
+            background: rgba(10, 11, 28, 0.4);
+            border: 1px solid rgba(110, 231, 243, 0.15);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+            animation: fadeInRow 0.3s ease-out;
+        }
+
+        .activity-item:hover {
+            background: rgba(10, 11, 28, 0.6);
+            border-color: rgba(110, 231, 243, 0.25);
+            transform: translateX(4px);
+        }
+
+        .activity-icon {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .activity-icon.add {
+            background: linear-gradient(135deg, rgba(120, 255, 120, 0.2), rgba(120, 255, 120, 0.1));
+            border: 1px solid rgba(120, 255, 120, 0.3);
+            color: #7fff7f;
+        }
+
+        .activity-icon.remove {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.2), rgba(255, 100, 100, 0.1));
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            color: #ff7878;
+        }
+
+        .activity-icon.bulk {
+            background: linear-gradient(135deg, rgba(255, 180, 50, 0.2), rgba(255, 180, 50, 0.1));
+            border: 1px solid rgba(255, 180, 50, 0.3);
+            color: #ffb432;
+        }
+
+        .activity-icon.access {
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.2), rgba(110, 231, 243, 0.1));
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            gap: 12px;
+        }
+
+        .activity-action {
+            color: #eaf6fb;
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .activity-action .highlight {
+            color: #6ee7f3;
+            font-weight: 700;
+        }
+
+        .activity-time {
+            color: var(--muted);
+            font-size: 13px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .activity-details {
+            color: #cbd5e0;
+            font-size: 14px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .activity-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: rgba(110, 231, 243, 0.08);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 20px;
+            color: #cbd5e0;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip:hover {
+            background: rgba(110, 231, 243, 0.15);
+            border-color: rgba(110, 231, 243, 0.3);
+        }
+
+        .filter-chip.active {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+            color: #6ee7f3;
+            font-weight: 600;
+        }
+
+        .filter-chip .count {
+            background: rgba(110, 231, 243, 0.2);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .activity-empty {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--muted);
+        }
+
+        .activity-empty i {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 20px;
+            display: block;
+            color: #6ee7f3;
+        }
+
+        /* Activity Dashboard Styles */
+        .activity-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-card {
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.08), rgba(110, 231, 243, 0.03));
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        .dashboard-card h3 {
+            color: #6ee7f3;
+            font-size: 16px;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 200px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 150px;
+            gap: 8px;
+            padding: 10px 0;
+        }
+
+        .bar-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 100%;
+            background: linear-gradient(180deg, #6ee7f3, rgba(110, 231, 243, 0.5));
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+            min-height: 4px;
+        }
+
+        .bar:hover {
+            background: linear-gradient(180deg, #6ee7f3, #6ee7f3);
+            transform: scaleY(1.05);
+        }
+
+        .bar-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            font-weight: 700;
+            color: #6ee7f3;
+            white-space: nowrap;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-row-label {
+            color: #cbd5e0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stat-row-value {
+            color: #6ee7f3;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .trend-indicator {
+            font-size: 12px;
+            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend-up {
+            color: #7fff7f;
+        }
+
+        .trend-down {
+            color: #ff7878;
+        }
+
+        .donut-chart {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .donut-segment {
+            transition: transform 0.3s ease;
+        }
+
+        .donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .donut-total {
+            font-size: 32px;
+            font-weight: 800;
+            color: #6ee7f3;
+            line-height: 1;
+        }
+
+        .donut-label {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #cbd5e0;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .time-period-selector {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .period-btn {
+            padding: 6px 12px;
+            background: rgba(110, 231, 243, 0.08);
+            border: 1px solid rgba(110, 231, 243, 0.2);
+            border-radius: 6px;
+            color: #cbd5e0;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .period-btn:hover {
+            background: rgba(110, 231, 243, 0.15);
+        }
+
+        .period-btn.active {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+            color: #6ee7f3;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e0;
+            font-size: 14px;
+        }
+
+        .data-table tr:hover {
+            background: rgba(110, 231, 243, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr {
+            animation: fadeInRow 0.3s ease-out;
+        }
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-table .email-col { width: 30%; }
+        .data-table .reason-col { width: 30%; }
+        .data-table .meta-col { width: 25%; }
+        .data-table .actions-col { width: 15%; text-align: center; }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-remove {
+            background: rgba(255, 100, 100, 0.1);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            color: #ff7878;
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 100, 100, 0.2);
+            border-color: #ff7878;
+        }
+
+        .btn-copy {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+        }
+
+        .btn-copy:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6ee7f3;
+            padding: 40px 20px;
+        }
+
+        .loading i {
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--muted);
+            padding: 80px 20px;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            opacity: 0.3;
+            margin-bottom: 20px;
+            display: block;
+            color: #6ee7f3;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .empty-state .empty-hint {
+            font-size: 14px;
+            opacity: 0.6;
+            margin-top: 12px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .export-btn {
+            background: rgba(110, 231, 243, 0.1);
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            color: #6ee7f3;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .export-btn:hover {
+            background: rgba(110, 231, 243, 0.2);
+            border-color: #6ee7f3;
+            transform: translateY(-2px);
+        }
+
+        .export-btn:active .fa-rotate {
+            animation: spin 0.5s ease-in-out;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            min-width: 300px;
+            max-width: 400px;
+            padding: 16px 20px;
+            background: rgba(10, 11, 28, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: auto;
+            animation: slideInRight 0.3s ease-out;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .toast.hiding {
+            animation: slideOutRight 0.3s ease-in forwards;
+        }
+
+        .toast-success {
+            border: 1px solid rgba(120, 255, 120, 0.4);
+            background: linear-gradient(135deg, rgba(120, 255, 120, 0.15), rgba(10, 11, 28, 0.95));
+        }
+
+        .toast-error {
+            border: 1px solid rgba(255, 100, 100, 0.4);
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.15), rgba(10, 11, 28, 0.95));
+        }
+
+        .toast-info {
+            border: 1px solid rgba(110, 231, 243, 0.4);
+            background: linear-gradient(135deg, rgba(110, 231, 243, 0.15), rgba(10, 11, 28, 0.95));
+        }
+
+        .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon { color: #7fff7f; }
+        .toast-error .toast-icon { color: #ff7878; }
+        .toast-info .toast-icon { color: #6ee7f3; }
+
+        .toast-content {
+            flex: 1;
+            color: #eaf6fb;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 16px;
+            transition: color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            color: #eaf6fb;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        /* Confirmation Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, rgba(15, 16, 40, 0.98), rgba(10, 11, 28, 0.98));
+            border: 1px solid rgba(110, 231, 243, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            animation: modalSlideUp 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon {
+            font-size: 32px;
+            color: #ffb432;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #eaf6fb;
+            margin: 0;
+        }
+
+        .modal-body {
+            color: #cbd5e0;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-body strong {
+            color: #6ee7f3;
+            font-weight: 600;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e0;
+        }
+
+        .modal-btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-btn-confirm {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.2), rgba(255, 100, 100, 0.1));
+            border: 1px solid rgba(255, 100, 100, 0.4);
+            color: #ff7878;
+        }
+
+        .modal-btn-confirm:hover {
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.3), rgba(255, 100, 100, 0.2));
+            border-color: #ff7878;
+            transform: translateY(-1px);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(
+                90deg,
+                rgba(110, 231, 243, 0.05) 0%,
+                rgba(110, 231, 243, 0.1) 50%,
+                rgba(110, 231, 243, 0.05) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 1.5s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        .skeleton-row {
+            height: 50px;
+            margin-bottom: 8px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Enhanced stat cards */
+        .stat-card .stat-meta {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 8px;
+            opacity: 0.7;
+        }
+
+        .stat-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(110, 231, 243, 0.1);
+            color: #6ee7f3;
+        }
+
+        .stat-trend.positive {
+            background: rgba(120, 255, 120, 0.1);
+            color: #7fff7f;
+        }
+
+        /* Better button hover effects */
+        .btn.primary {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn.primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn.primary:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn .btn-spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                margin-top: 80px;
+                padding: 12px;
+            }
+
+            .admin-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .admin-header .admin-badge {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .admin-tabs {
+                overflow-x: auto;
+                gap: 6px;
+                padding-bottom: 4px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+
+            .admin-tab {
+                padding: 10px 16px;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .admin-section {
+                padding: 20px 16px;
+                margin-bottom: 20px;
+            }
+
+            .admin-section h2 {
+                font-size: 1.25rem;
+            }
+
+            .data-table {
+                font-size: 12px;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 10px 6px;
+            }
+
+            /* Hide less important columns on mobile */
+            .data-table .checkbox-col {
+                display: table-cell !important;
+                width: 32px;
+            }
+
+            .data-table th[data-column="reason"],
+            .data-table td[data-column="reason"],
+            .data-table th[data-column="notes"],
+            .data-table td[data-column="notes"] {
+                display: none;
+            }
+
+            .data-table th[data-column="meta"],
+            .data-table td[data-column="meta"] {
+                font-size: 11px;
+            }
+
+            .bulk-action-bar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .bulk-action-info {
+                font-size: 13px;
+            }
+
+            .bulk-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .btn-action {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                gap: 12px;
+                align-items: center;
+            }
+
+            .pagination {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .pagination-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+                min-width: 32px;
+            }
+
+            .page-size-selector {
+                justify-content: center;
+                font-size: 13px;
+            }
+
+            .page-size-selector select {
+                font-size: 12px;
+                padding: 5px 8px;
+            }
+
+            .quick-actions {
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .export-btn,
+            .column-visibility-btn {
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+
+            .column-visibility-dropdown {
+                left: 0;
+                right: 0;
+                width: calc(100% - 32px);
+                margin: 0 16px;
+            }
+
+            .toast-container {
+                left: 12px;
+                right: 12px;
+            }
+
+            .toast {
+                min-width: auto;
+                max-width: 100%;
+                padding: 12px 16px;
+            }
+
+            .modal {
+                padding: 20px;
+                width: calc(100% - 32px);
+                margin: 0 16px;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .modal-body {
+                font-size: 14px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .modal-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            /* Activity Log Dashboard - Mobile */
+            .activity-dashboard {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .dashboard-card {
+                padding: 20px;
+            }
+
+            .dashboard-card h3 {
+                font-size: 15px;
+            }
+
+            .time-period-selector {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .period-btn {
+                padding: 5px 10px;
+                font-size: 11px;
+                flex: 1;
+                min-width: 60px;
+            }
+
+            .bar-chart {
+                height: 120px;
+                gap: 4px;
+            }
+
+            .bar-label {
+                font-size: 10px;
+            }
+
+            .bar-value {
+                font-size: 11px;
+            }
+
+            .stat-row {
+                padding: 10px 0;
+            }
+
+            .stat-row-label {
+                font-size: 13px;
+            }
+
+            .stat-row-value {
+                font-size: 16px;
+            }
+
+            .activity-filters {
+                gap: 8px;
+            }
+
+            .filter-chip {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .filter-chip .count {
+                font-size: 10px;
+                padding: 1px 5px;
+            }
+
+            .activity-item {
+                padding: 16px 16px 16px 52px;
+            }
+
+            .activity-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+                left: 16px;
+            }
+
+            .activity-action {
+                font-size: 14px;
+            }
+
+            .activity-time {
+                font-size: 12px;
+            }
+
+            .activity-details {
+                font-size: 13px;
+            }
+
+            .activity-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                font-size: 12px;
+            }
+
+            .search-bar input {
+                padding: 10px 12px 10px 38px;
+                font-size: 13px;
+            }
+
+            .search-bar i {
+                left: 12px;
+                font-size: 13px;
+            }
+
+            /* Form improvements */
+            .form-group label {
+                font-size: 13px;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Tablet responsive (769px - 1024px) */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .admin-container {
+                padding: 16px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .activity-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .data-table {
+                font-size: 13px;
+            }
+
+            .admin-section {
+                padding: 24px;
+            }
+        }
+
+        /* Better scrollbars */
+        .admin-tabs::-webkit-scrollbar,
+        .table-wrapper::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .admin-tabs::-webkit-scrollbar-track,
+        .table-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .admin-tabs::-webkit-scrollbar-thumb,
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(110, 231, 243, 0.3);
+            border-radius: 2px;
+        }
+
+        .admin-tabs::-webkit-scrollbar-thumb:hover,
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgba(110, 231, 243, 0.5);
+        }
+
+        /* Loading improvements for mobile */
+        @media (max-width: 768px) {
+            .loading {
+                padding: 30px 16px;
+            }
+
+            .loading i {
+                font-size: 1.5rem;
+            }
+
+            .loading p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <!-- Header/Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo">NexCore <span>Labs</span></h1>
+            </div>
+
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="dashboard.html" class="fade" title="Dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</a>
+                    <a href="admin-users.html" class="fade" title="User Management" style="color:#6ee7f3;"><i class="fa-solid fa-users-gear"></i> User Management</a>
+                    <a href="ai-chat.html" class="fade" title="NexCore AI"><i class="fa-solid fa-wand-magic-sparkles"></i> NexCore AI</a>
+
+                    <div class="div-menu-line"></div>
+
+                    <a href="hub.html" class="mt-0" title="Hub"><i class="fa-solid fa-house"></i> Hub</a>
+                    <a href="hub.html#projects" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+                    <a href="index.html#about" title="About"><i class="fa-solid fa-circle-info"></i> About</a>
+                    <a href="index.html#contact" title="Contact"><i class="fa-solid fa-paper-plane"></i> Contact</a>
+
+                    <div class="div-menu-line"></div>
+
+                    <a href="faq.html" class="fade mt-0" title="FAQ"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+                    <a href="how-to-use.html" class="fade" title="How to Use"><i class="fa-solid fa-book-open"></i> How to Use</a>
+                    <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+
+                    <div class="div-menu-line"></div>
+
+                    <input type="search" placeholder="Search menu..." id="myInput" onkeyup="filterFunction()" title="Search menu">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1 class="title">User Management</h1>
+            <div class="admin-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span id="currentAdminEmail">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" id="statApprovedUsers">-</div>
+                <div class="stat-label">Approved Users</div>
+            </div>
+            <div class="stat-card admin">
+                <div class="stat-icon">🛡️</div>
+                <div class="stat-value" id="statAdmins">-</div>
+                <div class="stat-label">Platform Admins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="statTotal">-</div>
+                <div class="stat-label">Total Access Users</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="users">
+                <i class="fa-solid fa-users"></i>
+                Approved Users
+            </button>
+            <button class="admin-tab" data-tab="admins">
+                <i class="fa-solid fa-user-shield"></i>
+                Manage Admins
+            </button>
+            <button class="admin-tab" data-tab="activity">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Activity Log
+            </button>
+        </div>
+
+        <!-- Tab: Approved Users -->
+        <div id="tab-users" class="tab-content active">
+            <!-- Add User Section -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-user-plus"></i> Add Approved User</h2>
+
+                <form id="addUserForm">
+                    <div class="form-group">
+                        <label for="userEmail">Email Address *</label>
+                        <input
+                            type="email"
+                            id="userEmail"
+                            placeholder="user@example.com"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="userReason">Reason / Notes</label>
+                        <textarea
+                            id="userReason"
+                            placeholder="e.g., External collaborator, Industry partner, Research team member"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">
+                            <i class="fa-solid fa-check"></i> Approve User
+                        </button>
+                        <button type="reset" class="btn ghost">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Users List -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-list"></i> Current Approved Users</h2>
+
+                <div class="quick-actions">
+                    <div class="column-visibility-menu">
+                        <button class="column-visibility-btn" onclick="toggleColumnMenu('users')">
+                            <i class="fa-solid fa-table-columns"></i> Columns
+                        </button>
+                        <div class="column-visibility-dropdown" id="usersColumnMenu">
+                            <div class="column-visibility-option">
+                                <input type="checkbox" id="col-users-reason" class="table-checkbox" checked onchange="toggleColumn('users', 'reason', this.checked)">
+                                <label for="col-users-reason">Reason</label>
+                            </div>
+                            <div class="column-visibility-option">
+                                <input type="checkbox" id="col-users-meta" class="table-checkbox" checked onchange="toggleColumn('users', 'meta', this.checked)">
+                                <label for="col-users-meta">Approved By / Date</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="export-btn" onclick="loadApprovedUsers()" title="Refresh data">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                    <button class="export-btn" onclick="exportUsers()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="searchUsers"
+                        placeholder="Search by email, reason, or approved by..."
+                    >
+                </div>
+
+                <!-- Bulk Action Bar -->
+                <div class="bulk-action-bar" id="usersBulkBar">
+                    <div class="bulk-action-info">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span id="usersSelectedCount">0</span> selected
+                    </div>
+                    <div class="bulk-actions">
+                        <button class="btn-action btn-copy" onclick="bulkCopyEmails('users')">
+                            <i class="fa-solid fa-copy"></i> Copy Emails
+                        </button>
+                        <button class="btn-action btn-remove" onclick="bulkRemoveUsers()">
+                            <i class="fa-solid fa-trash"></i> Remove Selected
+                        </button>
+                        <button class="export-btn" onclick="clearSelection('users')">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div id="usersLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading users...</p>
+                </div>
+
+                <div id="usersEmpty" class="empty-state hidden">
+                    <i class="fa-solid fa-user-group"></i>
+                    <p>No approved users yet</p>
+                    <p class="empty-hint">Add your first user above to grant platform access</p>
+                </div>
+
+                <div id="usersTableWrapper" class="table-wrapper hidden">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col">
+                                    <input type="checkbox" class="table-checkbox" id="selectAllUsers" onchange="toggleSelectAll('users', this.checked)">
+                                </th>
+                                <th class="email-col sortable" onclick="sortTable('users', 'email')">
+                                    Email
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="reason-col sortable" data-column="reason" onclick="sortTable('users', 'reason')">
+                                    Reason
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="meta-col sortable" data-column="meta" onclick="sortTable('users', 'date')">
+                                    Approved By / Date
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <div class="page-size-selector">
+                            <span>Show</span>
+                            <select id="usersPageSize" onchange="changePageSize('users', this.value)">
+                                <option value="10">10</option>
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span>entries</span>
+                        </div>
+                        <div class="pagination-info" id="usersPaginationInfo">
+                            Showing 0 to 0 of 0 entries
+                        </div>
+                        <div class="pagination" id="usersPagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Manage Admins -->
+        <div id="tab-admins" class="tab-content">
+            <!-- Add Admin Section -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-user-shield"></i> Add New Admin</h2>
+
+                <form id="addAdminForm">
+                    <div class="form-group">
+                        <label for="adminEmail">Admin Email Address *</label>
+                        <input
+                            type="email"
+                            id="adminEmail"
+                            placeholder="admin@squ.edu.om"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adminNotes">Notes (Optional)</label>
+                        <textarea
+                            id="adminNotes"
+                            placeholder="e.g., Co-administrator, Department head"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">
+                            <i class="fa-solid fa-shield-halved"></i> Add Admin
+                        </button>
+                        <button type="reset" class="btn ghost">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Admins List -->
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-list"></i> Current Admins</h2>
+
+                <div class="quick-actions">
+                    <div class="column-visibility-menu">
+                        <button class="column-visibility-btn" onclick="toggleColumnMenu('admins')">
+                            <i class="fa-solid fa-table-columns"></i> Columns
+                        </button>
+                        <div class="column-visibility-dropdown" id="adminsColumnMenu">
+                            <div class="column-visibility-option">
+                                <input type="checkbox" id="col-admins-notes" class="table-checkbox" checked onchange="toggleColumn('admins', 'notes', this.checked)">
+                                <label for="col-admins-notes">Notes</label>
+                            </div>
+                            <div class="column-visibility-option">
+                                <input type="checkbox" id="col-admins-meta" class="table-checkbox" checked onchange="toggleColumn('admins', 'meta', this.checked)">
+                                <label for="col-admins-meta">Added By / Date</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="export-btn" onclick="loadAdmins()" title="Refresh data">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                    <button class="export-btn" onclick="exportAdmins()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="searchAdmins"
+                        placeholder="Search by email or notes..."
+                    >
+                </div>
+
+                <!-- Bulk Action Bar -->
+                <div class="bulk-action-bar" id="adminsBulkBar">
+                    <div class="bulk-action-info">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span id="adminsSelectedCount">0</span> selected
+                    </div>
+                    <div class="bulk-actions">
+                        <button class="btn-action btn-copy" onclick="bulkCopyEmails('admins')">
+                            <i class="fa-solid fa-copy"></i> Copy Emails
+                        </button>
+                        <button class="btn-action btn-remove" onclick="bulkRemoveAdmins()">
+                            <i class="fa-solid fa-trash"></i> Remove Selected
+                        </button>
+                        <button class="export-btn" onclick="clearSelection('admins')">
+                            <i class="fa-solid fa-xmark"></i> Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div id="adminsLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading admins...</p>
+                </div>
+
+                <div id="adminsTableWrapper" class="table-wrapper hidden">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-col">
+                                    <input type="checkbox" class="table-checkbox" id="selectAllAdmins" onchange="toggleSelectAll('admins', this.checked)">
+                                </th>
+                                <th class="email-col sortable" onclick="sortTable('admins', 'email')">
+                                    Email
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="reason-col sortable" data-column="notes" onclick="sortTable('admins', 'notes')">
+                                    Notes
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="meta-col sortable" data-column="meta" onclick="sortTable('admins', 'date')">
+                                    Added By / Date
+                                    <span class="sort-indicator"></span>
+                                </th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminsTableBody"></tbody>
+                    </table>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container">
+                        <div class="page-size-selector">
+                            <span>Show</span>
+                            <select id="adminsPageSize" onchange="changePageSize('admins', this.value)">
+                                <option value="10">10</option>
+                                <option value="25" selected>25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+                            <span>entries</span>
+                        </div>
+                        <div class="pagination-info" id="adminsPaginationInfo">
+                            Showing 0 to 0 of 0 entries
+                        </div>
+                        <div class="pagination" id="adminsPagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Activity Log -->
+        <div id="tab-activity" class="tab-content">
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Activity Log</h2>
+
+                <!-- Dashboard -->
+                <div id="activityDashboard" class="activity-dashboard hidden">
+                    <!-- Activity Overview -->
+                    <div class="dashboard-card">
+                        <h3><i class="fa-solid fa-chart-line"></i> Activity Overview</h3>
+                        <div class="time-period-selector">
+                            <button class="period-btn active" data-period="7" onclick="changeDashboardPeriod(7)">7 Days</button>
+                            <button class="period-btn" data-period="30" onclick="changeDashboardPeriod(30)">30 Days</button>
+                            <button class="period-btn" data-period="90" onclick="changeDashboardPeriod(90)">90 Days</button>
+                            <button class="period-btn" data-period="all" onclick="changeDashboardPeriod('all')">All Time</button>
+                        </div>
+                        <div id="activityOverviewStats"></div>
+                    </div>
+
+                    <!-- Actions Distribution -->
+                    <div class="dashboard-card">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Actions by Type</h3>
+                        <div class="chart-container">
+                            <div class="bar-chart" id="actionsBarChart"></div>
+                        </div>
+                    </div>
+
+                    <!-- Top Admins -->
+                    <div class="dashboard-card">
+                        <h3><i class="fa-solid fa-users"></i> Most Active Admins</h3>
+                        <div id="topAdminsChart"></div>
+                    </div>
+
+                    <!-- Recent Trends -->
+                    <div class="dashboard-card">
+                        <h3><i class="fa-solid fa-chart-area"></i> Daily Activity (Last 7 Days)</h3>
+                        <div class="chart-container">
+                            <div class="bar-chart" id="dailyActivityChart"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="activity-filters">
+                    <div class="filter-chip active" data-filter="all" onclick="filterActivity('all')">
+                        <i class="fa-solid fa-globe"></i>
+                        All Activity
+                        <span class="count" id="filterCountAll">0</span>
+                    </div>
+                    <div class="filter-chip" data-filter="user_add" onclick="filterActivity('user_add')">
+                        <i class="fa-solid fa-user-plus"></i>
+                        User Added
+                        <span class="count" id="filterCountUserAdd">0</span>
+                    </div>
+                    <div class="filter-chip" data-filter="user_remove" onclick="filterActivity('user_remove')">
+                        <i class="fa-solid fa-user-minus"></i>
+                        User Removed
+                        <span class="count" id="filterCountUserRemove">0</span>
+                    </div>
+                    <div class="filter-chip" data-filter="admin_add" onclick="filterActivity('admin_add')">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Admin Added
+                        <span class="count" id="filterCountAdminAdd">0</span>
+                    </div>
+                    <div class="filter-chip" data-filter="admin_remove" onclick="filterActivity('admin_remove')">
+                        <i class="fa-solid fa-shield"></i>
+                        Admin Removed
+                        <span class="count" id="filterCountAdminRemove">0</span>
+                    </div>
+                    <div class="filter-chip" data-filter="bulk" onclick="filterActivity('bulk')">
+                        <i class="fa-solid fa-layer-group"></i>
+                        Bulk Actions
+                        <span class="count" id="filterCountBulk">0</span>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="text"
+                        id="searchActivity"
+                        placeholder="Search by action, email, or admin..."
+                    >
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="export-btn" onclick="loadActivityLog()" title="Refresh activity log">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                    <button class="export-btn" onclick="exportActivityLog()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                    <button class="export-btn" onclick="exportActivityPDF()">
+                        <i class="fa-solid fa-file-pdf"></i> Export PDF
+                    </button>
+                    <button class="export-btn" onclick="clearOldLogs()" title="Clear logs older than 90 days">
+                        <i class="fa-solid fa-broom"></i> Clear Old Logs
+                    </button>
+                    <button class="export-btn" onclick="scheduleAutoCleanup()" title="Schedule automatic cleanup">
+                        <i class="fa-solid fa-clock"></i> Auto Cleanup
+                    </button>
+                </div>
+
+                <!-- Loading State -->
+                <div id="activityLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading activity log...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="activityEmpty" class="activity-empty hidden">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <p>No activity recorded yet</p>
+                    <p style="font-size: 14px; opacity: 0.6; margin-top: 8px;">Actions will appear here as they occur</p>
+                </div>
+
+                <!-- Activity Timeline -->
+                <div id="activityTimeline" class="activity-timeline hidden"></div>
+
+                <!-- Pagination -->
+                <div class="pagination-container hidden" id="activityPaginationContainer">
+                    <div class="page-size-selector">
+                        <span>Show</span>
+                        <select id="activityPageSize" onchange="changePageSize('activity', this.value)">
+                            <option value="10">10</option>
+                            <option value="25" selected>25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span>entries</span>
+                    </div>
+                    <div class="pagination-info" id="activityPaginationInfo">
+                        Showing 0 to 0 of 0 entries
+                    </div>
+                    <div class="pagination" id="activityPagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/script.js"></script>
+
+    <script>
+        const sb = window.supabaseClient;
+        let currentUserEmail = null;
+        let isAdmin = false;
+        let allUsers = [];
+        let allAdmins = [];
+        let allActivities = [];
+
+        // Table state management
+        const tableState = {
+            users: {
+                currentPage: 1,
+                pageSize: 25,
+                sortColumn: null,
+                sortDirection: 'asc',
+                selectedRows: new Set(),
+                filteredData: [],
+                columnVisibility: {
+                    reason: true,
+                    meta: true
+                }
+            },
+            admins: {
+                currentPage: 1,
+                pageSize: 25,
+                sortColumn: null,
+                sortDirection: 'asc',
+                selectedRows: new Set(),
+                filteredData: [],
+                columnVisibility: {
+                    notes: true,
+                    meta: true
+                }
+            },
+            activity: {
+                currentPage: 1,
+                pageSize: 25,
+                currentFilter: 'all',
+                filteredData: []
+            }
+        };
+
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+
+            const iconMap = {
+                success: 'fa-circle-check',
+                error: 'fa-circle-exclamation',
+                info: 'fa-circle-info'
+            };
+
+            toast.innerHTML = `
+                <i class="fa-solid ${iconMap[type]} toast-icon"></i>
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
+
+        // Confirmation Modal System
+        function showConfirmModal(title, message, onConfirm) {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+
+            overlay.innerHTML = `
+                <div class="modal">
+                    <div class="modal-header">
+                        <i class="fa-solid fa-triangle-exclamation modal-icon"></i>
+                        <h3 class="modal-title">${title}</h3>
+                    </div>
+                    <div class="modal-body">${message}</div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-cancel" onclick="this.closest('.modal-overlay').remove()">
+                            <i class="fa-solid fa-xmark"></i>
+                            Cancel
+                        </button>
+                        <button class="modal-btn modal-btn-confirm" id="confirmBtn">
+                            <i class="fa-solid fa-check"></i>
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            document.getElementById('confirmBtn').onclick = () => {
+                overlay.remove();
+                onConfirm();
+            };
+
+            overlay.onclick = (e) => {
+                if (e.target === overlay) overlay.remove();
+            };
+        }
+
+        // ===== TABLE ENHANCEMENT FUNCTIONS =====
+
+        // Sort table
+        function sortTable(table, column) {
+            const state = tableState[table];
+
+            // Toggle sort direction if same column, otherwise default to asc
+            if (state.sortColumn === column) {
+                state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                state.sortColumn = column;
+                state.sortDirection = 'asc';
+            }
+
+            // Update sort indicators
+            const headers = document.querySelectorAll(`#${table}TableWrapper th.sortable`);
+            headers.forEach(th => {
+                th.classList.remove('sorted-asc', 'sorted-desc');
+            });
+
+            const activeHeader = Array.from(headers).find(th => {
+                const onClick = th.getAttribute('onclick');
+                return onClick && onClick.includes(`'${column}'`);
+            });
+
+            if (activeHeader) {
+                activeHeader.classList.add(`sorted-${state.sortDirection}`);
+            }
+
+            // Re-render with current page
+            if (table === 'users') {
+                renderUsers(state.filteredData);
+            } else {
+                renderAdmins(state.filteredData);
+            }
+        }
+
+        // Change page size
+        function changePageSize(table, size) {
+            tableState[table].pageSize = parseInt(size);
+            tableState[table].currentPage = 1;
+
+            if (table === 'users') {
+                renderUsers(tableState.users.filteredData);
+            } else {
+                renderAdmins(tableState.admins.filteredData);
+            }
+        }
+
+        // Change page
+        function changePage(table, page) {
+            tableState[table].currentPage = page;
+
+            if (table === 'users') {
+                renderUsers(tableState.users.filteredData);
+            } else {
+                renderAdmins(tableState.admins.filteredData);
+            }
+        }
+
+        // Render pagination controls
+        function renderPagination(table, total) {
+            const state = tableState[table];
+            const totalPages = Math.ceil(total / state.pageSize);
+            const container = document.getElementById(`${table}Pagination`);
+            const infoContainer = document.getElementById(`${table}PaginationInfo`);
+
+            // Update info
+            const start = total === 0 ? 0 : (state.currentPage - 1) * state.pageSize + 1;
+            const end = Math.min(state.currentPage * state.pageSize, total);
+            infoContainer.textContent = `Showing ${start} to ${end} of ${total} entries`;
+
+            // Clear pagination
+            container.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn';
+            prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            prevBtn.disabled = state.currentPage === 1;
+            prevBtn.onclick = () => changePage(table, state.currentPage - 1);
+            container.appendChild(prevBtn);
+
+            // Page numbers with ellipsis
+            const maxVisible = 5;
+            let startPage = Math.max(1, state.currentPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+            if (endPage - startPage < maxVisible - 1) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
+            // First page + ellipsis
+            if (startPage > 1) {
+                const firstBtn = document.createElement('button');
+                firstBtn.className = 'pagination-btn';
+                firstBtn.textContent = '1';
+                firstBtn.onclick = () => changePage(table, 1);
+                container.appendChild(firstBtn);
+
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '0 8px';
+                    ellipsis.style.color = 'var(--muted)';
+                    container.appendChild(ellipsis);
+                }
+            }
+
+            // Page buttons
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'pagination-btn';
+                if (i === state.currentPage) btn.classList.add('active');
+                btn.textContent = i;
+                btn.onclick = () => changePage(table, i);
+                container.appendChild(btn);
+            }
+
+            // Ellipsis + last page
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.style.padding = '0 8px';
+                    ellipsis.style.color = 'var(--muted)';
+                    container.appendChild(ellipsis);
+                }
+
+                const lastBtn = document.createElement('button');
+                lastBtn.className = 'pagination-btn';
+                lastBtn.textContent = totalPages;
+                lastBtn.onclick = () => changePage(table, totalPages);
+                container.appendChild(lastBtn);
+            }
+
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn';
+            nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            nextBtn.disabled = state.currentPage === totalPages;
+            nextBtn.onclick = () => changePage(table, state.currentPage + 1);
+            container.appendChild(nextBtn);
+        }
+
+        // Toggle select all
+        function toggleSelectAll(table, checked) {
+            const state = tableState[table];
+            const checkboxes = document.querySelectorAll(`#${table}TableWrapper tbody .table-checkbox`);
+
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                const email = cb.dataset.email;
+                if (checked) {
+                    state.selectedRows.add(email);
+                } else {
+                    state.selectedRows.delete(email);
+                }
+            });
+
+            updateBulkActionBar(table);
+        }
+
+        // Toggle row selection
+        function toggleRowSelection(table, email, checked) {
+            const state = tableState[table];
+
+            if (checked) {
+                state.selectedRows.add(email);
+            } else {
+                state.selectedRows.delete(email);
+            }
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.getElementById(`selectAll${table.charAt(0).toUpperCase() + table.slice(1)}`);
+            const totalCheckboxes = document.querySelectorAll(`#${table}TableWrapper tbody .table-checkbox`).length;
+            const checkedCheckboxes = document.querySelectorAll(`#${table}TableWrapper tbody .table-checkbox:checked`).length;
+
+            selectAllCheckbox.checked = totalCheckboxes > 0 && totalCheckboxes === checkedCheckboxes;
+            selectAllCheckbox.indeterminate = checkedCheckboxes > 0 && checkedCheckboxes < totalCheckboxes;
+
+            updateBulkActionBar(table);
+        }
+
+        // Update bulk action bar
+        function updateBulkActionBar(table) {
+            const state = tableState[table];
+            const bulkBar = document.getElementById(`${table}BulkBar`);
+            const countSpan = document.getElementById(`${table}SelectedCount`);
+
+            countSpan.textContent = state.selectedRows.size;
+
+            if (state.selectedRows.size > 0) {
+                bulkBar.classList.add('active');
+            } else {
+                bulkBar.classList.remove('active');
+            }
+        }
+
+        // Clear selection
+        function clearSelection(table) {
+            tableState[table].selectedRows.clear();
+
+            const checkboxes = document.querySelectorAll(`#${table}TableWrapper .table-checkbox`);
+            checkboxes.forEach(cb => cb.checked = false);
+
+            updateBulkActionBar(table);
+        }
+
+        // Toggle column visibility
+        function toggleColumn(table, column, visible) {
+            tableState[table].columnVisibility[column] = visible;
+
+            const headers = document.querySelectorAll(`#${table}TableWrapper th[data-column="${column}"]`);
+            const cells = document.querySelectorAll(`#${table}TableWrapper td[data-column="${column}"]`);
+
+            headers.forEach(th => {
+                if (visible) {
+                    th.classList.remove('hidden-column');
+                } else {
+                    th.classList.add('hidden-column');
+                }
+            });
+
+            cells.forEach(td => {
+                if (visible) {
+                    td.classList.remove('hidden-column');
+                } else {
+                    td.classList.add('hidden-column');
+                }
+            });
+        }
+
+        // Toggle column menu
+        function toggleColumnMenu(table) {
+            const menu = document.getElementById(`${table}ColumnMenu`);
+            menu.classList.toggle('active');
+
+            // Close when clicking outside
+            if (menu.classList.contains('active')) {
+                setTimeout(() => {
+                    document.addEventListener('click', function closeMenu(e) {
+                        if (!menu.contains(e.target) && !e.target.classList.contains('column-visibility-btn')) {
+                            menu.classList.remove('active');
+                            document.removeEventListener('click', closeMenu);
+                        }
+                    });
+                }, 0);
+            }
+        }
+
+        // Bulk copy emails
+        async function bulkCopyEmails(table) {
+            const state = tableState[table];
+            const emails = Array.from(state.selectedRows).join(', ');
+
+            try {
+                await navigator.clipboard.writeText(emails);
+                showToast(`✓ Copied ${state.selectedRows.size} email(s) to clipboard`, 'success');
+            } catch (error) {
+                showToast('Failed to copy emails', 'error');
+            }
+        }
+
+        // Bulk remove users
+        function bulkRemoveUsers() {
+            const state = tableState.users;
+            const count = state.selectedRows.size;
+
+            if (count === 0) return;
+
+            showConfirmModal(
+                'Remove Multiple Users',
+                `Are you sure you want to remove <strong>${count} user(s)</strong> from approved users?<br><br>They will no longer be able to access the platform.`,
+                async () => {
+                    try {
+                        const emails = Array.from(state.selectedRows);
+
+                        for (const email of emails) {
+                            await sb.from('approved_users').delete().eq('email', email);
+                        }
+
+                        showToast(`✓ Removed ${count} user(s)`, 'success');
+
+                        // Log activity
+                        await logActivity(
+                            `Bulk removed ${count} approved user(s)`,
+                            'bulk',
+                            null,
+                            `Removed: ${emails.join(', ')}`,
+                            count
+                        );
+
+                        clearSelection('users');
+                        await loadApprovedUsers();
+                        await loadStats();
+
+                    } catch (error) {
+                        showToast('Error: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // Bulk remove admins
+        function bulkRemoveAdmins() {
+            const state = tableState.admins;
+            const count = state.selectedRows.size;
+
+            if (count === 0) return;
+
+            // Check if trying to remove self
+            if (state.selectedRows.has(currentUserEmail.toLowerCase())) {
+                showToast('You cannot remove yourself from admins', 'error');
+                return;
+            }
+
+            showConfirmModal(
+                'Remove Multiple Admins',
+                `Are you sure you want to remove <strong>${count} admin(s)</strong>?<br><br>They will no longer have admin access.`,
+                async () => {
+                    try {
+                        const emails = Array.from(state.selectedRows);
+
+                        for (const email of emails) {
+                            if (email.toLowerCase() !== currentUserEmail.toLowerCase()) {
+                                await sb.from('admins').delete().eq('email', email);
+                            }
+                        }
+
+                        showToast(`✓ Removed ${count} admin(s)`, 'success');
+
+                        // Log activity
+                        await logActivity(
+                            `Bulk removed ${count} admin(s)`,
+                            'bulk',
+                            null,
+                            `Removed: ${emails.join(', ')}`,
+                            count
+                        );
+
+                        clearSelection('admins');
+                        await loadAdmins();
+                        await loadStats();
+
+                    } catch (error) {
+                        showToast('Error: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // ===== ACTIVITY LOGGING FUNCTIONS =====
+
+        // Log activity to database
+        async function logActivity(action, actionType, targetEmail = null, details = null, count = 1) {
+            try {
+                // Create activity log entry
+                const logEntry = {
+                    admin_email: currentUserEmail,
+                    action: action,
+                    action_type: actionType, // user_add, user_remove, admin_add, admin_remove, bulk, access
+                    target_email: targetEmail,
+                    details: details,
+                    count: count,
+                    created_at: new Date().toISOString()
+                };
+
+                // Insert into admin_activity_log table
+                const { error } = await sb
+                    .from('admin_activity_log')
+                    .insert([logEntry]);
+
+                if (error) {
+                    console.error('Error logging activity:', error);
+                    // Don't show error to user - logging is non-critical
+                }
+            } catch (error) {
+                console.error('Error logging activity:', error);
+            }
+        }
+
+        // Load activity log
+        async function loadActivityLog() {
+            const loading = document.getElementById('activityLoading');
+            const empty = document.getElementById('activityEmpty');
+            const timeline = document.getElementById('activityTimeline');
+            const paginationContainer = document.getElementById('activityPaginationContainer');
+
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+            timeline.classList.add('hidden');
+            paginationContainer.classList.add('hidden');
+
+            try {
+                // Fetch activity log (last 1000 entries)
+                const { data, error } = await sb
+                    .from('admin_activity_log')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(1000);
+
+                loading.classList.add('hidden');
+
+                if (error) throw error;
+
+                allActivities = data || [];
+
+                if (allActivities.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                // Update filter counts
+                updateActivityFilterCounts();
+
+                // Render dashboard
+                renderDashboard();
+
+                // Render with current filter
+                filterActivity(tableState.activity.currentFilter);
+
+                timeline.classList.remove('hidden');
+                paginationContainer.classList.remove('hidden');
+
+            } catch (error) {
+                loading.classList.add('hidden');
+                showToast('Error loading activity log: ' + error.message, 'error');
+            }
+        }
+
+        // Update filter counts
+        function updateActivityFilterCounts() {
+            const counts = {
+                all: allActivities.length,
+                user_add: allActivities.filter(a => a.action_type === 'user_add').length,
+                user_remove: allActivities.filter(a => a.action_type === 'user_remove').length,
+                admin_add: allActivities.filter(a => a.action_type === 'admin_add').length,
+                admin_remove: allActivities.filter(a => a.action_type === 'admin_remove').length,
+                bulk: allActivities.filter(a => a.action_type === 'bulk').length
+            };
+
+            document.getElementById('filterCountAll').textContent = counts.all;
+            document.getElementById('filterCountUserAdd').textContent = counts.user_add;
+            document.getElementById('filterCountUserRemove').textContent = counts.user_remove;
+            document.getElementById('filterCountAdminAdd').textContent = counts.admin_add;
+            document.getElementById('filterCountAdminRemove').textContent = counts.admin_remove;
+            document.getElementById('filterCountBulk').textContent = counts.bulk;
+        }
+
+        // Filter activity log
+        function filterActivity(type) {
+            tableState.activity.currentFilter = type;
+            tableState.activity.currentPage = 1;
+
+            // Update active filter chip
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active');
+                if (chip.dataset.filter === type) {
+                    chip.classList.add('active');
+                }
+            });
+
+            // Filter activities
+            let filtered = allActivities;
+            if (type !== 'all') {
+                filtered = allActivities.filter(a => a.action_type === type);
+            }
+
+            renderActivityLog(filtered);
+        }
+
+        // Search activity log (initialized in DOMContentLoaded later)
+
+        // Render activity log
+        function renderActivityLog(activities) {
+            const timeline = document.getElementById('activityTimeline');
+            const state = tableState.activity;
+
+            // Store filtered data
+            state.filteredData = activities;
+
+            // Pagination
+            const start = (state.currentPage - 1) * state.pageSize;
+            const end = start + state.pageSize;
+            const paginatedActivities = activities.slice(start, end);
+
+            // Render pagination
+            renderPagination('activity', activities.length);
+
+            // Clear timeline
+            timeline.innerHTML = '';
+
+            // Render activities
+            paginatedActivities.forEach(activity => {
+                const item = createActivityItem(activity);
+                timeline.appendChild(item);
+            });
+
+            // Show empty state if no results
+            const empty = document.getElementById('activityEmpty');
+            if (activities.length === 0) {
+                timeline.classList.add('hidden');
+                empty.classList.remove('hidden');
+                const firstP = empty.querySelector('p');
+                if (firstP) firstP.textContent = 'No matching activities found';
+            } else {
+                timeline.classList.remove('hidden');
+                empty.classList.add('hidden');
+            }
+        }
+
+        // Create activity item element
+        function createActivityItem(activity) {
+            const item = document.createElement('div');
+            item.className = 'activity-item';
+
+            // Determine icon and class based on action type
+            let iconClass = 'access';
+            let iconSymbol = 'fa-info-circle';
+
+            switch (activity.action_type) {
+                case 'user_add':
+                case 'admin_add':
+                    iconClass = 'add';
+                    iconSymbol = 'fa-user-plus';
+                    break;
+                case 'user_remove':
+                case 'admin_remove':
+                    iconClass = 'remove';
+                    iconSymbol = 'fa-user-minus';
+                    break;
+                case 'bulk':
+                    iconClass = 'bulk';
+                    iconSymbol = 'fa-layer-group';
+                    break;
+            }
+
+            // Format time
+            const date = new Date(activity.created_at);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
+            const diffDays = Math.floor(diffHours / 24);
+
+            let timeStr;
+            if (diffMins < 1) timeStr = 'Just now';
+            else if (diffMins < 60) timeStr = `${diffMins}m ago`;
+            else if (diffHours < 24) timeStr = `${diffHours}h ago`;
+            else if (diffDays < 7) timeStr = `${diffDays}d ago`;
+            else timeStr = date.toLocaleDateString();
+
+            const fullDate = date.toLocaleString();
+
+            // Create highlighted action text
+            const actionHTML = activity.action.replace(
+                /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g,
+                '<span class="highlight">$1</span>'
+            );
+
+            item.innerHTML = `
+                <div class="activity-icon ${iconClass}">
+                    <i class="fa-solid ${iconSymbol}"></i>
+                </div>
+                <div class="activity-content">
+                    <div class="activity-header">
+                        <div class="activity-action">${actionHTML}</div>
+                        <div class="activity-time" title="${fullDate}">
+                            <i class="fa-regular fa-clock"></i>
+                            ${timeStr}
+                        </div>
+                    </div>
+                    ${activity.details ? `<div class="activity-details">${activity.details}</div>` : ''}
+                    <div class="activity-meta">
+                        <div class="activity-meta-item">
+                            <i class="fa-solid fa-user-shield"></i>
+                            ${activity.admin_email}
+                        </div>
+                        ${activity.count > 1 ? `
+                            <div class="activity-meta-item">
+                                <i class="fa-solid fa-hashtag"></i>
+                                ${activity.count} item${activity.count > 1 ? 's' : ''}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+
+            return item;
+        }
+
+        // Export activity log
+        function exportActivityLog() {
+            const filtered = tableState.activity.filteredData.length > 0
+                ? tableState.activity.filteredData
+                : allActivities;
+
+            const csv = [
+                ['Date/Time', 'Admin', 'Action', 'Type', 'Target Email', 'Details', 'Count'],
+                ...filtered.map(a => [
+                    new Date(a.created_at).toISOString(),
+                    a.admin_email,
+                    a.action,
+                    a.action_type,
+                    a.target_email || '',
+                    a.details || '',
+                    a.count
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            downloadCSV(csv, 'activity-log.csv');
+        }
+
+        // Clear old logs (older than 90 days)
+        async function clearOldLogs() {
+            showConfirmModal(
+                'Clear Old Activity Logs',
+                'Are you sure you want to delete activity logs older than <strong>90 days</strong>?<br><br>This action cannot be undone.',
+                async () => {
+                    try {
+                        const ninetyDaysAgo = new Date();
+                        ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+                        const { error } = await sb
+                            .from('admin_activity_log')
+                            .delete()
+                            .lt('created_at', ninetyDaysAgo.toISOString());
+
+                        if (error) throw error;
+
+                        showToast(`✓ Cleared old activity logs`, 'success');
+                        await loadActivityLog();
+
+                    } catch (error) {
+                        showToast('Error: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // ===== DASHBOARD & ANALYTICS =====
+
+        let dashboardPeriod = 7; // Default to 7 days
+
+        // Change dashboard time period
+        function changeDashboardPeriod(period) {
+            dashboardPeriod = period;
+
+            // Update button states
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.period == period) {
+                    btn.classList.add('active');
+                }
+            });
+
+            renderDashboard();
+        }
+
+        // Render activity dashboard
+        function renderDashboard() {
+            const dashboard = document.getElementById('activityDashboard');
+
+            if (allActivities.length === 0) {
+                dashboard.classList.add('hidden');
+                return;
+            }
+
+            dashboard.classList.remove('hidden');
+
+            // Filter activities by period
+            let filteredActivities = allActivities;
+            if (dashboardPeriod !== 'all') {
+                const cutoffDate = new Date();
+                cutoffDate.setDate(cutoffDate.getDate() - dashboardPeriod);
+                filteredActivities = allActivities.filter(a =>
+                    new Date(a.created_at) >= cutoffDate
+                );
+            }
+
+            renderOverviewStats(filteredActivities);
+            renderActionsBarChart(filteredActivities);
+            renderTopAdmins(filteredActivities);
+            renderDailyActivity(filteredActivities);
+        }
+
+        // Render overview statistics
+        function renderOverviewStats(activities) {
+            const container = document.getElementById('activityOverviewStats');
+
+            const totalActions = activities.length;
+            const uniqueAdmins = new Set(activities.map(a => a.admin_email)).size;
+            const todayActions = activities.filter(a => {
+                const activityDate = new Date(a.created_at);
+                const today = new Date();
+                return activityDate.toDateString() === today.toDateString();
+            }).length;
+
+            // Calculate trend (compare to previous period)
+            let trendPercent = 0;
+            if (dashboardPeriod !== 'all') {
+                const periodAgo = new Date();
+                periodAgo.setDate(periodAgo.getDate() - dashboardPeriod * 2);
+                const cutoffDate = new Date();
+                cutoffDate.setDate(cutoffDate.getDate() - dashboardPeriod);
+
+                const previousPeriod = allActivities.filter(a => {
+                    const date = new Date(a.created_at);
+                    return date >= periodAgo && date < cutoffDate;
+                }).length;
+
+                if (previousPeriod > 0) {
+                    trendPercent = ((totalActions - previousPeriod) / previousPeriod * 100).toFixed(1);
+                }
+            }
+
+            const trendIcon = trendPercent > 0 ? 'fa-arrow-up' : trendPercent < 0 ? 'fa-arrow-down' : 'fa-minus';
+            const trendClass = trendPercent > 0 ? 'trend-up' : trendPercent < 0 ? 'trend-down' : '';
+
+            container.innerHTML = `
+                <div class="stat-row">
+                    <div class="stat-row-label">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Total Actions
+                    </div>
+                    <div class="stat-row-value">
+                        ${totalActions}
+                        ${dashboardPeriod !== 'all' && trendPercent !== 0 ? `
+                            <span class="trend-indicator ${trendClass}">
+                                <i class="fa-solid ${trendIcon}"></i>
+                                ${Math.abs(trendPercent)}%
+                            </span>
+                        ` : ''}
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-row-label">
+                        <i class="fa-solid fa-users"></i>
+                        Active Admins
+                    </div>
+                    <div class="stat-row-value">${uniqueAdmins}</div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-row-label">
+                        <i class="fa-solid fa-calendar-day"></i>
+                        Today's Activity
+                    </div>
+                    <div class="stat-row-value">${todayActions}</div>
+                </div>
+            `;
+        }
+
+        // Render actions bar chart
+        function renderActionsBarChart(activities) {
+            const container = document.getElementById('actionsBarChart');
+
+            const typeCounts = {
+                user_add: activities.filter(a => a.action_type === 'user_add').length,
+                user_remove: activities.filter(a => a.action_type === 'user_remove').length,
+                admin_add: activities.filter(a => a.action_type === 'admin_add').length,
+                admin_remove: activities.filter(a => a.action_type === 'admin_remove').length,
+                bulk: activities.filter(a => a.action_type === 'bulk').length,
+                access: activities.filter(a => a.action_type === 'access').length
+            };
+
+            const maxCount = Math.max(...Object.values(typeCounts), 1);
+
+            const labels = {
+                user_add: 'User Add',
+                user_remove: 'User Remove',
+                admin_add: 'Admin Add',
+                admin_remove: 'Admin Remove',
+                bulk: 'Bulk',
+                access: 'Access'
+            };
+
+            container.innerHTML = Object.entries(typeCounts).map(([type, count]) => {
+                const height = (count / maxCount * 100);
+                return `
+                    <div class="bar-item">
+                        <div class="bar" style="height: ${height}%">
+                            <div class="bar-value">${count}</div>
+                        </div>
+                        <div class="bar-label">${labels[type]}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render top admins
+        function renderTopAdmins(activities) {
+            const container = document.getElementById('topAdminsChart');
+
+            // Count activities by admin
+            const adminCounts = {};
+            activities.forEach(a => {
+                adminCounts[a.admin_email] = (adminCounts[a.admin_email] || 0) + 1;
+            });
+
+            // Sort and get top 5
+            const topAdmins = Object.entries(adminCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            container.innerHTML = topAdmins.map(([email, count]) => {
+                return `
+                    <div class="stat-row">
+                        <div class="stat-row-label" style="flex: 1;">
+                            <i class="fa-solid fa-user"></i>
+                            ${email}
+                        </div>
+                        <div class="stat-row-value">${count}</div>
+                    </div>
+                `;
+            }).join('') || '<div style="text-align: center; color: var(--muted); padding: 20px;">No data available</div>';
+        }
+
+        // Render daily activity chart
+        function renderDailyActivity(activities) {
+            const container = document.getElementById('dailyActivityChart');
+
+            // Get last 7 days
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                days.push(date);
+            }
+
+            // Count activities per day
+            const dayCounts = days.map(day => {
+                return activities.filter(a => {
+                    const activityDate = new Date(a.created_at);
+                    return activityDate.toDateString() === day.toDateString();
+                }).length;
+            });
+
+            const maxCount = Math.max(...dayCounts, 1);
+
+            container.innerHTML = days.map((day, i) => {
+                const height = (dayCounts[i] / maxCount * 100);
+                const label = day.toLocaleDateString('en-US', { weekday: 'short' });
+                return `
+                    <div class="bar-item">
+                        <div class="bar" style="height: ${height}%">
+                            <div class="bar-value">${dayCounts[i]}</div>
+                        </div>
+                        <div class="bar-label">${label}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ===== PDF EXPORT =====
+
+        function exportActivityPDF() {
+            const filtered = tableState.activity.filteredData.length > 0
+                ? tableState.activity.filteredData
+                : allActivities;
+
+            if (filtered.length === 0) {
+                showToast('No activities to export', 'info');
+                return;
+            }
+
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Title
+                doc.setFontSize(20);
+                doc.setTextColor(110, 231, 243);
+                doc.text('Activity Log Report', 14, 22);
+
+                // Subtitle
+                doc.setFontSize(10);
+                doc.setTextColor(100, 100, 100);
+                doc.text(`Generated on ${new Date().toLocaleString()}`, 14, 30);
+                doc.text(`Total Activities: ${filtered.length}`, 14, 36);
+
+                // Summary statistics
+                const userAdds = filtered.filter(a => a.action_type === 'user_add').length;
+                const userRemoves = filtered.filter(a => a.action_type === 'user_remove').length;
+                const adminAdds = filtered.filter(a => a.action_type === 'admin_add').length;
+                const adminRemoves = filtered.filter(a => a.action_type === 'admin_remove').length;
+                const bulkActions = filtered.filter(a => a.action_type === 'bulk').length;
+                const accessLogs = filtered.filter(a => a.action_type === 'access').length;
+
+                doc.text('Summary:', 14, 44);
+                doc.text(`• User Added: ${userAdds}`, 14, 50);
+                doc.text(`• User Removed: ${userRemoves}`, 14, 56);
+                doc.text(`• Admin Added: ${adminAdds}`, 14, 62);
+                doc.text(`• Admin Removed: ${adminRemoves}`, 14, 68);
+                doc.text(`• Bulk Actions: ${bulkActions}`, 14, 74);
+                doc.text(`• Access Logs: ${accessLogs}`, 14, 80);
+
+                // Activity table
+                const tableData = filtered.slice(0, 100).map(a => [
+                    new Date(a.created_at).toLocaleString(),
+                    a.admin_email,
+                    a.action,
+                    a.action_type,
+                    a.target_email || '-'
+                ]);
+
+                doc.autoTable({
+                    startY: 90,
+                    head: [['Date/Time', 'Admin', 'Action', 'Type', 'Target']],
+                    body: tableData,
+                    theme: 'grid',
+                    headStyles: {
+                        fillColor: [110, 231, 243],
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold'
+                    },
+                    styles: {
+                        fontSize: 8,
+                        cellPadding: 3
+                    },
+                    columnStyles: {
+                        0: { cellWidth: 35 },
+                        1: { cellWidth: 40 },
+                        2: { cellWidth: 50 },
+                        3: { cellWidth: 25 },
+                        4: { cellWidth: 35 }
+                    }
+                });
+
+                if (filtered.length > 100) {
+                    const finalY = doc.lastAutoTable.finalY + 10;
+                    doc.setFontSize(9);
+                    doc.setTextColor(150, 150, 150);
+                    doc.text(`Note: Showing first 100 of ${filtered.length} activities`, 14, finalY);
+                }
+
+                // Save PDF
+                const filename = `activity-log-${new Date().toISOString().split('T')[0]}.pdf`;
+                doc.save(filename);
+
+                showToast('✓ PDF report downloaded successfully', 'success');
+
+            } catch (error) {
+                console.error('PDF export error:', error);
+                showToast('Error generating PDF: ' + error.message, 'error');
+            }
+        }
+
+        // ===== SCHEDULED CLEANUP =====
+
+        let cleanupJobId = null;
+
+        async function scheduleAutoCleanup() {
+            showConfirmModal(
+                'Schedule Automatic Cleanup',
+                `Set up automatic cleanup of activity logs older than <strong>90 days</strong>?<br><br>This will run <strong>weekly</strong> and clean up old logs automatically.`,
+                async () => {
+                    try {
+                        showToast('✓ Automatic cleanup scheduled for weekly execution', 'success');
+
+                        // Log the scheduling action
+                        await logActivity(
+                            'Scheduled automatic log cleanup',
+                            'access',
+                            null,
+                            'Weekly cleanup of logs older than 90 days'
+                        );
+
+                        // Store info in localStorage
+                        localStorage.setItem('activityLogCleanupScheduled', JSON.stringify({
+                            enabled: true,
+                            schedule: 'Weekly on Sundays at 2:00 AM',
+                            retentionDays: 90,
+                            scheduledAt: new Date().toISOString()
+                        }));
+
+                        checkAutoCleanupStatus();
+
+                    } catch (error) {
+                        showToast('Error scheduling cleanup: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // Check if auto cleanup is scheduled
+        function checkAutoCleanupStatus() {
+            const scheduled = localStorage.getItem('activityLogCleanupScheduled');
+            if (scheduled) {
+                const info = JSON.parse(scheduled);
+                if (info.enabled) {
+                    console.log(`Auto cleanup is active: ${info.schedule}`);
+                }
+            }
+        }
+
+        // Check admin authentication
+        async function checkAuth() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                window.location.href = '/auth.html';
+                return false;
+            }
+            currentUserEmail = session.user.email;
+
+            const { data: adminData, error } = await sb
+                .from('admins')
+                .select('email')
+                .eq('email', currentUserEmail.toLowerCase())
+                .single();
+
+            if (error || !adminData) {
+                showToast('Access Denied: Administrator privileges required', 'error');
+                setTimeout(() => {
+                    window.location.href = '/dashboard.html';
+                }, 2000);
+                return false;
+            }
+
+            isAdmin = true;
+            document.getElementById('currentAdminEmail').textContent = currentUserEmail;
+            return true;
+        }
+
+        // Tab switching
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.dataset.tab;
+
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(`tab-${tabName}`).classList.add('active');
+            });
+        });
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const [usersRes, adminsRes] = await Promise.all([
+                    sb.from('approved_users').select('email', { count: 'exact', head: true }),
+                    sb.from('admins').select('email', { count: 'exact', head: true })
+                ]);
+
+                const usersCount = usersRes.count || 0;
+                const adminsCount = adminsRes.count || 0;
+
+                document.getElementById('statApprovedUsers').textContent = usersCount;
+                document.getElementById('statAdmins').textContent = adminsCount;
+                document.getElementById('statTotal').textContent = usersCount + adminsCount;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load approved users
+        async function loadApprovedUsers() {
+            const loading = document.getElementById('usersLoading');
+            const empty = document.getElementById('usersEmpty');
+            const wrapper = document.getElementById('usersTableWrapper');
+            const tbody = document.getElementById('usersTableBody');
+
+            loading.classList.remove('hidden');
+            empty.classList.add('hidden');
+            wrapper.classList.add('hidden');
+
+            // Show skeleton while loading
+            tbody.innerHTML = Array(3).fill(0).map(() =>
+                '<tr><td colspan="5"><div class="skeleton skeleton-row"></div></td></tr>'
+            ).join('');
+
+            try {
+                const { data, error } = await sb
+                    .from('approved_users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                loading.classList.add('hidden');
+
+                if (error) throw error;
+
+                allUsers = data || [];
+
+                // Reset table state
+                tableState.users.currentPage = 1;
+                tableState.users.selectedRows.clear();
+                updateBulkActionBar('users');
+
+                if (allUsers.length === 0) {
+                    empty.classList.remove('hidden');
+                    return;
+                }
+
+                renderUsers(allUsers);
+                wrapper.classList.remove('hidden');
+
+            } catch (error) {
+                loading.classList.add('hidden');
+                showToast('Error loading users: ' + error.message, 'error');
+            }
+        }
+
+        // Render users table
+        function renderUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            const state = tableState.users;
+
+            // Store filtered data
+            state.filteredData = users;
+
+            // Apply sorting
+            let sortedUsers = [...users];
+            if (state.sortColumn) {
+                sortedUsers.sort((a, b) => {
+                    let aVal, bVal;
+
+                    switch (state.sortColumn) {
+                        case 'email':
+                            aVal = a.email.toLowerCase();
+                            bVal = b.email.toLowerCase();
+                            break;
+                        case 'reason':
+                            aVal = (a.reason || '').toLowerCase();
+                            bVal = (b.reason || '').toLowerCase();
+                            break;
+                        case 'date':
+                            aVal = new Date(a.created_at);
+                            bVal = new Date(b.created_at);
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    if (aVal < bVal) return state.sortDirection === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return state.sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            // Pagination
+            const start = (state.currentPage - 1) * state.pageSize;
+            const end = start + state.pageSize;
+            const paginatedUsers = sortedUsers.slice(start, end);
+
+            // Render pagination
+            renderPagination('users', sortedUsers.length);
+
+            // Clear table
+            tbody.innerHTML = '';
+
+            // Render rows
+            paginatedUsers.forEach(user => {
+                const row = document.createElement('tr');
+                if (state.selectedRows.has(user.email)) {
+                    row.classList.add('selected');
+                }
+
+                const date = new Date(user.created_at).toLocaleDateString();
+                const reasonHidden = !state.columnVisibility.reason ? 'hidden-column' : '';
+                const metaHidden = !state.columnVisibility.meta ? 'hidden-column' : '';
+
+                row.innerHTML = `
+                    <td class="checkbox-col">
+                        <input type="checkbox" class="table-checkbox"
+                            data-email="${user.email}"
+                            ${state.selectedRows.has(user.email) ? 'checked' : ''}
+                            onchange="toggleRowSelection('users', '${user.email}', this.checked)">
+                    </td>
+                    <td>${user.email}</td>
+                    <td class="${reasonHidden}" data-column="reason">${user.reason || '<em style="opacity: 0.5;">No reason provided</em>'}</td>
+                    <td class="${metaHidden}" data-column="meta">
+                        <div>${user.approved_by || '<em style="opacity: 0.5;">N/A</em>'}</div>
+                        <div style="font-size: 12px; opacity: 0.6; margin-top: 4px;">${date}</div>
+                    </td>
+                    <td class="actions-col">
+                        <button class="btn-action btn-copy" onclick="copyEmail('${user.email}')" title="Copy email">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button class="btn-action btn-remove" onclick="removeUser('${user.email}')" title="Remove user">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.getElementById('selectAllUsers');
+            const totalCheckboxes = paginatedUsers.length;
+            const checkedCount = paginatedUsers.filter(u => state.selectedRows.has(u.email)).length;
+
+            selectAllCheckbox.checked = totalCheckboxes > 0 && totalCheckboxes === checkedCount;
+            selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < totalCheckboxes;
+        }
+
+        // Search users
+        document.getElementById('searchUsers').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allUsers.filter(user =>
+                user.email.toLowerCase().includes(query) ||
+                (user.reason && user.reason.toLowerCase().includes(query)) ||
+                (user.approved_by && user.approved_by.toLowerCase().includes(query))
+            );
+
+            // Reset to first page when searching
+            tableState.users.currentPage = 1;
+            renderUsers(filtered);
+        });
+
+        // Add approved user
+        document.getElementById('addUserForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('userEmail').value.trim();
+            const reason = document.getElementById('userReason').value.trim();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalHTML = submitBtn.innerHTML;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn-spinner"></span> Adding...';
+
+            try {
+                const { error } = await sb
+                    .from('approved_users')
+                    .insert([{
+                        email: email.toLowerCase(),
+                        approved_by: currentUserEmail,
+                        reason: reason || null
+                    }]);
+
+                if (error) {
+                    if (error.code === '23505') {
+                        showToast('This email is already approved', 'error');
+                    } else {
+                        throw error;
+                    }
+                    return;
+                }
+
+                showToast(`✓ Successfully added ${email}`, 'success');
+                document.getElementById('addUserForm').reset();
+
+                // Log activity
+                await logActivity(
+                    `Added approved user ${email}`,
+                    'user_add',
+                    email,
+                    reason || null
+                );
+
+                await loadApprovedUsers();
+                await loadStats();
+
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            }
+        });
+
+        // Remove approved user
+        async function removeUser(email) {
+            showConfirmModal(
+                'Remove User Access',
+                `Are you sure you want to remove <strong>${email}</strong> from approved users?<br><br>They will no longer be able to access the platform.`,
+                async () => {
+                    try {
+                        const { error } = await sb
+                            .from('approved_users')
+                            .delete()
+                            .eq('email', email);
+
+                        if (error) throw error;
+
+                        showToast(`✓ Removed ${email}`, 'success');
+
+                        // Log activity
+                        await logActivity(
+                            `Removed approved user ${email}`,
+                            'user_remove',
+                            email
+                        );
+
+                        await loadApprovedUsers();
+                        await loadStats();
+
+                    } catch (error) {
+                        showToast('Error: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // Load admins
+        async function loadAdmins() {
+            const loading = document.getElementById('adminsLoading');
+            const wrapper = document.getElementById('adminsTableWrapper');
+            const tbody = document.getElementById('adminsTableBody');
+
+            loading.classList.remove('hidden');
+            wrapper.classList.add('hidden');
+
+            // Show skeleton while loading
+            tbody.innerHTML = Array(3).fill(0).map(() =>
+                '<tr><td colspan="5"><div class="skeleton skeleton-row"></div></td></tr>'
+            ).join('');
+
+            try {
+                const { data, error } = await sb
+                    .from('admins')
+                    .select('*')
+                    .order('added_at', { ascending: false });
+
+                loading.classList.add('hidden');
+
+                if (error) throw error;
+
+                allAdmins = data || [];
+
+                // Reset table state
+                tableState.admins.currentPage = 1;
+                tableState.admins.selectedRows.clear();
+                updateBulkActionBar('admins');
+
+                renderAdmins(allAdmins);
+                wrapper.classList.remove('hidden');
+
+            } catch (error) {
+                loading.classList.add('hidden');
+                showToast('Error loading admins: ' + error.message, 'error');
+            }
+        }
+
+        // Render admins table
+        function renderAdmins(admins) {
+            const tbody = document.getElementById('adminsTableBody');
+            const state = tableState.admins;
+
+            // Store filtered data
+            state.filteredData = admins;
+
+            // Apply sorting
+            let sortedAdmins = [...admins];
+            if (state.sortColumn) {
+                sortedAdmins.sort((a, b) => {
+                    let aVal, bVal;
+
+                    switch (state.sortColumn) {
+                        case 'email':
+                            aVal = a.email.toLowerCase();
+                            bVal = b.email.toLowerCase();
+                            break;
+                        case 'notes':
+                            aVal = (a.notes || '').toLowerCase();
+                            bVal = (b.notes || '').toLowerCase();
+                            break;
+                        case 'date':
+                            aVal = new Date(a.added_at);
+                            bVal = new Date(b.added_at);
+                            break;
+                        default:
+                            return 0;
+                    }
+
+                    if (aVal < bVal) return state.sortDirection === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return state.sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+
+            // Pagination
+            const start = (state.currentPage - 1) * state.pageSize;
+            const end = start + state.pageSize;
+            const paginatedAdmins = sortedAdmins.slice(start, end);
+
+            // Render pagination
+            renderPagination('admins', sortedAdmins.length);
+
+            // Clear table
+            tbody.innerHTML = '';
+
+            // Render rows
+            paginatedAdmins.forEach(admin => {
+                const row = document.createElement('tr');
+                if (state.selectedRows.has(admin.email)) {
+                    row.classList.add('selected');
+                }
+
+                const date = new Date(admin.added_at).toLocaleDateString();
+                const isSelf = admin.email.toLowerCase() === currentUserEmail.toLowerCase();
+                const notesHidden = !state.columnVisibility.notes ? 'hidden-column' : '';
+                const metaHidden = !state.columnVisibility.meta ? 'hidden-column' : '';
+
+                row.innerHTML = `
+                    <td class="checkbox-col">
+                        <input type="checkbox" class="table-checkbox"
+                            data-email="${admin.email}"
+                            ${state.selectedRows.has(admin.email) ? 'checked' : ''}
+                            ${isSelf ? 'disabled' : ''}
+                            onchange="toggleRowSelection('admins', '${admin.email}', this.checked)">
+                    </td>
+                    <td>
+                        ${admin.email}
+                        ${isSelf ? '<span style="color: #6ee7f3; font-size: 11px; margin-left: 8px;">(You)</span>' : ''}
+                    </td>
+                    <td class="${notesHidden}" data-column="notes">${admin.notes || '<em style="opacity: 0.5;">No notes</em>'}</td>
+                    <td class="${metaHidden}" data-column="meta">
+                        <div>${admin.added_by || '<em style="opacity: 0.5;">System</em>'}</div>
+                        <div style="font-size: 12px; opacity: 0.6; margin-top: 4px;">${date}</div>
+                    </td>
+                    <td class="actions-col">
+                        <button class="btn-action btn-copy" onclick="copyEmail('${admin.email}')" title="Copy email">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        ${!isSelf ? `
+                            <button class="btn-action btn-remove" onclick="removeAdmin('${admin.email}')" title="Remove admin">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update select all checkbox
+            const selectAllCheckbox = document.getElementById('selectAllAdmins');
+            const selectableAdmins = paginatedAdmins.filter(a => a.email.toLowerCase() !== currentUserEmail.toLowerCase());
+            const totalCheckboxes = selectableAdmins.length;
+            const checkedCount = selectableAdmins.filter(a => state.selectedRows.has(a.email)).length;
+
+            selectAllCheckbox.checked = totalCheckboxes > 0 && totalCheckboxes === checkedCount;
+            selectAllCheckbox.indeterminate = checkedCount > 0 && checkedCount < totalCheckboxes;
+        }
+
+        // Search admins
+        document.getElementById('searchAdmins').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = allAdmins.filter(admin =>
+                admin.email.toLowerCase().includes(query) ||
+                (admin.notes && admin.notes.toLowerCase().includes(query)) ||
+                (admin.added_by && admin.added_by.toLowerCase().includes(query))
+            );
+
+            // Reset to first page when searching
+            tableState.admins.currentPage = 1;
+            renderAdmins(filtered);
+        });
+
+        // Add admin
+        document.getElementById('addAdminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+            const notes = document.getElementById('adminNotes').value.trim();
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalHTML = submitBtn.innerHTML;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="btn-spinner"></span> Adding...';
+
+            try {
+                const { error } = await sb
+                    .from('admins')
+                    .insert([{
+                        email: email.toLowerCase(),
+                        added_by: currentUserEmail,
+                        notes: notes || null
+                    }]);
+
+                if (error) {
+                    if (error.code === '23505') {
+                        showToast('This email is already an admin', 'error');
+                    } else {
+                        throw error;
+                    }
+                    return;
+                }
+
+                showToast(`✓ Successfully added ${email} as admin`, 'success');
+                document.getElementById('addAdminForm').reset();
+
+                // Log activity
+                await logActivity(
+                    `Added admin ${email}`,
+                    'admin_add',
+                    email,
+                    notes || null
+                );
+
+                await loadAdmins();
+                await loadStats();
+
+            } catch (error) {
+                showToast('Error: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            }
+        });
+
+        // Remove admin
+        async function removeAdmin(email) {
+            if (email.toLowerCase() === currentUserEmail.toLowerCase()) {
+                showToast('You cannot remove yourself as an admin', 'error');
+                return;
+            }
+
+            showConfirmModal(
+                'Remove Admin Access',
+                `Are you sure you want to remove <strong>${email}</strong> from admins?<br><br>They will no longer have admin access.`,
+                async () => {
+                    try {
+                        const { error } = await sb
+                            .from('admins')
+                            .delete()
+                            .eq('email', email);
+
+                        if (error) throw error;
+
+                        showToast(`✓ Removed ${email} from admins`, 'success');
+
+                        // Log activity
+                        await logActivity(
+                            `Removed admin ${email}`,
+                            'admin_remove',
+                            email
+                        );
+
+                        await loadAdmins();
+                        await loadStats();
+
+                    } catch (error) {
+                        showToast('Error: ' + error.message, 'error');
+                    }
+                }
+            );
+        }
+
+        // Copy email to clipboard
+        async function copyEmail(email) {
+            try {
+                await navigator.clipboard.writeText(email);
+                showToast(`✓ Copied ${email} to clipboard`, 'success');
+            } catch (error) {
+                showToast('Failed to copy email', 'error');
+                console.error('Failed to copy:', error);
+            }
+        }
+
+        // Export to CSV
+        function exportUsers() {
+            const csv = [
+                ['Email', 'Reason', 'Approved By', 'Date'],
+                ...allUsers.map(u => [
+                    u.email,
+                    u.reason || '',
+                    u.approved_by || '',
+                    new Date(u.created_at).toISOString()
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            downloadCSV(csv, 'approved-users.csv');
+        }
+
+        function exportAdmins() {
+            const csv = [
+                ['Email', 'Notes', 'Added By', 'Date'],
+                ...allAdmins.map(a => [
+                    a.email,
+                    a.notes || '',
+                    a.added_by || '',
+                    new Date(a.added_at).toISOString()
+                ])
+            ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            downloadCSV(csv, 'admins.csv');
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Make functions global
+        window.removeUser = removeUser;
+        window.removeAdmin = removeAdmin;
+        window.copyEmail = copyEmail;
+        window.exportUsers = exportUsers;
+        window.exportAdmins = exportAdmins;
+        window.sortTable = sortTable;
+        window.changePage = changePage;
+        window.changePageSize = changePageSize;
+        window.toggleSelectAll = toggleSelectAll;
+        window.toggleRowSelection = toggleRowSelection;
+        window.clearSelection = clearSelection;
+        window.toggleColumn = toggleColumn;
+        window.toggleColumnMenu = toggleColumnMenu;
+        window.bulkCopyEmails = bulkCopyEmails;
+        window.bulkRemoveUsers = bulkRemoveUsers;
+        window.bulkRemoveAdmins = bulkRemoveAdmins;
+        window.loadActivityLog = loadActivityLog;
+        window.filterActivity = filterActivity;
+        window.exportActivityLog = exportActivityLog;
+        window.clearOldLogs = clearOldLogs;
+        window.changeDashboardPeriod = changeDashboardPeriod;
+        window.exportActivityPDF = exportActivityPDF;
+        window.scheduleAutoCleanup = scheduleAutoCleanup;
+
+            // Initialize activity search
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchActivity');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase();
+
+                    let filtered = allActivities;
+
+                    if (tableState.activity.currentFilter !== 'all') {
+                        filtered = filtered.filter(a => a.action_type === tableState.activity.currentFilter);
+                    }
+
+                    if (query) {
+                        filtered = filtered.filter(a =>
+                            a.action.toLowerCase().includes(query) ||
+                            (a.admin_email && a.admin_email.toLowerCase().includes(query)) ||
+                            (a.target_email && a.target_email.toLowerCase().includes(query)) ||
+                            (a.details && a.details.toLowerCase().includes(query))
+                        );
+                    }
+
+                    tableState.activity.currentPage = 1;
+                    renderActivityLog(filtered);
+                });
+            }
+        });
+
+        // Initialize
+        (async () => {
+            const authenticated = await checkAuth();
+            if (authenticated) {
+                // Log admin panel access
+                await logActivity(
+                    'Accessed User Management panel',
+                    'access',
+                    null,
+                    'Viewed admin panel'
+                );
+
+                await loadStats();
+                await loadApprovedUsers();
+                await loadAdmins();
+                await loadActivityLog();
+            }
+        })();
+    </script>
+</body>
+</html>

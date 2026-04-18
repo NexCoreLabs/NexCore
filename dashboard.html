@@ -25,6 +25,8 @@
         <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
         <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
         <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+        <link rel="stylesheet" href="assets/css/arabic.css">
         <link rel="stylesheet" href="assets/css/ai-chat.css">
         <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
         <link rel="stylesheet" href="assets/css/project-categories.css">
@@ -32,7 +34,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-duotone-chubby/css/uicons-duotone-chubby.css'>
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/3.0.0/uicons-thin-rounded/css/uicons-thin-rounded.css'>
@@ -206,30 +208,30 @@
     }
     .ai-select-trigger{
       display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:9px 14px;
       background:rgba(0,0,0,.35);
-      border:1px solid rgba(110,231,243,.22);
-      border-radius:10px;
+      border-bottom: 1px solid #6ee7f3;
+      padding: 14px 20px 12px;
+      margin-bottom: 10px;
+      border-radius:20px;
       color:#e6eef3;
-      font-size:.875rem;font-family:inherit;font-weight:500;
       cursor:pointer;
+      max-width: 300px;
       -webkit-user-select:none;user-select:none;
-      transition:border-color .2s,background .2s,box-shadow .2s;
+      transition: all .2s ease
     }
     .ai-select-trigger:hover{
-      background:rgba(110,231,243,.06);
-      border-color:rgba(110,231,243,.45);
+    color: #eaf6fb;
+    border-bottom-color: #6bd3c9;
+    transform: scale(.99)
     }
     .ai-select-wrap.open .ai-select-trigger{
-      border-color:#6ee7f3;
       box-shadow:0 0 0 3px rgba(110,231,243,.15);
-      background:rgba(110,231,243,.06);
     }
     .ai-select-chevron{
       width:0;height:0;
       border-left:5px solid transparent;
       border-right:5px solid transparent;
-      border-top:5px solid rgba(110,231,243,.75);
+      border-top:5px solid #6EE7F3;
       transition:transform .22s cubic-bezier(.2,.9,.3,1),border-top-color .18s;
       flex-shrink:0;
     }
@@ -240,11 +242,11 @@
     .ai-select-panel{
       position:fixed;
       background:rgba(8,10,22,.5);
-      -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
-      border:1px solid rgba(110,231,243,.6);
+      -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+      border: none;
       border-radius:12px;
-      padding:6px;
-      box-shadow:0 16px 40px rgba(2,6,23,.8),0 0 0 1px rgba(110,231,243,.08);
+      padding:12px 16px;
+      box-shadow: 0 8px 32px 0 rgba(115, 189, 215, .06), inset 0 0 20px hsla(0, 0%, 100%, .1);
       z-index:99999;
       opacity:0;pointer-events:none;
       transform:translateY(-6px) scale(.97);
@@ -259,24 +261,26 @@
       display:flex;align-items:center;gap:10px;
       padding:9px 12px;
       border-radius:8px;
-      font-size:.875rem;font-family:inherit;font-weight:500;
-      color:rgba(230,238,243,.8);
+      color:#e6eef3;
       cursor:pointer;
-      transition:background .15s,color .15s;
       white-space:nowrap;
     }
     .ai-select-option:hover{
-      background:rgba(110,231,243,.08);
-      color:#e6eef3;
+      color: #6bd3c9;
+      background: #0a0b1c;
+      transform: translateX(4px);
+      transition: .1s ease-in-out;
+      border-radius: 14px;
     }
     .ai-select-option.selected{
       color:#6ee7f3;
       background:rgba(110,231,243,.1);
     }
     .ai-select-option .opt-icon{
-      font-size:.8rem;
-      opacity:.7;
-      width:14px;text-align:center;
+      font-size: 18px;
+      color: #6ee7f3;
+      opacity: 0.8;
+      width:16px;text-align:center;
       display:inline-flex;align-items:center;justify-content:center;
     }
     .ai-select-option.selected .opt-icon{
@@ -295,8 +299,6 @@
     .category-select-panel{
       max-height:320px;
       overflow-y:auto;
-      scrollbar-width:thin;
-      scrollbar-color:rgba(110,231,243,.45) transparent;
     }
     .mt-0{margin-top:0!important}
     .mt-12{margin-top:12px!important}
@@ -427,7 +429,7 @@
             </div>
             <div class="ai-select-panel category-select-panel" role="listbox" id="newProjectCategoryPanel"></div>
           </div>
-          <button class="btn btnPrimary" id="createProjectBtn">Create Project</button>
+          <button class="btn primary" id="createProjectBtn">Create Project</button>
         </div>
         <p class="muted" style="margin-top:10px;">
           A draft card/profile will be created. You can edit and publish when ready.
@@ -708,7 +710,7 @@
 
   <script src="assets/js/script.js"></script>
   <script src="assets/js/supabase-client.js"></script>
-  <script src="assets/js/auth-ui.js"></script>
+  <script src="assets/js/auth-ui-db.js"></script>
   <script src="assets/js/ai-chat.js"></script>
   <script src="assets/js/project-categories.js"></script>
 

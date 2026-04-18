@@ -32,10 +32,7 @@
   // Quick suggestion buttons shown on first open
   const SUGGESTIONS = [
     'What is NexCore?',
-    'How do I submit a project?',
-    'Tell me about SQU colleges',
-    'What is the AI Assist feature?',
-    'SQU admission requirements'
+    'How do I create a project?'
   ];
 
   // ── State ───────────────────────────────────────────────────────────────
@@ -92,13 +89,13 @@
         <button id="nexai-close" aria-label="Close AI chat" title="Close">✕</button>
       </div>
 
-      <div id="nexai-messages" role="log" aria-live="polite" aria-label="Chat messages">
-        <div class="nexai-welcome">
-          <span class="nexai-welcome-icon" aria-hidden="true">✦</span>
-          Hi! I'm the NexCore AI assistant.<br>
-          Ask me anything about the platform, SQU, or projects.
+        <div id="nexai-messages" role="log" aria-live="polite" aria-label="Chat messages">
+          <div class="nexai-welcome">
+            <span class="nexai-welcome-icon" aria-hidden="true">✦</span>
+            Hi! I'm the NexCore AI assistant.<br>
+          Ask me about NexCore Labs and student projects.
+          </div>
         </div>
-      </div>
 
       <div id="nexai-suggestions" aria-label="Quick suggestions"></div>
 
@@ -114,11 +111,17 @@
           autocomplete="off"
           spellcheck="true"
         ></textarea>
-        <button id="nexai-send" aria-label="Send message" title="Send (Enter)">
+        <button id="nexai-send" class="btn primary" aria-label="Send message" title="Send (Enter)">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <line x1="22" y1="2" x2="11" y2="13"/>
             <polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
+        </button>
+      </div>
+
+      <div id="nexai-auth-cta" style="display:none;">
+        <button id="nexai-signin-btn" class="nexai-signin-btn">
+          <i class="fa-solid fa-key"></i> Sign in to chat
         </button>
       </div>`;
 
@@ -128,7 +131,8 @@
 
   // ── DOM references (populated after build) ──────────────────────────────
   let elTrigger, elPanel, elMessages, elInput, elSend,
-      elStatus, elUsagePill, elSuggestions, elBadge, elCharCounter;
+      elStatus, elUsagePill, elSuggestions, elBadge, elCharCounter,
+      elAuthCta;
 
   function cacheRefs() {
     elTrigger     = document.getElementById('nexai-trigger');
@@ -141,6 +145,18 @@
     elSuggestions = document.getElementById('nexai-suggestions');
     elBadge       = document.getElementById('nexai-badge');
     elCharCounter = document.getElementById('nexai-char-counter');
+    elAuthCta     = document.getElementById('nexai-auth-cta');
+
+    const signinBtn = document.getElementById('nexai-signin-btn');
+    if (signinBtn) {
+      signinBtn.addEventListener('click', () => {
+        if (typeof window.nexaiOnAuthRequired === 'function') {
+          window.nexaiOnAuthRequired();
+        } else {
+          window.location.href = '/auth';
+        }
+      });
+    }
   }
   // ── Session history ───────────────────────────────────────────────
   function loadHistory() {
@@ -201,6 +217,14 @@
   }
 
   /**
+   * Detect if text contains Arabic characters
+   */
+  function hasArabic(text) {
+    // Arabic Unicode range: \u0600-\u06FF
+    return /[\u0600-\u06FF]/.test(text);
+  }
+
+  /**
    * Safely convert a subset of markdown to HTML.
    * HTML entities are escaped first to prevent XSS.
    */
@@ -220,13 +244,17 @@
 
     // 4. Bullet lists: lines starting with "* " or "- "
     s = s.replace(/^[*\-]\s+(.+)$/gm, '<li>$1</li>');
+
+    // 5. Inline bullets: text followed by " * item" pattern (e.g., "can: * Showcase")
+    s = s.replace(/\s\*\s+([A-Z][^*\n.]{2,})/g, '<br>• $1');
+
     s = s.replace(/(<li>[\s\S]*?<\/li>)(\n<li>[\s\S]*?<\/li>)*/g,
       m => `<ul>${m.replace(/\n/g, '')}</ul>`);
 
-    // 5. Headings: ## or ###
+    // 6. Headings: ## or ###
     s = s.replace(/^#{2,3}\s+(.+)$/gm, '<strong>$1</strong>');
 
-    // 6. Remaining newlines → <br>
+    // 7. Remaining newlines → <br>
     s = s.replace(/\n/g, '<br>');
 
     return s;
@@ -251,6 +279,13 @@
     const bubble = document.createElement('div');
     bubble.className = 'nexai-bubble';
     if (isError) bubble.classList.add('nexai-error-bubble');
+
+    // Detect Arabic and set lang attribute for proper font rendering
+    if (hasArabic(text)) {
+      bubble.setAttribute('lang', 'ar');
+      bubble.style.direction = 'rtl';
+      bubble.style.textAlign = 'right';
+    }
 
     // Render markdown for AI messages; plain text for user/error messages
     if (role === 'ai' && !isError) {
@@ -357,6 +392,33 @@
       elCharCounter.className   = left < 50 ? 'limit' : 'warn';
     }
   }
+  // ── Auth gate helpers ───────────────────────────────────────────────────
+  function lockInput() {
+    if (!elInput || !elSend) return;
+    elInput.disabled = true;
+    elInput.placeholder = 'Sign in to chat…';
+    elSend.disabled = true;
+    elInput.addEventListener('click', onLockedInputClick);
+    if (elAuthCta) elAuthCta.style.display = 'block';
+  }
+
+  function unlockInput() {
+    if (!elInput || !elSend) return;
+    elInput.disabled = false;
+    elInput.placeholder = 'Ask NexCore AI…';
+    elSend.disabled = false;
+    elInput.removeEventListener('click', onLockedInputClick);
+    if (elAuthCta) elAuthCta.style.display = 'none';
+  }
+
+  function onLockedInputClick() {
+    if (typeof window.nexaiOnAuthRequired === 'function') {
+      window.nexaiOnAuthRequired();
+    } else {
+      window.location.href = '/auth.html';
+    }
+  }
+
   // ── Send message ─────────────────────────────────────────────────────────
   /**
    * @param {string} [retryText] — if provided, re-sends that text without
@@ -378,7 +440,11 @@
     // Require auth
     let token = await getToken();
     if (!token) {
-      appendMessage('ai', 'Please sign in to use the AI assistant.', null, true);
+      if (typeof window.nexaiOnAuthRequired === 'function') {
+        window.nexaiOnAuthRequired();
+      } else {
+        appendMessage('ai', 'Sign in to use the AI assistant. You can do this from the hub or sign-in page.', null, true);
+      }
       return;
     }
 
@@ -439,7 +505,11 @@
         } else if (res.status === 401) {
           appendMessage('ai', 'Session expired — please sign in again.', null, true);
         } else if (res.status === 503) {
-          appendSupportBubble();
+          if (data.code === 'quota_exhausted') {
+            appendSupportBubble();
+          } else {
+            appendErrorWithRetry(data.message || 'The AI is temporarily busy. Please try again.');
+          }
         } else {
           appendErrorWithRetry('Something went wrong. Please try again.');
         }
@@ -536,8 +606,14 @@
       renderSuggestions();
     }
 
-    // Focus input after transition
-    setTimeout(() => elInput.focus(), 260);
+    // Lock input if not signed in
+    getToken().then(token => {
+      if (!token) {
+        lockInput();
+      } else {
+        setTimeout(() => elInput.focus(), 260);
+      }
+    });
   }
 
   function closePanel() {
@@ -576,6 +652,18 @@
     elInput.addEventListener('input', () => {
       autoResize();
       updateCharCounter();
+
+      // Detect Arabic input and apply appropriate styling
+      const inputText = elInput.value || '';
+      if (hasArabic(inputText)) {
+        elInput.setAttribute('lang', 'ar');
+        elInput.style.direction = 'rtl';
+        elInput.style.textAlign = 'right';
+      } else {
+        elInput.removeAttribute('lang');
+        elInput.style.direction = 'ltr';
+        elInput.style.textAlign = 'left';
+      }
     });
     elSend.addEventListener('click', sendMessage);
 
@@ -586,8 +674,15 @@
 
     // Re-fetch token if auth state changes
     if (window.supabaseClient) {
-      window.supabaseClient.auth.onAuthStateChange(() => {
+      window.supabaseClient.auth.onAuthStateChange((event, session) => {
         sessionToken = null; // bust cached token
+        if (session?.access_token) {
+          sessionToken = session.access_token;
+          unlockInput();
+          fetchUsage();
+        } else {
+          lockInput();
+        }
       });
     }
   }

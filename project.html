@@ -28,6 +28,8 @@
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+        <link rel="stylesheet" href="assets/css/arabic.css">
     <link rel="stylesheet" href="assets/css/ai-chat.css">
     <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
     <link rel="stylesheet" href="assets/css/project-categories.css">
@@ -35,7 +37,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -67,6 +69,7 @@
 
             border-radius: 20px;
 
+            margin-top: 60px;
             margin-bottom: 30px;
 
             -webkit-backdrop-filter: blur(3px);
@@ -99,7 +102,7 @@
 
             font-size: 0.9rem;
 
-            margin-bottom: 20px;
+            margin-bottom: 10px;
 
         }
 
@@ -111,7 +114,7 @@
 
             justify-content: center;
 
-            margin-top: 16px;
+            margin-top: 20px;
 
             flex-wrap: wrap;
 
@@ -153,7 +156,7 @@
 
             border-radius: 16px;
 
-            margin: 0px auto 20px;
+            margin: 20px auto 30px;
 
             display: block;
 
@@ -867,6 +870,39 @@
     #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);border: 2px solid rgba(255, 255, 255, 0.06);background: rgba(10, 11, 28, 0.6);color:#6ee7f3;padding:10px 22px;border-radius:12px;font-size:.875rem;font-weight:500;z-index:10001;opacity:0;pointer-events:none;transition:opacity .22s,transform .22s;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);max-width:min(420px,90vw);text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.55);white-space:pre-line;}
     #toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:all;}
     #toast.error{border-color:rgba(255,120,120,.28);color:#ff7878;}
+    .embed-modal{display:flex;position:fixed;inset:0;z-index:9999;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;background:rgba(2,6,23,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s ease;}
+    .embed-modal.open{opacity:1;pointer-events:all;}
+    .embed-modal-content{position:relative;width:100%;max-width:480px;background:linear-gradient(160deg,#0d1421,#0a0f1e);border:1px solid rgba(115,189,215,.18);border-radius:16px;padding:24px;box-shadow:0 24px 60px rgba(2,6,23,.85);transform:translateY(16px) scale(.97);opacity:0;transition:transform .32s cubic-bezier(.2,.9,.3,1),opacity .25s ease;}
+    .embed-modal.open .embed-modal-content{transform:translateY(0) scale(1);opacity:1;}
+    .embed-modal-content::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(115,189,215,.5),transparent);border-radius:16px 16px 0 0;pointer-events:none;}
+    .embed-modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+    .embed-modal-header h2{margin:0;color:var(--primary-accent);display:flex;align-items:center;gap:10px;font-size:1.1rem;}
+    .embed-modal-close{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;color:rgba(255,255,255,.45);font-size:22px;font-weight:bold;cursor:pointer;line-height:1;flex-shrink:0;transition:background .18s,color .18s;}
+    .embed-modal-close:hover{background:rgba(255,255,255,.08);color:#fff;}
+    .embed-modal-desc{font-size:.85rem;color:var(--muted);margin-bottom:18px;}
+    .embed-preview-wrapper{margin-bottom:16px;border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);}
+    .embed-preview-wrapper iframe{display:block;}
+    .embed-code-block{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;}
+    .embed-code-header{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.06);font-size:.75rem;color:var(--muted);font-family:monospace;}
+    .embed-copy-btn{display:flex;align-items:center;gap:5px;background:rgba(115,189,215,.1);border:1px solid rgba(115,189,215,.25);border-radius:6px;padding:4px 10px;color:var(--primary-accent);font-size:.75rem;font-family:Inter,sans-serif;cursor:pointer;transition:background .2s,border-color .2s;}
+    .embed-copy-btn:hover{background:rgba(115,189,215,.2);border-color:rgba(115,189,215,.45);}
+    .embed-code{display:block;width:100%;background:transparent;border:none;padding:12px;color:var(--light-accent);font-family:monospace;font-size:.78rem;resize:none;line-height:1.6;box-sizing:border-box;}
+    .embed-code:focus{outline:none;}
+    /* ── Sign-in Modal ── */
+    .ai-chat-modal-overlay{position:fixed;inset:0;z-index:9999;background:rgba(2,6,23,.75);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 220ms ease,visibility 220ms ease;}
+    .ai-chat-modal-overlay.open{opacity:1;visibility:visible;pointer-events:auto;}
+    .ai-chat-modal-panel{background:rgba(10,11,28,.95);border:1px solid rgba(110,231,243,.12);border-radius:18px;width:100%;max-width:460px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.8),inset 0 0 0 1px rgba(255,255,255,.04);opacity:0;transform:scale(.96) translateY(14px);transition:transform 260ms cubic-bezier(.2,.9,.3,1),opacity 220ms ease;}
+    .ai-chat-modal-overlay.open .ai-chat-modal-panel{opacity:1;transform:scale(1) translateY(0);}
+    .ai-chat-modal-panel::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,#6ee7f3,transparent);opacity:.4;border-radius:18px 18px 0 0;pointer-events:none;}
+    .ai-chat-modal-close{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--muted);width:28px;height:28px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;z-index:2;transition:background .18s,color .18s,border-color .18s;}
+    .ai-chat-modal-close:hover{background:rgba(255,255,255,.08);color:#eaf6fb;border-color:rgba(255,255,255,.15);}
+    .ai-chat-modal-header{padding:26px 26px 0;}
+    .ai-chat-modal-header h2{font-size:20px;color:#eaf6fb;margin:0 0 6px;font-weight:700;display:flex;align-items:center;gap:8px;}
+    .ai-chat-modal-header p{font-size:13.5px;color:var(--muted);margin:0;}
+    .ai-chat-modal-body{padding:20px 26px 26px;display:flex;flex-direction:column;gap:16px;}
+    .ai-chat-modal-body>p{margin:0;color:var(--muted);font-size:13px;line-height:1.55;}
+    .ai-chat-form-error{font-size:13px;color:#ff7878;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2);border-radius:8px;padding:10px 14px;}
+    .ai-chat-form-error.hidden{display:none;}
     </style>
     <!-- Vercel Web Analytics -->
     <script>
@@ -1050,6 +1086,12 @@
                         <i class="fas fa-copy"></i> Copy Link
 
                     </button>
+
+                    <button class="btn primary ghost" id="embedBtn">
+
+                        <i class="fas fa-code"></i> Embed
+
+                    </button>
                 </div>
 
                 <div class="qr-wrapper">
@@ -1078,11 +1120,55 @@
     </div>
     </main>
 
+    <!-- Embed Modal -->
+    <div id="embedModal" class="embed-modal" role="dialog" aria-modal="true" aria-label="Embed project">        <div class="embed-modal-content">
+            <div class="embed-modal-header">
+                <h2><i class="fas fa-code"></i> Embed this project</h2>
+                <span class="embed-modal-close" id="embedModalClose" title="Close">&times;</span>
+            </div>
+            <p class="embed-modal-desc">Paste this snippet on your website to embed this project card.</p>
+            <div class="embed-preview-wrapper">
+                <iframe id="embedPreviewFrame" src="" width="100%" height="220" frameborder="0" loading="lazy" title="Embed preview"></iframe>
+            </div>
+            <div class="embed-code-block">
+                <div class="embed-code-header">
+                    <span>HTML</span>
+                    <button id="copyEmbedBtn" class="embed-copy-btn"><i class="fas fa-copy"></i> Copy</button>
+                </div>
+                <textarea id="embedCode" class="embed-code" readonly rows="3"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign-in Modal for AI Insights -->
+    <div class="ai-chat-modal-overlay" id="signinModal" role="dialog" aria-modal="true" aria-label="Sign in to generate AI insights">
+        <div class="ai-chat-modal-panel">
+            <button class="ai-chat-modal-close" id="signinModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <div class="ai-chat-modal-header">
+                <h2><i class="fa-solid fa-key" style="color:#6ee7f3;"></i> Sign in to NexCore</h2>
+                <p>Log in to access AI features on this project.</p>
+            </div>
+            <div class="ai-chat-modal-body">
+                <p id="signinModalDesc">Continue with Google to sign in and use NexCore AI.</p>
+                <button class="google-btn" id="signinGoogleBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+                    </svg>
+                    <span id="signinGoogleBtnText">Continue with Google</span>
+                </button>
+                <div class="ai-chat-form-error hidden" id="signinError"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/script.js"></script>
 
     <script src="assets/js/supabase-client.js"></script>
 
-    <script src="assets/js/auth-ui.js"></script>
+    <script src="assets/js/auth-ui-db.js"></script>
     <script src="assets/js/ai-chat.js"></script>
 
     <script src="assets/js/project-categories.js"></script>
@@ -1306,6 +1392,7 @@
             // Render AI insights and creator section
 
             renderAiInsights(project);
+            checkPendingInsights(project);
 
             await renderCreators(project);
 
@@ -1420,6 +1507,51 @@
             // Copy button
 
             document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+
+        }
+
+        function setupEmbedButton(slug) {
+
+            const embedBtn = document.getElementById('embedBtn');
+            const modal = document.getElementById('embedModal');
+            const closeBtn = document.getElementById('embedModalClose');
+            const previewFrame = document.getElementById('embedPreviewFrame');
+            const embedCodeEl = document.getElementById('embedCode');
+            const copyEmbedBtn = document.getElementById('copyEmbedBtn');
+
+            if (!embedBtn || !modal) return;
+
+            const embedUrl = `${window.location.origin}/embed?slug=${encodeURIComponent(slug)}`;
+            const snippet = `<iframe src="${embedUrl}" width="360" height="220" frameborder="0" style="border-radius:12px;border:none;" loading="lazy" title="NexCore Project"></iframe>`;
+
+            embedCodeEl.value = snippet;
+
+            function openModal() {
+                previewFrame.src = embedUrl;
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+                setTimeout(() => { previewFrame.src = ''; }, 300);
+            }
+
+            embedBtn.addEventListener('click', openModal);
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+            copyEmbedBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(snippet).then(() => {
+                    copyEmbedBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    setTimeout(() => { copyEmbedBtn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+                }).catch(() => {
+                    embedCodeEl.select();
+                    document.execCommand('copy');
+                });
+            });
 
         }
 
@@ -1631,6 +1763,16 @@
 
             }
 
+            try {
+
+                setupEmbedButton(data.slug);
+
+            } catch (e) {
+
+                console.error('Failed to setup embed button:', e);
+
+            }
+
             // Setup social share buttons
 
             try {
@@ -1689,6 +1831,71 @@
 
             }
 
+        }
+
+        /* ---- Sign-in Modal for AI Insights ---- */
+
+        function openSigninModal(project) {
+            if (project && project.slug) {
+                sessionStorage.setItem('pendingInsightsSlug', project.slug);
+            }
+            const modal = document.getElementById('signinModal');
+            if (modal) modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSigninModal() {
+            const modal = document.getElementById('signinModal');
+            if (modal) modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Expose to ai-chat.js widget so it opens this modal instead of an error bubble
+        window.nexaiOnAuthRequired = () => openSigninModal();
+
+        (function wireSigninModal() {
+            const modal = document.getElementById('signinModal');
+            const closeBtn = document.getElementById('signinModalClose');
+            const googleBtn = document.getElementById('signinGoogleBtn');
+            const googleBtnText = document.getElementById('signinGoogleBtnText');
+            const errorEl = document.getElementById('signinError');
+
+            if (closeBtn) closeBtn.addEventListener('click', closeSigninModal);
+            if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeSigninModal(); });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal?.classList.contains('open')) closeSigninModal();
+            });
+
+            if (googleBtn) {
+                googleBtn.addEventListener('click', async () => {
+                    if (errorEl) errorEl.classList.add('hidden');
+                    googleBtn.disabled = true;
+                    if (googleBtnText) googleBtnText.textContent = 'Redirecting…';
+                    try {
+                        const { error } = await sb.auth.signInWithOAuth({
+                            provider: 'google',
+                            options: { redirectTo: window.location.href }
+                        });
+                        if (error) throw error;
+                    } catch (err) {
+                        if (errorEl) {
+                            errorEl.textContent = err?.message || 'Failed to sign in. Please try again.';
+                            errorEl.classList.remove('hidden');
+                        }
+                        googleBtn.disabled = false;
+                        if (googleBtnText) googleBtnText.textContent = 'Continue with Google';
+                    }
+                });
+            }
+        })();
+
+        async function checkPendingInsights(project) {
+            const pending = sessionStorage.getItem('pendingInsightsSlug');
+            if (!pending || pending !== project.slug) return;
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) return;
+            sessionStorage.removeItem('pendingInsightsSlug');
+            setTimeout(() => generateAiInsights(project), 400);
         }
 
         /* ---- AI Insights ---- */
@@ -1755,27 +1962,19 @@
 
             const bulletsEl = document.getElementById('aiInsightsBullets');
 
-            placeholder.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Generating insights...</div>';
-
             // Require auth — AI endpoint needs a Bearer token
 
             const { data: { session } } = await sb.auth.getSession();
 
             if (!session) {
 
-                placeholder.innerHTML = `
-
-                    <p>Sign in to generate AI insights for this project.</p>
-
-                    <a href="auth.html" class="btn primary ghost ai-gen-btn">
-
-                        <i class="fas fa-arrow-right-to-bracket"></i> Sign In
-
-                    </a>`;
+                openSigninModal(project);
 
                 return;
 
             }
+
+            placeholder.innerHTML = '<div class="ai-loading"><i class="fas fa-spinner fa-spin"></i> Generating insights...</div>';
 
             const descriptionText = (project.page_description || project.card_description || '').trim();
 

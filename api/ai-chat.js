@@ -38,10 +38,106 @@ const MINUTE_LIMIT    = parseInt(process.env.AI_CHAT_MINUTE_LIMIT || '5', 10);
 const MAX_CONTEXT_CHARS = 4000;
 // Max characters in a user message
 const MAX_MSG_CHARS     = 500;
+const MAX_REPLY_WORDS   = parseInt(process.env.AI_CHAT_MAX_REPLY_WORDS || '75', 10);
+const OUT_OF_SCOPE_REPLY = 'I can only help with NexCore Labs topics. Ask me about the platform, features, or student projects.';
+const NO_EVIDENCE_REPLY = 'I do not have verified NexCore data for that yet. Please ask about a specific feature or project, and I will use available records.';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function normalizeText(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function containsAny(text, words) {
+  return words.some(w => text.includes(w));
+}
+
+function isFollowUpLike(text) {
+  const short = text.length <= 60;
+  const followUpTokens = [
+    'this', 'that', 'it', 'they', 'them', 'those', 'these',
+    'more', 'details', 'explain', 'how about', 'and what about', 'why'
+  ];
+  return short && containsAny(text, followUpTokens);
+}
+
+function inferScope(userMessage, rawHistory, hasProjectContext) {
+  const text = normalizeText(userMessage);
+
+  const nexcoreKeywords = [
+    'nexcore', 'platform', 'project', 'publish', 'submission', 'student project',
+    'feature', 'roadmap', 'hub', 'account', 'faq', 'release', 'labs'
+  ];
+
+  if (containsAny(text, nexcoreKeywords)) return 'nexcore_scope';
+  if (hasProjectContext) return 'nexcore_scope';
+
+  if (isFollowUpLike(text) && Array.isArray(rawHistory)) {
+    const recentUserTexts = rawHistory
+      .slice(-6)
+      .filter(h => h && h.role === 'user' && typeof h.text === 'string')
+      .map(h => normalizeText(h.text));
+    if (recentUserTexts.some(t => containsAny(t, nexcoreKeywords))) return 'nexcore_scope';
+  }
+
+  return 'out_of_scope';
+}
+
+function isTrustedKnowledgeSource(source) {
+  const s = normalizeText(source);
+  if (!s) return false;
+  return [
+    'nexcore', 'project', 'faq', 'roadmap', 'release', 'hub', 'policy',
+    'privacy', 'terms', 'student'
+  ].some(k => s.includes(k));
+}
+
+function relevanceScore(query, chunk) {
+  const qTokens = normalizeText(query)
+    .split(/[^a-z0-9]+/)
+    .filter(t => t.length >= 3);
+  if (qTokens.length === 0) return isTrustedKnowledgeSource(chunk?.source) ? 1 : 0;
+  const hay = normalizeText(`${chunk?.title || ''} ${chunk?.content || ''} ${chunk?.source || ''}`);
+  let score = 0;
+  for (const tok of qTokens) {
+    if (hay.includes(tok)) score++;
+  }
+  return score;
+}
+
+function trimReplyWords(text, maxWords) {
+  const words = String(text || '').trim().split(/\s+/).filter(Boolean);
+  if (words.length <= maxWords) return String(text || '').trim();
+  return `${words.slice(0, maxWords).join(' ')}...`;
+}
+
+function pickLexicalChunks(query, rows, max = 5) {
+  const filtered = (rows || [])
+    .map(r => ({ ...r, _score: relevanceScore(query, r) }))
+    .filter(r => r._score > 0)
+    .sort((a, b) => b._score - a._score)
+    .slice(0, max)
+    .map(({ _score, ...rest }) => rest);
+  return filtered;
+}
+
+async function getUsageSnapshot(supabase) {
+  const { data, error } = await supabase.rpc('get_ai_chat_usage', { max_uses: DAILY_LIMIT });
+  if (error) {
+    console.error('[ai-chat] get_ai_chat_usage error:', error.message);
+    return { used: 0, remaining: 0, max: DAILY_LIMIT };
+  }
+  return {
+    used: data?.used ?? 0,
+    remaining: data?.remaining ?? 0,
+    max: data?.max ?? DAILY_LIMIT
+  };
 }
 
 // Per-minute burst limiter (in-memory; effective within a single serverless instance)
@@ -136,13 +232,26 @@ module.exports = async (req, res) => {
         description: String(body.projectContext.description || '').slice(0, 800)
       }
     : null;
+
+  const scope = inferScope(userMessage, body.history, Boolean(projectContext));
+  if (scope === 'out_of_scope') {
+    const usage = await getUsageSnapshot(supabase);
+    return res.status(200).json({
+      reply: OUT_OF_SCOPE_REPLY,
+      used: usage.used,
+      remaining: usage.remaining,
+      max: usage.max,
+      sources: [{ title: 'Scope Policy', source: 'nexcore_policy' }]
+    });
+  }
+
   // Conversation history from the client (sanitized)
   const rawHistory = Array.isArray(body.history) ? body.history : [];
   const history = rawHistory
     .slice(-12)
-    .filter(h => h && (h.role === 'user' || h.role === 'ai') && typeof h.text === 'string')
+    .filter(h => h && (h.role === 'user' || h.role === 'ai' || h.role === 'model') && typeof h.text === 'string')
     .map(h => ({
-      role:  h.role === 'ai' ? 'model' : 'user',
+      role:  (h.role === 'ai' || h.role === 'model') ? 'model' : 'user',
       parts: [{ text: String(h.text).replace(/\0/g, '').slice(0, MAX_MSG_CHARS) }]
     }));
   // ── Rate limit ───────────────────────────────────────────────────────────
@@ -198,6 +307,7 @@ module.exports = async (req, res) => {
 
   // ── Step 2: Semantic search — retrieve top-5 knowledge chunks ────────────
   let knowledgeChunks = [];
+  let usedLexicalFallback = false;
   try {
     if (!queryEmbedding) {
       knowledgeChunks = [];
@@ -208,11 +318,34 @@ module.exports = async (req, res) => {
       });
 
       if (searchError) throw new Error(searchError.message);
-      knowledgeChunks = chunks || [];
+      const rawChunks = chunks || [];
+      knowledgeChunks = rawChunks
+        .map(c => ({ ...c, _score: relevanceScore(userMessage, c) }))
+        .filter(c => c._score >= 2 || (isTrustedKnowledgeSource(c.source) && c._score >= 1))
+        .sort((a, b) => b._score - a._score)
+        .slice(0, 5)
+        .map(({ _score, ...rest }) => rest);
     }
   } catch (searchErr) {
     console.error('[ai-chat] Search error:', searchErr.message);
     // Non-fatal: continue with empty context rather than failing the request
+  }
+
+  // Lexical fallback for cases where embeddings are missing/not indexed yet.
+  if (knowledgeChunks.length === 0) {
+    try {
+      const { data: rows, error: fallbackError } = await supabase
+        .from('ai_knowledge')
+        .select('title, content, source')
+        .in('source', ['nexcore', 'project'])
+        .limit(120);
+
+      if (fallbackError) throw new Error(fallbackError.message);
+      knowledgeChunks = pickLexicalChunks(userMessage, rows, 5);
+      usedLexicalFallback = knowledgeChunks.length > 0;
+    } catch (fallbackErr) {
+      console.error('[ai-chat] Lexical fallback error:', fallbackErr.message);
+    }
   }
 
   // ── Step 3: Build context string from retrieved chunks ───────────────────
@@ -225,20 +358,44 @@ module.exports = async (req, res) => {
   }
 
   // ── Step 4: Build the final prompt ──────────────────────────────────────
-  let systemInstruction = `You are the NexCore AI Assistant — a focused assistant exclusively for the NexCore Labs platform. NexCore Labs is a project-showcasing platform for Sultan Qaboos University (SQU) students in Oman.
+  let systemInstruction = `You are the NexCore AI Assistant — a focused, concise assistant exclusively for NexCore Labs.
 
 ## STRICT SCOPE — topics you are allowed to answer:
 - NexCore Labs: platform features, how to submit or view projects, accounts, AI tools, FAQs
-- SQU (Sultan Qaboos University): colleges, programs, admission, grading, campus life
 - Student projects listed on NexCore Labs (use the search_projects or get_project_details tools for live data)
 - Direct follow-up questions that relate to the above topics
 
 ## HARD RULES — never break these:
-- If a question is outside the allowed scope, reply ONLY with: "I can only help with NexCore Labs and SQU topics. Is there something about the platform or university I can assist with?"
-- Do NOT answer general coding help, world events, science, math, opinions, or anything unrelated — even if the user insists
-- Do NOT make up project names, statistics, or features — use your tools to fetch live data when needed
-- Keep every answer under 150 words. Be direct — no lengthy intros or filler text
-- Format with **bold** for key terms; use bullet lists only for 3 or more items`;
+- Do NOT answer general coding help, world events, science, math, opinions, or anything unrelated
+- Use only evidence from:
+  1) [Relevant knowledge for this question] context
+  2) Tool results from search_projects/get_project_details/get_platform_stats
+  3) Explicit projectContext passed by the client
+- If evidence is insufficient, reply EXACTLY: "${NO_EVIDENCE_REPLY}" (in the user's language if not English)
+- Do NOT invent project names, numbers, dates, or features
+
+## TOOL USAGE — use tools proactively:
+- When asked about "projects", "list projects", "how many projects", "show projects" → ALWAYS use get_platform_stats or search_projects
+- When asked about a specific project by name → use search_projects or get_project_details
+- Never say "I don't have access" — try the tools first, they have database access
+- If tools return no results, then say data is unavailable
+
+## RESPONSE STYLE — be extremely concise:
+- Answer in 1-2 direct sentences maximum
+- No explanations of your limitations or what you can't access unless specifically asked
+- No preambles like "I understand..." or "Let me explain..."
+- If you need to use tools (search_projects, get_platform_stats), use them and give the direct answer
+- When listing items, use proper markdown: start each item on a new line with "- " or use **bold** for emphasis
+- Avoid inline asterisks like "can: * item" — use line breaks instead
+- Be helpful but brief — every word counts
+
+## LANGUAGE — multilingual support:
+- Detect the language of the user's message
+- Respond in the SAME language as the user's question
+- If the user asks in Arabic, respond in Arabic; if English, respond in English
+- Keep technical terms in English (e.g., "NexCore Labs", "Hub", "API", "GitHub")
+- Keep product/feature names in English for consistency
+- Support all major languages: Arabic, English, French, Spanish, etc.`;
 
   if (projectContext) {
     systemInstruction += `\n\nThe user is currently viewing this project:\nTitle: ${projectContext.title}\nDescription: ${projectContext.description}\nYou may reference this project when answering questions about it.`;
@@ -291,6 +448,7 @@ module.exports = async (req, res) => {
   }];
 
   // ── Tool executor (uses user-auth Supabase client — RLS enforced) ─────────
+  const toolEvidence = [];
   const executeTool = async (name, args) => {
     try {
       if (name === 'search_projects') {
@@ -307,6 +465,9 @@ module.exports = async (req, res) => {
           q = q.ilike('category', `%${args.category}%`);
         }
         const { data } = await q;
+        if ((data || []).length > 0) {
+          toolEvidence.push(`search_projects:${(data || []).length}`);
+        }
         return {
           results: (data || []).map(p => ({
             name:        p.name,
@@ -326,6 +487,7 @@ module.exports = async (req, res) => {
           .eq('published', true)
           .maybeSingle();
         if (!data) return { error: 'Project not found' };
+        toolEvidence.push('get_project_details:1');
         return {
           name:        data.name,
           slug:        data.slug,
@@ -342,6 +504,7 @@ module.exports = async (req, res) => {
           supabase.from('projects').select('name, slug, category').eq('published', true)
             .order('created_at', { ascending: false }).limit(3)
         ]);
+        toolEvidence.push('get_platform_stats:1');
         return {
           total_projects:  countRes.count ?? 0,
           newest_projects: newestRes.data || []
@@ -422,6 +585,7 @@ module.exports = async (req, res) => {
     if (genMsg.includes('429') || genMsg.toLowerCase().includes('quota')) {
       return res.status(503).json({
         error: 'AI temporarily unavailable',
+        code: 'quota_exhausted',
         message: 'The AI service is at capacity. Please try again in a moment.'
       });
     }
@@ -433,6 +597,7 @@ module.exports = async (req, res) => {
     ) {
       return res.status(503).json({
         error: 'AI temporarily unavailable',
+        code: 'model_busy',
         message: 'The AI model is under high demand right now. Please retry in a few seconds.'
       });
     }
@@ -444,11 +609,15 @@ module.exports = async (req, res) => {
   }
 
   // ── Return success ───────────────────────────────────────────────────────
+  const hasEvidence = Boolean(projectContext) || knowledgeChunks.length > 0 || toolEvidence.length > 0;
+  const finalReply = hasEvidence ? trimReplyWords(replyText, MAX_REPLY_WORDS) : NO_EVIDENCE_REPLY;
+
   return res.status(200).json({
-    reply:     replyText.trim(),
+    reply:     finalReply,
     used,
     remaining,
     max:       DAILY_LIMIT,
-    sources:   knowledgeChunks.map(c => ({ title: c.title, source: c.source }))
+    sources:   knowledgeChunks.map(c => ({ title: c.title, source: c.source })),
+    retrieval_mode: usedLexicalFallback ? 'lexical_fallback' : 'vector'
   });
 };

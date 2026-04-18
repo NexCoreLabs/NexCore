@@ -1,0 +1,83 @@
+/* ============================================================
+   Arabic Font Support - Tajawal
+   ============================================================ */
+
+/* Apply Tajawal font to all Arabic content */
+:lang(ar) {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Arabic text elements */
+*[lang="ar"],
+.arabic-text,
+.ar {
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Override specific elements when in Arabic */
+:lang(ar) body,
+:lang(ar) html {
+  font-family: 'Tajawal', sans-serif;
+}
+
+:lang(ar) input,
+:lang(ar) textarea,
+:lang(ar) button {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* AI Chat Arabic Support */
+:lang(ar) .nexai-bubble,
+:lang(ar) #nexai-input,
+.nexai-bubble[lang="ar"],
+#nexai-input[lang="ar"],
+:lang(ar) .pmsg-bubble,
+.pmsg-bubble[lang="ar"],
+#page-input[lang="ar"] {
+  font-family: 'Tajawal', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Ensure proper rendering for inline Arabic elements */
+[lang="ar"] strong,
+[lang="ar"] em,
+[lang="ar"] li,
+[lang="ar"] p,
+[lang="ar"] span {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Headers and titles in Arabic */
+:lang(ar) h1,
+:lang(ar) h2,
+:lang(ar) h3,
+:lang(ar) h4,
+:lang(ar) h5,
+:lang(ar) h6 {
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+}
+
+/* Buttons and interactive elements */
+:lang(ar) .btn,
+:lang(ar) button {
+  font-family: 'Tajawal', sans-serif;
+}
+
+/* Mixed content support - for elements containing both Arabic and English */
+.mixed-content {
+  font-family: 'Tajawal', 'Inter', sans-serif;
+}
+
+/* Utility class for forcing Tajawal */
+.font-tajawal {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* Ensure proper line-height for Arabic text */
+:lang(ar) {
+  line-height: 1.8;
+}
