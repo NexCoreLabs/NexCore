@@ -36,10 +36,13 @@
 
             if (error) {
                 console.warn('Could not fetch approved users:', error.message);
+                console.warn('Error details:', error);
                 return [];
             }
 
-            return data.map(row => row.email.toLowerCase());
+            const emails = data.map(row => row.email.toLowerCase());
+            console.log('✓ Fetched approved emails:', emails);
+            return emails;
         } catch (err) {
             console.warn('Error fetching approved users:', err);
             return [];
@@ -53,19 +56,33 @@
         if (typeof email !== 'string') return false;
         const normalized = email.trim().toLowerCase();
 
+        console.log('Checking email authorization for:', normalized);
+
         // Check if email is from allowed domain
         const isDomainAllowed = ALLOWED_DOMAINS.some(domain =>
             normalized.endsWith(`@${domain}`)
         );
 
-        if (isDomainAllowed) return true;
+        if (isDomainAllowed) {
+            console.log('✓ Email allowed (SQU domain):', normalized);
+            return true;
+        }
 
         // Check database whitelist
         if (approvedEmailsCache.length === 0) {
+            console.log('Cache empty, fetching approved emails...');
             approvedEmailsCache = await fetchApprovedEmails();
         }
 
-        return approvedEmailsCache.includes(normalized);
+        const isApproved = approvedEmailsCache.includes(normalized);
+        if (isApproved) {
+            console.log('✓ Email allowed (in approved_users):', normalized);
+        } else {
+            console.warn('✗ Email NOT allowed:', normalized);
+            console.warn('Approved emails in cache:', approvedEmailsCache);
+        }
+
+        return isApproved;
     }
 
     function persistAuthNotice(message) {
