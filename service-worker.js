@@ -32,7 +32,7 @@ const PRECACHE_URLS = [
   '/assets/css/project-categories.css',
   '/assets/js/script.js',
   '/assets/js/ai-chat.js',
-  '/assets/js/auth-ui.js',
+  '/assets/js/auth-ui-db.js',
   '/assets/js/unminified-js.js',
   '/assets/js/cookie-consent.js',
   '/assets/js/cookies.js',
