@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -1083,9 +1083,6 @@
                     <button class="btn primary ghost" id="embedBtn">
                         <i class="fas fa-code"></i> Embed
                     </button>
-                    <button class="btn primary ghost" id="openScannerBtn" style="display:none;" onclick="window.open('/scanner','_blank')">
-                        <i class="fas fa-qrcode"></i> Open Scanner
-                    </button>
                 </div>
 
                 <div class="qr-wrapper">
@@ -1790,8 +1787,8 @@
                     });
                     const codeData = await codeResp.json();
 
-                    if (codeData.ok && codeData.bar_heights) {
-                        NexCoreWave.render(waveContainer, codeData.bar_heights);
+                    if (codeData.ok && codeData.code_bytes) {
+                        NexCoreWave.render(waveContainer, codeData.code_bytes);
 
                         // Download button
                         const dlBtn = document.getElementById('downloadWaveBtn');

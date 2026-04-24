@@ -1,6 +1,6 @@
-const { getSupabaseAdmin } = require('../lib/supabaseAdmin');
+﻿const { getSupabaseAdmin } = require('../lib/supabaseAdmin');
 const { buildProjectScanCode } = require('../lib/projectScanCode');
-const { generateBarHeights } = require('../lib/waveCode');
+const { generateCodeBytes } = require('../lib/waveCode');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -31,8 +31,8 @@ module.exports = async (req, res) => {
     }
 
     const scan_code  = buildProjectScanCode(project);
-    const bar_heights = generateBarHeights(project.id);
-    return res.status(200).json({ ok: true, scan_code_version: 'NXC1', scan_code, bar_heights });
+    const code_bytes = generateCodeBytes(project.id);
+    return res.status(200).json({ ok: true, scan_code_version: 'NXC1', scan_code, code_bytes });
   } catch (err) {
     console.error('[project-scan-code] error:', err.message);
     const isSecretError = (err.message || '').includes('SCANNER_CODE_SECRET');
