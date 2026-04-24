@@ -40,8 +40,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="assets/js/wave-code.js"></script>
 
     <style>
 
@@ -1076,35 +1075,28 @@
 
                 <div class="actions">
                     <button class="btn primary ghost" id="shareBtn">
-
                         <i class="fas fa-share-alt"></i> Share Link
-
                     </button>
-
                     <button class="btn primary ghost" id="copyBtn">
-
                         <i class="fas fa-copy"></i> Copy Link
-
                     </button>
-
                     <button class="btn primary ghost" id="embedBtn">
-
                         <i class="fas fa-code"></i> Embed
-
+                    </button>
+                    <button class="btn primary ghost" id="openScannerBtn" style="display:none;" onclick="window.open('/scanner','_blank')">
+                        <i class="fas fa-qrcode"></i> Open Scanner
                     </button>
                 </div>
 
                 <div class="qr-wrapper">
-                    <div class="qr-container">
-                        <div id="qr"></div>
+                    <div class="qr-container" style="width:300px;height:88px;margin:0 auto;">
+                        <div id="nxcWave" style="width:300px;height:88px;"></div>
                     </div>
 
-                    <p class="qr-scan-label">Scan to view this project</p>
+                    <p class="qr-scan-label">NexCore Wave Code — unique to this project</p>
 
-                    <button class="download-qr-btn" id="downloadQrBtn">
-
-                        <i class="fas fa-download"></i> Download QR
-
+                    <button class="download-qr-btn" id="downloadWaveBtn">
+                        <i class="fas fa-download"></i> Download Wave
                     </button>
                 </div>
             </div>
@@ -1787,48 +1779,39 @@
 
 
 
-            // Generate QR code after rendering
-
-            const qrContainer = document.getElementById('qr');
-
-            if (qrContainer) {
-
-                qrContainer.innerHTML = ''; // Clear any existing QR code
-
+            // Generate NexCore Wave Code after rendering
+            const waveContainer = document.getElementById('nxcWave');
+            if (waveContainer) {
                 try {
-
-                    new QRCode(qrContainer, {
-
-                        text: currentUrl,
-
-                        width: 200,
-
-                        height: 200,
-
-                        colorDark: '#000000',
-
-                        colorLight: '#ffffff',
-
-                        correctLevel: QRCode.CorrectLevel.H
-
+                    const codeResp = await fetch('/api/project-scan-code', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slug: project.slug })
                     });
+                    const codeData = await codeResp.json();
 
+                    if (codeData.ok && codeData.bar_heights) {
+                        NexCoreWave.render(waveContainer, codeData.bar_heights);
+
+                        // Download button
+                        const dlBtn = document.getElementById('downloadWaveBtn');
+                        if (dlBtn) {
+                            dlBtn.addEventListener('click', function () {
+                                NexCoreWave.downloadPNG(waveContainer, 'nexcore-wave-' + project.slug + '.png');
+                            });
+                        }
+
+                        // Show scanner button once we have the code
+                        const scanBtn = document.getElementById('openScannerBtn');
+                        if (scanBtn) scanBtn.style.display = '';
+
+                    } else {
+                        waveContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Wave code unavailable</p>';
+                    }
                 } catch (e) {
-
-                    console.error('Failed to generate QR code:', e);
-
-                    qrContainer.innerHTML = '<p style="color: #ff7878; font-size: 0.9rem;">QR code unavailable</p>';
-
+                    console.error('Failed to generate wave code:', e);
+                    waveContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Wave code unavailable</p>';
                 }
-
-                // Setup QR download after QR code renders
-
-                setTimeout(() => {
-
-                    try { setupQrDownload(); } catch (e) { console.error('Failed to setup QR download:', e); }
-
-                }, 300);
-
             }
 
         }
@@ -2409,66 +2392,6 @@
                 });
 
             }
-
-        }
-
-        /* ---- QR Download ---- */
-
-        function setupQrDownload() {
-
-            const downloadBtn = document.getElementById('downloadQrBtn');
-
-            if (!downloadBtn) return;
-
-            downloadBtn.addEventListener('click', () => {
-
-                let dataUrl;
-
-                const qrCanvas = document.querySelector('#qr canvas');
-
-                const qrImg = document.querySelector('#qr img');
-
-                if (qrCanvas) {
-
-                    dataUrl = qrCanvas.toDataURL('image/png');
-
-                } else if (qrImg) {
-
-                    try {
-
-                        const canvas = document.createElement('canvas');
-
-                        canvas.width = qrImg.naturalWidth || 200;
-
-                        canvas.height = qrImg.naturalHeight || 200;
-
-                        canvas.getContext('2d').drawImage(qrImg, 0, 0);
-
-                        dataUrl = canvas.toDataURL('image/png');
-
-                    } catch (e) {
-
-                        console.warn('Could not export QR image:', e);
-
-                        return;
-
-                    }
-
-                } else {
-
-                    return;
-
-                }
-
-                const a = document.createElement('a');
-
-                a.download = 'project-qr.png';
-
-                a.href = dataUrl;
-
-                a.click();
-
-            });
 
         }
 

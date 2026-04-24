@@ -55,7 +55,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script src="assets/js/wave-code.js"></script>
         <!-- Vercel Web Analytics -->
         <script>
             window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -89,8 +89,8 @@
               .nxc-modal-close:hover{color:#eaf6fb;}
               .nxc-modal-title{font-size:1rem;font-weight:700;color:#eaf6fb;margin:0 0 4px;}
               .nxc-modal-pubid{font-size:.75rem;color:var(--muted);margin-bottom:16px;}
-              #nxcQrContainer{display:flex;justify-content:center;align-items:center;margin:0 auto 14px;width:200px;height:200px;}
-              #nxcQrContainer canvas,#nxcQrContainer img{border-radius:8px;}
+              #nxcQrContainer{display:flex;justify-content:center;align-items:center;margin:0 auto 14px;width:300px;height:88px;}
+              #nxcQrContainer svg{border-radius:14px;display:block;}
               .nxc-modal-code{font-family:monospace;font-size:.6rem;color:#6ee7f3;background:rgba(110,231,243,.06);border:1px solid rgba(110,231,243,.15);border-radius:8px;padding:8px 10px;word-break:break-all;margin-bottom:14px;text-align:left;max-height:52px;overflow:auto;}
               .nxc-modal-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
               .nxc-loading{color:var(--muted);font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -704,15 +704,9 @@
                 return;
               }
 
-              qrEl.innerHTML = '';
-              new QRCode(qrEl, {
-                text: data.scan_code,
-                width: 200, height: 200,
-                colorDark: '#000000', colorLight: '#ffffff',
-                correctLevel: QRCode.CorrectLevel.H
-              });
+              NexCoreWave.render(qrEl, data.bar_heights);
               codeEl.textContent  = data.scan_code;
-              codeEl.style.display = 'block';
+              codeEl.style.display = 'none';
               copyBtn.style.display = 'inline-flex';
             } catch {
               qrEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Network error</span>';
