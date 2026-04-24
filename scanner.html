@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="theme-color" content="#0a0b1c">
+    <title>NexCore Labs | Project Scanner</title>
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/cookies.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
+    <style>
+      .scanner-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 120px 16px 60px; }
+      .scanner-card { background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01)); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 28px 24px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(2,6,23,.7); position: relative; }
+      .scanner-title { font-size: 1.3rem; font-weight: 700; color: #eaf6fb; margin: 0 0 4px; }
+      .scanner-subtitle { font-size: .85rem; color: var(--muted); margin: 0 0 20px; }
+      #reader { width: 100%; border-radius: 12px; overflow: hidden; background: #000; min-height: 260px; }
+      #reader video { border-radius: 12px; }
+      .scanner-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: var(--muted); font-size: .8rem; }
+      .scanner-divider::before, .scanner-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.08); }
+      .scanner-manual { display: flex; gap: 8px; align-items: stretch; }
+      .scanner-manual input { flex: 1; max-width: none; border-radius: 10px; font-size: .85rem; padding: 10px 14px; margin: 0; }
+      .scanner-manual button { flex-shrink: 0; padding: 10px 16px; border-radius: 10px; border: 2px solid #73bdd7; background: transparent; color: #acd9e5; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; transition: .2s; letter-spacing: .5px; }
+      .scanner-manual button:hover { background: rgba(115,189,215,.15); box-shadow: 0 0 12px rgba(115,189,215,.3); }
+      #scanResult { margin-top: 18px; border-radius: 12px; padding: 16px; display: none; }
+      #scanResult.success { background: rgba(110,231,243,.08); border: 1px solid rgba(110,231,243,.25); }
+      #scanResult.error { background: rgba(255,120,120,.08); border: 1px solid rgba(255,120,120,.25); }
+      .result-title { font-size: .95rem; font-weight: 700; margin: 0 0 6px; }
+      .result-title.success { color: #6ee7f3; }
+      .result-title.error { color: #ff7878; }
+      .result-msg { font-size: .82rem; color: var(--muted); margin: 0 0 12px; }
+      .result-redirect { font-size: .78rem; color: var(--muted); margin-top: 8px; }
+      .scanner-status { margin-top: 14px; font-size: .78rem; color: var(--muted); text-align: center; min-height: 20px; }
+      .scanner-status.scanning { color: #6ee7f3; }
+      .camera-toggle { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+      .cam-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,.1); background: transparent; color: var(--muted); font-family: inherit; font-size: .75rem; cursor: pointer; transition: .2s; }
+      .cam-btn:hover { border-color: rgba(115,189,215,.4); color: var(--primary-accent); }
+      .cam-btn.active { background: rgba(115,189,215,.12); border-color: rgba(115,189,215,.4); color: var(--primary-accent); font-weight: 600; }
+      .back-link { margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--muted); cursor: pointer; transition: .2s; }
+      .back-link:hover { color: var(--primary-accent); }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="background">
+      <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+      <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <h1 id="logo"><a href="index.html" style="color:inherit;text-decoration:none;">NexCore <span>Labs</span></a></h1>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="scanner-page">
+        <div class="scanner-card">
+
+          <a class="back-link" href="hub.html">
+            <i class="fa-solid fa-arrow-left"></i> Back to Hub
+          </a>
+
+          <p class="scanner-title"><i class="fa-solid fa-qrcode" style="color:#6ee7f3;margin-right:8px;"></i>Project Scanner</p>
+          <p class="scanner-subtitle">Point your camera at a NexCore project code to open it.</p>
+
+          <div id="reader"></div>
+
+          <div class="camera-toggle">
+            <button class="cam-btn active" id="btnStart"><i class="fa-solid fa-camera"></i> Start Camera</button>
+            <button class="cam-btn" id="btnStop"><i class="fa-solid fa-stop"></i> Stop</button>
+          </div>
+
+          <p class="scanner-status" id="scanStatus">Initializing camera…</p>
+
+          <div class="scanner-divider">or paste a code manually</div>
+
+          <div class="scanner-manual">
+            <input type="text" id="manualInput" placeholder="NXC1.xxxxxx.xxxxxx" autocomplete="off" spellcheck="false">
+            <button id="manualVerifyBtn"><i class="fa-solid fa-check"></i> Verify</button>
+          </div>
+
+          <div id="scanResult">
+            <p class="result-title" id="resultTitle"></p>
+            <p class="result-msg" id="resultMsg"></p>
+            <a id="resultGoBtn" class="btn primary" style="display:none;width:100%;justify-content:center;box-sizing:border-box;margin-top:4px;"></a>
+            <p class="result-redirect" id="resultRedirectMsg"></p>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <script src="assets/js/script.js"></script>
+    <script src="assets/js/supabase-client.js"></script>
+    <script src="assets/js/cookies.js" defer></script>
+
+    <script>
+      let html5QrScanner = null;
+      let lastScanned = null;
+      let scanCooldown = false;
+      let redirectTimer = null;
+
+      const statusEl = document.getElementById('scanStatus');
+      const resultEl = document.getElementById('scanResult');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultMsg = document.getElementById('resultMsg');
+      const resultGoBtn = document.getElementById('resultGoBtn');
+      const resultRedirect = document.getElementById('resultRedirectMsg');
+      const btnStart = document.getElementById('btnStart');
+      const btnStop = document.getElementById('btnStop');
+
+      function setStatus(msg, isScanning) {
+        statusEl.textContent = msg;
+        statusEl.className = 'scanner-status' + (isScanning ? ' scanning' : '');
+      }
+
+      function showResult(type, title, msg, redirectUrl, projectName) {
+        resultEl.style.display = 'block';
+        resultEl.className = type === 'success' ? 'success' : 'error';
+        resultTitle.textContent = title;
+        resultTitle.className = 'result-title ' + (type === 'success' ? 'success' : 'error');
+        resultMsg.textContent = msg;
+
+        if (type === 'success' && redirectUrl) {
+          resultGoBtn.style.display = 'flex';
+          resultGoBtn.textContent = `Open "${projectName}"`;
+          resultGoBtn.href = redirectUrl;
+          let countdown = 3;
+          resultRedirect.textContent = `Redirecting in ${countdown}s…`;
+          clearInterval(redirectTimer);
+          redirectTimer = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) {
+              clearInterval(redirectTimer);
+              window.location.href = redirectUrl;
+            } else {
+              resultRedirect.textContent = `Redirecting in ${countdown}s…`;
+            }
+          }, 1000);
+        } else {
+          resultGoBtn.style.display = 'none';
+          resultRedirect.textContent = '';
+          clearInterval(redirectTimer);
+        }
+      }
+
+      async function verifyScanCode(rawCode) {
+        if (scanCooldown) return;
+        const trimmed = rawCode.trim();
+        if (!trimmed.startsWith('NXC1.')) {
+          showResult('error', 'Not a NexCore Code', 'This QR code is not a NexCore project code.');
+          return;
+        }
+        if (trimmed === lastScanned) return;
+        lastScanned = trimmed;
+        scanCooldown = true;
+        setTimeout(() => { scanCooldown = false; }, 3000);
+
+        setStatus('Verifying code…', true);
+        try {
+          const resp = await fetch('/api/verify-scanner-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ scan_code: trimmed })
+          });
+          const data = await resp.json();
+          if (data.valid) {
+            setStatus('Code verified!', false);
+            showResult('success', '✓ Project found', data.project.name, data.redirect_url, data.project.name);
+          } else {
+            setStatus('Invalid code.', false);
+            showResult('error', 'Invalid Code', data.error || 'This code could not be verified.');
+            lastScanned = null;
+          }
+        } catch {
+          setStatus('Network error.', false);
+          showResult('error', 'Network Error', 'Could not reach the server. Check your connection.');
+          lastScanned = null;
+        }
+      }
+
+      function startScanner() {
+        if (html5QrScanner) {
+          html5QrScanner.stop().catch(() => {}).finally(launchCamera);
+        } else {
+          launchCamera();
+        }
+      }
+
+      function launchCamera() {
+        html5QrScanner = new Html5Qrcode('reader');
+        setStatus('Camera starting…', true);
+        btnStart.classList.add('active');
+        btnStop.classList.remove('active');
+
+        Html5Qrcode.getCameras().then(cameras => {
+          if (!cameras || cameras.length === 0) {
+            setStatus('No camera found.', false);
+            return;
+          }
+          // Prefer back camera
+          const cam = cameras.find(c => /back|rear|environment/i.test(c.label)) || cameras[cameras.length - 1];
+          html5QrScanner.start(
+            cam.id,
+            { fps: 10, qrbox: { width: 240, height: 240 } },
+            (decodedText) => { verifyScanCode(decodedText); },
+            () => {}
+          ).then(() => {
+            setStatus('Scanning… point at a NexCore code.', true);
+            btnStart.classList.remove('active');
+          }).catch(err => {
+            setStatus('Camera access denied or unavailable.', false);
+            console.warn('Camera start error:', err);
+          });
+        }).catch(err => {
+          setStatus('Could not access cameras.', false);
+          console.warn('getCameras error:', err);
+        });
+      }
+
+      function stopScanner() {
+        if (html5QrScanner) {
+          html5QrScanner.stop().then(() => {
+            setStatus('Camera stopped.', false);
+            btnStop.classList.add('active');
+            btnStart.classList.remove('active');
+          }).catch(() => {});
+        }
+      }
+
+      btnStart.addEventListener('click', startScanner);
+      btnStop.addEventListener('click', stopScanner);
+
+      document.getElementById('manualVerifyBtn').addEventListener('click', () => {
+        const val = document.getElementById('manualInput').value.trim();
+        if (!val) return;
+        lastScanned = null;
+        verifyScanCode(val);
+      });
+
+      document.getElementById('manualInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = e.target.value.trim();
+          if (val) { lastScanned = null; verifyScanCode(val); }
+        }
+      });
+
+      window.addEventListener('beforeunload', () => {
+        clearInterval(redirectTimer);
+        if (html5QrScanner) html5QrScanner.stop().catch(() => {});
+      });
+
+      // Check for ?code= param (passed from other pages)
+      (function checkUrlParam() {
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
+        if (code) {
+          document.getElementById('manualInput').value = code;
+          verifyScanCode(code);
+        }
+      })();
+
+      // Auto-start camera after html5-qrcode loads
+      window.addEventListener('load', () => {
+        if (typeof Html5Qrcode !== 'undefined') {
+          startScanner();
+        } else {
+          setStatus('QR library failed to load.', false);
+        }
+      });
+    </script>
+
+  </body>
+</html>

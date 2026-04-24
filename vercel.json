@@ -15,6 +15,7 @@
     { "source": "/thanks", "destination": "/thanks.html" },
     { "source": "/ai-chat", "destination": "/ai-chat.html" },
     { "source": "/admin-users", "destination": "/admin-users.html" },
-    { "source": "/embed", "destination": "/embed.html" }
+    { "source": "/embed", "destination": "/embed.html" },
+    { "source": "/scanner", "destination": "/scanner.html" }
   ]
 }

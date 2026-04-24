@@ -55,6 +55,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
         <!-- Vercel Web Analytics -->
         <script>
             window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -73,6 +74,31 @@
             .sort-btn:hover{border-color:rgba(115,189,215,.4);color:var(--primary-accent);}
             .sort-btn.active{background:rgba(115,189,215,.12);border-color:rgba(115,189,215,.4);color:var(--primary-accent);font-weight:600;}
             #projects{scroll-margin-top:100px;}
+
+              /* ── NexCore Code: scan button on cards ── */
+              .card-scan-row{display:flex;justify-content:flex-end;margin-top:6px;}
+              .card-scan-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;font-size:.72rem;border-radius:8px;border:1px solid rgba(115,189,215,.2);background:transparent;color:var(--muted);cursor:pointer;font-family:inherit;transition:.2s;letter-spacing:.3px;}
+              .card-scan-btn:hover{border-color:rgba(115,189,215,.5);color:var(--primary-accent);background:rgba(115,189,215,.08);}
+              .card-scan-btn i{font-size:.72rem;}
+
+              /* ── Scan modal ── */
+              #nxcScanModal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,11,28,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+              #nxcScanModal.open{display:flex;}
+              .nxc-modal-box{background:rgba(10,11,28,.97);border:1px solid rgba(115,189,215,.15);border-radius:18px;padding:28px 24px;max-width:340px;width:90%;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.8);}
+              .nxc-modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.2rem;color:var(--muted);cursor:pointer;padding:4px;transition:.2s;}
+              .nxc-modal-close:hover{color:#eaf6fb;}
+              .nxc-modal-title{font-size:1rem;font-weight:700;color:#eaf6fb;margin:0 0 4px;}
+              .nxc-modal-pubid{font-size:.75rem;color:var(--muted);margin-bottom:16px;}
+              #nxcQrContainer{display:flex;justify-content:center;align-items:center;margin:0 auto 14px;width:200px;height:200px;}
+              #nxcQrContainer canvas,#nxcQrContainer img{border-radius:8px;}
+              .nxc-modal-code{font-family:monospace;font-size:.6rem;color:#6ee7f3;background:rgba(110,231,243,.06);border:1px solid rgba(110,231,243,.15);border-radius:8px;padding:8px 10px;word-break:break-all;margin-bottom:14px;text-align:left;max-height:52px;overflow:auto;}
+              .nxc-modal-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+              .nxc-loading{color:var(--muted);font-size:.82rem;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+              /* ── Hub scan strip ── */
+              .hub-scan-strip{display:flex;justify-content:flex-end;margin-bottom:10px;}
+              .hub-scan-strip-btn{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:20px;border:1px solid rgba(115,189,215,.25);background:transparent;color:var(--muted);font-family:inherit;font-size:.8rem;cursor:pointer;transition:.2s;}
+              .hub-scan-strip-btn:hover{border-color:rgba(115,189,215,.55);color:var(--primary-accent);background:rgba(115,189,215,.07);}
         </style>
     </head>
 
@@ -182,6 +208,13 @@
               </div>
             </div>
 
+              <!-- NexCore Code: Scan a project code -->
+              <div class="hub-scan-strip">
+                <button class="hub-scan-strip-btn" onclick="window.location.href='/scanner'">
+                  <i class="fa-solid fa-camera"></i> Scan a Code
+                </button>
+              </div>
+
 
             <div class="projects-grid reveal" id="projects-container">
               <!-- Project cards will be loaded here dynamically -->
@@ -239,6 +272,22 @@
       <script src="assets/js/script.js"></script>
 
       <script src="assets/js/supabase-client.js"></script>
+
+        <!-- NexCore Code Modal -->
+        <div id="nxcScanModal" role="dialog" aria-modal="true" aria-label="NexCore Project Code">
+          <div class="nxc-modal-box">
+            <button class="nxc-modal-close" id="nxcModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            <p class="nxc-modal-title" id="nxcModalTitle">Project Code</p>
+            <p class="nxc-modal-pubid" id="nxcModalPubId"></p>
+            <div id="nxcQrContainer"><span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span></div>
+            <div class="nxc-modal-code" id="nxcCodeText" style="display:none;"></div>
+            <div class="nxc-modal-actions">
+              <button class="btn ghost" id="nxcCopyBtn" style="padding:6px 14px;font-size:.78rem;display:none;"><i class="fa-solid fa-copy"></i> Copy Code</button>
+              <a class="btn primary" href="/scanner" style="padding:6px 14px;font-size:.78rem;"><i class="fa-solid fa-camera"></i> Open Scanner</a>
+            </div>
+          </div>
+        </div>
+
 
       <script src="assets/js/auth-ui-db.js"></script>
       <script src="assets/js/ai-chat.js"></script>
@@ -442,11 +491,26 @@
 
                   <span class="metadata-item"><i class="fas fa-eye"></i><span class="view-count">${views.toLocaleString()}</span> views</span>
                 </div>
+                  <div class="card-scan-row">
+                    <button class="card-scan-btn" data-scan-slug="${project.slug}" data-scan-name="${(project.name || 'Untitled').replace(/"/g, '&quot;')}" data-scan-pubid="${project.public_id || ''}">
+                      <i class="fa-solid fa-qrcode"></i> NexCore Code
+                    </button>
+                  </div>
               </div>
 
             `;
 
             container.appendChild(card);
+
+              // Wire up NexCore Code scan button — stop propagation so card link doesn't fire
+              const scanBtn = card.querySelector('.card-scan-btn');
+              if (scanBtn) {
+                scanBtn.addEventListener('click', function(e) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openNxcScanModal(this.dataset.scanName, this.dataset.scanPubid, this.dataset.scanSlug);
+                });
+              }
 
           });
 
@@ -608,6 +672,72 @@
           loadProjects();
 
         }
+
+          // ── NexCore Code: scan modal logic ──
+          async function openNxcScanModal(name, pubId, slug) {
+            const modal   = document.getElementById('nxcScanModal');
+            const titleEl = document.getElementById('nxcModalTitle');
+            const pubEl   = document.getElementById('nxcModalPubId');
+            const qrEl    = document.getElementById('nxcQrContainer');
+            const codeEl  = document.getElementById('nxcCodeText');
+            const copyBtn = document.getElementById('nxcCopyBtn');
+
+            titleEl.textContent = name;
+            pubEl.textContent   = pubId ? `ID: ${pubId}` : '';
+            qrEl.innerHTML      = '<span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span>';
+            codeEl.style.display = 'none';
+            copyBtn.style.display = 'none';
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            try {
+              const resp = await fetch('/api/project-scan-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ slug })
+              });
+              const data = await resp.json();
+
+              if (!data.ok || !data.scan_code) {
+                qrEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load code</span>';
+                return;
+              }
+
+              qrEl.innerHTML = '';
+              new QRCode(qrEl, {
+                text: data.scan_code,
+                width: 200, height: 200,
+                colorDark: '#000000', colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.H
+              });
+              codeEl.textContent  = data.scan_code;
+              codeEl.style.display = 'block';
+              copyBtn.style.display = 'inline-flex';
+            } catch {
+              qrEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Network error</span>';
+            }
+          }
+
+          function closeNxcModal() {
+            document.getElementById('nxcScanModal')?.classList.remove('open');
+            document.body.style.overflow = '';
+          }
+
+          document.getElementById('nxcModalClose')?.addEventListener('click', closeNxcModal);
+          document.getElementById('nxcScanModal')?.addEventListener('click', function(e) {
+            if (e.target === this) closeNxcModal();
+          });
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeNxcModal();
+          });
+          document.getElementById('nxcCopyBtn')?.addEventListener('click', function() {
+            const code = document.getElementById('nxcCodeText')?.textContent;
+            if (!code) return;
+            navigator.clipboard.writeText(code).then(() => {
+              this.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+              setTimeout(() => { this.innerHTML = '<i class="fa-solid fa-copy"></i> Copy Code'; }, 1800);
+            }).catch(() => {});
+          });
 
       </script>
 
