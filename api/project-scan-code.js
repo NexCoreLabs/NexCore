@@ -34,6 +34,10 @@ module.exports = async (req, res) => {
     return res.status(200).json({ ok: true, scan_code_version: 'NXC1', scan_code });
   } catch (err) {
     console.error('[project-scan-code] error:', err.message);
-    return res.status(500).json({ ok: false, error: 'Internal server error' });
+    const isSecretError = (err.message || '').includes('SCANNER_CODE_SECRET');
+    return res.status(500).json({
+      ok: false,
+      error: isSecretError ? 'Scanner secret is not configured' : 'Internal server error'
+    });
   }
 };

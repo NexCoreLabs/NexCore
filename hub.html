@@ -699,7 +699,8 @@
               const data = await resp.json();
 
               if (!data.ok || !data.scan_code) {
-                qrEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load code</span>';
+                const msg = data && data.error ? data.error : 'Failed to load code';
+                qrEl.innerHTML = `<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> ${msg}</span>`;
                 return;
               }
 
