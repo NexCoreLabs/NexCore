@@ -40,7 +40,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="assets/js/wave-code.js"></script>
+    <script src="assets/js/constellation-code.js"></script>
 
     <style>
 
@@ -1087,13 +1087,13 @@
 
                 <div class="qr-wrapper">
                     <div class="qr-container" style="width:300px;height:88px;margin:0 auto;">
-                        <div id="nxcWave" style="width:300px;height:88px;"></div>
+                        <div id="nxcConstellation" style="width:300px;height:300px;"></div>
                     </div>
 
-                    <p class="qr-scan-label">NexCore Wave Code — unique to this project</p>
+                    <p class="qr-scan-label">NexCore Constellation Code — unique to this project</p>
 
-                    <button class="download-qr-btn" id="downloadWaveBtn">
-                        <i class="fas fa-download"></i> Download Wave
+                    <button class="download-qr-btn" id="downloadConstellationBtn">
+                        <i class="fas fa-download"></i> Download Constellation
                     </button>
                 </div>
             </div>
@@ -1776,9 +1776,9 @@
 
 
 
-            // Generate NexCore Wave Code after rendering
-            const waveContainer = document.getElementById('nxcWave');
-            if (waveContainer) {
+            // Generate NexCore Constellation Code after rendering
+            const constellationContainer = document.getElementById('nxcConstellation');
+            if (constellationContainer) {
                 try {
                     const codeResp = await fetch('/api/project-scan-code', {
                         method: 'POST',
@@ -1788,13 +1788,13 @@
                     const codeData = await codeResp.json();
 
                     if (codeData.ok && codeData.code_bytes) {
-                        NexCoreWave.render(waveContainer, codeData.code_bytes);
+                        NexCoreConstellation.render(constellationContainer, codeData.code_bytes);
 
                         // Download button
-                        const dlBtn = document.getElementById('downloadWaveBtn');
+                        const dlBtn = document.getElementById('downloadConstellationBtn');
                         if (dlBtn) {
                             dlBtn.addEventListener('click', function () {
-                                NexCoreWave.downloadPNG(waveContainer, 'nexcore-wave-' + data.slug + '.png');
+                                NexCoreConstellation.downloadPNG(constellationContainer, 'nexcore-constellation-' + data.slug + '.png');
                             });
                         }
 
@@ -1803,11 +1803,11 @@
                         if (scanBtn) scanBtn.style.display = '';
 
                     } else {
-                        waveContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Wave code unavailable</p>';
+                        constellationContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Constellation code unavailable</p>';
                     }
                 } catch (e) {
-                    console.error('Failed to generate wave code:', e);
-                    waveContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Wave code unavailable</p>';
+                    console.error('Failed to generate constellation code:', e);
+                    constellationContainer.innerHTML = '<p style="color:#ff7878;font-size:.85rem;">Constellation code unavailable</p>';
                 }
             }
 

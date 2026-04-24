@@ -1,6 +1,6 @@
 ﻿const { getSupabaseAdmin } = require('../lib/supabaseAdmin');
 const { buildProjectScanCode } = require('../lib/projectScanCode');
-const { generateCodeBytes } = require('../lib/waveCode');
+const { generateCodeBytes } = require('../lib/constellationCode');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');

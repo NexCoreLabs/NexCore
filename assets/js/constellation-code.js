@@ -131,6 +131,6 @@
     img.src = url;
   }
 
-  global.NexCoreWave = { render: render, downloadSVG: downloadSVG, downloadPNG: downloadPNG };
+  global.NexCoreConstellation = { render: render, downloadSVG: downloadSVG, downloadPNG: downloadPNG };
 
 }(typeof window !== 'undefined' ? window : this));
