@@ -1786,7 +1786,7 @@
                     const codeResp = await fetch('/api/project-scan-code', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ slug: project.slug })
+                        body: JSON.stringify({ slug: data.slug })
                     });
                     const codeData = await codeResp.json();
 
@@ -1797,7 +1797,7 @@
                         const dlBtn = document.getElementById('downloadWaveBtn');
                         if (dlBtn) {
                             dlBtn.addEventListener('click', function () {
-                                NexCoreWave.downloadPNG(waveContainer, 'nexcore-wave-' + project.slug + '.png');
+                                NexCoreWave.downloadPNG(waveContainer, 'nexcore-wave-' + data.slug + '.png');
                             });
                         }
 

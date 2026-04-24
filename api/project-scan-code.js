@@ -24,7 +24,6 @@ module.exports = async (req, res) => {
       .from('projects')
       .select('id, slug, public_id')
       .eq('slug', slug.trim())
-      .eq('published', true)
       .single();
 
     if (error || !project) {
