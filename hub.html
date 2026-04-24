@@ -56,6 +56,7 @@
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
         <script src="assets/js/constellation-code.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
         <!-- Vercel Web Analytics -->
         <script>
             window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -84,11 +85,15 @@
               /* ── Scan modal ── */
               #nxcScanModal{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,11,28,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;}
               #nxcScanModal.open{display:flex;}
-              .nxc-modal-box{background:rgba(10,11,28,.97);border:1px solid rgba(115,189,215,.15);border-radius:18px;padding:28px 24px;max-width:340px;width:90%;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.8);}
+              .nxc-modal-box{background:rgba(10,11,28,.97);border:1px solid rgba(115,189,215,.15);border-radius:18px;padding:28px 24px;max-width:360px;width:90%;text-align:center;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.8);}
               .nxc-modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:1.2rem;color:var(--muted);cursor:pointer;padding:4px;transition:.2s;}
               .nxc-modal-close:hover{color:#eaf6fb;}
               .nxc-modal-title{font-size:1rem;font-weight:700;color:#eaf6fb;margin:0 0 4px;}
               .nxc-modal-pubid{font-size:.75rem;color:var(--muted);margin-bottom:16px;}
+              #nxcQrCode{display:flex;justify-content:center;align-items:center;margin:0 auto 10px;min-height:60px;}
+              #nxcQrCode canvas,#nxcQrCode img{border-radius:10px;display:block;border:6px solid #fff;box-sizing:border-box;}
+              .nxc-scan-hint{font-size:.72rem;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:6px;justify-content:center;}
+              .nxc-fingerprint-label{font-size:.68rem;color:var(--muted);opacity:.5;margin:12px 0 8px;letter-spacing:.08em;text-transform:uppercase;}
               #nxcQrContainer{display:flex;justify-content:center;align-items:center;margin:0 auto 14px;width:300px;height:88px;}
               #nxcQrContainer svg{border-radius:14px;display:block;}
               .nxc-modal-code{font-family:monospace;font-size:.6rem;color:#6ee7f3;background:rgba(110,231,243,.06);border:1px solid rgba(110,231,243,.15);border-radius:8px;padding:8px 10px;word-break:break-all;margin-bottom:14px;text-align:left;max-height:52px;overflow:auto;}
@@ -279,7 +284,10 @@
             <button class="nxc-modal-close" id="nxcModalClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
             <p class="nxc-modal-title" id="nxcModalTitle">Project Code</p>
             <p class="nxc-modal-pubid" id="nxcModalPubId"></p>
-            <div id="nxcQrContainer"><span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span></div>
+            <div id="nxcQrCode"><span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span></div>
+            <p class="nxc-scan-hint"><i class="fa-solid fa-mobile-screen-button"></i> Point your phone camera here</p>
+            <p class="nxc-fingerprint-label">Constellation Fingerprint</p>
+            <div id="nxcQrContainer"></div>
             <div class="nxc-modal-code" id="nxcCodeText" style="display:none;"></div>
             <div class="nxc-modal-actions">
               <button class="btn ghost" id="nxcCopyBtn" style="padding:6px 14px;font-size:.78rem;display:none;"><i class="fa-solid fa-copy"></i> Copy Code</button>
@@ -678,13 +686,15 @@
             const modal   = document.getElementById('nxcScanModal');
             const titleEl = document.getElementById('nxcModalTitle');
             const pubEl   = document.getElementById('nxcModalPubId');
+            const qrCodeEl = document.getElementById('nxcQrCode');
             const qrEl    = document.getElementById('nxcQrContainer');
             const codeEl  = document.getElementById('nxcCodeText');
             const copyBtn = document.getElementById('nxcCopyBtn');
 
             titleEl.textContent = name;
             pubEl.textContent   = pubId ? `ID: ${pubId}` : '';
-            qrEl.innerHTML      = '<span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span>';
+            qrCodeEl.innerHTML  = '<span class="nxc-loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading…</span>';
+            qrEl.innerHTML      = '';
             codeEl.style.display = 'none';
             copyBtn.style.display = 'none';
             modal.classList.add('open');
@@ -700,16 +710,28 @@
 
               if (!data.ok || !data.scan_code) {
                 const msg = data && data.error ? data.error : 'Failed to load code';
-                qrEl.innerHTML = `<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> ${msg}</span>`;
+                qrCodeEl.innerHTML = `<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> ${msg}</span>`;
                 return;
               }
 
+              // Real QR code — scannable by any phone camera
+              qrCodeEl.innerHTML = '';
+              new QRCode(qrCodeEl, {
+                text: data.scan_code,
+                width: 200,
+                height: 200,
+                colorDark: '#090d1a',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.M
+              });
+
+              // Constellation fingerprint (visual identity)
               NexCoreConstellation.render(qrEl, data.code_bytes);
               codeEl.textContent  = data.scan_code;
               codeEl.style.display = 'none';
               copyBtn.style.display = 'inline-flex';
             } catch {
-              qrEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Network error</span>';
+              qrCodeEl.innerHTML = '<span class="nxc-loading" style="color:#ff7878;"><i class="fa-solid fa-triangle-exclamation"></i> Network error</span>';
             }
           }
 
