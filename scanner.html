@@ -17,34 +17,103 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
     <style>
-      .scanner-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 120px 16px 60px; }
-      .scanner-card { background: linear-gradient(180deg, rgba(255,255,255,.025), rgba(255,255,255,.01)); border: 1px solid rgba(255,255,255,.06); border-radius: 18px; padding: 28px 24px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(2,6,23,.7); position: relative; }
-      .scanner-title { font-size: 1.3rem; font-weight: 700; color: #eaf6fb; margin: 0 0 4px; }
-      .scanner-subtitle { font-size: .85rem; color: var(--muted); margin: 0 0 20px; }
-      #reader { width: 100%; border-radius: 12px; overflow: hidden; background: #000; min-height: 260px; }
-      #reader video { border-radius: 12px; }
-      .scanner-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: var(--muted); font-size: .8rem; }
-      .scanner-divider::before, .scanner-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.08); }
-      .scanner-manual { display: flex; gap: 8px; align-items: stretch; }
-      .scanner-manual input { flex: 1; max-width: none; border-radius: 10px; font-size: .85rem; padding: 10px 14px; margin: 0; }
-      .scanner-manual button { flex-shrink: 0; padding: 10px 16px; border-radius: 10px; border: 2px solid #73bdd7; background: transparent; color: #acd9e5; font-family: inherit; font-size: .85rem; font-weight: 600; cursor: pointer; transition: .2s; letter-spacing: .5px; }
-      .scanner-manual button:hover { background: rgba(115,189,215,.15); box-shadow: 0 0 12px rgba(115,189,215,.3); }
-      #scanResult { margin-top: 18px; border-radius: 12px; padding: 16px; display: none; }
-      #scanResult.success { background: rgba(110,231,243,.08); border: 1px solid rgba(110,231,243,.25); }
-      #scanResult.error { background: rgba(255,120,120,.08); border: 1px solid rgba(255,120,120,.25); }
-      .result-title { font-size: .95rem; font-weight: 700; margin: 0 0 6px; }
-      .result-title.success { color: #6ee7f3; }
-      .result-title.error { color: #ff7878; }
-      .result-msg { font-size: .82rem; color: var(--muted); margin: 0 0 12px; }
-      .result-redirect { font-size: .78rem; color: var(--muted); margin-top: 8px; }
-      .scanner-status { margin-top: 14px; font-size: .78rem; color: var(--muted); text-align: center; min-height: 20px; }
-      .scanner-status.scanning { color: #6ee7f3; }
-      .camera-toggle { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-      .cam-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,.1); background: transparent; color: var(--muted); font-family: inherit; font-size: .75rem; cursor: pointer; transition: .2s; }
-      .cam-btn:hover { border-color: rgba(115,189,215,.4); color: var(--primary-accent); }
-      .cam-btn.active { background: rgba(115,189,215,.12); border-color: rgba(115,189,215,.4); color: var(--primary-accent); font-weight: 600; }
-      .back-link { margin-bottom: 18px; display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; color: var(--muted); cursor: pointer; transition: .2s; }
-      .back-link:hover { color: var(--primary-accent); }
+      /* ── Layout ── */
+      .scanner-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 100px 16px 60px; }
+      .scanner-card { max-width: 440px; width: 100%; }
+
+      /* ── Back link ── */
+      .back-link { display: inline-flex; align-items: center; gap: 7px; font-size: .8rem; color: var(--muted); text-decoration: none; margin-bottom: 22px; transition: color .2s; padding: 6px 0; }
+      .back-link:hover { color: #6ee7f3; }
+
+      /* ── Header ── */
+      .scanner-header { display: flex; align-items: center; gap: 14px; margin-bottom: 22px; }
+      .scanner-header-icon { width: 46px; height: 46px; border-radius: 13px; background: rgba(110,231,243,.08); border: 1px solid rgba(110,231,243,.2); display: flex; align-items: center; justify-content: center; color: #6ee7f3; font-size: 1.15rem; flex-shrink: 0; }
+      .scanner-title { font-size: 1.2rem; font-weight: 700; color: #eaf6fb; margin: 0 0 3px; }
+      .scanner-subtitle { font-size: .78rem; color: var(--muted); margin: 0; }
+
+      /* ── Viewfinder ── */
+      .viewfinder-wrap { position: relative; width: 100%; height: 300px; background: #050810; border-radius: 18px; overflow: hidden; border: 1px solid rgba(255,255,255,.07); }
+      #reader { width: 100%; height: 100%; }
+      /* Suppress html5-qrcode default chrome */
+      #reader__dashboard { display: none !important; }
+      #reader__scan_region { width: 100% !important; height: 100% !important; }
+      #reader__scan_region video { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 0 !important; }
+      #reader__scan_region img { display: none !important; }
+
+      /* Vignette dims the edges, keeping focus in the centre */
+      .vf-dim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to right, rgba(5,8,16,.72) 0%, transparent 26%, transparent 74%, rgba(5,8,16,.72) 100%), linear-gradient(to bottom, rgba(5,8,16,.72) 0%, transparent 26%, transparent 74%, rgba(5,8,16,.72) 100%); }
+
+      /* Corner brackets */
+      .vf-corners-wrap { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+      .vf-box { width: 192px; height: 192px; position: relative; }
+      .vf-box::before, .vf-box::after, .vf-box-inner::before, .vf-box-inner::after { content: ''; position: absolute; width: 24px; height: 24px; border-color: #6ee7f3; border-style: solid; transition: border-color .35s, filter .35s; }
+      .vf-box::before  { top: 0;    left: 0;  border-width: 3px 0 0 3px; border-top-left-radius: 5px; }
+      .vf-box::after   { top: 0;    right: 0; border-width: 3px 3px 0 0; border-top-right-radius: 5px; }
+      .vf-box-inner::before { bottom: 0; left: 0;  border-width: 0 0 3px 3px; border-bottom-left-radius: 5px; }
+      .vf-box-inner::after  { bottom: 0; right: 0; border-width: 0 3px 3px 0; border-bottom-right-radius: 5px; }
+      /* Scanning — cyan pulse */
+      .vf-box.scanning::before, .vf-box.scanning::after, .vf-box-inner.scanning::before, .vf-box-inner.scanning::after { filter: drop-shadow(0 0 5px rgba(110,231,243,.9)); animation: cornerPulse 2s ease-in-out infinite; }
+      @keyframes cornerPulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+      /* Success — green */
+      .vf-box.success::before, .vf-box.success::after, .vf-box-inner.success::before, .vf-box-inner.success::after { border-color: #4ade80; filter: drop-shadow(0 0 6px rgba(74,222,128,.95)); animation: none; }
+      /* Error — red */
+      .vf-box.error::before, .vf-box.error::after, .vf-box-inner.error::before, .vf-box-inner.error::after { border-color: #ff7878; filter: drop-shadow(0 0 5px rgba(255,120,120,.8)); animation: none; }
+
+      /* Sweep line */
+      .scan-line { position: absolute; left: 13%; right: 13%; height: 2px; background: linear-gradient(90deg, transparent 0%, #6ee7f3 40%, #cff8ff 50%, #6ee7f3 60%, transparent 100%); box-shadow: 0 0 10px 2px rgba(110,231,243,.65); border-radius: 2px; top: 14%; opacity: 0; transition: opacity .4s; }
+      .scan-line.active { opacity: 1; animation: scanDown 2s ease-in-out infinite; }
+      @keyframes scanDown { 0% { top: 14%; } 50% { top: 78%; } 100% { top: 14%; } }
+
+      /* Camera-off placeholder */
+      .cam-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--muted); pointer-events: none; }
+      .cam-placeholder i { font-size: 2.4rem; opacity: .2; }
+      .cam-placeholder p { font-size: .78rem; opacity: .35; margin: 0; }
+
+      /* ── Status row ── */
+      .status-row { display: flex; flex-direction: column; align-items: center; gap: 10px; margin: 14px 0 10px; }
+      .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: 20px; background: rgba(10,11,28,.7); border: 1px solid rgba(255,255,255,.09); font-size: .76rem; color: var(--muted); transition: border-color .3s, color .3s; }
+      .status-pill.scanning  { border-color: rgba(110,231,243,.35); color: #6ee7f3; }
+      .status-pill.verifying { border-color: rgba(255,190,50,.35);  color: #ffbe32; }
+      .status-pill.success   { border-color: rgba(74,222,128,.35);  color: #4ade80; }
+      .status-pill.error     { border-color: rgba(255,120,120,.35); color: #ff7878; }
+      .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+      .status-dot.pulse { animation: dotPulse 1.2s ease-in-out infinite; }
+      @keyframes dotPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .25; transform: scale(.6); } }
+
+      /* ── Camera toggle ── */
+      .cam-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 9px 24px; border-radius: 24px; border: 1px solid rgba(110,231,243,.28); background: rgba(110,231,243,.07); color: #acd9e5; font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: .2s; letter-spacing: .3px; }
+      .cam-toggle:hover { background: rgba(110,231,243,.13); border-color: rgba(110,231,243,.5); color: #6ee7f3; }
+      .cam-toggle.running { border-color: rgba(255,120,120,.28); background: rgba(255,120,120,.07); color: #ff9090; }
+      .cam-toggle.running:hover { background: rgba(255,120,120,.14); border-color: rgba(255,120,120,.5); }
+
+      /* ── Result panel ── */
+      #scanResult { margin-top: 16px; border-radius: 14px; padding: 20px 18px; display: none; animation: resultIn .3s cubic-bezier(.2,.9,.3,1); }
+      @keyframes resultIn { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+      #scanResult.success { background: linear-gradient(135deg, rgba(74,222,128,.07), rgba(110,231,243,.03)); border: 1px solid rgba(74,222,128,.22); }
+      #scanResult.error   { background: rgba(255,120,120,.06); border: 1px solid rgba(255,120,120,.2); }
+      .result-icon { font-size: 2rem; margin-bottom: 8px; }
+      .result-icon.success { color: #4ade80; }
+      .result-icon.error   { color: #ff7878; }
+      .result-title { font-size: .9rem; font-weight: 700; margin: 0 0 4px; }
+      .result-title.success { color: #4ade80; }
+      .result-title.error   { color: #ff7878; }
+      .result-project-name { font-size: 1rem; font-weight: 600; color: #eaf6fb; margin: 0 0 14px; }
+      .result-msg { font-size: .8rem; color: var(--muted); margin: 0 0 14px; }
+      .countdown-track { height: 3px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+      .countdown-fill { height: 100%; background: linear-gradient(90deg, #4ade80, #6ee7f3); border-radius: 3px; width: 100%; }
+      .result-redirect-text { font-size: .73rem; color: var(--muted); text-align: center; }
+
+      /* ── Divider ── */
+      .scanner-divider { display: flex; align-items: center; gap: 10px; margin: 20px 0 14px; color: var(--muted); font-size: .75rem; opacity: .6; }
+      .scanner-divider::before, .scanner-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.07); }
+
+      /* ── Manual input ── */
+      .manual-wrap { display: flex; gap: 8px; }
+      .manual-input { flex: 1; border-radius: 10px; font-size: .82rem; padding: 10px 14px; margin: 0; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); color: #eaf6fb; font-family: inherit; outline: none; transition: border .2s, background .2s; }
+      .manual-input:focus { border-color: rgba(110,231,243,.4); background: rgba(110,231,243,.03); }
+      .manual-input::placeholder { color: rgba(255,255,255,.22); }
+      .manual-btn { flex-shrink: 0; padding: 10px 16px; border-radius: 10px; border: 1px solid rgba(110,231,243,.3); background: rgba(110,231,243,.08); color: #6ee7f3; font-family: inherit; font-size: .82rem; font-weight: 600; cursor: pointer; transition: .2s; }
+      .manual-btn:hover { background: rgba(110,231,243,.16); border-color: rgba(110,231,243,.55); }
     </style>
   </head>
 
@@ -71,30 +140,60 @@
             <i class="fa-solid fa-arrow-left"></i> Back to Hub
           </a>
 
-          <p class="scanner-title"><i class="fa-solid fa-qrcode" style="color:#6ee7f3;margin-right:8px;"></i>Project Scanner</p>
-          <p class="scanner-subtitle">Point your camera at a NexCore project code to open it.</p>
-
-          <div id="reader"></div>
-
-          <div class="camera-toggle">
-            <button class="cam-btn active" id="btnStart"><i class="fa-solid fa-camera"></i> Start Camera</button>
-            <button class="cam-btn" id="btnStop"><i class="fa-solid fa-stop"></i> Stop</button>
+          <div class="scanner-header">
+            <div class="scanner-header-icon"><i class="fa-solid fa-qrcode"></i></div>
+            <div>
+              <p class="scanner-title">Project Scanner</p>
+              <p class="scanner-subtitle">Scan a NexCore project QR code to open it</p>
+            </div>
           </div>
 
-          <p class="scanner-status" id="scanStatus">Initializing camera…</p>
-
-          <div class="scanner-divider">or paste a code manually</div>
-
-          <div class="scanner-manual">
-            <input type="text" id="manualInput" placeholder="NXC1.xxxxxx.xxxxxx" autocomplete="off" spellcheck="false">
-            <button id="manualVerifyBtn"><i class="fa-solid fa-check"></i> Verify</button>
+          <!-- Viewfinder -->
+          <div class="viewfinder-wrap">
+            <div id="reader"></div>
+            <div class="cam-placeholder" id="camPlaceholder">
+              <i class="fa-solid fa-camera-slash"></i>
+              <p>Camera off — press Start to scan</p>
+            </div>
+            <div class="vf-dim"></div>
+            <div class="vf-corners-wrap">
+              <div class="vf-box" id="vfBox">
+                <div class="vf-box-inner" id="vfBoxInner"></div>
+              </div>
+            </div>
+            <div class="scan-line" id="scanLine"></div>
           </div>
 
+          <!-- Status + toggle -->
+          <div class="status-row">
+            <div class="status-pill" id="statusPill">
+              <span class="status-dot" id="statusDot"></span>
+              <span id="statusText">Camera off</span>
+            </div>
+            <button class="cam-toggle" id="camToggleBtn">
+              <i class="fa-solid fa-camera" id="camToggleIcon"></i>
+              <span id="camToggleLabel">Start Camera</span>
+            </button>
+          </div>
+
+          <!-- Result panel -->
           <div id="scanResult">
+            <div class="result-icon" id="resultIcon"></div>
             <p class="result-title" id="resultTitle"></p>
+            <p class="result-project-name" id="resultProjectName" style="display:none;"></p>
             <p class="result-msg" id="resultMsg"></p>
-            <a id="resultGoBtn" class="btn primary" style="display:none;width:100%;justify-content:center;box-sizing:border-box;margin-top:4px;"></a>
-            <p class="result-redirect" id="resultRedirectMsg"></p>
+            <a id="resultGoBtn" class="btn primary" style="display:none;width:100%;justify-content:center;box-sizing:border-box;margin-bottom:12px;"></a>
+            <div id="resultCountdownWrap" style="display:none;">
+              <div class="countdown-track"><div class="countdown-fill" id="countdownFill"></div></div>
+              <p class="result-redirect-text" id="resultRedirectMsg"></p>
+            </div>
+          </div>
+
+          <!-- Manual input -->
+          <div class="scanner-divider">or paste a code manually</div>
+          <div class="manual-wrap">
+            <input class="manual-input" type="text" id="manualInput" placeholder="NXC1.xxxxxx.xxxxxx" autocomplete="off" spellcheck="false">
+            <button class="manual-btn" id="manualVerifyBtn"><i class="fa-solid fa-arrow-right"></i> Verify</button>
           </div>
 
         </div>
@@ -107,37 +206,90 @@
 
     <script>
       let html5QrScanner = null;
-      let lastScanned = null;
-      let scanCooldown = false;
-      let redirectTimer = null;
+      let isRunning      = false;
+      let lastScanned    = null;
+      let scanCooldown   = false;
+      let redirectTimer  = null;
 
-      const statusEl = document.getElementById('scanStatus');
-      const resultEl = document.getElementById('scanResult');
-      const resultTitle = document.getElementById('resultTitle');
-      const resultMsg = document.getElementById('resultMsg');
-      const resultGoBtn = document.getElementById('resultGoBtn');
-      const resultRedirect = document.getElementById('resultRedirectMsg');
-      const btnStart = document.getElementById('btnStart');
-      const btnStop = document.getElementById('btnStop');
+      const statusPill    = document.getElementById('statusPill');
+      const statusDot     = document.getElementById('statusDot');
+      const statusText    = document.getElementById('statusText');
+      const resultEl      = document.getElementById('scanResult');
+      const resultIcon    = document.getElementById('resultIcon');
+      const resultTitle   = document.getElementById('resultTitle');
+      const resultPName   = document.getElementById('resultProjectName');
+      const resultMsg     = document.getElementById('resultMsg');
+      const resultGoBtn   = document.getElementById('resultGoBtn');
+      const resultCdWrap  = document.getElementById('resultCountdownWrap');
+      const countdownFill = document.getElementById('countdownFill');
+      const resultRedirect= document.getElementById('resultRedirectMsg');
+      const camToggleBtn  = document.getElementById('camToggleBtn');
+      const camToggleIcon = document.getElementById('camToggleIcon');
+      const camToggleLbl  = document.getElementById('camToggleLabel');
+      const vfBox         = document.getElementById('vfBox');
+      const vfBoxInner    = document.getElementById('vfBoxInner');
+      const scanLine      = document.getElementById('scanLine');
+      const camPlaceholder= document.getElementById('camPlaceholder');
 
-      function setStatus(msg, isScanning) {
-        statusEl.textContent = msg;
-        statusEl.className = 'scanner-status' + (isScanning ? ' scanning' : '');
+      function setStatus(type, msg) {
+        statusPill.className = 'status-pill ' + (type || '');
+        statusText.textContent = msg;
+        statusDot.className = 'status-dot' + (type === 'scanning' || type === 'verifying' ? ' pulse' : '');
+      }
+
+      function setCorners(state) {
+        vfBox.className     = 'vf-box '      + (state || '');
+        vfBoxInner.className= 'vf-box-inner '+ (state || '');
+      }
+
+      function setScanLine(active) {
+        scanLine.className = 'scan-line' + (active ? ' active' : '');
+      }
+
+      function setCamToggle(running) {
+        isRunning = running;
+        camToggleBtn.className = 'cam-toggle' + (running ? ' running' : '');
+        camToggleIcon.className = running ? 'fa-solid fa-stop' : 'fa-solid fa-camera';
+        camToggleLbl.textContent = running ? 'Stop Camera' : 'Start Camera';
       }
 
       function showResult(type, title, msg, redirectUrl, projectName) {
         resultEl.style.display = 'block';
-        resultEl.className = type === 'success' ? 'success' : 'error';
+        resultEl.className = type;
+
+        resultIcon.className = 'result-icon ' + type;
+        resultIcon.innerHTML = type === 'success'
+          ? '<i class="fa-solid fa-circle-check"></i>'
+          : '<i class="fa-solid fa-circle-xmark"></i>';
+
         resultTitle.textContent = title;
-        resultTitle.className = 'result-title ' + (type === 'success' ? 'success' : 'error');
-        resultMsg.textContent = msg;
+        resultTitle.className   = 'result-title ' + type;
+        resultMsg.textContent   = msg;
+
+        if (type === 'success' && projectName) {
+          resultPName.textContent   = projectName;
+          resultPName.style.display = 'block';
+        } else {
+          resultPName.style.display = 'none';
+        }
 
         if (type === 'success' && redirectUrl) {
-          resultGoBtn.style.display = 'flex';
-          resultGoBtn.textContent = `Open "${projectName}"`;
-          resultGoBtn.href = redirectUrl;
+          resultGoBtn.style.display  = 'flex';
+          resultGoBtn.textContent    = 'Open Project';
+          resultGoBtn.href           = redirectUrl;
+          resultCdWrap.style.display = 'block';
+
+          // Countdown bar — drain from 100% to 0% over 3 s
           let countdown = 3;
+          countdownFill.style.transition = 'none';
+          countdownFill.style.width = '100%';
           resultRedirect.textContent = `Redirecting in ${countdown}s…`;
+
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            countdownFill.style.transition = `width ${countdown}s linear`;
+            countdownFill.style.width = '0%';
+          }));
+
           clearInterval(redirectTimer);
           redirectTimer = setInterval(() => {
             countdown--;
@@ -149,8 +301,8 @@
             }
           }, 1000);
         } else {
-          resultGoBtn.style.display = 'none';
-          resultRedirect.textContent = '';
+          resultGoBtn.style.display  = 'none';
+          resultCdWrap.style.display = 'none';
           clearInterval(redirectTimer);
         }
       }
@@ -159,15 +311,21 @@
         if (scanCooldown) return;
         const trimmed = rawCode.trim();
         if (!trimmed.startsWith('NXC1.')) {
+          setCorners('error');
+          setScanLine(false);
+          setStatus('error', 'Not a NexCore code');
           showResult('error', 'Not a NexCore Code', 'This QR code is not a NexCore project code.');
           return;
         }
         if (trimmed === lastScanned) return;
-        lastScanned = trimmed;
+        lastScanned  = trimmed;
         scanCooldown = true;
         setTimeout(() => { scanCooldown = false; }, 3000);
 
-        setStatus('Verifying code…', true);
+        setCorners('');
+        setScanLine(false);
+        setStatus('verifying', 'Verifying…');
+
         try {
           const resp = await fetch('/api/verify-scanner-code', {
             method: 'POST',
@@ -176,15 +334,21 @@
           });
           const data = await resp.json();
           if (data.valid) {
-            setStatus('Code verified!', false);
-            showResult('success', '✓ Project found', data.project.name, data.redirect_url, data.project.name);
+            setCorners('success');
+            setStatus('success', 'Verified!');
+            showResult('success', 'Project found', '', data.redirect_url, data.project.name);
           } else {
-            setStatus('Invalid code.', false);
+            setCorners('error');
+            setStatus('error', 'Invalid code');
             showResult('error', 'Invalid Code', data.error || 'This code could not be verified.');
             lastScanned = null;
+            setTimeout(() => {
+              if (isRunning) { setCorners('scanning'); setScanLine(true); setStatus('scanning', 'Scanning…'); }
+            }, 2500);
           }
         } catch {
-          setStatus('Network error.', false);
+          setCorners('error');
+          setStatus('error', 'Network error');
           showResult('error', 'Network Error', 'Could not reach the server. Check your connection.');
           lastScanned = null;
         }
@@ -200,47 +364,65 @@
 
       function launchCamera() {
         html5QrScanner = new Html5Qrcode('reader');
-        setStatus('Camera starting…', true);
-        btnStart.classList.add('active');
-        btnStop.classList.remove('active');
+        camPlaceholder.style.display = 'none';
+        setCamToggle(true);
+        setCorners('scanning');
+        setStatus('scanning', 'Starting camera…');
 
         Html5Qrcode.getCameras().then(cameras => {
           if (!cameras || cameras.length === 0) {
-            setStatus('No camera found.', false);
+            setStatus('error', 'No camera found');
+            setCamToggle(false);
+            setCorners('');
+            camPlaceholder.style.display = 'flex';
             return;
           }
-          // Prefer back camera
+          // Prefer rear/back camera on mobile
           const cam = cameras.find(c => /back|rear|environment/i.test(c.label)) || cameras[cameras.length - 1];
           html5QrScanner.start(
             cam.id,
-            { fps: 10, qrbox: { width: 240, height: 240 } },
+            { fps: 10, qrbox: { width: 200, height: 200 } },
             (decodedText) => { verifyScanCode(decodedText); },
             () => {}
           ).then(() => {
-            setStatus('Scanning… point at a NexCore code.', true);
-            btnStart.classList.remove('active');
+            setStatus('scanning', 'Scanning… point at a NexCore code');
+            setScanLine(true);
           }).catch(err => {
-            setStatus('Camera access denied or unavailable.', false);
+            setStatus('error', 'Camera access denied');
+            setCamToggle(false);
+            setCorners('');
+            camPlaceholder.style.display = 'flex';
             console.warn('Camera start error:', err);
           });
         }).catch(err => {
-          setStatus('Could not access cameras.', false);
+          setStatus('error', 'Could not access cameras');
+          setCamToggle(false);
+          setCorners('');
+          camPlaceholder.style.display = 'flex';
           console.warn('getCameras error:', err);
         });
       }
 
       function stopScanner() {
+        setScanLine(false);
+        setCorners('');
         if (html5QrScanner) {
           html5QrScanner.stop().then(() => {
-            setStatus('Camera stopped.', false);
-            btnStop.classList.add('active');
-            btnStart.classList.remove('active');
+            setCamToggle(false);
+            setStatus('', 'Camera off');
+            camPlaceholder.style.display = 'flex';
           }).catch(() => {});
+        } else {
+          setCamToggle(false);
+          setStatus('', 'Camera off');
+          camPlaceholder.style.display = 'flex';
         }
       }
 
-      btnStart.addEventListener('click', startScanner);
-      btnStop.addEventListener('click', stopScanner);
+      camToggleBtn.addEventListener('click', () => {
+        if (isRunning) stopScanner();
+        else startScanner();
+      });
 
       document.getElementById('manualVerifyBtn').addEventListener('click', () => {
         const val = document.getElementById('manualInput').value.trim();
@@ -261,7 +443,7 @@
         if (html5QrScanner) html5QrScanner.stop().catch(() => {});
       });
 
-      // Check for ?code= param (passed from other pages)
+      // Auto-verify ?code= URL param
       (function checkUrlParam() {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
@@ -271,12 +453,12 @@
         }
       })();
 
-      // Auto-start camera after html5-qrcode loads
+      // Auto-start camera after library loads
       window.addEventListener('load', () => {
         if (typeof Html5Qrcode !== 'undefined') {
           startScanner();
         } else {
-          setStatus('QR library failed to load.', false);
+          setStatus('error', 'QR library failed to load');
         }
       });
     </script>
