@@ -510,6 +510,28 @@
             color: #6ee7f3;
             border: 1px solid rgba(110,231,243,0.2);
         }
+        .payment-badge.instant {
+            background: rgba(37,211,102,0.12);
+            color: #25d366;
+            border: 1px solid rgba(37,211,102,0.3);
+        }
+
+        /* PayPal fee note */
+        .paypal-fee-note {
+            display: none;
+            align-items: flex-start;
+            gap: 9px;
+            background: rgba(0,112,186,0.06);
+            border: 1px solid rgba(0,112,186,0.2);
+            border-radius: 9px;
+            padding: 11px 14px;
+            font-size: 13px;
+            color: #9aa3b2;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+        .paypal-fee-note i { color: #0070ba; margin-top: 2px; flex-shrink: 0; }
+        .paypal-fee-note strong { color: #eaf6fb; }
 
         /* PayPal button */
         .paypal-btn-wrap { margin: 0 0 18px; }
@@ -923,7 +945,7 @@
                                     <div class="payment-icon" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></div>
                                     <div class="payment-info">
                                         <span class="payment-name">WhatsApp</span>
-                                        <span class="payment-desc">Contact us on WhatsApp to complete payment · <strong>+968 93281000</strong></span>
+                                        <span class="payment-desc">Contact us on WhatsApp to complete payment · <strong>+968 93281000</strong><br><span style="color:#ffb432;"><i class="fa-solid fa-clock" style="font-size:10px;"></i> Activated within ~48 hours after payment</span></span>
                                     </div>
                                     <div class="payment-badge recommended">Recommended</div>
                                 </div>
@@ -934,9 +956,10 @@
                                     <div class="payment-icon" style="color:#0070ba;"><i class="fa-brands fa-paypal"></i></div>
                                     <div class="payment-info">
                                         <span class="payment-name">PayPal</span>
-                                        <span class="payment-desc">Pay securely via PayPal in USD · 1 OMR = 2.60 USD</span>
+                                        <span class="payment-desc">Pay securely via PayPal in USD · 1 OMR = 2.60 USD<br><span style="color:#25d366;"><i class="fa-solid fa-bolt" style="font-size:10px;"></i> Instant activation — no waiting</span><br><span style="color:#9aa3b2;font-size:11px;"><i class="fa-solid fa-circle-info" style="font-size:10px;"></i> A small PayPal processing fee is added to the total</span></span>
                                     </div>
                                     <span id="paypalAmountBadge" class="payment-badge" style="background:rgba(0,112,186,0.15);color:#0070ba;border:1px solid rgba(0,112,186,0.3);"></span>
+                                    <span class="payment-badge instant"><i class="fa-solid fa-bolt"></i> Instant</span>
                                 </div>
                             </label>
                         </div>
@@ -944,6 +967,7 @@
 
                     <!-- PayPal Button Container -->
                     <div id="paypalButtonContainer" class="paypal-btn-wrap hidden">
+                        <div id="paypalFeeNote" class="paypal-fee-note"></div>
                         <div id="paypal-button-container"></div>
                         <p id="paypalStatusMsg" class="submit-note" style="display:none;"></p>
                     </div>
@@ -953,7 +977,7 @@
                         <button type="submit" class="btn primary submit-order-btn" id="submitOrderBtn">
                             <i class="fa-solid fa-paper-plane"></i> Submit Order
                         </button>
-                        <p class="submit-note">
+                        <p class="submit-note" id="activationNote">
                             <i class="fa-solid fa-clock"></i>
                             Access activated within approximately <strong>48 hours</strong> after payment confirmation.
                         </p>
@@ -1003,6 +1027,14 @@
         //  Feature Catalog & Bundle Definitions
         // ─────────────────────────────────────────────────────────────────
         const OMR_TO_USD = 2.60;
+
+        // PayPal processing fee gross-up (3.49% + $0.49 fixed)
+        // Formula ensures we receive baseUsd after PayPal deducts their fee
+        const PAYPAL_FEE_RATE  = 0.0349;
+        const PAYPAL_FEE_FIXED = 0.49;
+        function calcPayPalUsd(baseUsd) {
+            return Math.ceil(((baseUsd + PAYPAL_FEE_FIXED) / (1 - PAYPAL_FEE_RATE)) * 100) / 100;
+        }
 
         const FEATURE_CATALOG = {
             support_1week:  { label: 'Support — 1 Week',    price: 0.250 },
@@ -1092,9 +1124,9 @@
             document.getElementById('priceBarTotal').textContent = totalFixed.toFixed(3) + ' OMR';
             document.getElementById('priceBarUSD').textContent = '≈ $' + usd.toFixed(2);
 
-            // PayPal amount hint badge
+            // PayPal amount hint badge (shows grossed-up amount)
             const ppBadge = document.getElementById('paypalAmountBadge');
-            if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${usd.toFixed(2)} USD` : '';
+            if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${calcPayPalUsd(usd).toFixed(2)} USD` : '';
 
             // Re-render PayPal buttons if PayPal is selected (amount changed)
             if (document.querySelector('input[name="payment"]:checked')?.value === 'paypal' && window._paypalLoaded) {
@@ -1135,6 +1167,7 @@
             const method = document.querySelector('input[name="payment"]:checked')?.value;
             const ppContainer = document.getElementById('paypalButtonContainer');
             const submitWrap  = document.getElementById('submitButtonWrap');
+            const activationNote = document.getElementById('activationNote');
             if (method === 'paypal') {
                 ppContainer.classList.remove('hidden');
                 submitWrap.classList.add('hidden');
@@ -1142,6 +1175,9 @@
             } else {
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
+                if (activationNote) {
+                    activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Access activated within approximately <strong>48 hours</strong> after payment confirmation.';
+                }
             }
         }
 
@@ -1181,8 +1217,18 @@
                 return;
             }
 
-            const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
-            const totalUsd = (Math.round(totalOmr * OMR_TO_USD * 100) / 100).toFixed(2);
+            const totalOmr  = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+            const baseUsd   = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+            const grossUsd  = calcPayPalUsd(baseUsd);
+            const feeUsd    = (grossUsd - baseUsd).toFixed(2);
+            const totalUsd  = grossUsd.toFixed(2);
+
+            // Show fee breakdown note
+            const feeNoteEl = document.getElementById('paypalFeeNote');
+            if (feeNoteEl) {
+                feeNoteEl.style.display = 'flex';
+                feeNoteEl.innerHTML = `<i class="fa-solid fa-circle-info"></i><div>Your total includes a <strong>$${feeUsd} PayPal processing fee</strong> (3.49% + $0.49). Base price: <strong>$${baseUsd.toFixed(2)}</strong> &rarr; charged: <strong>$${totalUsd}</strong>.</div>`;
+            }
 
             const nameEl  = document.getElementById('orderName');
             const emailEl = document.getElementById('orderEmail');
@@ -1259,7 +1305,7 @@
 
                         // Redirect to confirmation page
                         const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
-                        const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+                        const totalUsd = calcPayPalUsd(Math.round(totalOmr * OMR_TO_USD * 100) / 100);
                         sessionStorage.setItem('nxc_order', JSON.stringify({
                             bill_id:         result.bill_id,
                             user_name:       nameEl.value.trim(),
