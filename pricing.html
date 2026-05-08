@@ -1258,7 +1258,6 @@
                         }
 
                         // Redirect to confirmation page
-                        const features = getSelectedFeatures();
                         const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
                         const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
                         sessionStorage.setItem('nxc_order', JSON.stringify({
@@ -1461,7 +1460,6 @@
                 }
 
                 // Redirect to confirmation page
-                const features = getSelectedFeatures();
                 const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
                 const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
                 sessionStorage.setItem('nxc_order', JSON.stringify({
