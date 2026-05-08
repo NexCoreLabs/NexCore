@@ -934,10 +934,6 @@ a.project-card:hover .id {
     opacity: 1
 }
 
-.tool-card img#xai {
-    width: 85px
-}
-
 .contact-grid {
     display: grid;
     grid-template-columns: 1fr 420px;
