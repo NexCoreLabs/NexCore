@@ -12,8 +12,8 @@
     <meta name="theme-color" content="#0a0b1c">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <title>NexCore Labs | Pricing</title>
-    <meta name="description" content="NexCore Labs pricing plans - transparent, affordable digital solutions for student projects. Multiple tiers to fit your needs.">
+    <title>NexCore Labs | Access &amp; Pricing</title>
+    <meta name="description" content="Build your own NexCore access plan. Choose the features you need and pay only for what you use. Flexible pricing for external users.">
 
     <!-- Facebook Meta Tags -->
     <meta property="og:url" content="https://nexcorelabs.vercel.app/pricing.html">
@@ -46,6 +46,616 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* ─── Pricing Page Custom Styles ─────────────────────────────────── */
+
+        /* Hero */
+        .pricing-hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 70px;
+        }
+        .pricing-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.25);
+            border-radius: 20px;
+            color: #6ee7f3;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .pricing-hero h1 {
+            font-size: clamp(1.9rem, 5vw, 2.8rem);
+            font-weight: 800;
+            margin: 0 0 14px;
+            line-height: 1.2;
+        }
+        .pricing-hero p {
+            color: #9aa3b2;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* What's Free */
+        .free-card-section {
+            max-width: 860px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+        }
+        .free-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 24px;
+            background: linear-gradient(135deg, rgba(110,231,243,0.07), rgba(110,231,243,0.02));
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 18px;
+            padding: 30px;
+        }
+        .free-card-icon {
+            font-size: 2.4rem;
+            color: #6ee7f3;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+        .free-card-content h2 {
+            margin: 0 0 8px;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        .free-card-content p {
+            color: #9aa3b2;
+            font-size: 14px;
+            margin: 0 0 14px;
+        }
+        .free-card-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 6px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        .free-card-content ul li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e0;
+            font-size: 14px;
+        }
+        .free-card-content ul li i { color: #6ee7f3; font-size: 12px; }
+        @media (max-width: 600px) {
+            .free-card { flex-direction: column; gap: 16px; }
+        }
+
+        /* Builder Section */
+        .builder-section {
+            max-width: 960px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        .builder-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .builder-header h2 { font-size: 1.7rem; font-weight: 800; margin: 0 0 8px; }
+        .builder-header p { color: #9aa3b2; margin: 0; font-size: 15px; }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 0;
+            margin: 0 auto 32px;
+            width: fit-content;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .mode-btn {
+            padding: 10px 24px;
+            background: transparent;
+            border: none;
+            border-radius: 9px;
+            color: #9aa3b2;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: Inter, sans-serif;
+        }
+        .mode-btn.active {
+            background: rgba(110,231,243,0.15);
+            color: #6ee7f3;
+            border: 1px solid rgba(110,231,243,0.3);
+        }
+        .mode-btn:hover:not(.active) { color: #eaf6fb; }
+
+        .builder-mode { display: none; }
+        .builder-mode.active { display: block; }
+
+        /* Feature Groups */
+        .feature-group {
+            background: rgba(10,11,28,0.5);
+            border: 1px solid rgba(110,231,243,0.14);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .feature-group-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .feature-group-header > i {
+            font-size: 1.5rem;
+            color: #6ee7f3;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .feature-group-header h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; }
+        .feature-group-header p { margin: 0; color: #9aa3b2; font-size: 13px; }
+
+        /* Support Options */
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .support-option { cursor: pointer; }
+        .support-option input[type="radio"] { display: none; }
+        .option-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-card:hover { border-color: rgba(110,231,243,0.3); }
+        .support-option input:checked + .option-card {
+            background: rgba(110,231,243,0.12);
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 1px rgba(110,231,243,0.3);
+        }
+        .option-name { font-size: 13px; font-weight: 600; color: #eaf6fb; }
+        .option-price { font-size: 12px; color: #9aa3b2; }
+        .option-price.free { color: #6ee7f3; font-weight: 600; }
+        .support-option input:checked + .option-card .option-price { color: #6ee7f3; font-weight: 600; }
+
+        /* Add-ons */
+        .addons-grid { display: flex; flex-direction: column; gap: 10px; }
+        .addon-option { cursor: pointer; }
+        .addon-option input[type="checkbox"] { display: none; }
+        .addon-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .addon-card:hover { border-color: rgba(110,231,243,0.3); }
+        .addon-option input:checked + .addon-card {
+            background: rgba(110,231,243,0.1);
+            border-color: #6ee7f3;
+        }
+        .addon-icon { font-size: 1.2rem; color: #6ee7f3; width: 28px; text-align: center; flex-shrink: 0; }
+        .addon-info { flex: 1; }
+        .addon-name { display: block; font-size: 14px; font-weight: 600; color: #eaf6fb; }
+        .addon-desc { display: block; font-size: 12px; color: #9aa3b2; margin-top: 2px; }
+        .addon-price { font-size: 14px; font-weight: 700; color: #6ee7f3; white-space: nowrap; }
+        /* Lifetime — always enabled */
+        .addon-forced { cursor: default; }
+        .addon-forced .addon-card {
+            background: rgba(110,231,243,0.12);
+            border-color: #6ee7f3;
+            cursor: default;
+        }
+        .addon-forced .addon-card:hover { border-color: #6ee7f3; }
+        .addon-lock-badge {
+            font-size: 11px; font-weight: 700; color: #0d1b2a;
+            background: #6ee7f3; border-radius: 4px;
+            padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+        /* Soon — disabled */
+        .addon-soon { cursor: not-allowed; }
+        .addon-soon .addon-card { opacity: 0.42; cursor: not-allowed; }
+        .addon-soon .addon-card:hover { border-color: rgba(255,255,255,0.08); }
+        .soon-badge {
+            font-size: 11px; font-weight: 600; color: #9aa3b2;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+
+        /* Price Bar */
+        .price-bar {
+            position: sticky;
+            bottom: 20px;
+            background: linear-gradient(135deg, rgba(15,16,40,0.97), rgba(10,11,28,0.97));
+            border: 1px solid rgba(110,231,243,0.3);
+            border-radius: 14px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        .price-bar-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+        }
+        .price-feature-chip {
+            padding: 4px 10px;
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #6ee7f3;
+        }
+        .no-features { font-size: 13px; color: #9aa3b2; }
+        .price-bar-total {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .price-bar-label { font-size: 13px; color: #9aa3b2; }
+        .price-bar-amount { font-size: 1.4rem; font-weight: 800; color: #6ee7f3; }
+        .price-bar-usd { font-size: 13px; color: #9aa3b2; }
+
+        /* Budget Mode */
+        .budget-input-section { max-width: 480px; margin: 0 auto 30px; }
+        .budget-input-section label {
+            display: block;
+            color: #eaf6fb;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .budget-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .budget-currency {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.25);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: #6ee7f3;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .budget-input-wrap input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 15px;
+            font-family: Inter, sans-serif;
+        }
+        .budget-input-wrap input:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110,231,243,0.12);
+        }
+        .bundle-results { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 16px; margin-top: 10px; }
+        .bundle-results.hidden { display: none; }
+        .bundle-card {
+            background: rgba(10,11,28,0.5);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 14px;
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bundle-card:hover {
+            border-color: rgba(110,231,243,0.45);
+            transform: translateY(-2px);
+        }
+        .bundle-card.no-match {
+            opacity: 0.55;
+            cursor: default;
+        }
+        .bundle-card.no-match:hover { transform: none; }
+        .bundle-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+        .bundle-price { font-size: 1.3rem; font-weight: 800; color: #6ee7f3; margin-bottom: 8px; }
+        .bundle-features-list { list-style: none; padding: 0; margin: 0 0 14px; }
+        .bundle-features-list li {
+            font-size: 12px;
+            color: #9aa3b2;
+            padding: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bundle-features-list li i { color: #6ee7f3; font-size: 10px; }
+        .bundle-desc { font-size: 12px; color: #9aa3b2; margin-bottom: 12px; }
+        .bundle-fits { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; }
+        .bundle-fits.fits { background: rgba(110,231,243,0.12); color: #6ee7f3; border: 1px solid rgba(110,231,243,0.2); }
+        .bundle-fits.over { background: rgba(255,120,120,0.1); color: #ff7878; border: 1px solid rgba(255,120,120,0.2); }
+        .bundle-no-result {
+            text-align: center;
+            color: #9aa3b2;
+            padding: 40px 20px;
+            grid-column: 1 / -1;
+            font-size: 14px;
+        }
+
+        /* Order Form Section */
+        .order-form-section {
+            max-width: 760px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        .order-form-container {
+            background: rgba(10,11,28,0.55);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 20px;
+            padding: 36px;
+            backdrop-filter: blur(8px);
+        }
+        .order-form-header { margin-bottom: 28px; }
+        .order-form-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 6px;
+        }
+        .order-form-header h2 i { color: #6ee7f3; }
+        .order-form-header p { color: #9aa3b2; font-size: 14px; margin: 0; }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(110,231,243,0.04);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 26px;
+            font-size: 14px;
+        }
+        .order-summary-empty { color: #9aa3b2; font-size: 13px; }
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: #cbd5e0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .order-summary-row:last-child { border-bottom: none; }
+        .order-summary-row.total {
+            font-weight: 700;
+            color: #eaf6fb;
+            font-size: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(110,231,243,0.2);
+            border-bottom: none;
+            margin-top: 4px;
+        }
+        .order-summary-row .row-price { color: #6ee7f3; font-weight: 600; }
+
+        /* Form Fields */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-field label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #eaf6fb;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        .form-field label .optional {
+            color: #9aa3b2;
+            font-weight: 400;
+            font-size: 12px;
+        }
+        .field-hint { cursor: help; color: #6ee7f3; font-size: 12px; }
+        .form-field input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-field input:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110,231,243,0.12);
+        }
+        .form-field input.invalid { border-color: #ff7878; }
+        .form-field input.warning { border-color: #ffb432; }
+        .field-note {
+            font-size: 12px;
+            margin-top: 5px;
+            min-height: 16px;
+        }
+        .field-note.warn { color: #ffb432; }
+        .field-note.ok { color: #7fff7f; }
+        .field-note.err { color: #ff7878; }
+
+        /* Payment Selector */
+        .payment-selector { margin-bottom: 22px; }
+        .payment-selector h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #eaf6fb;
+            margin: 0 0 12px;
+        }
+        .payment-options { display: flex; flex-direction: column; gap: 10px; }
+        .payment-option { cursor: pointer; }
+        .payment-option input[type="radio"] { display: none; }
+        .payment-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .payment-card:hover { border-color: rgba(110,231,243,0.3); }
+        .payment-option input:checked + .payment-card {
+            background: rgba(110,231,243,0.08);
+            border-color: #6ee7f3;
+        }
+        .payment-icon { font-size: 1.5rem; flex-shrink: 0; width: 28px; text-align: center; }
+        .payment-info { flex: 1; }
+        .payment-name { display: block; font-size: 14px; font-weight: 600; color: #eaf6fb; }
+        .payment-desc { display: block; font-size: 12px; color: #9aa3b2; margin-top: 3px; }
+        .payment-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .payment-badge.recommended {
+            background: rgba(110,231,243,0.12);
+            color: #6ee7f3;
+            border: 1px solid rgba(110,231,243,0.2);
+        }
+
+        /* PayPal button */
+        .paypal-btn-wrap { margin: 0 0 18px; }
+        .paypal-btn-wrap.hidden { display: none; }
+
+        /* Submit */
+        .submit-order-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-note {
+            text-align: center;
+            color: #9aa3b2;
+            font-size: 13px;
+            margin: 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .submit-note i { color: #6ee7f3; }
+
+        /* Success State */
+        .order-success {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .order-success.hidden { display: none; }
+        #orderForm.hidden { display: none; }
+        .success-icon { font-size: 4rem; color: #6ee7f3; margin-bottom: 12px; }
+        .order-success h2 { font-size: 1.6rem; font-weight: 800; margin: 0 0 24px; }
+        .bill-id-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(110,231,243,0.07);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 20px;
+        }
+        .bill-id-label { font-size: 13px; color: #9aa3b2; }
+        .bill-id-value { font-size: 1.6rem; font-weight: 800; color: #6ee7f3; letter-spacing: 3px; }
+        .btn-copy-bill {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.3);
+            color: #6ee7f3;
+            padding: 7px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn-copy-bill:hover { background: rgba(110,231,243,0.2); }
+        .activation-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255,180,50,0.08);
+            border: 1px solid rgba(255,180,50,0.2);
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin: 20px auto 0;
+            max-width: 440px;
+            font-size: 14px;
+            color: #cbd5e0;
+        }
+        .activation-notice i { color: #ffb432; }
+        .whatsapp-followup { margin-top: 24px; }
+        .whatsapp-followup.hidden { display: none; }
+        .whatsapp-followup p { color: #9aa3b2; font-size: 14px; margin-bottom: 12px; }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37,211,102,0.12) !important;
+            border: 1px solid rgba(37,211,102,0.35) !important;
+            color: #25d366 !important;
+        }
+        .whatsapp-btn:hover {
+            background: rgba(37,211,102,0.2) !important;
+        }
+
+        /* FAQ link row */
+        .faq-row {
+            text-align: center;
+            margin: 20px 0 50px;
+        }
+        .faq-row p { color: #9aa3b2; font-size: 14px; margin-bottom: 12px; }
+    </style>
     <!-- Vercel Web Analytics -->
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -111,93 +721,325 @@
     </header>
 
     <main>
-        <div class="pricing-container">
-            <div class="pricing-header">
-                <h1>Transparent Pricing for Your Project</h1>
-                <p>Choose the plan that fits your needs.</p>
-            </div>
+        <!-- Hero -->
+        <section class="pricing-hero">
+            <div class="pricing-hero-badge"><i class="fa-solid fa-tag"></i> Flexible Access</div>
+            <h1>Build Your NexCore Access</h1>
+            <p>No rigid plans. Pick the features you need and pay only for what you use. All prices in Omani Rial (OMR).</p>
+        </section>
 
-            <div class="pricing-cards" id="pricingCards">
-                <!-- Starter Plan -->
-                <div class="pricing-card">
-                    <div class="plan-icon"><i class="fa-solid fa-rocket"></i></div>
-                    <h3 class="plan-name">Starter</h3>
-                    <p class="plan-description">Perfect for small projects and proof of concepts</p>
-                    <div class="plan-price">
-                        <span class="price-currency">OMR</span><span class="price-amount" data-price="0">0</span><span class="price-period">Lifetime</span>
-                        <p class="price-note">Free Lifetime</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li>Special card on the Hub</li>
-                        <li>1-week of support</li>
-                        <li>You can avoid setup fee of 0.500 OMR</li>
-                        <li class="disabled">Independent page</li>
+        <!-- What's Free -->
+        <section class="free-card-section">
+            <div class="free-card">
+                <div class="free-card-icon"><i class="fa-solid fa-gift"></i></div>
+                <div class="free-card-content">
+                    <h2>Already free when you sign in</h2>
+                    <p>Create a NexCore account with your Google account and you instantly get:</p>
+                    <ul>
+                        <li><i class="fa-solid fa-check"></i> A project card showcased on the NexCore Hub</li>
+                        <li><i class="fa-solid fa-check"></i> Your own dedicated project page</li>
+                        <li><i class="fa-solid fa-check"></i> Access to the NexCore AI assistant</li>
+                        <li><i class="fa-solid fa-check"></i> Community features &amp; project tools</li>
                     </ul>
-                    <a class="btn primary" href="auth.html">Get Started</a>
-                </div>
-
-                <!-- Professional Plan -->
-                <div class="pricing-card">
-                    <div class="plan-icon"><i class="fa-solid fa-building"></i></div>
-                    <h3 class="plan-name">Professional</h3>
-                    <p class="plan-description">For large-scale projects needing advanced features</p>
-                    <div class="plan-price">
-                        <span class="price-currency">OMR</span><span class="price-amount" data-price="2.9">2.9</span><span class="price-period">Lifetime</span>
-                        <p class="price-note">One-time payment</p>
-                    </div>
-                    <ul class="plan-features">
-                        <li>Special card on the Hub</li>
-                        <li>1-month of support</li>
-                        <li>You can avoid setup fee of 0.500 OMR</li>
-                        <li>Independent page</li>
-                    </ul>
-                    <a class="btn ghost fade" href="auth.html">Go for it!</a>
+                    <a href="auth.html" class="btn primary" style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;">
+                        <i class="fa-brands fa-google"></i> Sign In — It's Free
+                    </a>
                 </div>
             </div>
+        </section>
 
-            <!-- Comparison Table -->
-            <div class="comparison-table">
-                <h2 style="text-align: center; margin-bottom: 40px;">Detailed Feature Comparison</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Feature</th>
-                            <th>Starter</th>
-                            <th>Professional</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Special card on the Hub</td>
-                            <td><span class="feature-check">✓</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>Support Duration</td>
-                            <td><span class="feature-check">1-week</span></td>
-                            <td><span class="feature-check">1-month</span></td>
-                        </tr>
-                        <tr>
-                            <td>Independent Page</td>
-                            <td><span class="feature-cross">✗</span></td>
-                            <td><span class="feature-check">✓</span></td>
-                        </tr>
-                        <tr>
-                            <td>Setup Fee</td>
-                            <td><span class="feature-check">Waived</span></td>
-                            <td><span class="feature-check">Waived</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Feature Builder -->
+        <section class="builder-section">
+            <div class="builder-header">
+                <h2>Enhance Your Project</h2>
+                <p>For external users who want extra features — choose what fits you best.</p>
             </div>
 
-            <!-- FAQ — see faq.html -->
-            <div style="text-align:center; margin: 50px 0 10px;">
-                <p style="color:#9aa3b2; font-size:14px; margin-bottom:14px;">Have questions about plans, payments, or cancellations?</p>
-                <a href="faq.html#pricing" class="btn ghost fade" onclick="sessionStorage.setItem('faqCategory','pricing')">
-                    <i class="fa-solid fa-circle-question" style="margin-right:7px;"></i>See Pricing FAQ
-                </a>
+            <!-- Mode Toggle -->
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modeBuildBtn" onclick="setMode('build')">
+                    <i class="fa-solid fa-sliders"></i> Pick Features
+                </button>
+                <button class="mode-btn" id="modeBudgetBtn" onclick="setMode('budget')">
+                    <i class="fa-solid fa-wallet"></i> Enter Budget
+                </button>
             </div>
+
+            <!-- ── BUILD MODE ── -->
+            <div id="buildMode" class="builder-mode active">
+                <!-- Support Duration -->
+                <div class="feature-group">
+                    <div class="feature-group-header">
+                        <i class="fa-solid fa-headset"></i>
+                        <div>
+                            <h3>Support Duration</h3>
+                            <p>Email &amp; WhatsApp-based technical guidance for your NexCore project. Pick one.</p>
+                        </div>
+                    </div>
+                    <div class="support-options">
+                        <label class="support-option">
+                            <input type="radio" name="support" value="none" data-price="0" checked>
+                            <div class="option-card">
+                                <span class="option-name">No Support</span>
+                                <span class="option-price free">Free</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1week" data-price="0.250">
+                            <div class="option-card">
+                                <span class="option-name">1 Week</span>
+                                <span class="option-price">0.250 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1month" data-price="0.500">
+                            <div class="option-card">
+                                <span class="option-name">1 Month</span>
+                                <span class="option-price">0.500 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_3months" data-price="1.000">
+                            <div class="option-card">
+                                <span class="option-name">3 Months</span>
+                                <span class="option-price">1.000 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_6months" data-price="1.500">
+                            <div class="option-card">
+                                <span class="option-name">6 Months</span>
+                                <span class="option-price">1.500 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1year" data-price="2.500">
+                            <div class="option-card">
+                                <span class="option-name">1 Year</span>
+                                <span class="option-price">2.500 OMR</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="feature-group">
+                    <div class="feature-group-header">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <div>
+                            <h3>Add-ons</h3>
+                            <p>Select any optional extras you'd like.</p>
+                        </div>
+                    </div>
+                    <div class="addons-grid">
+                        <label class="addon-option addon-forced">
+                            <input type="checkbox" name="addon" value="lifetime" data-price="0.950" data-label="Lifetime Access" checked disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-infinity"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Lifetime Access</span>
+                                    <span class="addon-desc">Your project never expires on NexCore</span>
+                                </div>
+                                <span class="addon-lock-badge">Always Included</span>
+                                <span class="addon-price">0.950 OMR</span>
+                            </div>
+                        </label>
+                        <label class="addon-option addon-soon">
+                            <input type="checkbox" name="addon" value="setup" data-price="0.450" data-label="Professional Setup" disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Professional Setup</span>
+                                    <span class="addon-desc">NexCore team professionally configures your project page</span>
+                                </div>
+                                <span class="soon-badge">Soon</span>
+                                <span class="addon-price">0.450 OMR</span>
+                            </div>
+                        </label>
+                        <label class="addon-option">
+                            <input type="checkbox" name="addon" value="priority" data-price="0.300" data-label="Priority Review">
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-bolt"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Priority Review</span>
+                                    <span class="addon-desc">Your project published within 24 hours, skip the queue</span>
+                                </div>
+                                <span class="addon-price">0.300 OMR</span>
+                            </div>
+                        </label>
+                        <label class="addon-option addon-soon">
+                            <input type="checkbox" name="addon" value="spotlight" data-price="0.750" data-label="Featured Spotlight" disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-star"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Featured Spotlight</span>
+                                    <span class="addon-desc">Highlighted on the NexCore Hub for 30 days</span>
+                                </div>
+                                <span class="soon-badge">Soon</span>
+                                <span class="addon-price">0.750 OMR</span>
+                            </div>
+                        </label>
+                        <label class="addon-option">
+                            <input type="checkbox" name="addon" value="badge" data-price="0.200" data-label="Custom Badge">
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-certificate"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Custom Badge</span>
+                                    <span class="addon-desc">Exclusive badge displayed on your project card</span>
+                                </div>
+                                <span class="addon-price">0.200 OMR</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div><!-- /#buildMode -->
+
+            <!-- ── BUDGET MODE ── -->
+            <div id="budgetMode" class="builder-mode">
+                <div class="budget-input-section">
+                    <label for="budgetInput">Enter your budget</label>
+                    <div class="budget-input-wrap">
+                        <span class="budget-currency">OMR</span>
+                        <input type="number" id="budgetInput" placeholder="e.g. 1.500" min="0" step="0.050"
+                               oninput="findBundles()">
+                        <button type="button" onclick="findBundles()" class="btn primary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Find Plans
+                        </button>
+                    </div>
+                </div>
+                <div id="bundleResults" class="bundle-results hidden"></div>
+            </div><!-- /#budgetMode -->
+
+            <!-- Live Price Bar -->
+            <div class="price-bar" id="priceBar">
+                <div class="price-bar-features" id="priceBarFeatures">
+                    <span class="no-features">No features selected yet</span>
+                </div>
+                <div class="price-bar-total">
+                    <span class="price-bar-label">Total</span>
+                    <span class="price-bar-amount" id="priceBarTotal">0.000 OMR</span>
+                    <span class="price-bar-usd" id="priceBarUSD">≈ $0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Form -->
+        <section class="order-form-section" id="orderFormSection">
+            <div class="order-form-container">
+                <div class="order-form-header">
+                    <h2><i class="fa-solid fa-file-signature"></i> Submit Your Order</h2>
+                    <p>Fill in your details below. Your order will be reviewed and activated within approximately 48 hours.</p>
+                </div>
+
+                <!-- Order summary -->
+                <div class="order-summary" id="orderSummaryDisplay">
+                    <div class="order-summary-empty">Select features above to see your order summary here.</div>
+                </div>
+
+                <form id="orderForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="orderName">Full Name *</label>
+                            <input type="text" id="orderName" placeholder="Your full name" required>
+                            <div class="field-note" id="nameNote"></div>
+                        </div>
+                        <div class="form-field">
+                            <label for="orderEmail">
+                                Google Account Email *
+                                <span class="field-hint" title="Enter the email address you use to sign in with Google — it will be linked to your NexCore account.">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </span>
+                            </label>
+                            <input type="email" id="orderEmail" placeholder="yourname@gmail.com" required
+                                   oninput="validateEmailHint()">
+                            <div class="field-note" id="emailNote"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="orderWhatsapp">WhatsApp Number <span class="optional">(optional — recommended)</span></label>
+                            <input type="tel" id="orderWhatsapp" placeholder="+968 9XXXXXXX">
+                        </div>
+                        <div class="form-field">
+                            <label for="orderNotes">Additional Notes <span class="optional">(optional)</span></label>
+                            <input type="text" id="orderNotes" placeholder="Anything you'd like us to know">
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="payment-selector">
+                        <h3>Payment Method</h3>
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="payment" value="whatsapp" checked>
+                                <div class="payment-card">
+                                    <div class="payment-icon" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+                                    <div class="payment-info">
+                                        <span class="payment-name">WhatsApp</span>
+                                        <span class="payment-desc">Contact us on WhatsApp to complete payment · <strong>+968 93281000</strong></span>
+                                    </div>
+                                    <div class="payment-badge recommended">Recommended</div>
+                                </div>
+                            </label>
+                            <label class="payment-option addon-soon">
+                                <input type="radio" name="payment" value="paypal" disabled>
+                                <div class="payment-card">
+                                    <div class="payment-icon" style="color:#0070ba;opacity:0.5;"><i class="fa-brands fa-paypal"></i></div>
+                                    <div class="payment-info">
+                                        <span class="payment-name">PayPal</span>
+                                        <span class="payment-desc">Pay via PayPal in USD · 1 OMR = 2.60 USD</span>
+                                    </div>
+                                    <span class="soon-badge">Soon</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <div id="submitButtonWrap">
+                        <button type="submit" class="btn primary submit-order-btn" id="submitOrderBtn">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Order
+                        </button>
+                        <p class="submit-note">
+                            <i class="fa-solid fa-clock"></i>
+                            Access activated within approximately <strong>48 hours</strong> after payment confirmation.
+                        </p>
+                    </div>
+                </form>
+
+                <!-- Success State (hidden until submission) -->
+                <div id="orderSuccess" class="order-success hidden">
+                    <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <h2>Order Submitted!</h2>
+                    <div class="bill-id-display">
+                        <span class="bill-id-label">Your Bill ID</span>
+                        <span class="bill-id-value" id="successBillId">—</span>
+                        <button class="btn-copy-bill" onclick="copyBillId()" title="Copy Bill ID">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <p style="color:#9aa3b2;font-size:14px;">A confirmation email has been sent to <strong id="successEmail" style="color:#eaf6fb;">—</strong></p>
+                    <p style="color:#9aa3b2;font-size:13px;margin-top:6px;">Keep your Bill ID safe — you'll need it when following up with us.</p>
+                    <div class="activation-notice">
+                        <i class="fa-solid fa-clock"></i>
+                        Your subscription will be activated within approximately <strong>48 hours</strong> after payment is confirmed.
+                    </div>
+                    <div id="whatsappFollowup" class="whatsapp-followup hidden">
+                        <p>Next step: send your Bill ID and payment to our WhatsApp:</p>
+                        <a href="https://wa.me/96893281000" target="_blank" rel="noopener" class="btn primary whatsapp-btn">
+                            <i class="fa-brands fa-whatsapp"></i> Open WhatsApp — +968 93281000
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ link -->
+        <div class="faq-row">
+            <p>Have questions about features, payments, or activation?</p>
+            <a href="faq.html#pricing" class="btn ghost fade" onclick="sessionStorage.setItem('faqCategory','pricing')">
+                <i class="fa-solid fa-circle-question" style="margin-right:7px;"></i>See Pricing FAQ
+            </a>
         </div>
 
         <div class="nexcore-sign">
@@ -229,7 +1071,330 @@
     <script src="version.js"></script>
 
     <script>
-        // Set current year
+        // ─────────────────────────────────────────────────────────────────
+        //  Feature Catalog & Bundle Definitions
+        // ─────────────────────────────────────────────────────────────────
+        const OMR_TO_USD = 2.60;
+
+        const FEATURE_CATALOG = {
+            support_1week:  { label: 'Support — 1 Week',    price: 0.250 },
+            support_1month: { label: 'Support — 1 Month',   price: 0.500 },
+            support_3months:{ label: 'Support — 3 Months',  price: 1.000 },
+            support_6months:{ label: 'Support — 6 Months',  price: 1.500 },
+            support_1year:  { label: 'Support — 1 Year',    price: 2.500 },
+            lifetime:       { label: 'Lifetime Access',     price: 0.950 },
+            setup:          { label: 'Professional Setup',  price: 0.450 },
+            priority:       { label: 'Priority Review',     price: 0.300 },
+            spotlight:      { label: 'Featured Spotlight',  price: 0.750 },
+            badge:          { label: 'Custom Badge',        price: 0.200 },
+        };
+
+        const BUNDLES = [
+            {
+                id: 'starter',
+                name: 'Starter Pack',
+                price: 1.200,
+                features: ['support_1week'],
+                desc: 'Lifetime access + a week of support',
+            },
+            {
+                id: 'essentials',
+                name: 'Essentials Pack',
+                price: 1.750,
+                features: ['support_1month', 'priority'],
+                desc: 'Lifetime access + a month of support & priority publishing',
+            },
+            {
+                id: 'professional',
+                name: 'Professional Pack',
+                price: 2.450,
+                features: ['support_3months', 'priority', 'badge'],
+                desc: 'Lifetime access + 3 months of support, priority & custom badge',
+            },
+            {
+                id: 'complete',
+                name: 'Complete Pack',
+                price: 3.950,
+                features: ['support_1year', 'priority', 'badge'],
+                desc: 'Lifetime access + full-year support, priority & custom badge',
+            },
+        ];
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Read current selections
+        // ─────────────────────────────────────────────────────────────────
+        function getSelectedFeatures() {
+            const features = [];
+
+            // Support duration
+            const support = document.querySelector('input[name="support"]:checked');
+            if (support && support.value !== 'none') {
+                const id = support.value;
+                features.push({ id, label: FEATURE_CATALOG[id].label, price: FEATURE_CATALOG[id].price });
+            }
+
+            // Add-ons
+            document.querySelectorAll('input[name="addon"]:checked').forEach(cb => {
+                const id = cb.value;
+                const label = cb.dataset.label;
+                features.push({ id, label, price: FEATURE_CATALOG[id].price });
+            });
+
+            return features;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Update price bar & order summary
+        // ─────────────────────────────────────────────────────────────────
+        function updateTotal() {
+            const features = getSelectedFeatures();
+            const total = features.reduce((s, f) => s + f.price, 0);
+            const totalFixed = Math.round(total * 1000) / 1000;
+            const usd = Math.round(totalFixed * OMR_TO_USD * 100) / 100;
+
+            // Price bar
+            const chipsEl = document.getElementById('priceBarFeatures');
+            if (features.length === 0) {
+                chipsEl.innerHTML = '<span class="no-features">No features selected yet</span>';
+            } else {
+                chipsEl.innerHTML = features
+                    .map(f => `<span class="price-feature-chip">${f.label}</span>`)
+                    .join('');
+            }
+            document.getElementById('priceBarTotal').textContent = totalFixed.toFixed(3) + ' OMR';
+            document.getElementById('priceBarUSD').textContent = '≈ $' + usd.toFixed(2);
+
+            // PayPal amount hint
+            document.getElementById('paypalAmount').textContent =
+                features.length > 0 ? `You'll be charged $${usd.toFixed(2)} USD` : '';
+
+            updateOrderSummary(features, totalFixed, usd);
+        }
+
+        function updateOrderSummary(features, totalOmr, totalUsd) {
+            const el = document.getElementById('orderSummaryDisplay');
+            if (!el) return;
+
+            if (features.length === 0) {
+                el.innerHTML = '<div class="order-summary-empty">Select features above to see your order summary here.</div>';
+                return;
+            }
+
+            const rows = features.map(f =>
+                `<div class="order-summary-row">
+                    <span>${f.label}</span>
+                    <span class="row-price">${f.price.toFixed(3)} OMR</span>
+                </div>`
+            ).join('');
+
+            el.innerHTML = `
+                ${rows}
+                <div class="order-summary-row total">
+                    <span>Total</span>
+                    <span class="row-price">${totalOmr.toFixed(3)} OMR</span>
+                </div>`;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Mode toggle (build / budget)
+        // ─────────────────────────────────────────────────────────────────
+        function setMode(mode) {
+            document.getElementById('buildMode').classList.toggle('active', mode === 'build');
+            document.getElementById('budgetMode').classList.toggle('active', mode === 'budget');
+            document.getElementById('modeBuildBtn').classList.toggle('active', mode === 'build');
+            document.getElementById('modeBudgetBtn').classList.toggle('active', mode === 'budget');
+            if (mode === 'build') updateTotal();
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Budget mode
+        // ─────────────────────────────────────────────────────────────────
+        function findBundles() {
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
+            const container = document.getElementById('bundleResults');
+            container.classList.remove('hidden');
+
+            if (budget <= 0) {
+                container.innerHTML = '<div class="bundle-no-result">Enter a budget amount above to see matching plans.</div>';
+                return;
+            }
+
+            const cards = BUNDLES.map(b => {
+                const fits = b.price <= budget;
+                const featureList = b.features
+                    .map(id => `<li><i class="fa-solid fa-check"></i> ${FEATURE_CATALOG[id].label}</li>`)
+                    .join('');
+                const badge = fits
+                    ? `<span class="bundle-fits fits">Fits your budget</span>`
+                    : `<span class="bundle-fits over">+${(b.price - budget).toFixed(3)} OMR over</span>`;
+
+                return `
+                    <div class="bundle-card ${fits ? '' : 'no-match'}" ${fits ? `onclick="applyBundle('${b.id}')"` : ''}>
+                        <div class="bundle-name">${b.name}</div>
+                        <div class="bundle-price">${b.price.toFixed(3)} OMR</div>
+                        <div class="bundle-desc">${b.desc}</div>
+                        <ul class="bundle-features-list">${featureList}</ul>
+                        ${badge}
+                        ${fits ? '<p style="font-size:11px;color:#9aa3b2;margin:8px 0 0;">Click to apply this plan</p>' : ''}
+                    </div>`;
+            }).join('');
+
+            container.innerHTML = cards ||
+                '<div class="bundle-no-result">No bundles found for this budget. Try "Pick Features" mode to build a custom plan.</div>';
+        }
+
+        function applyBundle(bundleId) {
+            const bundle = BUNDLES.find(b => b.id === bundleId);
+            if (!bundle) return;
+
+            // Reset all support + non-forced addons
+            document.querySelectorAll('input[name="support"]').forEach(r => r.checked = r.value === 'none');
+            document.querySelectorAll('input[name="addon"]:not([disabled])').forEach(cb => cb.checked = false);
+
+            bundle.features.forEach(id => {
+                const el = document.querySelector(`input[value="${id}"]`);
+                if (el) el.checked = true;
+            });
+
+            // Switch to build mode and update total
+            setMode('build');
+            updateTotal();
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Email validation hint
+        // ─────────────────────────────────────────────────────────────────
+        const GOOGLE_DOMAINS = ['gmail.com', 'googlemail.com'];
+
+        function validateEmailHint() {
+            const emailEl = document.getElementById('orderEmail');
+            const noteEl  = document.getElementById('emailNote');
+            const val = emailEl.value.trim();
+
+            if (!val) { noteEl.textContent = ''; noteEl.className = 'field-note'; return; }
+
+            const domain = val.split('@')[1] || '';
+            if (GOOGLE_DOMAINS.includes(domain.toLowerCase())) {
+                noteEl.textContent = '✓ Looks like a Google account — perfect.';
+                noteEl.className = 'field-note ok';
+                emailEl.classList.remove('warning');
+            } else {
+                noteEl.textContent = 'Make sure this is the email you use with Google Sign-In — it will be linked to your NexCore account.';
+                noteEl.className = 'field-note warn';
+                emailEl.classList.add('warning');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Form submission
+        // ─────────────────────────────────────────────────────────────────
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nameEl  = document.getElementById('orderName');
+            const emailEl = document.getElementById('orderEmail');
+            const nameNote  = document.getElementById('nameNote');
+            const emailNote = document.getElementById('emailNote');
+
+            // Validate name
+            if (!nameEl.value.trim()) {
+                nameNote.textContent = 'Please enter your name.';
+                nameNote.className = 'field-note err';
+                nameEl.classList.add('invalid');
+                nameEl.focus();
+                return;
+            } else {
+                nameNote.textContent = '';
+                nameEl.classList.remove('invalid');
+            }
+
+            // Validate email
+            const email = emailEl.value.trim();
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                emailNote.textContent = 'Please enter a valid email address.';
+                emailNote.className = 'field-note err';
+                emailEl.classList.add('invalid');
+                emailEl.focus();
+                return;
+            }
+
+            // Validate features
+            const features = getSelectedFeatures();
+            if (features.length === 0) {
+                alert('Please select at least one feature before submitting.');
+                window.scrollTo({ top: document.querySelector('.builder-section').offsetTop - 80, behavior: 'smooth' });
+                return;
+            }
+
+            const payment = document.querySelector('input[name="payment"]:checked')?.value || 'whatsapp';
+
+            // Disable button
+            const btn = document.getElementById('submitOrderBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-spinner"></span> Submitting...';
+
+            try {
+                const resp = await fetch('/api/submit-subscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_name: nameEl.value.trim(),
+                        user_email: email,
+                        whatsapp_number: document.getElementById('orderWhatsapp').value.trim() || null,
+                        selected_features: features,
+                        payment_method: payment,
+                        notes: document.getElementById('orderNotes').value.trim() || null,
+                    }),
+                });
+
+                const data = await resp.json();
+
+                if (!resp.ok || !data.success) {
+                    throw new Error(data.error || 'Submission failed. Please try again.');
+                }
+
+                // Success
+                document.getElementById('orderForm').classList.add('hidden');
+                const successEl = document.getElementById('orderSuccess');
+                successEl.classList.remove('hidden');
+                document.getElementById('successBillId').textContent = data.bill_id;
+                document.getElementById('successEmail').textContent = email;
+
+                if (payment === 'whatsapp') {
+                    document.getElementById('whatsappFollowup').classList.remove('hidden');
+                }
+
+                successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (err) {
+                alert(err.message || 'Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Order';
+            }
+        });
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Copy Bill ID
+        // ─────────────────────────────────────────────────────────────────
+        function copyBillId() {
+            const val = document.getElementById('successBillId').textContent;
+            navigator.clipboard.writeText(val).then(() => {
+                const btn = document.querySelector('.btn-copy-bill');
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-copy"></i>'; }, 2000);
+            });
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Wire up change listeners
+        // ─────────────────────────────────────────────────────────────────
+        document.querySelectorAll('input[name="support"], input[name="addon"]').forEach(el => {
+            el.addEventListener('change', updateTotal);
+        });
+
+        updateTotal(); // initial render
+
+        // Year
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 
