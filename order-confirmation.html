@@ -328,30 +328,133 @@
         }
         .pending-notice i { color: #ffb432; margin-top: 2px; flex-shrink: 0; }
 
+        /* ── Print-only elements (hidden on screen) ───────────────────── */
+        .print-only { display: none; }
+
         /* ── Print styles ─────────────────────────────────────────────── */
         @media print {
-            header, footer, nav, .site-header, .site-footer,
-            .action-row, .btn-whatsapp, .paypal-activated-banner .btn-signin-google,
-            .faq-row, .nexcore-sign, #cookieConsentBanner,
-            .whatsapp-payment-card .payment-methods-note { display: none !important; }
+            @page { size: A4 portrait; margin: 18mm 22mm; }
 
-            body, main { background: #fff !important; color: #000 !important; }
+            /* ── Hide web-only elements ── */
+            header, footer, nav, .site-header, .site-footer,
+            .action-row, .confirm-header, .confirm-icon,
+            .btn-whatsapp, .btn-signin-google, .btn-copy,
+            .faq-row, .nexcore-sign, #cookieConsentBanner,
+            .whatsapp-payment-card, .pending-notice,
+            .payment-methods-note,
+            p[style*="text-align:center"] { display: none !important; }
+
+            /* ── Show print-only elements ── */
+            .print-only { display: block !important; }
+
+            /* ── Reset layout ── */
+            *, *::before, *::after { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { background: #fff !important; color: #000 !important; font-size: 11pt !important; margin: 0; padding: 0; }
+            main { padding: 0 !important; min-height: auto !important; }
             .confirm-wrap { max-width: 100% !important; padding: 0 !important; }
+
+            /* ── Print receipt header ── */
+            #printOnlyHeader {
+                border-bottom: 2pt solid #000;
+                padding-bottom: 12px;
+                margin-bottom: 22px;
+            }
+            .por-company {
+                font-size: 20pt;
+                font-weight: 800;
+                letter-spacing: -0.5px;
+                margin: 0 0 5px;
+                color: #000;
+            }
+            .por-subtitle {
+                display: flex;
+                justify-content: space-between;
+                font-size: 10pt;
+                color: #555;
+            }
+
+            /* ── Cards ── */
             .confirm-card {
-                border: 1px solid #ccc !important;
+                border: 1pt solid #d0d0d0 !important;
                 background: #fff !important;
+                border-radius: 0 !important;
+                padding: 16px !important;
+                margin-bottom: 14px !important;
+                break-inside: avoid;
                 box-shadow: none !important;
             }
-            .bill-id-value, .confirm-header h1 { color: #000 !important; }
-            .features-table td, .features-table th { color: #333 !important; border-color: #ccc !important; }
-            .features-table td:last-child { color: #000 !important; }
+
+            /* ── Bill ID ── */
+            .bill-id-block {
+                background: #f7f7f7 !important;
+                border: 1.5pt solid #000 !important;
+                border-radius: 0 !important;
+                padding: 12px 16px !important;
+                margin-bottom: 18px !important;
+            }
+            .bill-id-label {
+                font-size: 8pt !important;
+                letter-spacing: 1px !important;
+                color: #555 !important;
+            }
+            .bill-id-value {
+                font-size: 16pt !important;
+                color: #000 !important;
+                letter-spacing: 2px !important;
+                word-break: keep-all !important;
+                white-space: nowrap !important;
+            }
+
+            /* ── Meta rows ── */
+            .meta-row { font-size: 10.5pt !important; margin-bottom: 6px !important; }
+            .meta-label { color: #555 !important; min-width: 80px !important; }
             .meta-value { color: #000 !important; }
-            .meta-label { color: #666 !important; }
-            .btn-copy { display: none !important; }
-            .bill-id-block { border-color: #ccc !important; background: #f5f5f5 !important; }
-            .pending-notice { border-color: #ccc !important; background: #fffbeb !important; }
-            .paypal-activated-banner { border-color: #ccc !important; background: #f0fff4 !important; }
-            .whatsapp-payment-card { display: none !important; }
+
+            /* ── Features table ── */
+            .features-section { margin-top: 18px !important; }
+            .features-section h3 {
+                font-size: 8pt !important;
+                color: #333 !important;
+                border-bottom: 1pt solid #ccc;
+                padding-bottom: 6px;
+                margin-bottom: 8px !important;
+            }
+            .features-table th {
+                color: #000 !important;
+                background: #f2f2f2 !important;
+                border-bottom: 1.5pt solid #000 !important;
+                font-size: 8.5pt !important;
+                padding: 6px 8px !important;
+            }
+            .features-table td {
+                color: #222 !important;
+                border-bottom: 0.5pt solid #e0e0e0 !important;
+                font-size: 11pt !important;
+                padding: 7px 8px !important;
+            }
+            .features-table td:last-child { color: #000 !important; font-weight: 600 !important; }
+            .features-table tfoot td {
+                border-top: 1.5pt solid #000 !important;
+                border-bottom: none !important;
+                color: #000 !important;
+                font-size: 13pt !important;
+                padding-top: 10px !important;
+            }
+            .features-table tfoot td:last-child { color: #000 !important; }
+            .total-usd-note { color: #555 !important; font-size: 9pt !important; }
+
+            /* ── PayPal activation (simplify) ── */
+            .paypal-activated-banner {
+                background: #fff !important;
+                border: 1pt solid #bbb !important;
+                border-radius: 0 !important;
+                padding: 16px !important;
+                break-inside: avoid;
+            }
+            .paypal-activated-banner .banner-icon { display: none !important; }
+            .paypal-activated-banner h2 { font-size: 12pt !important; color: #000 !important; }
+            .paypal-activated-banner p { color: #333 !important; font-size: 10pt !important; }
+            .email-note { color: #333 !important; }
         }
     </style>
 
@@ -366,6 +469,15 @@
     <!-- Nav is loaded from script.js / site header component -->
 
     <main>
+        <!-- Print-only receipt header (hidden on screen) -->
+        <div id="printOnlyHeader" class="print-only confirm-wrap" aria-hidden="true">
+            <p class="por-company">NexCore Labs</p>
+            <div class="por-subtitle">
+                <span>Order Receipt</span>
+                <span id="printDateLabel"></span>
+            </div>
+        </div>
+
         <div class="confirm-wrap" id="confirmWrap">
             <!-- JS renders content here -->
             <div style="text-align:center;padding:80px 0;color:#9aa3b2;">
@@ -395,6 +507,8 @@
         const OMR_TO_USD = 2.60;
 
         document.getElementById('year').textContent = new Date().getFullYear();
+        const _pdate = document.getElementById('printDateLabel');
+        if (_pdate) _pdate.textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
         (function init() {
             const raw = sessionStorage.getItem('nxc_order');
