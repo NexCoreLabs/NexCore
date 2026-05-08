@@ -32,6 +32,9 @@
 
     <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 
+    <!-- PayPal Sandbox Client ID — replace value with Live Client ID before going live -->
+    <meta name="paypal-client-id" content="AS7tu53-kvMA9gKGfsD8rgi9S-DXnsPOC4Sb3VWNeSISbE3RbRhYWZaXNJayi-hVK1xaS90c30wJ63C8">
+
     <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
     <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -82,57 +85,6 @@
             font-size: 16px;
             line-height: 1.6;
             margin: 0;
-        }
-
-        /* What's Free */
-        .free-card-section {
-            max-width: 860px;
-            margin: 0 auto 40px;
-            padding: 0 20px;
-        }
-        .free-card {
-            display: flex;
-            align-items: flex-start;
-            gap: 24px;
-            background: linear-gradient(135deg, rgba(110,231,243,0.07), rgba(110,231,243,0.02));
-            border: 1px solid rgba(110,231,243,0.2);
-            border-radius: 18px;
-            padding: 30px;
-        }
-        .free-card-icon {
-            font-size: 2.4rem;
-            color: #6ee7f3;
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-        .free-card-content h2 {
-            margin: 0 0 8px;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-        .free-card-content p {
-            color: #9aa3b2;
-            font-size: 14px;
-            margin: 0 0 14px;
-        }
-        .free-card-content ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 6px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 8px;
-        }
-        .free-card-content ul li {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #cbd5e0;
-            font-size: 14px;
-        }
-        .free-card-content ul li i { color: #6ee7f3; font-size: 12px; }
-        @media (max-width: 600px) {
-            .free-card { flex-direction: column; gap: 16px; }
         }
 
         /* Builder Section */
@@ -562,6 +514,21 @@
         /* PayPal button */
         .paypal-btn-wrap { margin: 0 0 18px; }
         .paypal-btn-wrap.hidden { display: none; }
+        .paypal-loading {
+            text-align: center;
+            padding: 24px;
+            color: #9aa3b2;
+            font-size: 14px;
+        }
+        .paypal-error {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #f87171;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
 
         /* Submit */
         .submit-order-btn {
@@ -726,26 +693,6 @@
             <div class="pricing-hero-badge"><i class="fa-solid fa-tag"></i> Flexible Access</div>
             <h1>Build Your NexCore Access</h1>
             <p>No rigid plans. Pick the features you need and pay only for what you use. All prices in Omani Rial (OMR).</p>
-        </section>
-
-        <!-- What's Free -->
-        <section class="free-card-section">
-            <div class="free-card">
-                <div class="free-card-icon"><i class="fa-solid fa-gift"></i></div>
-                <div class="free-card-content">
-                    <h2>Already free when you sign in</h2>
-                    <p>Create a NexCore account with your Google account and you instantly get:</p>
-                    <ul>
-                        <li><i class="fa-solid fa-check"></i> A project card showcased on the NexCore Hub</li>
-                        <li><i class="fa-solid fa-check"></i> Your own dedicated project page</li>
-                        <li><i class="fa-solid fa-check"></i> Access to the NexCore AI assistant</li>
-                        <li><i class="fa-solid fa-check"></i> Community features &amp; project tools</li>
-                    </ul>
-                    <a href="auth.html" class="btn primary" style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;">
-                        <i class="fa-brands fa-google"></i> Sign In — It's Free
-                    </a>
-                </div>
-            </div>
         </section>
 
         <!-- Feature Builder -->
@@ -970,7 +917,7 @@
                     <div class="payment-selector">
                         <h3>Payment Method</h3>
                         <div class="payment-options">
-                            <label class="payment-option">
+                            <label class="payment-option" onclick="onPaymentChange()">
                                 <input type="radio" name="payment" value="whatsapp" checked>
                                 <div class="payment-card">
                                     <div class="payment-icon" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></div>
@@ -981,18 +928,24 @@
                                     <div class="payment-badge recommended">Recommended</div>
                                 </div>
                             </label>
-                            <label class="payment-option addon-soon">
-                                <input type="radio" name="payment" value="paypal" disabled>
+                            <label class="payment-option" onclick="onPaymentChange()">
+                                <input type="radio" name="payment" value="paypal">
                                 <div class="payment-card">
-                                    <div class="payment-icon" style="color:#0070ba;opacity:0.5;"><i class="fa-brands fa-paypal"></i></div>
+                                    <div class="payment-icon" style="color:#0070ba;"><i class="fa-brands fa-paypal"></i></div>
                                     <div class="payment-info">
                                         <span class="payment-name">PayPal</span>
-                                        <span class="payment-desc">Pay via PayPal in USD · 1 OMR = 2.60 USD</span>
+                                        <span class="payment-desc">Pay securely via PayPal in USD · 1 OMR = 2.60 USD</span>
                                     </div>
-                                    <span class="soon-badge">Soon</span>
+                                    <span id="paypalAmountBadge" class="payment-badge" style="background:rgba(0,112,186,0.15);color:#0070ba;border:1px solid rgba(0,112,186,0.3);"></span>
                                 </div>
                             </label>
                         </div>
+                    </div>
+
+                    <!-- PayPal Button Container -->
+                    <div id="paypalButtonContainer" class="paypal-btn-wrap hidden">
+                        <div id="paypal-button-container"></div>
+                        <p id="paypalStatusMsg" class="submit-note" style="display:none;"></p>
                     </div>
 
                     <!-- Submit -->
@@ -1164,9 +1117,14 @@
             document.getElementById('priceBarTotal').textContent = totalFixed.toFixed(3) + ' OMR';
             document.getElementById('priceBarUSD').textContent = '≈ $' + usd.toFixed(2);
 
-            // PayPal amount hint
-            document.getElementById('paypalAmount').textContent =
-                features.length > 0 ? `You'll be charged $${usd.toFixed(2)} USD` : '';
+            // PayPal amount hint badge
+            const ppBadge = document.getElementById('paypalAmountBadge');
+            if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${usd.toFixed(2)} USD` : '';
+
+            // Re-render PayPal buttons if PayPal is selected (amount changed)
+            if (document.querySelector('input[name="payment"]:checked')?.value === 'paypal' && window._paypalLoaded) {
+                renderPayPalButtons();
+            }
 
             updateOrderSummary(features, totalFixed, usd);
         }
@@ -1193,6 +1151,157 @@
                     <span>Total</span>
                     <span class="row-price">${totalOmr.toFixed(3)} OMR</span>
                 </div>`;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Payment method toggle
+        // ─────────────────────────────────────────────────────────────────
+        function onPaymentChange() {
+            const method = document.querySelector('input[name="payment"]:checked')?.value;
+            const ppContainer = document.getElementById('paypalButtonContainer');
+            const submitWrap  = document.getElementById('submitButtonWrap');
+            if (method === 'paypal') {
+                ppContainer.classList.remove('hidden');
+                submitWrap.classList.add('hidden');
+                loadPayPalSDK();
+            } else {
+                ppContainer.classList.add('hidden');
+                submitWrap.classList.remove('hidden');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  PayPal SDK loader + button renderer
+        // ─────────────────────────────────────────────────────────────────
+        window._paypalLoaded = false;
+        window._paypalRendering = false;
+
+        function loadPayPalSDK() {
+            if (window._paypalLoaded) { renderPayPalButtons(); return; }
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '<div class="paypal-loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading PayPal…</div>';
+
+            const script = document.createElement('script');
+            // Client ID is injected via meta tag set by the server or falls back to sandbox placeholder
+            const clientId = document.querySelector('meta[name="paypal-client-id"]')?.content || 'PAYPAL_SANDBOX_CLIENT_ID';
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&intent=capture`;
+            script.onload = () => { window._paypalLoaded = true; renderPayPalButtons(); };
+            script.onerror = () => {
+                container.innerHTML = '<div class="paypal-error"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load PayPal. Please try WhatsApp payment or check your connection.</div>';
+            };
+            document.body.appendChild(script);
+        }
+
+        function renderPayPalButtons() {
+            if (window._paypalRendering) return;
+            window._paypalRendering = true;
+
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+
+            const features = getSelectedFeatures();
+            if (features.length === 0) {
+                container.innerHTML = '<div class="paypal-error"><i class="fa-solid fa-circle-info"></i> Please select at least one feature before paying.</div>';
+                window._paypalRendering = false;
+                return;
+            }
+
+            const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+            const totalUsd = (Math.round(totalOmr * OMR_TO_USD * 100) / 100).toFixed(2);
+
+            const nameEl  = document.getElementById('orderName');
+            const emailEl = document.getElementById('orderEmail');
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' },
+
+                createOrder(data, actions) {
+                    // Validate form fields before opening PayPal popup
+                    const nameNote  = document.getElementById('nameNote');
+                    const emailNote = document.getElementById('emailNote');
+                    if (!nameEl.value.trim()) {
+                        nameNote.textContent = 'Please enter your name.';
+                        nameNote.className = 'field-note err';
+                        nameEl.classList.add('invalid');
+                        nameEl.focus();
+                        return Promise.reject(new Error('Name required'));
+                    }
+                    const email = emailEl.value.trim();
+                    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        emailNote.textContent = 'Please enter a valid email address.';
+                        emailNote.className = 'field-note err';
+                        emailEl.classList.add('invalid');
+                        emailEl.focus();
+                        return Promise.reject(new Error('Email required'));
+                    }
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: { value: totalUsd, currency_code: 'USD' },
+                            description: 'NexCore Labs Subscription',
+                        }],
+                    });
+                },
+
+                async onApprove(data) {
+                    const statusEl = document.getElementById('paypalStatusMsg');
+                    statusEl.style.display = 'flex';
+                    statusEl.innerHTML = '<span class="btn-spinner"></span> Confirming your payment…';
+                    container.style.pointerEvents = 'none';
+                    container.style.opacity = '0.5';
+
+                    try {
+                        const resp = await fetch('/api/paypal-capture', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                paypal_order_id:   data.orderID,
+                                user_name:         nameEl.value.trim(),
+                                user_email:        emailEl.value.trim(),
+                                whatsapp_number:   document.getElementById('orderWhatsapp').value.trim() || null,
+                                selected_features: getSelectedFeatures(),
+                                notes:             document.getElementById('orderNotes').value.trim() || null,
+                            }),
+                        });
+
+                        const result = await resp.json();
+
+                        if (!resp.ok || !result.success) {
+                            throw new Error(result.error || 'Payment failed. Please contact us.');
+                        }
+
+                        // Show success state
+                        document.getElementById('orderForm').classList.add('hidden');
+                        const successEl = document.getElementById('orderSuccess');
+                        successEl.classList.remove('hidden');
+                        document.getElementById('successBillId').textContent = result.bill_id;
+                        document.getElementById('successEmail').textContent = emailEl.value.trim();
+                        successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    } catch (err) {
+                        statusEl.style.display = 'none';
+                        container.style.pointerEvents = '';
+                        container.style.opacity = '';
+                        container.insertAdjacentHTML('beforebegin', `<div class="paypal-error"><i class="fa-solid fa-triangle-exclamation"></i> ${err.message || 'Payment failed. Please try again or use WhatsApp.'}</div>`);
+                        window._paypalRendering = false;
+                        renderPayPalButtons(); // re-render buttons
+                    }
+                },
+
+                onError(err) {
+                    console.error('[PayPal] Error:', err);
+                    window._paypalRendering = false;
+                },
+
+                onCancel() {
+                    console.log('[PayPal] Cancelled by user.');
+                    window._paypalRendering = false;
+                },
+            }).render('#paypal-button-container').then(() => {
+                window._paypalRendering = false;
+            }).catch(err => {
+                window._paypalRendering = false;
+                console.error('[PayPal] Render error:', err);
+            });
         }
 
         // ─────────────────────────────────────────────────────────────────
