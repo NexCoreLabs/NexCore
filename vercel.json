@@ -9,6 +9,7 @@
     { "source": "/offline", "destination": "/offline.html" },
     { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
     { "source": "/project", "destination": "/project.html" },
+    { "source": "/pricing", "destination": "/pricing.html" },
     { "source": "/releases", "destination": "/releases.html" },
     { "source": "/roadmap", "destination": "/roadmap.html" },
     { "source": "/terms", "destination": "/terms.html" },
