@@ -959,31 +959,6 @@
                         </p>
                     </div>
                 </form>
-
-                <!-- Success State (hidden until submission) -->
-                <div id="orderSuccess" class="order-success hidden">
-                    <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
-                    <h2>Order Submitted!</h2>
-                    <div class="bill-id-display">
-                        <span class="bill-id-label">Your Bill ID</span>
-                        <span class="bill-id-value" id="successBillId">—</span>
-                        <button class="btn-copy-bill" onclick="copyBillId()" title="Copy Bill ID">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                    <p style="color:#9aa3b2;font-size:14px;">A confirmation email has been sent to <strong id="successEmail" style="color:#eaf6fb;">—</strong></p>
-                    <p style="color:#9aa3b2;font-size:13px;margin-top:6px;">Keep your Bill ID safe — you'll need it when following up with us.</p>
-                    <div class="activation-notice">
-                        <i class="fa-solid fa-clock"></i>
-                        Your subscription will be activated within approximately <strong>48 hours</strong> after payment is confirmed.
-                    </div>
-                    <div id="whatsappFollowup" class="whatsapp-followup hidden">
-                        <p>Next step: send your Bill ID and payment to our WhatsApp:</p>
-                        <a href="https://wa.me/96893281000" target="_blank" rel="noopener" class="btn primary whatsapp-btn">
-                            <i class="fa-brands fa-whatsapp"></i> Open WhatsApp — +968 93281000
-                        </a>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -1215,7 +1190,7 @@
             paypal.Buttons({
                 style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' },
 
-                createOrder(data, actions) {
+                async createOrder(data, actions) {
                     // Validate form fields before opening PayPal popup
                     const nameNote  = document.getElementById('nameNote');
                     const emailNote = document.getElementById('emailNote');
@@ -1234,6 +1209,19 @@
                         emailEl.focus();
                         return Promise.reject(new Error('Email required'));
                     }
+                    // Pre-flight: check for existing pending/active order
+                    try {
+                        const chk = await fetch(`/api/check-email-order?email=${encodeURIComponent(email)}`);
+                        const chkData = await chk.json();
+                        if (chkData.has_order) {
+                            emailNote.textContent = chkData.status === 'active'
+                                ? 'This email already has an active subscription. Sign in with Google at nexcorelabs.vercel.app/auth.'
+                                : 'You already have a pending order for this email. Check your inbox for your Bill ID.';
+                            emailNote.className = 'field-note err';
+                            emailEl.classList.add('invalid');
+                            return Promise.reject(new Error('Duplicate order'));
+                        }
+                    } catch (_) { /* network error — allow through, backend will catch */ }
                     return actions.order.create({
                         purchase_units: [{
                             amount: { value: totalUsd, currency_code: 'USD' },
@@ -1269,13 +1257,23 @@
                             throw new Error(result.error || 'Payment failed. Please contact us.');
                         }
 
-                        // Show success state
-                        document.getElementById('orderForm').classList.add('hidden');
-                        const successEl = document.getElementById('orderSuccess');
-                        successEl.classList.remove('hidden');
-                        document.getElementById('successBillId').textContent = result.bill_id;
-                        document.getElementById('successEmail').textContent = emailEl.value.trim();
-                        successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Redirect to confirmation page
+                        const features = getSelectedFeatures();
+                        const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+                        const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+                        sessionStorage.setItem('nxc_order', JSON.stringify({
+                            bill_id:         result.bill_id,
+                            user_name:       nameEl.value.trim(),
+                            user_email:      emailEl.value.trim(),
+                            whatsapp_number: document.getElementById('orderWhatsapp').value.trim() || null,
+                            features,
+                            total_omr:       totalOmr,
+                            total_usd:       totalUsd,
+                            payment_method:  'paypal',
+                            auto_activated:  result.auto_activated === true,
+                            submitted_at:    new Date().toISOString(),
+                        }));
+                        window.location.href = '/order-confirmation';
 
                     } catch (err) {
                         statusEl.style.display = 'none';
@@ -1462,18 +1460,23 @@
                     throw new Error(data.error || 'Submission failed. Please try again.');
                 }
 
-                // Success
-                document.getElementById('orderForm').classList.add('hidden');
-                const successEl = document.getElementById('orderSuccess');
-                successEl.classList.remove('hidden');
-                document.getElementById('successBillId').textContent = data.bill_id;
-                document.getElementById('successEmail').textContent = email;
-
-                if (payment === 'whatsapp') {
-                    document.getElementById('whatsappFollowup').classList.remove('hidden');
-                }
-
-                successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Redirect to confirmation page
+                const features = getSelectedFeatures();
+                const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+                const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+                sessionStorage.setItem('nxc_order', JSON.stringify({
+                    bill_id:          data.bill_id,
+                    user_name:        nameEl.value.trim(),
+                    user_email:       email,
+                    whatsapp_number:  document.getElementById('orderWhatsapp').value.trim() || null,
+                    features,
+                    total_omr:        totalOmr,
+                    total_usd:        totalUsd,
+                    payment_method:   payment,
+                    auto_activated:   false,
+                    submitted_at:     new Date().toISOString(),
+                }));
+                window.location.href = '/order-confirmation';
 
             } catch (err) {
                 alert(err.message || 'Something went wrong. Please try again.');
@@ -1481,18 +1484,6 @@
                 btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Order';
             }
         });
-
-        // ─────────────────────────────────────────────────────────────────
-        //  Copy Bill ID
-        // ─────────────────────────────────────────────────────────────────
-        function copyBillId() {
-            const val = document.getElementById('successBillId').textContent;
-            navigator.clipboard.writeText(val).then(() => {
-                const btn = document.querySelector('.btn-copy-bill');
-                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
-                setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-copy"></i>'; }, 2000);
-            });
-        }
 
         // ─────────────────────────────────────────────────────────────────
         //  Wire up change listeners

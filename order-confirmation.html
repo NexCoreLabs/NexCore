@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="assets/css/cookies.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="NexCore Labs">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NexCore Labs | Order Confirmation</title>
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── Page layout ──────────────────────────────────────────────── */
+        body { background: #0a0b1c; color: #eaf6fb; font-family: 'Inter', sans-serif; }
+        main { min-height: 80vh; padding: 60px 0 80px; }
+        .confirm-wrap {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ── Header ──────────────────────────────────────────────────── */
+        .confirm-header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+        .confirm-icon {
+            font-size: 3.5rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+        .confirm-icon.success  { color: #6ee7f3; }
+        .confirm-icon.paypal-active { color: #25d366; }
+        .confirm-header h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin: 0 0 8px;
+        }
+        .confirm-header p {
+            color: #9aa3b2;
+            font-size: 15px;
+            margin: 0;
+        }
+
+        /* ── Card ─────────────────────────────────────────────────────── */
+        .confirm-card {
+            background: rgba(110,231,243,0.03);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 20px;
+        }
+        .confirm-card + .confirm-card { margin-top: 0; }
+
+        /* ── Bill ID ──────────────────────────────────────────────────── */
+        .bill-id-block {
+            background: rgba(110,231,243,0.06);
+            border: 1px solid rgba(110,231,243,0.22);
+            border-radius: 12px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+        .bill-id-left { flex: 1; min-width: 0; }
+        .bill-id-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #9aa3b2;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .bill-id-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #6ee7f3;
+            letter-spacing: 4px;
+            word-break: break-all;
+        }
+        .btn-copy {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.3);
+            color: #6ee7f3;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .btn-copy:hover { background: rgba(110,231,243,0.18); }
+
+        /* ── Meta row ─────────────────────────────────────────────────── */
+        .meta-row {
+            display: flex;
+            gap: 8px;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: 14px;
+            flex-wrap: wrap;
+        }
+        .meta-label { color: #9aa3b2; min-width: 90px; flex-shrink: 0; }
+        .meta-value { color: #eaf6fb; word-break: break-all; }
+
+        /* ── Features table ───────────────────────────────────────────── */
+        .features-section { margin-top: 24px; }
+        .features-section h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6ee7f3;
+            margin: 0 0 12px;
+        }
+        .features-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .features-table th {
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9aa3b2;
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .features-table th:last-child { text-align: right; }
+        .features-table td {
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #cbd5e0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .features-table td:last-child {
+            text-align: right;
+            color: #6ee7f3;
+            font-weight: 600;
+        }
+        .features-table tfoot td {
+            border-top: 1px solid rgba(110,231,243,0.2);
+            border-bottom: none;
+            font-weight: 700;
+            color: #eaf6fb;
+            font-size: 15px;
+            padding-top: 14px;
+        }
+        .features-table tfoot td:last-child {
+            color: #6ee7f3;
+            font-size: 18px;
+        }
+        .total-usd-note {
+            font-size: 12px;
+            color: #9aa3b2;
+            font-weight: 400;
+            display: block;
+        }
+
+        /* ── PayPal activated banner ──────────────────────────────────── */
+        .paypal-activated-banner {
+            background: linear-gradient(135deg, rgba(37,211,102,0.1), rgba(110,231,243,0.07));
+            border: 1px solid rgba(37,211,102,0.3);
+            border-radius: 14px;
+            padding: 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .paypal-activated-banner .banner-icon {
+            font-size: 2.5rem;
+            color: #25d366;
+            margin-bottom: 10px;
+        }
+        .paypal-activated-banner h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            color: #25d366;
+        }
+        .paypal-activated-banner p {
+            color: #cbd5e0;
+            font-size: 14px;
+            margin: 0 0 20px;
+            line-height: 1.6;
+        }
+        .btn-signin-google {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(110,231,243,0.12);
+            border: 1.5px solid #6ee7f3;
+            color: #6ee7f3;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 13px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-signin-google:hover {
+            background: rgba(110,231,243,0.22);
+            transform: translateY(-1px);
+        }
+        .email-note {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #9aa3b2;
+        }
+        .email-note strong { color: #eaf6fb; }
+
+        /* ── WhatsApp payment card ────────────────────────────────────── */
+        .whatsapp-payment-card {
+            background: rgba(37,211,102,0.05);
+            border: 1px solid rgba(37,211,102,0.25);
+            border-radius: 14px;
+            padding: 26px 28px;
+            margin-bottom: 20px;
+        }
+        .whatsapp-payment-card h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #25d366;
+            margin: 0 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .whatsapp-payment-card p {
+            color: #cbd5e0;
+            font-size: 14px;
+            line-height: 1.65;
+            margin: 0 0 16px;
+        }
+        .whatsapp-payment-card .payment-methods-note {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #9aa3b2;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .whatsapp-payment-card .payment-methods-note strong { color: #eaf6fb; }
+        .btn-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #25d366;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 13px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            width: 100%;
+            justify-content: center;
+            transition: all 0.2s;
+            box-sizing: border-box;
+        }
+        .btn-whatsapp:hover {
+            background: #20bd5a;
+            transform: translateY(-1px);
+        }
+        .btn-whatsapp i { font-size: 18px; }
+
+        /* ── Action buttons ───────────────────────────────────────────── */
+        .action-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn-action {
+            flex: 1;
+            min-width: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+        }
+        .btn-action.download {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.3);
+            color: #6ee7f3;
+        }
+        .btn-action.download:hover { background: rgba(110,231,243,0.18); }
+        .btn-action.back {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #9aa3b2;
+        }
+        .btn-action.back:hover { color: #eaf6fb; background: rgba(255,255,255,0.07); }
+
+        /* ── Pending notice ───────────────────────────────────────────── */
+        .pending-notice {
+            background: rgba(255,180,50,0.07);
+            border: 1px solid rgba(255,180,50,0.22);
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #cbd5e0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .pending-notice i { color: #ffb432; margin-top: 2px; flex-shrink: 0; }
+
+        /* ── Print styles ─────────────────────────────────────────────── */
+        @media print {
+            header, footer, nav, .site-header, .site-footer,
+            .action-row, .btn-whatsapp, .paypal-activated-banner .btn-signin-google,
+            .faq-row, .nexcore-sign, #cookieConsentBanner,
+            .whatsapp-payment-card .payment-methods-note { display: none !important; }
+
+            body, main { background: #fff !important; color: #000 !important; }
+            .confirm-wrap { max-width: 100% !important; padding: 0 !important; }
+            .confirm-card {
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+                box-shadow: none !important;
+            }
+            .bill-id-value, .confirm-header h1 { color: #000 !important; }
+            .features-table td, .features-table th { color: #333 !important; border-color: #ccc !important; }
+            .features-table td:last-child { color: #000 !important; }
+            .meta-value { color: #000 !important; }
+            .meta-label { color: #666 !important; }
+            .btn-copy { display: none !important; }
+            .bill-id-block { border-color: #ccc !important; background: #f5f5f5 !important; }
+            .pending-notice { border-color: #ccc !important; background: #fffbeb !important; }
+            .paypal-activated-banner { border-color: #ccc !important; background: #f0fff4 !important; }
+            .whatsapp-payment-card { display: none !important; }
+        }
+    </style>
+
+    <!-- Vercel Web Analytics -->
+    <script>window.va = window.va || function() { (window.vaq = window.vaq || []).push(arguments); };</script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script>window.si = window.si || function() { (window.siq = window.siq || []).push(arguments); };</script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body>
+
+    <!-- Nav is loaded from script.js / site header component -->
+
+    <main>
+        <div class="confirm-wrap" id="confirmWrap">
+            <!-- JS renders content here -->
+            <div style="text-align:center;padding:80px 0;color:#9aa3b2;">
+                <i class="fa-solid fa-spinner fa-spin" style="font-size:2rem;color:#6ee7f3;"></i>
+                <p style="margin-top:14px;">Loading your order…</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <small>NexCore Labs © <span id="year"></span></small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+    <script src="version.js"></script>
+
+    <script>
+        // ─────────────────────────────────────────────────────────────────
+        //  Read order from sessionStorage
+        // ─────────────────────────────────────────────────────────────────
+        const WHATSAPP_PHONE = '96893281000';
+        const OMR_TO_USD = 2.60;
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        (function init() {
+            const raw = sessionStorage.getItem('nxc_order');
+
+            if (!raw) {
+                // No order data — redirect back to pricing
+                window.location.replace('/pricing');
+                return;
+            }
+
+            let order;
+            try { order = JSON.parse(raw); }
+            catch (_) { window.location.replace('/pricing'); return; }
+
+            // Clear immediately so Back button doesn't re-show stale data
+            sessionStorage.removeItem('nxc_order');
+
+            if (!order.bill_id || !order.user_email) {
+                window.location.replace('/pricing');
+                return;
+            }
+
+            render(order);
+        })();
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Build WhatsApp pre-filled message
+        // ─────────────────────────────────────────────────────────────────
+        function buildWhatsAppMessage(order) {
+            const featureLines = (order.features || [])
+                .map(f => `  • ${f.label} — ${Number(f.price).toFixed(3)} OMR`)
+                .join('\n');
+            const msg = [
+                `Hi NexCore Labs! 👋`,
+                `I'd like to complete payment for my subscription order.`,
+                ``,
+                `📋 Bill ID: ${order.bill_id}`,
+                `💰 Total: ${Number(order.total_omr).toFixed(3)} OMR (~$${Number(order.total_usd).toFixed(2)} USD)`,
+                ``,
+                `📦 Selected Features:`,
+                featureLines,
+                ``,
+                `Please guide me on the available payment options. Thank you!`,
+            ].join('\n');
+            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${encodeURIComponent(msg)}`;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Render the page
+        // ─────────────────────────────────────────────────────────────────
+        function render(order) {
+            const isPayPalActive = order.payment_method === 'paypal' && order.auto_activated === true;
+            const isWhatsApp     = order.payment_method === 'whatsapp';
+
+            const featureRows = (order.features || []).map(f =>
+                `<tr>
+                    <td>${escHtml(f.label)}</td>
+                    <td>${Number(f.price).toFixed(3)} OMR</td>
+                </tr>`
+            ).join('');
+
+            const metaDate = order.submitted_at
+                ? new Date(order.submitted_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
+                : '';
+
+            // ── Header ────────────────────────────────────────────────────
+            const headerIcon  = isPayPalActive ? 'fa-circle-check paypal-active' : 'fa-circle-check success';
+            const headerTitle = isPayPalActive ? '🎉 Subscription Activated!' : 'Order Submitted!';
+            const headerSub   = isPayPalActive
+                ? 'Your PayPal payment is confirmed and your subscription is now active.'
+                : 'Your order has been received. Check the instructions below to complete payment.';
+
+            // ── PayPal activated block ─────────────────────────────────────
+            const paypalBlock = isPayPalActive ? `
+                <div class="paypal-activated-banner">
+                    <div class="banner-icon"><i class="fa-solid fa-shield-check"></i></div>
+                    <h2>Your Subscription is Active</h2>
+                    <p>
+                        Your email has been added to the NexCore access list.<br>
+                        Sign in now using your Google account to access your dashboard.
+                    </p>
+                    <a href="/auth" class="btn-signin-google">
+                        <i class="fa-brands fa-google"></i> Sign In with Google
+                    </a>
+                    <p class="email-note">Use the email you provided: <strong>${escHtml(order.user_email)}</strong></p>
+                </div>` : '';
+
+            // ── WhatsApp payment block ──────────────────────────────────────
+            const waUrl = buildWhatsAppMessage(order);
+            const whatsappBlock = isWhatsApp ? `
+                <div class="whatsapp-payment-card">
+                    <h2><i class="fa-brands fa-whatsapp"></i> Complete Your Payment</h2>
+                    <p>
+                        Send your Bill ID and the message below to our WhatsApp to finalise payment.
+                        Our team will confirm receipt and activate your subscription within <strong>48 hours</strong>.
+                    </p>
+                    <div class="payment-methods-note">
+                        <strong>💡 Payment options:</strong> Bank transfer, cash on delivery, STC Pay, or any method that works for you.
+                        Just let us know in the chat — our team will guide you through the process.
+                    </div>
+                    <a href="${waUrl}" target="_blank" rel="noopener" class="btn-whatsapp">
+                        <i class="fa-brands fa-whatsapp"></i> Open WhatsApp — +968 93281000
+                    </a>
+                </div>` : '';
+
+            // ── Pending notice (WhatsApp only) ─────────────────────────────
+            const pendingNotice = isWhatsApp ? `
+                <div class="pending-notice">
+                    <i class="fa-solid fa-clock"></i>
+                    <span>Your subscription will be activated within approximately <strong>48 hours</strong> after payment is confirmed by our team.</span>
+                </div>` : '';
+
+            // ── Main receipt card ──────────────────────────────────────────
+            const receiptCard = `
+                <div class="confirm-card" id="receiptCard">
+                    <div class="bill-id-block">
+                        <div class="bill-id-left">
+                            <span class="bill-id-label">Your Bill ID</span>
+                            <span class="bill-id-value" id="billIdValue">${escHtml(order.bill_id)}</span>
+                        </div>
+                        <button class="btn-copy" onclick="copyBillId()" id="copyBtn" title="Copy Bill ID">
+                            <i class="fa-solid fa-copy"></i> Copy
+                        </button>
+                    </div>
+
+                    <div class="meta-row"><span class="meta-label">Name</span><span class="meta-value">${escHtml(order.user_name || '—')}</span></div>
+                    <div class="meta-row"><span class="meta-label">Email</span><span class="meta-value">${escHtml(order.user_email)}</span></div>
+                    <div class="meta-row"><span class="meta-label">Payment</span><span class="meta-value" style="text-transform:capitalize;">${escHtml(order.payment_method || '—')}</span></div>
+                    ${metaDate ? `<div class="meta-row"><span class="meta-label">Submitted</span><span class="meta-value">${metaDate}</span></div>` : ''}
+
+                    <div class="features-section">
+                        <h3>Selected Features</h3>
+                        <table class="features-table">
+                            <thead>
+                                <tr><th>Feature</th><th>Price</th></tr>
+                            </thead>
+                            <tbody>${featureRows}</tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>
+                                        ${Number(order.total_omr).toFixed(3)} OMR
+                                        <span class="total-usd-note">≈ $${Number(order.total_usd).toFixed(2)} USD</span>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div class="action-row">
+                        <button class="btn-action download" onclick="downloadPDF()">
+                            <i class="fa-solid fa-file-pdf"></i> Download Receipt
+                        </button>
+                        <a href="/pricing" class="btn-action back">
+                            <i class="fa-solid fa-arrow-left"></i> Back to Pricing
+                        </a>
+                    </div>
+                </div>`;
+
+            // ── Compose full page ──────────────────────────────────────────
+            document.getElementById('confirmWrap').innerHTML = `
+                <div class="confirm-header">
+                    <span class="confirm-icon ${isPayPalActive ? 'paypal-active' : 'success'}">
+                        <i class="fa-solid ${isPayPalActive ? 'fa-circle-check' : 'fa-circle-check'}"></i>
+                    </span>
+                    <h1>${headerTitle}</h1>
+                    <p>${headerSub}</p>
+                </div>
+
+                ${paypalBlock}
+                ${whatsappBlock}
+                ${pendingNotice}
+                ${receiptCard}
+
+                <p style="text-align:center;color:#9aa3b2;font-size:13px;margin-top:24px;">
+                    A confirmation email has been sent to <strong style="color:#eaf6fb;">${escHtml(order.user_email)}</strong>.
+                    If you don't see it, check your spam folder.
+                </p>
+            `;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Helpers
+        // ─────────────────────────────────────────────────────────────────
+        function escHtml(str) {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function copyBillId() {
+            const val = document.getElementById('billIdValue')?.textContent || '';
+            navigator.clipboard.writeText(val).then(() => {
+                const btn = document.getElementById('copyBtn');
+                if (btn) {
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                    setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-copy"></i> Copy'; }, 2500);
+                }
+            }).catch(() => {
+                // Fallback for browsers that block clipboard
+                const ta = document.createElement('textarea');
+                ta.value = val;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+            });
+        }
+
+        function downloadPDF() {
+            window.print();
+        }
+    </script>
+
+    <script src="assets/js/cookies.js" defer></script>
+
+</body>
+</html>

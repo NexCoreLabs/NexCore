@@ -179,6 +179,25 @@ module.exports = async (req, res) => {
   if (!["whatsapp", "paypal"].includes(payment_method))
     return res.status(400).json({ error: "Invalid payment method." });
 
+  // ── Duplicate order check ───────────────────────────────────────────────────
+  const supabase = getSupabaseAdmin();
+
+  const { data: existingOrder } = await supabase
+    .from("subscription_orders")
+    .select("bill_id, status")
+    .eq("user_email", email)
+    .in("status", ["pending", "active"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingOrder) {
+    const msg =
+      existingOrder.status === "active"
+        ? `This email already has an active NexCore subscription. Sign in at nexcorelabs.vercel.app/auth with your Google account.`
+        : `You already have a pending order (${existingOrder.bill_id}). Check your inbox for the confirmation email.`;
+    return res.status(409).json({ error: msg });
+  }
+
   // ── Validate features against catalog ──────────────────────────────────────
   const validatedFeatures = [];
   let computedTotal = 0;
@@ -201,7 +220,6 @@ module.exports = async (req, res) => {
   const totalUsd = Math.round(computedTotal * OMR_TO_USD * 100) / 100;
 
   // ── Generate unique Bill ID ─────────────────────────────────────────────────
-  const supabase = getSupabaseAdmin();
   let billId;
   for (let i = 0; i < 5; i++) {
     const candidate = generateBillId();

@@ -112,7 +112,7 @@ function createTransporter() {
   });
 }
 
-function buildConfirmationEmail(billId, name, features, totalOmr, totalUsd, paypalOrderId) {
+function buildActivationEmail(billId, name, features, totalOmr, totalUsd, paypalOrderId) {
   const featureRows = features
     .map(
       (f) =>
@@ -131,17 +131,23 @@ function buildConfirmationEmail(billId, name, features, totalOmr, totalUsd, payp
 
     <div style="text-align:center;margin-bottom:32px;">
       <h1 style="color:#6ee7f3;font-size:26px;margin:0;letter-spacing:-0.5px;">NexCore Labs</h1>
-      <p style="color:#9aa3b2;margin:6px 0 0;font-size:14px;">Order Confirmation — PayPal Payment Received</p>
+      <p style="color:#9aa3b2;margin:6px 0 0;font-size:14px;">Subscription Activated ✅</p>
     </div>
 
     <div style="background:rgba(110,231,243,0.04);border:1px solid rgba(110,231,243,0.18);border-radius:14px;padding:28px;">
       <p style="margin:0 0 16px;font-size:16px;">Hi <strong>${name}</strong>,</p>
-      <p style="margin:0 0 20px;color:#cbd5e0;">Your PayPal payment was successful. Your NexCore subscription is under review and will be activated within <strong>48 hours</strong>.</p>
+      <p style="margin:0 0 20px;color:#cbd5e0;">Your PayPal payment was confirmed and your NexCore subscription is now <strong style="color:#6ee7f3;">active</strong>!</p>
 
-      <div style="background:rgba(0,0,0,0.35);border-radius:10px;padding:18px;margin-bottom:20px;text-align:center;">
+      <div style="background:rgba(110,231,243,0.08);border:1px solid rgba(110,231,243,0.3);border-radius:10px;padding:18px;margin-bottom:20px;text-align:center;">
         <p style="margin:0;color:#9aa3b2;font-size:12px;text-transform:uppercase;letter-spacing:1px;">Your Bill ID</p>
         <p style="margin:8px 0 0;font-size:26px;font-weight:800;color:#6ee7f3;letter-spacing:3px;">${billId}</p>
-        <p style="margin:6px 0 0;font-size:12px;color:#9aa3b2;">Keep this safe — you'll need it when following up.</p>
+      </div>
+
+      <div style="background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.3);border-radius:10px;padding:20px;margin-bottom:20px;text-align:center;">
+        <p style="margin:0;color:#25d366;font-weight:700;font-size:15px;">🎉 You're Ready to Sign In!</p>
+        <p style="margin:10px 0;color:#cbd5e0;font-size:14px;">Your email has been added to the NexCore access list. Sign in with your Google account to access your dashboard.</p>
+        <a href="https://nexcorelabs.vercel.app/auth" style="display:inline-block;padding:12px 32px;background:rgba(110,231,243,0.15);border:1px solid #6ee7f3;border-radius:8px;color:#6ee7f3;text-decoration:none;font-weight:700;font-size:15px;margin-top:4px;">Sign In with Google →</a>
+        <p style="margin:10px 0 0;color:#9aa3b2;font-size:12px;">Use the same email address: <strong style="color:#eaf6fb;">${name}</strong></p>
       </div>
 
       <table style="width:100%;border-collapse:collapse;">
@@ -154,33 +160,27 @@ function buildConfirmationEmail(billId, name, features, totalOmr, totalUsd, payp
         <tbody>${featureRows}</tbody>
         <tfoot>
           <tr>
-            <td style="padding:14px;font-weight:700;color:#eaf6fb;font-size:15px;">Total</td>
+            <td style="padding:14px;font-weight:700;color:#eaf6fb;font-size:15px;">Total Paid</td>
             <td style="padding:14px;text-align:right;font-weight:800;color:#6ee7f3;font-size:20px;">${totalOmr.toFixed(3)} OMR <span style="font-size:13px;color:#9aa3b2;">($${totalUsd.toFixed(2)} USD)</span></td>
           </tr>
         </tfoot>
       </table>
 
-      <div style="background:rgba(0,112,186,0.1);border:1px solid rgba(0,112,186,0.3);border-radius:8px;padding:14px;margin-top:16px;">
-        <p style="margin:0;color:#6ee7f3;font-weight:700;font-size:13px;">PayPal Order ID</p>
-        <p style="margin:6px 0 0;color:#cbd5e0;font-size:13px;word-break:break-all;">${paypalOrderId}</p>
-      </div>
-
-      <div style="background:rgba(255,180,50,0.07);border:1px solid rgba(255,180,50,0.22);border-radius:8px;padding:14px;margin-top:12px;">
-        <p style="margin:0;font-size:14px;line-height:1.6;">
-          <strong style="color:#ffb432;">⏱ Activation Time</strong><br>
-          <span style="color:#cbd5e0;">Your subscription will be activated within approximately <strong>48 hours</strong>.</span>
-        </p>
+      <div style="background:rgba(0,112,186,0.1);border:1px solid rgba(0,112,186,0.3);border-radius:8px;padding:12px 14px;margin-top:14px;">
+        <p style="margin:0;color:#9aa3b2;font-size:12px;">PayPal Transaction ID</p>
+        <p style="margin:4px 0 0;color:#cbd5e0;font-size:12px;word-break:break-all;">${paypalOrderId}</p>
       </div>
     </div>
 
     <div style="text-align:center;margin-top:24px;color:#9aa3b2;font-size:12px;line-height:1.6;">
       <p style="margin:0;">NexCore Labs &middot; <a href="https://nexcorelabs.vercel.app" style="color:#6ee7f3;text-decoration:none;">nexcorelabs.vercel.app</a></p>
-      <p style="margin:4px 0 0;">If you didn't make this payment, please contact us immediately on WhatsApp: +968 93281000</p>
+      <p style="margin:4px 0 0;">If you didn't make this payment, contact us immediately on WhatsApp: +968 93281000</p>
     </div>
   </div>
 </body>
 </html>`;
 }
+
 
 async function sendEmail(to, subject, html) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) return;
@@ -254,6 +254,25 @@ module.exports = async (req, res) => {
   computedTotal = Math.round(computedTotal * 1000) / 1000;
   const expectedUsd = Math.round(computedTotal * OMR_TO_USD * 100) / 100;
 
+  // ── Duplicate order check ───────────────────────────────────────────────────
+  const supabase = getSupabaseAdmin();
+
+  const { data: existingOrder } = await supabase
+    .from("subscription_orders")
+    .select("bill_id, status")
+    .eq("user_email", email)
+    .in("status", ["pending", "active"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingOrder) {
+    const msg =
+      existingOrder.status === "active"
+        ? `This email already has an active NexCore subscription. Sign in at nexcorelabs.vercel.app/auth with your Google account.`
+        : `You already have a pending order (${existingOrder.bill_id}). Check your inbox for the confirmation email.`;
+    return res.status(409).json({ error: msg });
+  }
+
   // ── Capture PayPal order ────────────────────────────────────────────────────
   let captureData;
   try {
@@ -285,7 +304,6 @@ module.exports = async (req, res) => {
   }
 
   // ── Save to Supabase ────────────────────────────────────────────────────────
-  const supabase = getSupabaseAdmin();
   let billId;
 
   for (let i = 0; i < 5; i++) {
@@ -311,18 +329,25 @@ module.exports = async (req, res) => {
     total_usd:         expectedUsd,
     payment_method:    "paypal",
     paypal_order_id:   String(paypal_order_id).trim(),
-    status:            "pending",
+    status:            "active",
+    activated_at:      new Date().toISOString(),
     notes:             notes ? String(notes).trim() : null,
   });
 
   if (dbError) {
     console.error("DB insert error:", dbError);
-    return res.status(500).json({ error: "Payment was captured but order could not be saved. Contact us with your PayPal transaction ID." });
+    return res.status(500).json({ error: "Payment was captured but order could not be saved. Contact us with your PayPal transaction ID: " + String(paypal_order_id).trim() });
   }
 
-  // ── Send confirmation email (non-fatal) ─────────────────────────────────────
+  // ── Whitelist email in approved_users (idempotent) ──────────────────────────
+  await supabase.from("approved_users").upsert(
+    { email, reason: `PayPal order ${billId}`, approved_by: "system" },
+    { onConflict: "email", ignoreDuplicates: true }
+  );
+
+  // ── Send activation email (non-fatal) ───────────────────────────────────────
   try {
-    const html = buildConfirmationEmail(
+    const html = buildActivationEmail(
       billId,
       String(user_name).trim(),
       validatedFeatures,
@@ -330,12 +355,12 @@ module.exports = async (req, res) => {
       expectedUsd,
       String(paypal_order_id).trim()
     );
-    await sendEmail(email, `NexCore Order Confirmed — Bill #${billId}`, html);
+    await sendEmail(email, `🎉 Your NexCore Subscription is Active — Bill #${billId}`, html);
   } catch (emailErr) {
     console.error("Email send error:", emailErr);
   }
 
-  console.log(`[paypal-capture] Order saved: ${billId} | PayPal: ${paypal_order_id} | $${expectedUsd} USD`);
+  console.log(`[paypal-capture] Order ACTIVATED: ${billId} | PayPal: ${paypal_order_id} | $${expectedUsd} USD | email: ${email}`);
 
-  return res.status(200).json({ success: true, bill_id: billId });
+  return res.status(200).json({ success: true, bill_id: billId, auto_activated: true });
 };
