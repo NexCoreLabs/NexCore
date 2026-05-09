@@ -86,6 +86,52 @@
             line-height: 1.6;
             margin: 0;
         }
+        .beta-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 660px;
+            margin: 24px auto 0;
+            padding: 14px 16px;
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 10px;
+            font-size: 13.5px;
+            color: #fcd34d;
+            line-height: 1.55;
+            text-align: left;
+        }
+        .beta-banner i { margin-top: 2px; flex-shrink: 0; }
+        .beta-banner strong { color: #fbbf24; }
+        .beta-banner-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fbbf24;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 0 0 0 8px;
+            flex-shrink: 0;
+            opacity: 0.7;
+            line-height: 1;
+        }
+        .beta-banner-close:hover { opacity: 1; }
+        .beta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.35);
+            border-radius: 20px;
+            color: #fbbf24;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
 
         /* Builder Section */
         .builder-section {
@@ -925,8 +971,13 @@
         <!-- Hero -->
         <section class="pricing-hero">
             <div class="pricing-hero-badge"><i class="fa-solid fa-tag"></i> Flexible Access</div>
-            <h1>Build Your NexCore Access</h1>
+            <h1>Build Your NexCore Access <span class="beta-badge"><i class="fa-solid fa-flask"></i> Beta</span></h1>
             <p>No rigid plans. Pick the features you need and pay only for what you use. All prices in Omani Rial (OMR).</p>
+            <div class="beta-banner" id="betaBanner">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span><strong>This pricing system is in Beta.</strong> You may encounter occasional bugs or unexpected behaviour. If anything goes wrong with your order, please contact us directly and we'll sort it out right away.</span>
+                <button class="beta-banner-close" onclick="document.getElementById('betaBanner').style.display='none'" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+            </div>
         </section>
 
         <!-- Feature Builder -->
