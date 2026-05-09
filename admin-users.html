@@ -4353,16 +4353,23 @@
         window.exportSubscriptionsCSV = exportSubscriptionsCSV;
         window.viewReceipt = viewReceipt;
 
-        function viewReceipt(path) {
-            // Generate a short-lived signed URL from Supabase private bucket
-            sb.storage.from('payment-receipts').createSignedUrl(path, 300)
-              .then(({ data, error }) => {
-                  if (error || !data?.signedUrl) {
-                      showToast('Could not load receipt.', 'error');
-                      return;
-                  }
-                  window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
-              });
+        async function viewReceipt(path) {
+            // Anon key cannot read private storage — call server-side endpoint
+            // which uses the service role key to generate a signed URL.
+            try {
+                const session = await sb.auth.getSession();
+                const token = session.data.session?.access_token;
+                const resp = await fetch('/api/receipt-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ path }),
+                });
+                const result = await resp.json();
+                if (!resp.ok) throw new Error(result.error || 'Failed to load receipt.');
+                window.open(result.url, '_blank', 'noopener,noreferrer');
+            } catch (e) {
+                showToast(e.message || 'Could not load receipt.', 'error');
+            }
         }
 
         // Initialize activity search
