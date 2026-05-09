@@ -2793,12 +2793,19 @@
                 async () => {
                     try {
                         const emails = Array.from(state.selectedRows);
+                        let removed = 0;
 
                         for (const email of emails) {
-                            await sb.from('approved_users').delete().eq('email', email);
+                            const { error, count } = await sb
+                                .from('approved_users')
+                                .delete({ count: 'exact' })
+                                .eq('email', email);
+                            if (!error && count > 0) removed++;
                         }
 
-                        showToast(`✓ Removed ${count} user(s)`, 'success');
+                        if (removed === 0) throw new Error('Permission denied — no rows removed. Check RLS policy.');
+
+                        showToast(`✓ Removed ${removed} user(s)`, 'success');
 
                         // Log activity
                         await logActivity(
@@ -3785,12 +3792,13 @@
                 `Are you sure you want to remove <strong>${email}</strong> from approved users?<br><br>They will no longer be able to access the platform.`,
                 async () => {
                     try {
-                        const { error } = await sb
+                        const { error, count } = await sb
                             .from('approved_users')
-                            .delete()
+                            .delete({ count: 'exact' })
                             .eq('email', email);
 
                         if (error) throw error;
+                        if (count === 0) throw new Error('Permission denied — no rows removed. Check RLS policy.');
 
                         showToast(`✓ Removed ${email}`, 'success');
 
