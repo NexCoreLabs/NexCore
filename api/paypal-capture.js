@@ -28,6 +28,14 @@ const { getSupabaseAdmin } = require("../lib/supabaseAdmin");
 
 const OMR_TO_USD = 2.60;
 
+// PayPal processing fee gross-up — must match pricing.html
+const PAYPAL_FEE_RATE  = 0.0349; // 3.49%
+const PAYPAL_FEE_FIXED = 0.49;   // $0.49 fixed
+
+function calcPayPalUsd(baseUsd) {
+  return Math.ceil(((baseUsd + PAYPAL_FEE_FIXED) / (1 - PAYPAL_FEE_RATE)) * 100) / 100;
+}
+
 const FEATURE_CATALOG = {
   support_1week:  { label: "Support — 1 Week",    price: 0.250 },
   support_1month: { label: "Support — 1 Month",   price: 0.500 },
@@ -252,7 +260,8 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: "Only one support duration can be selected." });
 
   computedTotal = Math.round(computedTotal * 1000) / 1000;
-  const expectedUsd = Math.round(computedTotal * OMR_TO_USD * 100) / 100;
+  const baseUsd     = Math.round(computedTotal * OMR_TO_USD * 100) / 100;
+  const expectedUsd = calcPayPalUsd(baseUsd);
 
   // ── Duplicate order check ───────────────────────────────────────────────────
   const supabase = getSupabaseAdmin();
