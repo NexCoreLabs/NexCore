@@ -792,9 +792,9 @@
             <h1>Platform <em>Updates</em><br>&amp; Releases</h1>
             <p class="rl-hero-sub">Follow the evolution of NexCore Labs — features shipped, things polished, bugs squashed.</p>
             <div class="rl-hero-pills">
-                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.8.0</strong></span>
-                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>18 Apr 2026</strong></span>
-                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>13</strong> releases</span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-tag"></i> Current: <strong>v2.9.0</strong></span>
+                <span class="rl-hero-pill"><i class="fa-regular fa-calendar"></i> Updated: <strong>9 May 2026</strong></span>
+                <span class="rl-hero-pill"><i class="fa-solid fa-layer-group"></i> <strong>14</strong> releases</span>
             </div>
         </div>
 
@@ -830,6 +830,7 @@
             <nav class="rl-nav" aria-label="Version navigation">
                 <div class="rl-nav-label">Versions</div>
                 <div class="rl-nav-panel">
+                    <a class="rl-nav-item"href="#v290" data-version="v2.9.0"><span class="rl-dot-min"></span>v2.9.0</a>
                     <a class="rl-nav-item"href="#v280" data-version="v2.8.0"><span class="rl-dot-min"></span>v2.8.0</a>
                     <a class="rl-nav-item"href="#v270" data-version="v2.7.0"><span class="rl-dot-min"></span>v2.7.0</a>
                     <a class="rl-nav-item"href="#v260" data-version="v2.6.0"><span class="rl-dot-min"></span>v2.6.0</a>
@@ -849,6 +850,98 @@
             <!-- Timeline -->
             <div class="rl-tl" id="rlTl">
 
+                <!-- v2.9.0 -->
+                <div class="rl-card open" id="v290" data-version="v2.9.0" data-tags="feature,improvement,developer,fix">
+                <div class="rl-box">
+                    <div class="rl-head" onclick="toggleCard(this.closest('.rl-card'))">
+                        <div class="rl-head-body">
+                            <div class="rl-head-top">
+                                <span class="rl-ver">v2.9.0</span>
+                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
+                            </div>
+                            <div class="rl-date"><i class="fa-regular fa-calendar"></i>9 May 2026</div>
+                            <div class="rl-summary">Monetization framework, Constellation Code visual IDs, AI upgrades, and UX enhancements.</div>
+                            <div class="rl-tags">
+                                <span class="rl-tag feat"><i class="fa-solid fa-wand-magic-sparkles fa-mini"></i> Features</span>
+                                <span class="rl-tag impr">↑ Improvements</span>
+                                <span class="rl-tag fix">⚡ Fixes</span>
+                                <span class="rl-tag dev">⌘ Dev</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down rl-chev"></i>
+                    </div>
+                    <div class="rl-body">
+                        <div class="rl-tabs">
+                            <button class="rl-tab-btn tab-u active" data-tab="u290">User Updates</button>
+                            <button class="rl-tab-btn tab-d" data-tab="d290">Developer Notes</button>
+                        </div>
+                        <div class="rl-pane active" id="u290">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-new"><i class="fa-solid fa-wand-magic-sparkles"></i> New</div>
+                                <ul class="rl-ul c-new">
+                                    <li>New <strong>Pricing page</strong> with tiered subscription plans, beta banners, and a billing FAQ category.</li>
+                                    <li>New <strong>Order Confirmation page</strong> with professional print styles and signed receipt URLs.</li>
+                                    <li>Introduced <strong>Constellation Code</strong> — a unique visual identification pattern generated per project, replacing the previous Wave Code.</li>
+                                    <li>QR code generation integrated directly into the project modal for easier mobile access.</li>
+                                    <li>Animated <strong>menu hint</strong> for first-time visitors to improve platform discoverability.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-impr"><i class="fa-solid fa-arrow-trend-up"></i> Improvements</div>
+                                <ul class="rl-ul c-impr">
+                                    <li>AI endpoint now supports both chat and assist modes more robustly.</li>
+                                    <li>Priority Review feature dynamically locks/unlocks based on your selected payment method.</li>
+                                    <li>Improved project scanner layout with clear status indicators and better scan error handling.</li>
+                                    <li>Simplified sign-in flow — streamlined email validation without OTP or organisation detection.</li>
+                                    <li>Updated metadata across multiple pages for better SEO and platform inclusivity.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-fix"><i class="fa-solid fa-wrench"></i> Fixes</div>
+                                <ul class="rl-ul c-fix">
+                                    <li>Improved user removal process and permission error handling in the admin panel.</li>
+                                    <li>GA4 User-ID tracking integrated for accurate cross-device analytics.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="rl-pane" id="d290">
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-tech"><i class="fa-solid fa-code"></i> Technical</div>
+                                <ul class="rl-ul c-tech">
+                                    <li>New <span class="ct">pricing.html</span> with tiered plan UI and billing FAQ category.</li>
+                                    <li>New <span class="ct">order-confirmation.html</span> with print-friendly receipt styles.</li>
+                                    <li>Constellation Code system replacing Wave Code for project visual identification.</li>
+                                    <li>Scanner UI refactored; <span class="ct">scanner.html</span> removed — logic moved to main app.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-db"><i class="fa-solid fa-database"></i> Database</div>
+                                <ul class="rl-ul c-db">
+                                    <li>Removed <span class="ct">admin_activity_log</span> schema from the database directory.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-api"><i class="fa-solid fa-plug"></i> API</div>
+                                <ul class="rl-ul c-api">
+                                    <li>New <span class="ct">api/paypal-capture.js</span> — PayPal order capture with automated email confirmation.</li>
+                                    <li>New <span class="ct">api/bank-transfer.js</span> — bank transfer endpoint with reference instructions.</li>
+                                    <li>New <span class="ct">api/submit-subscription.js</span> — subscription order submission with duplicate order checks.</li>
+                                    <li>New <span class="ct">api/receipt-url.js</span> — server-side signed receipt URL generation.</li>
+                                    <li>Enhanced <span class="ct">api/ai.js</span> to support both chat and assist functionalities.</li>
+                                </ul>
+                            </div>
+                            <div class="rl-blk">
+                                <div class="rl-blk-ttl c-int"><i class="fa-solid fa-gear"></i> Internal</div>
+                                <ul class="rl-ul c-int">
+                                    <li>GA4 User-ID tracking integrated for cross-device behaviour analysis.</li>
+                                    <li>Admin panel permission error handling improvements.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
                 <!-- v2.8.0 -->
                 <div class="rl-card open" id="v280" data-version="v2.8.0" data-tags="feature,improvement,developer,fix">
                 <div class="rl-box">
@@ -856,7 +949,6 @@
                         <div class="rl-head-body">
                             <div class="rl-head-top">
                                 <span class="rl-ver">v2.8.0</span>
-                                <span class="rl-badge-latest"><i class="fa-solid fa-bolt fa-mini"></i> Latest</span>
                             </div>
                             <div class="rl-date"><i class="fa-regular fa-calendar"></i>18 Apr 2026</div>
                             <div class="rl-summary">Arabic/RTL support, admin panel, project embed system, and AI assistant refinements.</div>
@@ -1947,6 +2039,7 @@
         (function () {
             const KEY = 'nexcore_rl_visit';
             const DATES = {
+                'v2.9.0': new Date('2026-05-09'),
                 'v2.8.0': new Date('2026-04-18'),
                 'v2.7.0': new Date('2026-04-11'),
                 'v2.6.0': new Date('2026-03-19'),

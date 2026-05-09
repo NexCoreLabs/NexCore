@@ -1,5 +1,65 @@
 [
   {
+    "id": "v2-9-0",
+    "version": "v2.9.0",
+    "date": "2026-05-09",
+    "summary": "Monetization framework, Constellation Code visual IDs, AI upgrades, and UX enhancements.",
+    "user_updates": {
+      "new": [
+        "Dedicated Pricing page with tiered plans and beta banners",
+        "Order Confirmation page with professional print styles and signed receipt URLs",
+        "Constellation Code — unique visual identification pattern for every project (replaces Wave Code)",
+        "QR code generation integrated into the project modal",
+        "Animated menu hint for first-time visitors"
+      ],
+      "improvements": [
+        "AI endpoint now supports both chat and assist modes more robustly",
+        "Priority Review feature dynamically locks based on selected payment method",
+        "Improved project scanner layout with status indicators and better error handling",
+        "Simplified sign-in flow — streamlined email validation without OTP or org detection",
+        "Updated metadata across multiple pages for better SEO and inclusivity"
+      ],
+      "fixes": [
+        "Improved user removal process and permission error handling in the admin panel",
+        "GA4 User-ID tracking integrated for accurate cross-device analytics"
+      ]
+    },
+    "developer_notes": {
+      "technical_changes": [
+        "New pricing.html with tiered plan UI and billing FAQ category",
+        "New order-confirmation.html with print-friendly receipt styles",
+        "Constellation Code system replacing Wave Code for project visual IDs",
+        "Scanner UI refactored and scanner.html removed (logic moved to main app)"
+      ],
+      "database_changes": [
+        "Removed admin_activity_log schema from the database directory"
+      ],
+      "api_updates": [
+        "api/paypal-capture.js — PayPal order capture with automated email confirmation",
+        "api/bank-transfer.js — Bank transfer endpoint with reference instructions",
+        "api/submit-subscription.js — Subscription order submission with duplicate order checks",
+        "api/receipt-url.js — Server-side signed receipt URL generation",
+        "api/ai.js — Enhanced to support both chat and assist functionalities"
+      ],
+      "internal_improvements": [
+        "GA4 User-ID tracking for cross-device behaviour analysis",
+        "Admin panel permission error handling improvements"
+      ]
+    },
+    "is_major_release": true,
+    "major_details": {
+      "title": "v2.9.0 — Monetization & Visual Identity Update",
+      "why_it_matters": "This release introduces a complete monetization infrastructure alongside a new visual identity system for projects, making NexCore ready for real-world subscriptions while giving every project a unique, scannable identity.",
+      "description": "Users can now subscribe to plans via PayPal or bank transfer, receive order confirmations and receipts, and discover projects through a new Constellation Code visual ID. Developers benefit from a cleaner AI backend and a more robust admin panel.",
+      "highlights": [
+        "Full subscription and payment system (PayPal + bank transfer)",
+        "Constellation Code visual identification for projects",
+        "Enhanced AI endpoint with chat and assist support"
+      ],
+      "screenshots": []
+    }
+  },
+  {
     "id": "v2-8-0",
     "version": "v2.8.0",
     "date": "2026-04-18",
