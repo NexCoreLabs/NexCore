@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Manage your NexCore Labs account settings.">
         <meta name="author" content="NexCore Labs">
-        <meta name="keywords" content="NexCore Labs, account, settings, profile, Sultan Qaboos University, Oman">
+        <meta name="keywords" content="NexCore Labs, account, settings, profile, Oman universities, Oman colleges, Sultan Qaboos University, Oman">
         <meta name="theme-color" content="#0a0b1c">
         <meta name="mobile-web-app-capable" content="yes">
         <meta property="og:url" content="https://nexcorelabs.vercel.app/account.html">
@@ -418,7 +418,7 @@
           </form>
         </div>
 
-        <div class="box">
+        <!-- <div class="box">
           <h3 class="section-title"><i class="fa-solid fa-wand-magic-sparkles" style="color:#6ee7f3"></i> AI Usage Today</h3>
 
           <p class="muted fs-9">Your NexCore AI chat usage resets every day.</p>
@@ -440,7 +440,7 @@
             <p id="aiUsageMsg" class="help-text" aria-live="polite"></p>
           </div>
 
-        </div>
+        </div> -->
 
         <div class="box">
           <h3 class="section-title"><i class="fa-solid fa-download" style="color:#6ee7f3"></i> Export Data</h3>
@@ -1562,61 +1562,61 @@ Total Projects: ${projectCount}`;
 
     }
 
-    async function fetchAiUsage(token) {
-      const usageTextEl = document.getElementById('aiUsageText');
-      const usedLabelEl = document.getElementById('aiUsedLabel');
-      const maxLabelEl = document.getElementById('aiMaxLabel');
-      const barEl = document.getElementById('aiUsageBar');
-      const msgEl = document.getElementById('aiUsageMsg');
+    // async function fetchAiUsage(token) {
+    //   const usageTextEl = document.getElementById('aiUsageText');
+    //   const usedLabelEl = document.getElementById('aiUsedLabel');
+    //   const maxLabelEl = document.getElementById('aiMaxLabel');
+    //   const barEl = document.getElementById('aiUsageBar');
+    //   const msgEl = document.getElementById('aiUsageMsg');
 
-      try {
-        let authToken = token;
-        if (!authToken) {
-          const { data, error } = await sb.auth.getSession();
-          if (error) throw new Error(error.message || 'Session read failed');
-          authToken = data?.session?.access_token || null;
-        }
-        if (!authToken) throw new Error('No active session token');
+    //   try {
+    //     let authToken = token;
+    //     if (!authToken) {
+    //       const { data, error } = await sb.auth.getSession();
+    //       if (error) throw new Error(error.message || 'Session read failed');
+    //       authToken = data?.session?.access_token || null;
+    //     }
+    //     if (!authToken) throw new Error('No active session token');
 
-        const res = await fetch('/api/ai-chat?usage=1', {
-          headers: { Authorization: `Bearer ${authToken}` }
-        });
+    //     const res = await fetch('/api/ai?usage=1&chat=1', {
+    //       headers: { Authorization: `Bearer ${authToken}` }
+    //     });
 
-        let payload = {};
-        try { payload = await res.json(); } catch (_) {}
-        if (!res.ok) {
-          const detail = payload?.error || payload?.message || `HTTP ${res.status}`;
-          throw new Error(detail);
-        }
+    //     let payload = {};
+    //     try { payload = await res.json(); } catch (_) {}
+    //     if (!res.ok) {
+    //       const detail = payload?.error || payload?.message || `HTTP ${res.status}`;
+    //       throw new Error(detail);
+    //     }
 
-        const used = Number(payload.used ?? 0);
-        const max = Math.max(1, Number(payload.max ?? 3));
-        const rem = Number(payload.remaining ?? Math.max(0, max - used));
-        const pct = Math.max(0, Math.min(100, Math.round((used / max) * 100)));
+    //     const used = Number(payload.used ?? 0);
+    //     const max = Math.max(1, Number(payload.max ?? 3));
+    //     const rem = Number(payload.remaining ?? Math.max(0, max - used));
+    //     const pct = Math.max(0, Math.min(100, Math.round((used / max) * 100)));
 
-        usageTextEl.textContent = rem > 0
-          ? `${rem} message${rem === 1 ? '' : 's'} remaining`
-          : 'Daily limit reached';
-        usedLabelEl.textContent = `${used} used - ${pct}% usage | `;
-        maxLabelEl.textContent = `${max} daily limit`;
+    //     usageTextEl.textContent = rem > 0
+    //       ? `${rem} message${rem === 1 ? '' : 's'} remaining`
+    //       : 'Daily limit reached';
+    //     usedLabelEl.textContent = `${used} used - ${pct}% usage | `;
+    //     maxLabelEl.textContent = `${max} daily limit`;
 
-        barEl.style.width = `${pct}%`;
-        barEl.className = 'ai-usage-bar' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
+    //     barEl.style.width = `${pct}%`;
+    //     barEl.className = 'ai-usage-bar' + (pct >= 100 ? ' full' : pct >= 70 ? ' warn' : '');
 
-        usageTextEl.style.color = rem === 0 ? '#ff7878' : pct >= 70 ? '#f3c96e' : '#6ee7f3';
-        if (msgEl) msgEl.textContent = '';
-      } catch (error) {
-        usageTextEl.textContent = 'Usage unavailable';
-        usedLabelEl.textContent = '—';
-        maxLabelEl.textContent = '—';
-        barEl.style.width = '0%';
-        barEl.className = 'ai-usage-bar';
-        usageTextEl.style.color = '#ff7878';
-        if (msgEl) msgEl.textContent = 'Could not load AI usage right now.';
-        setMsg('aiUsageMsg', 'Could not load AI usage.', true);
-        console.warn('AI usage fetch failed:', error?.message || error);
-      }
-    }
+    //     usageTextEl.style.color = rem === 0 ? '#ff7878' : pct >= 70 ? '#f3c96e' : '#6ee7f3';
+    //     if (msgEl) msgEl.textContent = '';
+    //   } catch (error) {
+    //     usageTextEl.textContent = 'Usage unavailable';
+    //     usedLabelEl.textContent = '—';
+    //     maxLabelEl.textContent = '—';
+    //     barEl.style.width = '0%';
+    //     barEl.className = 'ai-usage-bar';
+    //     usageTextEl.style.color = '#ff7878';
+    //     if (msgEl) msgEl.textContent = 'Could not load AI usage right now.';
+    //     setMsg('aiUsageMsg', 'Could not load AI usage.', true);
+    //     console.warn('AI usage fetch failed:', error?.message || error);
+    //   }
+    // }
 
     function openDeleteAccountModal() {
 

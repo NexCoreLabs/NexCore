@@ -423,7 +423,27 @@
       applyConsent(prefs);
       // Show the floating settings button so users can revisit choices
       var btn = document.getElementById('nexcore-cookie-settings-btn');
-      if (btn) btn.classList.add('ncc-btn-visible');
+      if (btn) {
+        btn.classList.add('ncc-btn-visible');
+
+        // Hide the button when the footer enters the viewport so it never
+        // overlaps footer text. IntersectionObserver has zero scroll-event cost.
+        var footer = document.querySelector('footer');
+        if (footer && 'IntersectionObserver' in window) {
+          var footerObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                btn.style.opacity = '0';
+                btn.style.pointerEvents = 'none';
+              } else {
+                btn.style.opacity = '';
+                btn.style.pointerEvents = '';
+              }
+            });
+          }, { threshold: 0 });
+          footerObserver.observe(footer);
+        }
+      }
     }
 
     // Public API — accessible via window.nexcoreConsent

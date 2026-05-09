@@ -1705,6 +1705,61 @@
                 font-size: 14px;
             }
         }
+
+        /* ─── Subscription Status Badges ─────────────────────────────── */
+        .sub-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .sub-status.pending  { background:rgba(255,180,50,0.12); color:#ffb432; border:1px solid rgba(255,180,50,0.3); }
+        .sub-status.active   { background:rgba(110,231,243,0.12); color:#6ee7f3; border:1px solid rgba(110,231,243,0.3); }
+        .sub-status.rejected { background:rgba(255,100,100,0.12); color:#ff7878; border:1px solid rgba(255,100,100,0.3); }
+        .sub-status.cancelled{ background:rgba(150,150,150,0.12); color:#9aa3b2; border:1px solid rgba(150,150,150,0.25); }
+
+        .sub-features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .sub-feature-chip {
+            padding: 2px 8px;
+            background: rgba(110,231,243,0.07);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 8px;
+            font-size: 11px;
+            color: #9aa3b2;
+            white-space: nowrap;
+        }
+        .sub-payment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .sub-payment-badge.whatsapp      { color: #25d366; }
+        .sub-payment-badge.paypal         { color: #0070ba; }
+        .sub-payment-badge.bank-transfer  { color: #ffb432; }
+        .btn-approve {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.3);
+            color: #6ee7f3;
+        }
+        .btn-approve:hover { background: rgba(110,231,243,0.2); border-color: #6ee7f3; }
+        .btn-reject-order {
+            background: rgba(255,100,100,0.1);
+            border: 1px solid rgba(255,100,100,0.3);
+            color: #ff7878;
+        }
+        .btn-reject-order:hover { background: rgba(255,100,100,0.2); border-color: #ff7878; }
+        #rejectOrderModal { align-items: center; justify-content: center; z-index: 9999; }
+        #rejectOrderModal:not(.hidden) { display: flex !important; }
     </style>
 </head>
 <body>
@@ -1786,6 +1841,11 @@
                 <div class="stat-value" id="statTotal">-</div>
                 <div class="stat-label">Total Access Users</div>
             </div>
+            <div class="stat-card" style="background:linear-gradient(135deg,rgba(255,180,50,0.08),rgba(255,180,50,0.03));border-color:rgba(255,180,50,0.2);">
+                <div class="stat-icon">🧾</div>
+                <div class="stat-value" id="statPendingOrders" style="color:#ffb432;">-</div>
+                <div class="stat-label">Pending Orders</div>
+            </div>
         </div>
 
         <!-- Tabs -->
@@ -1797,6 +1857,10 @@
             <button class="admin-tab" data-tab="admins">
                 <i class="fa-solid fa-user-shield"></i>
                 Manage Admins
+            </button>
+            <button class="admin-tab" data-tab="subscriptions">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                Subscriptions
             </button>
             <button class="admin-tab" data-tab="activity">
                 <i class="fa-solid fa-clock-rotate-left"></i>
@@ -2091,6 +2155,108 @@
                             Showing 0 to 0 of 0 entries
                         </div>
                         <div class="pagination" id="adminsPagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Subscriptions -->
+        <div id="tab-subscriptions" class="tab-content">
+            <div class="admin-section">
+                <h2><i class="fa-solid fa-file-invoice-dollar"></i> Subscription Orders</h2>
+
+                <!-- Filters -->
+                <div class="activity-filters" style="margin-bottom:16px;">
+                    <div class="filter-chip active" data-sub-filter="all" onclick="filterSubscriptions('all')">
+                        <i class="fa-solid fa-globe"></i> All
+                        <span class="count" id="subFilterAll">0</span>
+                    </div>
+                    <div class="filter-chip" data-sub-filter="pending" onclick="filterSubscriptions('pending')">
+                        <i class="fa-solid fa-hourglass-half"></i> Pending
+                        <span class="count" id="subFilterPending">0</span>
+                    </div>
+                    <div class="filter-chip" data-sub-filter="active" onclick="filterSubscriptions('active')">
+                        <i class="fa-solid fa-circle-check"></i> Active
+                        <span class="count" id="subFilterActive">0</span>
+                    </div>
+                    <div class="filter-chip" data-sub-filter="rejected" onclick="filterSubscriptions('rejected')">
+                        <i class="fa-solid fa-circle-xmark"></i> Rejected
+                        <span class="count" id="subFilterRejected">0</span>
+                    </div>
+                    <div class="filter-chip" data-sub-filter="cancelled" onclick="filterSubscriptions('cancelled')">
+                        <i class="fa-solid fa-ban"></i> Cancelled
+                        <span class="count" id="subFilterCancelled">0</span>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="export-btn" onclick="loadSubscriptions()" title="Refresh">
+                        <i class="fa-solid fa-rotate"></i> Refresh
+                    </button>
+                    <button class="export-btn" onclick="exportSubscriptionsCSV()">
+                        <i class="fa-solid fa-download"></i> Export CSV
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchSubscriptions" placeholder="Search by Bill ID, name, or email...">
+                </div>
+
+                <!-- Loading / Empty / Table -->
+                <div id="subsLoading" class="loading">
+                    <i class="fa-solid fa-spinner"></i>
+                    <p>Loading orders...</p>
+                </div>
+
+                <div id="subsEmpty" class="empty-state hidden">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <p>No subscription orders yet</p>
+                    <p class="empty-hint">Orders submitted via the pricing page will appear here.</p>
+                </div>
+
+                <div id="subsTableWrapper" class="table-wrapper hidden">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Bill ID</th>
+                                <th>Name / Email</th>
+                                <th>Features</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th class="actions-col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reject Modal -->
+            <div id="rejectOrderModal" class="modal-overlay hidden" style="display:none;">
+                <div class="modal">
+                    <div class="modal-header">
+                        <i class="fa-solid fa-circle-xmark modal-icon" style="color:#ff7878;"></i>
+                        <h3 class="modal-title">Reject Order</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are rejecting Bill ID: <strong id="rejectBillIdDisplay" style="color:#6ee7f3;"></strong></p>
+                        <div class="form-group" style="margin-top:14px;">
+                            <label for="rejectNotes">Reason (optional — sent to user)</label>
+                            <textarea id="rejectNotes" placeholder="e.g., Incomplete information, payment not received..." style="min-height:80px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-cancel" onclick="closeRejectModal()">
+                            <i class="fa-solid fa-xmark"></i> Cancel
+                        </button>
+                        <button class="modal-btn modal-btn-confirm" onclick="confirmReject()">
+                            <i class="fa-solid fa-circle-xmark"></i> Reject Order
+                        </button>
                     </div>
                 </div>
             </div>
@@ -2627,12 +2793,19 @@
                 async () => {
                     try {
                         const emails = Array.from(state.selectedRows);
+                        let removed = 0;
 
                         for (const email of emails) {
-                            await sb.from('approved_users').delete().eq('email', email);
+                            const { error, count } = await sb
+                                .from('approved_users')
+                                .delete({ count: 'exact' })
+                                .eq('email', email);
+                            if (!error && count > 0) removed++;
                         }
 
-                        showToast(`✓ Removed ${count} user(s)`, 'success');
+                        if (removed === 0) throw new Error('Permission denied — no rows removed. Check RLS policy.');
+
+                        showToast(`✓ Removed ${removed} user(s)`, 'success');
 
                         // Log activity
                         await logActivity(
@@ -3619,12 +3792,13 @@
                 `Are you sure you want to remove <strong>${email}</strong> from approved users?<br><br>They will no longer be able to access the platform.`,
                 async () => {
                     try {
-                        const { error } = await sb
+                        const { error, count } = await sb
                             .from('approved_users')
-                            .delete()
+                            .delete({ count: 'exact' })
                             .eq('email', email);
 
                         if (error) throw error;
+                        if (count === 0) throw new Error('Permission denied — no rows removed. Check RLS policy.');
 
                         showToast(`✓ Removed ${email}`, 'success');
 
@@ -3965,8 +4139,250 @@
         window.exportActivityPDF = exportActivityPDF;
         window.scheduleAutoCleanup = scheduleAutoCleanup;
 
-            // Initialize activity search
+        // ─── Subscriptions ────────────────────────────────────────────────
+        let allSubscriptions = [];
+        let currentSubFilter = 'all';
+
+        async function loadSubscriptions() {
+            document.getElementById('subsLoading').classList.remove('hidden');
+            document.getElementById('subsEmpty').classList.add('hidden');
+            document.getElementById('subsTableWrapper').classList.add('hidden');
+
+            const { data, error } = await sb
+                .from('subscription_orders')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            document.getElementById('subsLoading').classList.add('hidden');
+
+            if (error) {
+                showToast('Failed to load subscription orders.', 'error');
+                return;
+            }
+
+            allSubscriptions = data || [];
+            updateSubFilterCounts();
+            renderSubscriptions(allSubscriptions);
+
+            // Update pending orders stat (pending + pending_verification both need action)
+            const pending = allSubscriptions.filter(o => o.status === 'pending' || o.status === 'pending_verification').length;
+            const el = document.getElementById('statPendingOrders');
+            if (el) el.textContent = pending;
+        }
+
+        function updateSubFilterCounts() {
+            const counts = { all: allSubscriptions.length, pending: 0, active: 0, rejected: 0, cancelled: 0 };
+            allSubscriptions.forEach(o => {
+                // Group pending_verification under pending for filter counts
+                const key = o.status === 'pending_verification' ? 'pending' : o.status;
+                if (counts[key] !== undefined) counts[key]++;
+            });
+            ['all','pending','active','rejected','cancelled'].forEach(k => {
+                const el = document.getElementById('subFilter' + k.charAt(0).toUpperCase() + k.slice(1));
+                if (el) el.textContent = counts[k];
+            });
+        }
+
+        function filterSubscriptions(filter) {
+            currentSubFilter = filter;
+            document.querySelectorAll('[data-sub-filter]').forEach(el => {
+                el.classList.toggle('active', el.dataset.subFilter === filter);
+            });
+            const filtered = filter === 'all'
+                ? allSubscriptions
+                : allSubscriptions.filter(o => o.status === filter);
+            renderSubscriptions(filtered);
+        }
+
+        function renderSubscriptions(data) {
+            const tbody = document.getElementById('subsTableBody');
+            const wrapper = document.getElementById('subsTableWrapper');
+            const empty = document.getElementById('subsEmpty');
+
+            if (!data || data.length === 0) {
+                wrapper.classList.add('hidden');
+                empty.classList.remove('hidden');
+                return;
+            }
+            empty.classList.add('hidden');
+            wrapper.classList.remove('hidden');
+
+            const statusIcons = { pending:'⏳', pending_verification:'🔍', active:'✅', rejected:'❌', cancelled:'🚫' };
+            const statusLabels = { pending_verification: 'pending verification' };
+
+            tbody.innerHTML = data.map(o => {
+                const features = (o.selected_features || [])
+                    .map(f => `<span class="sub-feature-chip">${f.label}</span>`).join('');
+
+                let paymentHtml;
+                if (o.payment_method === 'whatsapp') {
+                    paymentHtml = '<span class="sub-payment-badge whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</span>';
+                } else if (o.payment_method === 'bank_transfer') {
+                    paymentHtml = '<span class="sub-payment-badge bank-transfer"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>';
+                } else {
+                    paymentHtml = '<span class="sub-payment-badge paypal"><i class="fa-brands fa-paypal"></i> PayPal</span>';
+                }
+
+                // Receipt / transaction ref for bank transfer orders
+                const receiptHtml = o.receipt_url
+                    ? `<div style="margin-top:4px;"><a href="#" onclick="viewReceipt('${escapeHtml(o.receipt_url)}');return false;" style="font-size:11px;color:#ffb432;"><i class="fa-solid fa-image"></i> View Receipt</a></div>`
+                    : '';
+                const txRefHtml = o.bank_transaction_ref
+                    ? `<div style="font-size:11px;color:#9aa3b2;margin-top:2px;">Ref: ${escapeHtml(o.bank_transaction_ref)}</div>`
+                    : '';
+
+                const statusHtml = `<span class="sub-status ${o.status}">${statusIcons[o.status] || ''} ${statusLabels[o.status] || o.status}</span>`;
+                const date = new Date(o.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+
+                const approveBtn = (o.status !== 'active')
+                    ? `<button class="btn-action btn-approve" onclick="approveOrder('${o.bill_id}')"><i class="fa-solid fa-check"></i> Approve</button>`
+                    : '';
+                const rejectBtn = (o.status === 'pending' || o.status === 'pending_verification' || o.status === 'active')
+                    ? `<button class="btn-action btn-reject-order" onclick="openRejectModal('${o.bill_id}')"><i class="fa-solid fa-xmark"></i> Reject</button>`
+                    : '';
+
+                return `<tr>
+                    <td style="font-family:monospace;color:#6ee7f3;font-weight:700;">${o.bill_id}</td>
+                    <td>
+                        <div style="font-weight:600;color:#eaf6fb;">${escapeHtml(o.user_name)}</div>
+                        <div style="font-size:12px;color:#9aa3b2;">${escapeHtml(o.user_email)}</div>
+                        ${o.whatsapp_number ? `<div style="font-size:11px;color:#25d366;">${escapeHtml(o.whatsapp_number)}</div>` : ''}
+                    </td>
+                    <td><div class="sub-features-list">${features}</div></td>
+                    <td style="font-weight:700;color:#6ee7f3;white-space:nowrap;">${parseFloat(o.total_omr).toFixed(3)} OMR</td>
+                    <td>${paymentHtml}${receiptHtml}${txRefHtml}</td>
+                    <td>${statusHtml}</td>
+                    <td style="font-size:12px;color:#9aa3b2;white-space:nowrap;">${date}</td>
+                    <td class="actions-col">
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+                            ${approveBtn}
+                            ${rejectBtn}
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        async function approveOrder(billId) {
+            if (!confirm(`Approve order ${billId}?`)) return;
+            try {
+                const session = await sb.auth.getSession();
+                const token = session.data.session?.access_token;
+                const resp = await fetch('/api/update-subscription-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ bill_id: billId, status: 'active' }),
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Update failed');
+                showToast(`Order ${billId} approved and activated.`, 'success');
+                loadSubscriptions();
+            } catch (e) {
+                showToast(e.message || 'Failed to approve order.', 'error');
+            }
+        }
+
+        let pendingRejectBillId = null;
+
+        function openRejectModal(billId) {
+            pendingRejectBillId = billId;
+            document.getElementById('rejectBillIdDisplay').textContent = billId;
+            document.getElementById('rejectNotes').value = '';
+            const modal = document.getElementById('rejectOrderModal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectOrderModal').classList.add('hidden');
+            pendingRejectBillId = null;
+        }
+
+        async function confirmReject() {
+            if (!pendingRejectBillId) return;
+            const notes = document.getElementById('rejectNotes').value.trim();
+            const billId = pendingRejectBillId;
+            closeRejectModal();
+            try {
+                const session = await sb.auth.getSession();
+                const token = session.data.session?.access_token;
+                const resp = await fetch('/api/update-subscription-status', {
+                    method: 'POST',
+                    headers: { 'Content-Type':'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ bill_id: billId, status: 'rejected', admin_notes: notes }),
+                });
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.error || 'Update failed');
+                showToast(`Order ${billId} rejected.`, 'info');
+                loadSubscriptions();
+            } catch (e) {
+                showToast(e.message || 'Failed to reject order.', 'error');
+            }
+        }
+
+        function exportSubscriptionsCSV() {
+            if (!allSubscriptions.length) { showToast('No orders to export.', 'info'); return; }
+            const rows = [
+                ['Bill ID','Name','Email','WhatsApp','Features','Total OMR','Payment','Status','Date'],
+                ...allSubscriptions.map(o => [
+                    o.bill_id,
+                    o.user_name,
+                    o.user_email,
+                    o.whatsapp_number || '',
+                    (o.selected_features || []).map(f => f.label).join('; '),
+                    parseFloat(o.total_omr).toFixed(3),
+                    o.payment_method,
+                    o.status,
+                    new Date(o.created_at).toISOString(),
+                ])
+            ].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+            downloadCSV(rows, 'subscriptions.csv');
+        }
+
+        // Expose to window
+        window.loadSubscriptions = loadSubscriptions;
+        window.filterSubscriptions = filterSubscriptions;
+        window.approveOrder = approveOrder;
+        window.openRejectModal = openRejectModal;
+        window.closeRejectModal = closeRejectModal;
+        window.confirmReject = confirmReject;
+        window.exportSubscriptionsCSV = exportSubscriptionsCSV;
+        window.viewReceipt = viewReceipt;
+
+        async function viewReceipt(path) {
+            // Open blank window NOW (synchronously) to preserve the user-gesture
+            // context — browsers block window.open() called after an await.
+            const win = window.open('', '_blank');
+            if (!win) {
+                showToast('Allow popups for this page and try again.', 'error');
+                return;
+            }
+            win.document.write('<p style="font-family:sans-serif;padding:24px;color:#555;">Loading receipt\u2026</p>');
+
+            try {
+                const session = await sb.auth.getSession();
+                const token = session.data.session?.access_token;
+                const resp = await fetch('/api/receipt-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify({ path }),
+                });
+                const result = await resp.json();
+                if (!resp.ok) throw new Error(result.error || 'Failed to load receipt.');
+                win.location.href = result.url;
+            } catch (e) {
+                win.close();
+                showToast(e.message || 'Could not load receipt.', 'error');
+            }
+        }
+
+        // Initialize activity search
         document.addEventListener('DOMContentLoaded', () => {
+            // Activity search
             const searchInput = document.getElementById('searchActivity');
             if (searchInput) {
                 searchInput.addEventListener('input', (e) => {
@@ -3991,6 +4407,25 @@
                     renderActivityLog(filtered);
                 });
             }
+
+            // Subscriptions search
+            const subSearch = document.getElementById('searchSubscriptions');
+            if (subSearch) {
+                subSearch.addEventListener('input', (e) => {
+                    const q = e.target.value.toLowerCase();
+                    let filtered = currentSubFilter === 'all'
+                        ? allSubscriptions
+                        : allSubscriptions.filter(o => o.status === currentSubFilter);
+                    if (q) {
+                        filtered = filtered.filter(o =>
+                            (o.bill_id && o.bill_id.toLowerCase().includes(q)) ||
+                            (o.user_name && o.user_name.toLowerCase().includes(q)) ||
+                            (o.user_email && o.user_email.toLowerCase().includes(q))
+                        );
+                    }
+                    renderSubscriptions(filtered);
+                });
+            }
         });
 
         // Initialize
@@ -4009,6 +4444,7 @@
                 await loadApprovedUsers();
                 await loadAdmins();
                 await loadActivityLog();
+                await loadSubscriptions();
             }
         })();
     </script>

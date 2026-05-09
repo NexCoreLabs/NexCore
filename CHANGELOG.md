@@ -1,5 +1,43 @@
 # 🧾 Changelog
 
+## v2.9.0 - 9 May 2026
+### Monetization & Subscription System:
+
+- Pricing Page: Launched a dedicated Pricing page (`pricing.html`) with tiered plans, beta banners, and a new FAQ category for billing.
+- PayPal Integration: Implemented PayPal order capture with automated email confirmations sent on successful payment.
+- Bank Transfer API: Added a bank transfer API endpoint with reference instructions for manual payment processing.
+- Order Management: Introduced a full subscription management system for submitting and updating orders, including duplicate order detection and a new Order Confirmation page (`order-confirmation.html`).
+- Receipt Generation: Developed a server-side endpoint for generating signed receipt URLs with enhanced print styles for professional order confirmations.
+
+
+### Visual Identification (Constellation Code):
+
+- Constellation Code: Introduced a unique visual identification system replacing the previous "Wave Code" — uses code bytes to generate a constellation-like pattern per project.
+- QR Integration: Integrated QR code generation directly into the project modal for easier mobile access and scanning.
+- Scanner UI Refactor: Improved the project scanner layout with status indicators and better error handling for scan codes.
+
+
+### AI & Feature Enhancements:
+
+- AI Endpoint Upgrade: Enhanced the core AI endpoint to support both chat and assist functionalities more robustly.
+- Priority Review Locking: Implemented a locking mechanism for "Priority Review" that dynamically activates based on the user's selected payment method.
+- Menu Hint: Added an animated menu hint for first-time visitors to improve platform discoverability.
+
+
+### User Experience & SEO:
+
+- SEO & Inclusivity: Updated metadata across multiple pages to improve search engine visibility and platform inclusivity.
+- Authentication Refactor: Simplified the sign-in flow by removing OTP verification and organization detection for email inputs.
+- Analytics: Integrated GA4 User-ID tracking to enable cross-device user behaviour analysis.
+
+
+### Technical Refinements:
+
+- Admin Panel Fixes: Improved the user removal process and permission error handling within the administrative interface.
+- Cleanup: Removed `scanner.html` (logic moved to main app) and removed the `admin_activity_log` schema from the database directory.
+
+---
+
 ## v2.8.0 - 18 Apr 2026
 ### Multilingual & RTL Support:
 

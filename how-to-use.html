@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="NexCore Labs">
-    <meta name="keywords" content="NexCore Labs, how to use, tutorial, documentation, guide, platform usage, student projects, digital solutions, Sultan Qaboos University, Oman">
+    <meta name="keywords" content="NexCore Labs, how to use, tutorial, documentation, guide, platform usage, student projects, digital solutions, Oman universities, Oman colleges, Sultan Qaboos University, Oman">
     <meta name="theme-color" content="#0a0b1c">
     <meta name="mobile-web-app-capable" content="yes">
 
@@ -65,6 +65,56 @@
         window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
+
+    <style>
+        /* ── Step-by-Step Guide Tab Toggle ───────────────────────────── */
+        .guide-toggle {
+            display: flex;
+            gap: 0;
+            margin: 0 0 28px;
+            width: fit-content;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .guide-tab-btn {
+            padding: 10px 22px;
+            background: transparent;
+            border: none;
+            border-radius: 9px;
+            color: #9aa3b2;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: Inter, sans-serif;
+        }
+        .guide-tab-btn.active {
+            background: rgba(110,231,243,0.15);
+            color: #6ee7f3;
+            border: 1px solid rgba(110,231,243,0.3);
+        }
+        .guide-tab-btn:hover:not(.active) { color: #eaf6fb; }
+        .guide-panel { display: none; }
+        .guide-panel.active { display: block; }
+        .guide-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .guide-note.info  { background: rgba(110,231,243,0.08); border-left: 4px solid #6ee7f3; color: #a8d8e0; }
+        .guide-note.warn  { background: rgba(255,180,50,0.08);  border-left: 4px solid #ffb432; color: #d4b06a; }
+        .guide-note i { margin-top: 2px; flex-shrink: 0; }
+    </style>
 </head>
 
 <body>
@@ -140,6 +190,8 @@
                 <ul>
                     <li><a href="#getting-started">Getting Started</a></li>
 
+                    <li><a href="#step-by-step">Step-by-Step Guide</a></li>
+
                     <li><a href="#platform-overview">Platform Overview</a></li>
 
                     <li><a href="#accessing-hub">Accessing the Hub</a></li>
@@ -164,7 +216,7 @@
 
                 <p>
 
-                    NexCore Labs is a <span class="highlight">student-driven digital solution platform</span> specifically designed for Sultan Qaboos University student projects. We transform your ideas into professional, deployable page that showcase your team's innovation and creativity.
+                    NexCore Labs is a <span class="highlight">student-driven digital solution platform</span> designed for student projects across universities and colleges in Oman. We transform your ideas into professional, deployable page that showcase your team's innovation and creativity.
 
                 </p>
 
@@ -178,7 +230,7 @@
 
                 <p>
 
-                    Our platform is dedicated to <span class="highlight">SQU affiliates and student-led projects</span>. Whether you're working on a research initiative, tech startup, creative venture, or innovation project, NexCore Labs provides the infrastructure and expertise to bring your vision online by a page displays your project.
+                    Our platform is open to <span class="highlight">students at any university or college in Oman</span>. Whether you're working on a research initiative, tech startup, creative venture, or innovation project, NexCore Labs provides the infrastructure and expertise to bring your vision online with a page that showcases your project.
 
                 </p>
 
@@ -210,6 +262,109 @@
                     </li>
                 </ol>
 
+            </section>
+
+            <!-- Section: Step-by-Step Guide -->
+
+            <section id="step-by-step" class="doc-section">
+                <h2><i class="fa-solid fa-map"></i> Step-by-Step Guide</h2>
+
+                <p>Follow the guide that matches your situation to get your project live on NexCore.</p>
+
+                <!-- Tab Toggle -->
+                <div class="guide-toggle">
+                    <button class="guide-tab-btn active" id="tabSquBtn" onclick="switchGuideTab('squ')">
+                        <i class="fa-solid fa-graduation-cap"></i> SQU Student
+                    </button>
+                    <button class="guide-tab-btn" id="tabNonSquBtn" onclick="switchGuideTab('nonsqu')">
+                        <i class="fa-solid fa-globe"></i> Non-SQU
+                    </button>
+                </div>
+
+                <!-- SQU Panel -->
+                <div id="guideSquPanel" class="guide-panel active">
+
+                    <div class="guide-note info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span><strong>Free access for all SQU affiliates.</strong> Your SQU Google account is automatically recognised — no payment required at any stage. Students from other Oman universities can access the platform via the <a href="pricing.html" style="color:#6ee7f3;">paid plans</a>.</span>
+                    </div>
+
+                    <ol class="steps-list" style="list-style: none; padding: 0;">
+
+                        <li data-step="1">
+                            <strong>Sign in with your SQU Google Account</strong>
+                            Go to <a href="auth.html" style="color:#6ee7f3;">auth.html</a> and click <em>Continue with Google</em>. Use your official SQU email (e.g. <code style="color:#6ee7f3;">s000000@student.squ.edu.om</code>).
+                        </li>
+
+                        <li data-step="2">
+                            <strong>Get Instant Access &amp; Land on Your Dashboard</strong>
+                            SQU emails are recognised automatically. Once signed in you are taken directly to your dashboard — no waiting, no payment, no extra steps.
+                        </li>
+
+                        <li data-step="3">
+                            <strong>Manage Your Project</strong>
+                            From your dashboard you can view your project card, update details, and track your project's visibility on the <a href="hub.html" style="color:#6ee7f3;">NexCore Hub</a>.
+                        </li>
+
+                    </ol>
+                </div>
+
+                <!-- Non-SQU Panel -->
+                <div id="guideNonSquPanel" class="guide-panel">
+
+                    <div class="guide-note warn">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span><strong>Non-SQU users require a one-time access fee.</strong> This includes students from other Oman universities and external users. All prices are in Omani Rial (OMR). Visit the <a href="pricing.html" style="color:#ffb432;">Pricing page</a> to build your plan.</span>
+                    </div>
+
+                    <ol class="steps-list" style="list-style: none; padding: 0;">
+
+                        <li data-step="1">
+                            <strong>Visit the Pricing Page</strong>
+                            Go to <a href="pricing.html" style="color:#6ee7f3;">pricing.html</a>. Every order includes <strong>Lifetime Access (0.950 OMR)</strong> — your project never expires on NexCore.
+                        </li>
+
+                        <li data-step="2">
+                            <strong>Choose Your Add-ons &amp; Support Duration</strong>
+                            Optionally add <em>Priority Review</em> (0.300 OMR — published within 24 hours) or a support duration package (1 week → 1 year). The live price bar updates as you select.
+                        </li>
+
+                        <li data-step="3">
+                            <strong>Fill in the Order Form</strong>
+                            Enter your full name, Google account email (used to link your NexCore account), and optionally your WhatsApp number for faster communication.
+                        </li>
+
+                        <li data-step="4">
+                            <strong>Choose a Payment Method</strong>
+                            Select either:
+                            <ul style="margin-top:10px; color:#cbd5e0; line-height:2;">
+                                <li><i class="fa-solid fa-building-columns" style="color:#ffb432; margin-right:6px;"></i><strong>Bank Transfer</strong> — Transfer to our Bank Muscat account. Verified within ~48 hours.</li>
+                                <li><i class="fa-brands fa-paypal" style="color:#0070ba; margin-right:6px;"></i><strong>PayPal</strong> — Pay in USD (1 OMR = 2.60 USD). Activation is instant. A small PayPal processing fee is added.</li>
+                            </ul>
+                        </li>
+
+                        <li data-step="5">
+                            <strong>Complete Payment &amp; Submit</strong>
+                            Follow the on-screen instructions for your chosen method and click <em>Submit Order</em>. You will receive a confirmation once your order is registered.
+                        </li>
+
+                        <li data-step="6">
+                            <strong>Wait for Account Activation</strong>
+                            Bank Transfer orders are activated within ~48 hours after payment is confirmed. PayPal orders are activated instantly. You will receive an email notification.
+                        </li>
+
+                        <li data-step="7">
+                            <strong>Sign in &amp; Land on Your Dashboard</strong>
+                            Once activated, go to <a href="auth.html" style="color:#6ee7f3;">auth.html</a> and sign in with the Google account you provided in the order. You will be taken directly to your dashboard.
+                        </li>
+
+                        <li data-step="8">
+                            <strong>Manage Your Project</strong>
+                            From your dashboard you can view your project card, update details, and track your project's visibility on the <a href="hub.html" style="color:#6ee7f3;">NexCore Hub</a>.
+                        </li>
+
+                    </ol>
+                </div>
             </section>
 
             <!-- Section 2: Accessing the Hub -->
@@ -275,12 +430,12 @@
 
                 </div>
 
-                <div class="feature-box">
+                <!-- <div class="feature-box">
                     <strong><i class="fa-solid fa-person-breastfeeding"></i> Team Collaboration</strong><br>
 
                     Collaborate with our team members in real-time through integrated communication channels.
 
-                </div>
+                </div> -->
             </section>
 
             <!-- Section 3: Project Showcase Features -->
@@ -354,7 +509,7 @@
                 <h3>AI & Automation</h3>
 
                 <div class="icon-row">
-                    <i class="fa-solid fa-brain"></i> <strong>ChatGPT & xAI</strong> - AI-assisted development and content
+                    <i class="fa-solid fa-brain"></i> <strong>ChatGPT & Claude</strong> - AI-assisted development and content
 
                 </div>
 
@@ -589,6 +744,15 @@
         // Set current year
 
         document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Step-by-Step Guide tab switcher
+        function switchGuideTab(tab) {
+            const isSqu = tab === 'squ';
+            document.getElementById('guideSquPanel').classList.toggle('active', isSqu);
+            document.getElementById('guideNonSquPanel').classList.toggle('active', !isSqu);
+            document.getElementById('tabSquBtn').classList.toggle('active', isSqu);
+            document.getElementById('tabNonSquBtn').classList.toggle('active', !isSqu);
+        }
 
         // FAQ toggle functionality
 

@@ -289,8 +289,12 @@
                     }
                 }
                 if (navLogout) navLogout.style.display = 'block';
+
+                // Send User-ID to GA4 for cross-device tracking
+                setGAUserId(session.user.id);
             } else {
                 // User is logged out
+                clearGAUserId();
                 if (navAuth) navAuth.style.display = 'block';
                 if (navDashboard) navDashboard.style.display = 'none';
                 if (navAdmin) navAdmin.style.display = 'none';
@@ -316,6 +320,20 @@
         } catch (error) {
             console.error('Logout error:', error);
             alert('Failed to logout. Please try again.');
+        }
+    }
+
+    // ─── GA4 User-ID helpers ────────────────────────────────────────────
+
+    function setGAUserId(userId) {
+        if (typeof window.gtag === 'function' && userId) {
+            window.gtag('config', 'G-PYZB5L2R8W', { user_id: userId });
+        }
+    }
+
+    function clearGAUserId() {
+        if (typeof window.gtag === 'function') {
+            window.gtag('config', 'G-PYZB5L2R8W', { user_id: undefined });
         }
     }
 

@@ -1,0 +1,2200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Cookie Consent Manager v2 -->
+
+    <link rel="stylesheet" href="assets/css/cookies.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="NexCore Labs">
+    <meta name="keywords" content="NexCore Labs, pricing, plans, page development, student projects, affordable, digital solutions, Oman universities, Oman colleges, Sultan Qaboos University, Oman">
+    <meta name="theme-color" content="#0a0b1c">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <title>NexCore Labs | Access &amp; Pricing</title>
+    <meta name="description" content="Build your own NexCore access plan. Choose the features you need and pay only for what you use. Flexible pricing for external users.">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://nexcorelabs.vercel.app/pricing.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="NexCore Labs | Pricing">
+    <meta property="og:description" content="NexCore Labs pricing plans - transparent, affordable digital solutions for student projects. Multiple tiers to fit your needs.">
+    <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="nexcorelabs.vercel.app">
+    <meta property="twitter:url" content="https://nexcorelabs.vercel.app/pricing.html">
+    <meta name="twitter:title" content="NexCore Labs | Pricing">
+    <meta name="twitter:description" content="NexCore Labs pricing plans - transparent, affordable digital solutions for student projects. Multiple tiers to fit your needs.">
+    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/af5a4481-2baa-47be-8838-5160bafa4f79.png?token=_5DjeK6KYgg8DW7Qsk5XfrtI2h_CW3YcCJlwxMJ3sEc&height=1080&width=1080&expires=33306259895">
+
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
+    <!-- PayPal Live Client ID -->
+    <meta name="paypal-client-id" content="AbmaSsM-lAGSh-1afrb-sxMOGOi8lYV8bCBMe_p88dKd5m9qWkIE5jG2ijP4z8G_SHGycfTxqNNzEADJ">
+
+    <link rel="icon" href="assets/images/nexcore-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="assets/images/nexcore-logo.webp">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin-button.css">
+    <link rel="stylesheet" href="assets/css/arabic.css">
+    <link rel="stylesheet" href="assets/css/ai-chat.css">
+    <!-- <link rel="stylesheet" href="assets/css/unminified-css.css"> -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        /* ─── Pricing Page Custom Styles ─────────────────────────────────── */
+
+        /* Hero */
+        .pricing-hero {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 700px;
+            margin: 0 auto;
+            margin-top: 70px;
+        }
+        .pricing-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.25);
+            border-radius: 20px;
+            color: #6ee7f3;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .pricing-hero h1 {
+            font-size: clamp(1.9rem, 5vw, 2.8rem);
+            font-weight: 800;
+            margin: 0 0 14px;
+            line-height: 1.2;
+        }
+        .pricing-hero p {
+            color: #9aa3b2;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+        .beta-banner {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            max-width: 660px;
+            margin: 24px auto 0;
+            padding: 14px 16px;
+            background: rgba(245,158,11,0.08);
+            border: 1px solid rgba(245,158,11,0.3);
+            border-radius: 10px;
+            font-size: 13.5px;
+            color: #fcd34d;
+            line-height: 1.55;
+            text-align: left;
+        }
+        .beta-banner i { margin-top: 2px; flex-shrink: 0; }
+        .beta-banner strong { color: #fbbf24; }
+        .beta-banner-close {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fbbf24;
+            cursor: pointer;
+            font-size: 15px;
+            padding: 0 0 0 8px;
+            flex-shrink: 0;
+            opacity: 0.7;
+            line-height: 1;
+        }
+        .beta-banner-close:hover { opacity: 1; }
+        .beta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.35);
+            border-radius: 20px;
+            color: #fbbf24;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        /* Builder Section */
+        .builder-section {
+            max-width: 960px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        .builder-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .builder-header h2 { font-size: 1.7rem; font-weight: 800; margin: 0 0 8px; }
+        .builder-header p { color: #9aa3b2; margin: 0; font-size: 15px; }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 0;
+            margin: 0 auto 32px;
+            width: fit-content;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 12px;
+            padding: 4px;
+        }
+        .mode-btn {
+            padding: 10px 24px;
+            background: transparent;
+            border: none;
+            border-radius: 9px;
+            color: #9aa3b2;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: Inter, sans-serif;
+        }
+        .mode-btn.active {
+            background: rgba(110,231,243,0.15);
+            color: #6ee7f3;
+            border: 1px solid rgba(110,231,243,0.3);
+        }
+        .mode-btn:hover:not(.active) { color: #eaf6fb; }
+
+        .builder-mode { display: none; }
+        .builder-mode.active { display: block; }
+
+        /* Feature Groups */
+        .feature-group {
+            background: rgba(10,11,28,0.5);
+            border: 1px solid rgba(110,231,243,0.14);
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(6px);
+        }
+        .feature-group-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .feature-group-header > i {
+            font-size: 1.5rem;
+            color: #6ee7f3;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .feature-group-header h3 { margin: 0 0 4px; font-size: 1.05rem; font-weight: 700; }
+        .feature-group-header p { margin: 0; color: #9aa3b2; font-size: 13px; }
+
+        /* Support Options */
+        .support-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+        }
+        .support-option { cursor: pointer; }
+        .support-option input[type="radio"] { display: none; }
+        .option-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .option-card:hover { border-color: rgba(110,231,243,0.3); }
+        .support-option input:checked + .option-card {
+            background: rgba(110,231,243,0.12);
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 1px rgba(110,231,243,0.3);
+        }
+        .option-name { font-size: 13px; font-weight: 600; color: #eaf6fb; }
+        .option-price { font-size: 12px; color: #9aa3b2; }
+        .option-price.free { color: #6ee7f3; font-weight: 600; }
+        .support-option input:checked + .option-card .option-price { color: #6ee7f3; font-weight: 600; }
+
+        /* Add-ons */
+        .addons-grid { display: flex; flex-direction: column; gap: 10px; }
+        .addon-option { cursor: pointer; }
+        .addon-option input[type="checkbox"] { display: none; }
+        .addon-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .addon-card:hover { border-color: rgba(110,231,243,0.3); }
+        .addon-option input:checked + .addon-card {
+            background: rgba(110,231,243,0.1);
+            border-color: #6ee7f3;
+        }
+        .addon-icon { font-size: 1.2rem; color: #6ee7f3; width: 28px; text-align: center; flex-shrink: 0; }
+        .addon-info { flex: 1; }
+        .addon-name { display: block; font-size: 14px; font-weight: 600; color: #eaf6fb; }
+        .addon-desc { display: block; font-size: 12px; color: #9aa3b2; margin-top: 2px; }
+        .addon-price { font-size: 14px; font-weight: 700; color: #6ee7f3; white-space: nowrap; }
+        /* Lifetime — always enabled */
+        .addon-forced { cursor: default; }
+        .addon-forced .addon-card {
+            background: rgba(110,231,243,0.12);
+            border-color: #6ee7f3;
+            cursor: default;
+        }
+        .addon-forced .addon-card:hover { border-color: #6ee7f3; }
+        .addon-lock-badge {
+            font-size: 11px; font-weight: 700; color: #0d1b2a;
+            background: #6ee7f3; border-radius: 4px;
+            padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+        /* Bank-transfer-only add-on (e.g. Priority Review — locked when PayPal is selected) */
+        .addon-bt-only { cursor: not-allowed; }
+        .addon-bt-only .addon-card {
+            opacity: 0.45;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .addon-bt-only .addon-card:hover { border-color: rgba(255,255,255,0.08); }
+        .bt-only-badge {
+            font-size: 10px; font-weight: 700; color: #0d1b2a;
+            background: #f59e0b; border-radius: 4px;
+            padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+        .addon-paypal-lock-note {
+            display: none;
+            font-size: 12px;
+            color: #f59e0b;
+            margin-top: 6px;
+            padding-left: 4px;
+        }
+        .addon-bt-only + .addon-paypal-lock-note,
+        label.addon-bt-only ~ .addon-paypal-lock-note { display: block; }
+        /* Soon — disabled */
+        .addon-soon { cursor: not-allowed; }
+        .addon-soon .addon-card { opacity: 0.42; cursor: not-allowed; }
+        .addon-soon .addon-card:hover { border-color: rgba(255,255,255,0.08); }
+        .soon-badge {
+            font-size: 11px; font-weight: 600; color: #9aa3b2;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+
+        /* Hide floating cookie button — pricing page has a sticky price bar at the same position */
+        #nexcore-cookie-settings-btn { display: none !important; }
+
+        /* Price Bar */
+        .price-bar {
+            position: sticky;
+            bottom: 20px;
+            background: linear-gradient(135deg, rgba(15,16,40,0.97), rgba(10,11,28,0.97));
+            border: 1px solid rgba(110,231,243,0.3);
+            border-radius: 14px;
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+        .price-bar-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+        }
+        .price-feature-chip {
+            padding: 4px 10px;
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: #6ee7f3;
+        }
+        .no-features { font-size: 13px; color: #9aa3b2; }
+        .price-bar-total {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .price-bar-label { font-size: 13px; color: #9aa3b2; }
+        .price-bar-amount { font-size: 1.4rem; font-weight: 800; color: #6ee7f3; }
+        .price-bar-usd { font-size: 13px; color: #9aa3b2; }
+
+        /* Budget Mode */
+        .budget-input-section { max-width: 480px; margin: 0 auto 30px; }
+        .budget-input-section label {
+            display: block;
+            color: #eaf6fb;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .budget-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .budget-currency {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.25);
+            border-radius: 8px;
+            padding: 12px 14px;
+            color: #6ee7f3;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .budget-input-wrap input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 15px;
+            font-family: Inter, sans-serif;
+        }
+        .budget-input-wrap input:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110,231,243,0.12);
+        }
+        .bundle-results { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 16px; margin-top: 10px; }
+        .bundle-results.hidden { display: none; }
+        .bundle-card {
+            background: rgba(10,11,28,0.5);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 14px;
+            padding: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .bundle-card:hover {
+            border-color: rgba(110,231,243,0.45);
+            transform: translateY(-2px);
+        }
+        .bundle-card.no-match {
+            opacity: 0.55;
+            cursor: default;
+        }
+        .bundle-card.no-match:hover { transform: none; }
+        .bundle-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+        .bundle-price { font-size: 1.3rem; font-weight: 800; color: #6ee7f3; margin-bottom: 8px; }
+        .bundle-features-list { list-style: none; padding: 0; margin: 0 0 14px; }
+        .bundle-features-list li {
+            font-size: 12px;
+            color: #9aa3b2;
+            padding: 3px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .bundle-features-list li i { color: #6ee7f3; font-size: 10px; }
+        .bundle-desc { font-size: 12px; color: #9aa3b2; margin-bottom: 12px; }
+        .bundle-fits { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 10px; font-weight: 600; }
+        .bundle-fits.fits { background: rgba(110,231,243,0.12); color: #6ee7f3; border: 1px solid rgba(110,231,243,0.2); }
+        .bundle-fits.over { background: rgba(255,120,120,0.1); color: #ff7878; border: 1px solid rgba(255,120,120,0.2); }
+        .bundle-no-result {
+            text-align: center;
+            color: #9aa3b2;
+            padding: 40px 20px;
+            grid-column: 1 / -1;
+            font-size: 14px;
+        }
+
+        /* Order Form Section */
+        .order-form-section {
+            max-width: 760px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+        .order-form-container {
+            background: rgba(10,11,28,0.55);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 20px;
+            padding: 36px;
+            backdrop-filter: blur(8px);
+        }
+        .order-form-header { margin-bottom: 28px; }
+        .order-form-header h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 6px;
+        }
+        .order-form-header h2 i { color: #6ee7f3; }
+        .order-form-header p { color: #9aa3b2; font-size: 14px; margin: 0; }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(110,231,243,0.04);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 26px;
+            font-size: 14px;
+        }
+        .order-summary-empty { color: #9aa3b2; font-size: 13px; }
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            color: #cbd5e0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .order-summary-row:last-child { border-bottom: none; }
+        .order-summary-row.total {
+            font-weight: 700;
+            color: #eaf6fb;
+            font-size: 15px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(110,231,243,0.2);
+            border-bottom: none;
+            margin-top: 4px;
+        }
+        .order-summary-row .row-price { color: #6ee7f3; font-weight: 600; }
+
+        /* Form Fields */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .form-field label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #eaf6fb;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        .form-field label .optional {
+            color: #9aa3b2;
+            font-weight: 400;
+            font-size: 12px;
+        }
+        .field-hint { cursor: help; color: #6ee7f3; font-size: 12px; }
+        .form-field input {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 14px;
+            font-family: Inter, sans-serif;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-field input:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110,231,243,0.12);
+        }
+        .form-field input.invalid { border-color: #ff7878; }
+        .form-field input.warning { border-color: #ffb432; }
+        .field-note {
+            font-size: 12px;
+            margin-top: 5px;
+            min-height: 16px;
+        }
+        .field-note.warn { color: #ffb432; }
+        .field-note.ok { color: #7fff7f; }
+        .field-note.err { color: #ff7878; }
+
+        /* Payment Selector */
+        .payment-selector { margin-bottom: 22px; }
+        .payment-selector h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #eaf6fb;
+            margin: 0 0 12px;
+        }
+        .payment-options { display: flex; flex-direction: column; gap: 10px; }
+        .payment-option { cursor: pointer; }
+        .payment-option input[type="radio"] { display: none; }
+        .payment-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .payment-card:hover { border-color: rgba(110,231,243,0.3); }
+        .payment-option input:checked + .payment-card {
+            background: rgba(110,231,243,0.08);
+            border-color: #6ee7f3;
+        }
+        .payment-icon { font-size: 1.5rem; flex-shrink: 0; width: 28px; text-align: center; }
+        .payment-info { flex: 1; }
+        .payment-name { display: block; font-size: 14px; font-weight: 600; color: #eaf6fb; }
+        .payment-desc { display: block; font-size: 12px; color: #9aa3b2; margin-top: 3px; }
+        .payment-badge {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .payment-badge.recommended {
+            background: rgba(110,231,243,0.12);
+            color: #6ee7f3;
+            border: 1px solid rgba(110,231,243,0.2);
+        }
+        .payment-badge.instant {
+            background: rgba(37,211,102,0.12);
+            color: #25d366;
+            border: 1px solid rgba(37,211,102,0.3);
+        }
+
+        /* PayPal fee note */
+        .paypal-fee-note {
+            display: none;
+            align-items: flex-start;
+            gap: 9px;
+            background: rgba(0,112,186,0.06);
+            border: 1px solid rgba(0,112,186,0.2);
+            border-radius: 9px;
+            padding: 11px 14px;
+            font-size: 13px;
+            color: #9aa3b2;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+        .paypal-fee-note i { color: #0070ba; margin-top: 2px; flex-shrink: 0; }
+        .paypal-fee-note strong { color: #eaf6fb; }
+
+        /* PayPal button */
+        .paypal-btn-wrap { margin: 0 0 18px; }
+        .paypal-btn-wrap.hidden { display: none; }
+        .paypal-loading {
+            text-align: center;
+            padding: 24px;
+            color: #9aa3b2;
+            font-size: 14px;
+        }
+        .paypal-error {
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: #f87171;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        /* Submit */
+        .submit-order-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .submit-note {
+            text-align: center;
+            color: #9aa3b2;
+            font-size: 13px;
+            margin: 12px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .submit-note i { color: #6ee7f3; }
+
+        /* Success State */
+        .order-success {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .order-success.hidden { display: none; }
+        #orderForm.hidden { display: none; }
+        .success-icon { font-size: 4rem; color: #6ee7f3; margin-bottom: 12px; }
+        .order-success h2 { font-size: 1.6rem; font-weight: 800; margin: 0 0 24px; }
+        .bill-id-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(110,231,243,0.07);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 20px;
+        }
+        .bill-id-label { font-size: 13px; color: #9aa3b2; }
+        .bill-id-value { font-size: 1.6rem; font-weight: 800; color: #6ee7f3; letter-spacing: 3px; }
+        .btn-copy-bill {
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.3);
+            color: #6ee7f3;
+            padding: 7px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .btn-copy-bill:hover { background: rgba(110,231,243,0.2); }
+        .activation-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255,180,50,0.08);
+            border: 1px solid rgba(255,180,50,0.2);
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin: 20px auto 0;
+            max-width: 440px;
+            font-size: 14px;
+            color: #cbd5e0;
+        }
+        .activation-notice i { color: #ffb432; }
+        .whatsapp-followup { margin-top: 24px; }
+        .whatsapp-followup.hidden { display: none; }
+        .whatsapp-followup p { color: #9aa3b2; font-size: 14px; margin-bottom: 12px; }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(37,211,102,0.12) !important;
+            border: 1px solid rgba(37,211,102,0.35) !important;
+            color: #25d366 !important;
+        }
+        .whatsapp-btn:hover {
+            background: rgba(37,211,102,0.2) !important;
+        }
+
+        /* ── Bank Transfer ──────────────────────────────────────────── */
+        .bank-transfer-section { margin-bottom: 18px; }
+        .bank-transfer-section.hidden { display: none; }
+
+        /* Bank details card */
+        .bank-details-card {
+            background: rgba(255,180,50,0.04);
+            border: 1px solid rgba(255,180,50,0.2);
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+        }
+        .bank-details-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffb432;
+            margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bank-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        .bank-detail-row:last-of-type { border-bottom: none; }
+        .bank-detail-label {
+            color: #9aa3b2;
+            min-width: 110px;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+        .bank-detail-value {
+            color: #eaf6fb;
+            font-weight: 500;
+            flex: 1;
+            word-break: break-all;
+        }
+        .bank-detail-copy { display: flex; align-items: center; gap: 8px; }
+        .btn-copy-field {
+            background: rgba(255,180,50,0.1);
+            border: 1px solid rgba(255,180,50,0.25);
+            color: #ffb432;
+            padding: 3px 9px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.18s;
+            flex-shrink: 0;
+        }
+        .btn-copy-field:hover { background: rgba(255,180,50,0.22); }
+        .bank-detail-divider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px 0 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6ee7f3;
+        }
+        .bank-detail-divider::before,
+        .bank-detail-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(110,231,243,0.2);
+        }
+        .bank-detail-divider i { font-size: 12px; }
+        .bank-reference-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: rgba(255,180,50,0.07);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #9aa3b2;
+            line-height: 1.55;
+        }
+        .bank-reference-note i { color: #ffb432; flex-shrink: 0; margin-top: 2px; }
+        .bank-reference-note strong { color: #eaf6fb; }
+
+        /* Amount display */
+        .bank-amount-display {
+            background: rgba(110,231,243,0.04);
+            border: 1px solid rgba(110,231,243,0.13);
+            border-radius: 9px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #9aa3b2;
+            line-height: 1.6;
+        }
+        .bank-amount-omr {
+            font-size: 18px;
+            font-weight: 800;
+            color: #6ee7f3;
+        }
+
+        /* Receipt upload zone */
+        .receipt-upload-section { margin-top: 4px; }
+        .receipt-upload-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #eaf6fb;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .receipt-drop-zone {
+            border: 2px dashed rgba(110,231,243,0.25);
+            border-radius: 10px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(110,231,243,0.02);
+        }
+        .receipt-drop-zone:hover, .receipt-drop-zone.drag-over {
+            border-color: rgba(110,231,243,0.55);
+            background: rgba(110,231,243,0.06);
+        }
+        .receipt-drop-icon { font-size: 2rem; color: #6ee7f3; margin-bottom: 8px; opacity: 0.7; }
+        .receipt-drop-text { font-size: 13px; color: #9aa3b2; line-height: 1.6; }
+        .receipt-drop-text strong { color: #eaf6fb; }
+        .receipt-drop-text span { font-size: 11px; }
+        .receipt-progress {
+            height: 3px;
+            background: rgba(110,231,243,0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .receipt-progress.hidden { display: none; }
+        .receipt-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #6ee7f3;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        .receipt-success {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            background: rgba(37,211,102,0.08);
+            border: 1px solid rgba(37,211,102,0.25);
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-size: 13px;
+        }
+        .receipt-success.hidden { display: none; }
+        .receipt-success > i { color: #25d366; font-size: 1.1rem; flex-shrink: 0; }
+        .receipt-success-info { flex: 1; min-width: 0; }
+        .receipt-success-info .receipt-filename { display: block; color: #eaf6fb; font-weight: 500; word-break: break-all; }
+        .receipt-size-note { color: #9aa3b2; font-size: 11px; }
+        .receipt-remove-btn {
+            background: rgba(255,120,120,0.1);
+            border: 1px solid rgba(255,120,120,0.2);
+            color: #ff7878;
+            padding: 4px 9px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.18s;
+            flex-shrink: 0;
+        }
+        .receipt-remove-btn:hover { background: rgba(255,120,120,0.2); }
+        .receipt-upload-error {
+            margin-top: 8px;
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #f87171;
+        }
+        .receipt-upload-error.hidden { display: none; }
+
+        /* FAQ link row */
+        .faq-row {
+            text-align: center;
+            margin: 20px 0 50px;
+        }
+        .faq-row p { color: #9aa3b2; font-size: 14px; margin-bottom: 12px; }
+    </style>
+    <!-- Vercel Web Analytics -->
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <!-- Vercel Speed Insights -->
+    <script>
+        window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+</head>
+<body>
+    <div class="background">
+        <img class="logo-img" id="logoImg" src="assets/images/nexcore-logo.webp" alt="NexCore Labs Logo">
+        <div id="spotLight" class="spot-light"></div>
+    </div>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1 id="logo" class="logo-link"><a href="index.html">NexCore <span>Labs</span></a></h1>
+            </div>
+            <div class="dropdown">
+                <div class="core-menu" id="coreMenu" aria-label="Open menu" title="Menu">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="dot" aria-hidden="true"></span>
+                </div>
+
+        <div id="myDropdown" class="dropdown-content">
+          <a href="auth.html" class="magic-signup fade" title="Sign in to your account"><i class="fa-solid fa-key"></i> Access the Core</a>
+          <input type="search" placeholder="What?..." id="myInput" onkeyup="filterFunction()" title="Search...">
+
+          <a href="hub.html" class="fade" title="NexCore Labs Hub"><i class="fa-solid fa-house"></i> Hub</a>
+          <a href="hub.html#projects" class="fade" title="Projects"><i class="fa-solid fa-diagram-project"></i> Projects</a>
+          <a href="ai-chat.html" class="fade" title="NexCore AI — Ask Anything" style="color:#6ee7f3;"><i class="fa-solid fa-wand-magic-sparkles"></i> NexCore AI</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="index.html#tools" class="mt-0" title="Tools & Systems"><i class="fa-solid fa-screwdriver-wrench"></i> Tools & Systems</a>
+          <a href="index.html#about" title="About NexCore Labs"><i class="fa-solid fa-circle-info"></i> About Us</a>
+          <a href="index.html#team" title="NexCore Labs Team"><i class="fa-solid fa-users"></i> Our Team</a>
+          <a href="index.html#contact" title="Contact NexCore Labs"><i class="fa-solid fa-paper-plane"></i> Contact Us</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="roadmap.html" class="fade mt-0" title="Feature requests and roadmap board"><i class="fa-solid fa-route"></i> Feature Board</a>
+          <a href="releases.html" class="fade" title="Releases & Updates"><i class="fa-solid fa-clock-rotate-left"></i> Releases / Updates</a>
+
+          <div class="div-menu-line"></div>
+
+          <a href="faq.html" class="fade mt-0" title="FAQ & Support"><i class="fa-solid fa-circle-question"></i> FAQ</a>
+          <a href="how-to-use.html" class="fade" title="How to Use NexCore Labs"><i class="fa-solid fa-book-open"></i> How to Use</a>
+          <a href="pricing.html" class="fade" title="Pricing Plans"><i class="fa-solid fa-tag"></i> Pricing</a>
+          <a href="terms.html" class="fade" title="Terms of Service"><i class="fa-solid fa-file-contract"></i> Terms</a>
+          <a href="privacy-policy.html" class="fade" title="Privacy Policy"><i class="fa-solid fa-shield-halved"></i> Privacy Policy</a>
+        </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="pricing-hero">
+            <div class="pricing-hero-badge"><i class="fa-solid fa-tag"></i> Flexible Access</div>
+            <h1>Build Your NexCore Access <span class="beta-badge"><i class="fa-solid fa-flask"></i> Beta</span></h1>
+            <p>No rigid plans. Pick the features you need and pay only for what you use. All prices in Omani Rial (OMR).</p>
+            <div class="beta-banner" id="betaBanner">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span><strong>This pricing system is in Beta.</strong> You may encounter occasional bugs or unexpected behaviour. If anything goes wrong with your order, please contact us directly and we'll sort it out right away.</span>
+                <button class="beta-banner-close" onclick="document.getElementById('betaBanner').style.display='none'" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </section>
+
+        <!-- Feature Builder -->
+        <section class="builder-section">
+            <div class="builder-header">
+                <h2>Enjoy flexible pricing</h2>
+                <p>choose what fits you best.</p>
+            </div>
+
+            <!-- Mode Toggle -->
+            <div class="mode-toggle">
+                <button class="mode-btn active" id="modeBuildBtn" onclick="setMode('build')">
+                    <i class="fa-solid fa-sliders"></i> Pick Features
+                </button>
+                <button class="mode-btn" id="modeBudgetBtn" onclick="setMode('budget')">
+                    <i class="fa-solid fa-wallet"></i> Enter Budget
+                </button>
+            </div>
+
+            <!-- ── BUILD MODE ── -->
+            <div id="buildMode" class="builder-mode active">
+                <!-- Add-ons -->
+                <div class="feature-group">
+                    <div class="feature-group-header">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <div>
+                            <h3>Add-ons</h3>
+                            <p>Select any optional extras you'd like.</p>
+                        </div>
+                    </div>
+                    <div class="addons-grid">
+                        <label class="addon-option addon-forced">
+                            <input type="checkbox" name="addon" value="lifetime" data-price="0.950" data-label="Lifetime Access" checked disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-infinity"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Lifetime Access</span>
+                                    <span class="addon-desc">Your project never expires on NexCore</span>
+                                </div>
+                                <span class="addon-lock-badge">Always Included</span>
+                                <span class="addon-price">0.950 OMR</span>
+                            </div>
+                        </label>
+                        <label class="addon-option addon-soon">
+                            <input type="checkbox" name="addon" value="setup" data-price="0.450" data-label="Professional Setup" disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Professional Setup</span>
+                                    <span class="addon-desc">NexCore team professionally configures your project page</span>
+                                </div>
+                                <span class="soon-badge">Soon</span>
+                            </div>
+                        </label>
+                        <label id="priorityReviewOption" class="addon-option">
+                            <input type="checkbox" name="addon" id="priorityReviewInput" value="priority" data-price="0.300" data-label="Priority Review">
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-bolt"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Priority Review</span>
+                                    <span class="addon-desc">Your project published within 24 hours, skip the queue</span>
+                                </div>
+                                <span class="addon-price">0.300 OMR</span>
+                                <span class="bt-only-badge">Bank Transfer</span>
+                            </div>
+                        </label>
+                        <p id="priorityLockNote" class="addon-paypal-lock-note" style="display:none">
+                            <i class="fa-solid fa-bolt"></i> Not needed — PayPal activates your account instantly.
+                        </p>
+                        <label class="addon-option addon-soon">
+                            <input type="checkbox" name="addon" value="spotlight" data-price="0.750" data-label="Featured Spotlight" disabled>
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-star"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Featured Spotlight</span>
+                                    <span class="addon-desc">Highlighted on the NexCore Hub for 30 days</span>
+                                </div>
+                                <span class="soon-badge">Soon</span>
+                            </div>
+                        </label>
+                        <div class="addon-option addon-soon">
+                            <div class="addon-card">
+                                <div class="addon-icon"><i class="fa-solid fa-certificate"></i></div>
+                                <div class="addon-info">
+                                    <span class="addon-name">Custom Badge</span>
+                                    <span class="addon-desc">Exclusive badge displayed on your project card</span>
+                                </div>
+                                <span class="soon-badge">Soon</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Support Duration -->
+                <div class="feature-group">
+                    <div class="feature-group-header">
+                        <i class="fa-solid fa-headset"></i>
+                        <div>
+                            <h3>Support Duration</h3>
+                            <p>Email &amp; WhatsApp-based technical guidance for your NexCore project. Pick one.</p>
+                        </div>
+                    </div>
+                    <div class="support-options">
+                        <label class="support-option">
+                            <input type="radio" name="support" value="none" data-price="0" checked>
+                            <div class="option-card">
+                                <span class="option-name">No Support</span>
+                                <span class="option-price free">Free</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1week" data-price="0.250">
+                            <div class="option-card">
+                                <span class="option-name">1 Week</span>
+                                <span class="option-price">0.250 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1month" data-price="0.500">
+                            <div class="option-card">
+                                <span class="option-name">1 Month</span>
+                                <span class="option-price">0.500 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_3months" data-price="1.000">
+                            <div class="option-card">
+                                <span class="option-name">3 Months</span>
+                                <span class="option-price">1.000 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_6months" data-price="1.500">
+                            <div class="option-card">
+                                <span class="option-name">6 Months</span>
+                                <span class="option-price">1.500 OMR</span>
+                            </div>
+                        </label>
+                        <label class="support-option">
+                            <input type="radio" name="support" value="support_1year" data-price="2.500">
+                            <div class="option-card">
+                                <span class="option-name">1 Year</span>
+                                <span class="option-price">2.500 OMR</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div><!-- /#buildMode -->
+
+            <!-- ── BUDGET MODE ── -->
+            <div id="budgetMode" class="builder-mode">
+                <div class="budget-input-section">
+                    <label for="budgetInput">Enter your budget</label>
+                    <div class="budget-input-wrap">
+                        <span class="budget-currency">OMR</span>
+                        <input type="number" id="budgetInput" placeholder="e.g. 1.500" min="0" step="0.050"
+                               oninput="findBundles()">
+                        <button type="button" onclick="findBundles()" class="btn primary">
+                            <i class="fa-solid fa-magnifying-glass"></i> Find Plans
+                        </button>
+                    </div>
+                </div>
+                <div id="bundleResults" class="bundle-results hidden"></div>
+            </div><!-- /#budgetMode -->
+
+            <!-- Live Price Bar -->
+            <div class="price-bar" id="priceBar">
+                <div class="price-bar-features" id="priceBarFeatures">
+                    <span class="no-features">No features selected yet</span>
+                </div>
+                <div class="price-bar-total">
+                    <span class="price-bar-label">Total</span>
+                    <span class="price-bar-amount" id="priceBarTotal">0.000 OMR</span>
+                    <span class="price-bar-usd" id="priceBarUSD">≈ $0.00</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Order Form -->
+        <section class="order-form-section" id="orderFormSection">
+            <div class="order-form-container">
+                <div class="order-form-header">
+                    <h2><i class="fa-solid fa-file-signature"></i> Submit Your Order</h2>
+                    <p>Fill in your details below. Your order will be reviewed and activated within approximately 48 hours.</p>
+                </div>
+
+                <!-- Order summary -->
+                <div class="order-summary" id="orderSummaryDisplay">
+                    <div class="order-summary-empty">Select features above to see your order summary here.</div>
+                </div>
+
+                <form id="orderForm" novalidate>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="orderName">Full Name *</label>
+                            <input type="text" id="orderName" placeholder="Your full name" required>
+                            <div class="field-note" id="nameNote"></div>
+                        </div>
+                        <div class="form-field">
+                            <label for="orderEmail">
+                                Google Account Email *
+                                <span class="field-hint" title="Enter the email address you use to sign in with Google — it will be linked to your NexCore account.">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                </span>
+                            </label>
+                            <input type="email" id="orderEmail" placeholder="yourname@gmail.com" required
+                                   oninput="validateEmailHint()">
+                            <div class="field-note" id="emailNote"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="orderWhatsapp">WhatsApp Number <span class="optional">(optional — recommended)</span></label>
+                            <input type="tel" id="orderWhatsapp" placeholder="+968 9XXXXXXX">
+                        </div>
+                        <div class="form-field">
+                            <label for="orderNotes">Additional Notes <span class="optional">(optional)</span></label>
+                            <input type="text" id="orderNotes" placeholder="Anything you'd like us to know">
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="payment-selector">
+                        <h3>Payment Method</h3>
+                        <div class="payment-options">
+                            <!-- Bank Transfer -->
+                            <label class="payment-option" onclick="onPaymentChange()">
+                                <input type="radio" name="payment" value="bank_transfer" checked>
+                                <div class="payment-card">
+                                    <div class="payment-icon" style="color:#ffb432;"><i class="fa-solid fa-building-columns"></i></div>
+                                    <div class="payment-info">
+                                        <span class="payment-name">Bank Transfer</span>
+                                        <span class="payment-desc">Transfer directly to our Bank Muscat account<br><span style="color:#ffb432;"><i class="fa-solid fa-clock" style="font-size:10px;"></i> Verified within ~48 hours after transfer</span></span>
+                                    </div>
+                                    <div class="payment-badge" style="background:rgba(255,180,50,0.12);color:#ffb432;border:1px solid rgba(255,180,50,0.25);">~48h Verify</div>
+                                </div>
+                            </label>
+                            <!-- PayPal -->
+                            <label class="payment-option" onclick="onPaymentChange()">
+                                <input type="radio" name="payment" value="paypal">
+                                <div class="payment-card">
+                                    <div class="payment-icon" style="color:#0070ba;"><i class="fa-brands fa-paypal"></i></div>
+                                    <div class="payment-info">
+                                        <span class="payment-name">PayPal</span>
+                                        <span class="payment-desc">Pay securely via PayPal in USD · 1 OMR = 2.60 USD<br><span style="color:#25d366;"><i class="fa-solid fa-bolt" style="font-size:10px;"></i> Instant activation — no waiting</span><br><span style="color:#9aa3b2;font-size:11px;"><i class="fa-solid fa-circle-info" style="font-size:10px;"></i> A small PayPal processing fee is added to the total</span></span>
+                                    </div>
+                                    <span id="paypalAmountBadge" class="payment-badge" style="background:rgba(0,112,186,0.15);color:#0070ba;border:1px solid rgba(0,112,186,0.3);"></span>
+                                    <span class="payment-badge instant"><i class="fa-solid fa-bolt"></i> Instant</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Bank Transfer Section (shown when bank_transfer selected) -->
+                    <div id="bankTransferDetails" class="bank-transfer-section">
+
+                        <!-- Bank details card -->
+                        <div class="bank-details-card">
+                            <h4><i class="fa-solid fa-building-columns"></i> Bank Transfer Details</h4>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Bank Name</span>
+                                <span class="bank-detail-value">Bank Muscat</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Account Name</span>
+                                <span class="bank-detail-value">AL FARIS MUJAHIDHAMOODHILAL AL ZAKW</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Account No.</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="accNoValue">0409011343820023</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('accNoValue', this)" title="Copy Account Number"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">IBAN</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="ibanValue">OM1402704090113438200 23</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('ibanValue', this)" title="Copy IBAN"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">SWIFT / BIC</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="swiftValue">BMUSOMRXXXX</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('swiftValue', this)" title="Copy SWIFT"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+
+                            <!-- Mobile Payment divider -->
+                            <div class="bank-detail-divider">
+                                <span><i class="fa-solid fa-mobile-screen-button"></i> Mobile Payment (Oman)</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Mobile No.</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="mobilePayValue">+968 93281000</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('mobilePayValue', this)" title="Copy Mobile Number"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+
+                            <div class="bank-reference-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Include your <strong>Full Name & Your Email</strong> in the transfer reference/message field.</span>
+                            </div>
+                        </div>
+
+                        <!-- Amount to transfer (informational, filled by JS) -->
+                        <div class="bank-amount-display" id="bankAmountDisplay">
+                            Select features above to see the transfer amount.
+                        </div>
+
+                        <!-- Transfer date + transaction reference -->
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="transferDate">Transfer Date *</label>
+                                <input type="date" id="transferDate">
+                                <div class="field-note" id="transferDateNote"></div>
+                            </div>
+                            <div class="form-field">
+                                <label for="bankTxRef">Transaction Reference <span class="optional">(optional)</span></label>
+                                <input type="text" id="bankTxRef" placeholder="e.g. TXN123456789" maxlength="100">
+                                <div class="field-note" id="bankTxRefNote"></div>
+                            </div>
+                        </div>
+
+                        <!-- Receipt upload -->
+                        <div class="receipt-upload-section">
+                            <label class="receipt-upload-label">
+                                Payment Receipt <span class="optional">(upload receipt or enter reference above — at least one required)</span>
+                            </label>
+                            <div class="receipt-drop-zone" id="receiptDropZone"
+                                 onclick="document.getElementById('receiptFileInput').click()"
+                                 ondragover="onReceiptDragOver(event)"
+                                 ondragleave="onReceiptDragLeave(event)"
+                                 ondrop="onReceiptDrop(event)">
+                                <div class="receipt-drop-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                <div class="receipt-drop-text">
+                                    <strong>Click to upload</strong> or drag &amp; drop<br>
+                                    <span>JPG, PNG, PDF &middot; Max 2 MB &middot; Images auto-compressed</span>
+                                </div>
+                            </div>
+                            <input type="file" id="receiptFileInput" accept=".jpg,.jpeg,.png,.pdf" style="display:none"
+                                   onchange="handleReceiptFile(this.files[0])">
+                            <!-- Upload progress -->
+                            <div class="receipt-progress hidden" id="receiptProgress">
+                                <div class="receipt-progress-bar" id="receiptProgressBar"></div>
+                            </div>
+                            <!-- Success state -->
+                            <div class="receipt-success hidden" id="receiptSuccess">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <div class="receipt-success-info">
+                                    <span class="receipt-filename" id="receiptFileName"></span>
+                                    <span class="receipt-size-note" id="receiptFileSizes"></span>
+                                </div>
+                                <button type="button" class="receipt-remove-btn" onclick="removeReceipt()" title="Remove file">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <!-- Error -->
+                            <div class="receipt-upload-error hidden" id="receiptError"></div>
+                        </div>
+                    </div><!-- /#bankTransferDetails -->
+
+                    <!-- PayPal Button Container -->
+                    <div id="paypalButtonContainer" class="paypal-btn-wrap hidden">
+                        <div id="paypalFeeNote" class="paypal-fee-note"></div>
+                        <div id="paypal-button-container"></div>
+                        <p id="paypalStatusMsg" class="submit-note" style="display:none;"></p>
+                    </div>
+
+                    <!-- Submit -->
+                    <div id="submitButtonWrap">
+                        <button type="submit" class="btn primary submit-order-btn" id="submitOrderBtn">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Order
+                        </button>
+                        <p class="submit-note" id="activationNote">
+                            <i class="fa-solid fa-clock"></i>
+                            Access activated within approximately <strong>48 hours</strong> after payment confirmation.
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- FAQ link -->
+        <div class="faq-row">
+            <p>Have questions about features, payments, or activation?</p>
+            <a href="faq.html#pricing" class="btn ghost fade" onclick="sessionStorage.setItem('faqCategory','pricing')">
+                <i class="fa-solid fa-circle-question" style="margin-right:7px;"></i>See Pricing FAQ
+            </a>
+        </div>
+
+        <div class="nexcore-sign">
+            <img id="nexcoreSign" src="assets/images/nexcore-word.webp" alt="NexCore Labs">
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="f-left">
+                <a class="paypal" href="https://www.paypal.me/alfarismujahid" target="_blank" rel="noopener" title="PayPal"><i class="fa-solid fa-heart" style="color: #6EE7F3;"></i> Support us on <i class="fa-brands fa-paypal"></i></a>
+                <br>
+                <small>NexCore Labs © <span id="year"></span> <span id="splitter">|</span>
+                    <a href="https://github.com/NexCoreLabs/NexCore/blob/main/LICENSE" target="_blank" rel="noopener" class="license-link">
+                        <i class="fa-solid fa-scale-balanced"></i> MIT License
+                    </a>                </small>
+            </div>
+            <div class="f-right footer-line"></div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+
+    <script src="assets/js/supabase-client.js"></script>
+
+    <script src="assets/js/auth-ui-db.js"></script>
+    <script src="assets/js/ai-chat.js"></script>
+
+    <script src="version.js"></script>
+
+    <script>
+        // ─────────────────────────────────────────────────────────────────
+        //  Feature Catalog & Bundle Definitions
+        // ─────────────────────────────────────────────────────────────────
+        const OMR_TO_USD = 2.60;
+
+        // PayPal processing fee gross-up (3.49% + $0.49 fixed)
+        // Formula ensures we receive baseUsd after PayPal deducts their fee
+        const PAYPAL_FEE_RATE  = 0.0349;
+        const PAYPAL_FEE_FIXED = 0.49;
+        function calcPayPalUsd(baseUsd) {
+            return Math.ceil(((baseUsd + PAYPAL_FEE_FIXED) / (1 - PAYPAL_FEE_RATE)) * 100) / 100;
+        }
+
+        const FEATURE_CATALOG = {
+            support_1week:  { label: 'Support — 1 Week',    price: 0.250 },
+            support_1month: { label: 'Support — 1 Month',   price: 0.500 },
+            support_3months:{ label: 'Support — 3 Months',  price: 1.000 },
+            support_6months:{ label: 'Support — 6 Months',  price: 1.500 },
+            support_1year:  { label: 'Support — 1 Year',    price: 2.500 },
+            lifetime:       { label: 'Lifetime Access',     price: 0.950 },
+            setup:          { label: 'Professional Setup',  price: 0.450 },
+            priority:       { label: 'Priority Review',     price: 0.300 },
+            spotlight:      { label: 'Featured Spotlight',  price: 0.750 },
+        };
+
+        const BUNDLES = [
+            {
+                id: 'starter',
+                name: 'Starter Pack',
+                price: 1.200,
+                features: ['support_1week'],
+                desc: 'Lifetime access + a week of support',
+            },
+            {
+                id: 'essentials',
+                name: 'Essentials Pack',
+                price: 1.750,
+                features: ['support_1month', 'priority'],
+                desc: 'Lifetime access + a month of support & priority publishing',
+            },
+            {
+                id: 'professional',
+                name: 'Professional Pack',
+                price: 2.250,
+                features: ['support_3months', 'priority'],
+                desc: 'Lifetime access + 3 months of support & priority publishing',
+            },
+            {
+                id: 'complete',
+                name: 'Complete Pack',
+                price: 3.750,
+                features: ['support_1year', 'priority'],
+                desc: 'Lifetime access + full-year support & priority publishing',
+            },
+        ];
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Read current selections
+        // ─────────────────────────────────────────────────────────────────
+        function getSelectedFeatures() {
+            const features = [];
+
+            // Support duration
+            const support = document.querySelector('input[name="support"]:checked');
+            if (support && support.value !== 'none') {
+                const id = support.value;
+                features.push({ id, label: FEATURE_CATALOG[id].label, price: FEATURE_CATALOG[id].price });
+            }
+
+            // Add-ons
+            document.querySelectorAll('input[name="addon"]:checked').forEach(cb => {
+                const id = cb.value;
+                const label = cb.dataset.label;
+                features.push({ id, label, price: FEATURE_CATALOG[id].price });
+            });
+
+            return features;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Update price bar & order summary
+        // ─────────────────────────────────────────────────────────────────
+        function updateTotal() {
+            const features = getSelectedFeatures();
+            const total = features.reduce((s, f) => s + f.price, 0);
+            const totalFixed = Math.round(total * 1000) / 1000;
+            const usd = Math.round(totalFixed * OMR_TO_USD * 100) / 100;
+
+            // Price bar
+            const chipsEl = document.getElementById('priceBarFeatures');
+            if (features.length === 0) {
+                chipsEl.innerHTML = '<span class="no-features">No features selected yet</span>';
+            } else {
+                chipsEl.innerHTML = features
+                    .map(f => `<span class="price-feature-chip">${f.label}</span>`)
+                    .join('');
+            }
+            document.getElementById('priceBarTotal').textContent = totalFixed.toFixed(3) + ' OMR';
+            document.getElementById('priceBarUSD').textContent = '≈ $' + usd.toFixed(2);
+
+            // PayPal amount hint badge (shows grossed-up amount)
+            const ppBadge = document.getElementById('paypalAmountBadge');
+            if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${calcPayPalUsd(usd).toFixed(2)} USD` : '';
+
+            // Update bank transfer amount display if visible
+            if (document.querySelector('input[name="payment"]:checked')?.value === 'bank_transfer') {
+                updateBankAmountDisplay();
+            }
+
+            // Re-render PayPal buttons if PayPal is selected (amount changed)
+            if (document.querySelector('input[name="payment"]:checked')?.value === 'paypal' && window._paypalLoaded) {
+                renderPayPalButtons();
+            }
+
+            updateOrderSummary(features, totalFixed, usd);
+        }
+
+        function updateOrderSummary(features, totalOmr, totalUsd) {
+            const el = document.getElementById('orderSummaryDisplay');
+            if (!el) return;
+
+            if (features.length === 0) {
+                el.innerHTML = '<div class="order-summary-empty">Select features above to see your order summary here.</div>';
+                return;
+            }
+
+            const rows = features.map(f =>
+                `<div class="order-summary-row">
+                    <span>${f.label}</span>
+                    <span class="row-price">${f.price.toFixed(3)} OMR</span>
+                </div>`
+            ).join('');
+
+            el.innerHTML = `
+                ${rows}
+                <div class="order-summary-row total">
+                    <span>Total</span>
+                    <span class="row-price">${totalOmr.toFixed(3)} OMR</span>
+                </div>`;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Payment method toggle
+        // ─────────────────────────────────────────────────────────────────
+        function onPaymentChange() {
+            const method      = document.querySelector('input[name="payment"]:checked')?.value;
+            const ppContainer = document.getElementById('paypalButtonContainer');
+            const submitWrap  = document.getElementById('submitButtonWrap');
+            const btSection   = document.getElementById('bankTransferDetails');
+            const activationNote = document.getElementById('activationNote');
+
+            // ── Priority Review: lock when PayPal, unlock for Bank Transfer ──
+            const priorityLabel = document.getElementById('priorityReviewOption');
+            const priorityInput = document.getElementById('priorityReviewInput');
+            const priorityNote  = document.getElementById('priorityLockNote');
+
+            if (method === 'paypal') {
+                // Lock Priority Review
+                if (priorityLabel) priorityLabel.classList.add('addon-bt-only');
+                if (priorityInput) { priorityInput.checked = false; priorityInput.disabled = true; }
+                if (priorityNote)  priorityNote.style.display = 'block';
+                updateTotal();
+
+                ppContainer.classList.remove('hidden');
+                submitWrap.classList.add('hidden');
+                btSection.classList.add('hidden');
+                loadPayPalSDK();
+            } else if (method === 'bank_transfer') {
+                // Unlock Priority Review
+                if (priorityLabel) priorityLabel.classList.remove('addon-bt-only');
+                if (priorityInput) priorityInput.disabled = false;
+                if (priorityNote)  priorityNote.style.display = 'none';
+                updateTotal();
+
+                ppContainer.classList.add('hidden');
+                submitWrap.classList.remove('hidden');
+                btSection.classList.remove('hidden');
+                updateBankAmountDisplay();
+                if (activationNote) {
+                    activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Your transfer will be verified within approximately <strong>48 hours</strong>.';
+                }
+            } else {
+                // Unlock Priority Review (fallback)
+                if (priorityLabel) priorityLabel.classList.remove('addon-bt-only');
+                if (priorityInput) priorityInput.disabled = false;
+                if (priorityNote)  priorityNote.style.display = 'none';
+
+                ppContainer.classList.add('hidden');
+                submitWrap.classList.remove('hidden');
+                btSection.classList.add('hidden');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Bank Transfer helpers
+        // ─────────────────────────────────────────────────────────────────
+
+        // Tracks the Supabase Storage path of the uploaded receipt
+        let uploadedReceiptUrl = null;
+
+        // Update the "amount to transfer" info panel when features change
+        function updateBankAmountDisplay() {
+            const el = document.getElementById('bankAmountDisplay');
+            if (!el) return;
+            const features = getSelectedFeatures();
+            const total    = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+            if (features.length === 0) {
+                el.innerHTML = 'Select features above to see the transfer amount.';
+            } else {
+                const usd = Math.round(total * OMR_TO_USD * 100) / 100;
+                el.innerHTML = `Transfer <span class="bank-amount-omr">${total.toFixed(3)} OMR</span> to the account above. <span style="font-size:11px;color:#9aa3b2;">&asymp; $${usd.toFixed(2)} USD for reference only — please pay in OMR.</span>`;
+            }
+        }
+
+        // Copy IBAN or SWIFT to clipboard
+        function copyBankField(elementId, btn) {
+            const val = document.getElementById(elementId)?.textContent?.trim() || '';
+            navigator.clipboard.writeText(val).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            }).catch(() => {});
+        }
+
+        // ── Image compression (Canvas API — zero dependencies) ───────────────
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const MAX_DIM = 1200;
+                        let { width, height } = img;
+                        if (width > MAX_DIM || height > MAX_DIM) {
+                            if (width > height) {
+                                height = Math.round(height * MAX_DIM / width);
+                                width  = MAX_DIM;
+                            } else {
+                                width  = Math.round(width * MAX_DIM / height);
+                                height = MAX_DIM;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width  = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        canvas.toBlob(
+                            (blob) => { if (blob) resolve(blob); else reject(new Error('Compression failed')); },
+                            'image/jpeg',
+                            0.78
+                        );
+                    };
+                    img.onerror = () => reject(new Error('Invalid image'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error('File read failed'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ── Receipt upload handlers ────────────────────────────────────
+        function onReceiptDragOver(e) {
+            e.preventDefault();
+            document.getElementById('receiptDropZone').classList.add('drag-over');
+        }
+        function onReceiptDragLeave() {
+            document.getElementById('receiptDropZone').classList.remove('drag-over');
+        }
+        function onReceiptDrop(e) {
+            e.preventDefault();
+            document.getElementById('receiptDropZone').classList.remove('drag-over');
+            const file = e.dataTransfer?.files[0];
+            if (file) handleReceiptFile(file);
+        }
+
+        function showReceiptError(msg) {
+            const el = document.getElementById('receiptError');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            document.getElementById('receiptSuccess').classList.add('hidden');
+            document.getElementById('receiptProgress').classList.add('hidden');
+        }
+
+        function removeReceipt() {
+            uploadedReceiptUrl = null;
+            document.getElementById('receiptSuccess').classList.add('hidden');
+            document.getElementById('receiptDropZone').style.display = '';
+            document.getElementById('receiptFileInput').value = '';
+            document.getElementById('receiptError').classList.add('hidden');
+        }
+
+        async function handleReceiptFile(file) {
+            if (!file) return;
+
+            const errEl  = document.getElementById('receiptError');
+            const progEl = document.getElementById('receiptProgress');
+            const barEl  = document.getElementById('receiptProgressBar');
+            const succEl = document.getElementById('receiptSuccess');
+            errEl.classList.add('hidden');
+            succEl.classList.add('hidden');
+            progEl.classList.add('hidden');
+
+            // 1. Type validation (MIME + extension)
+            const ALLOWED_MIME = ['image/jpeg', 'image/png', 'application/pdf'];
+            const ALLOWED_EXT  = /\.(jpg|jpeg|png|pdf)$/i;
+            if (!ALLOWED_MIME.includes(file.type) || !ALLOWED_EXT.test(file.name)) {
+                showReceiptError('Unsupported file type. Please upload JPG, PNG, or PDF only.');
+                return;
+            }
+
+            const origSizeKb = (file.size / 1024).toFixed(0);
+
+            // 2. Compress images client-side (PDF uploaded as-is)
+            let uploadBlob  = file;
+            let finalName   = file.name;
+            let sizeNote    = `${origSizeKb} KB`;
+
+            if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                progEl.classList.remove('hidden');
+                barEl.style.width = '20%';
+                try {
+                    const compressed = await compressImage(file);
+                    const compKb = (compressed.size / 1024).toFixed(0);
+                    sizeNote    = `${origSizeKb} KB → ${compKb} KB (compressed)`;
+                    uploadBlob  = compressed;
+                    finalName   = file.name.replace(/\.[^.]+$/, '.jpg');
+                    barEl.style.width = '45%';
+                } catch (_) {
+                    // Compression failed — fall back to original
+                    barEl.style.width = '45%';
+                }
+            }
+
+            // 3. Size check after compression (max 2 MB)
+            const MAX_BYTES = 2 * 1024 * 1024;
+            if (uploadBlob.size > MAX_BYTES) {
+                progEl.classList.add('hidden');
+                showReceiptError(`File too large (${(uploadBlob.size / 1024 / 1024).toFixed(1)} MB after compression). Maximum is 2 MB.`);
+                return;
+            }
+
+            // 4. Build storage path: YYYY/MM/timestamp_randomhex.ext
+            const now = Date.now();
+            const d   = new Date(now);
+            const yr  = d.getFullYear();
+            const mo  = String(d.getMonth() + 1).padStart(2, '0');
+            const hex = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
+            const ext = file.type === 'application/pdf' ? 'pdf' : 'jpg';
+            const path = `${yr}/${mo}/${now}_${hex}.${ext}`;
+
+            // 5. Upload to Supabase Storage
+            progEl.classList.remove('hidden');
+            barEl.style.width = '65%';
+
+            const { data: uploadData, error: uploadErr } = await window.supabaseClient
+                .storage
+                .from('payment-receipts')
+                .upload(path, uploadBlob, {
+                    contentType: file.type === 'application/pdf' ? 'application/pdf' : 'image/jpeg',
+                    upsert: false,
+                });
+
+            barEl.style.width = '100%';
+            setTimeout(() => progEl.classList.add('hidden'), 300);
+
+            if (uploadErr) {
+                showReceiptError('Upload failed: ' + (uploadErr.message || 'Please try again.'));
+                return;
+            }
+
+            // 6. Store path and show success state
+            uploadedReceiptUrl = uploadData.path;
+            document.getElementById('receiptDropZone').style.display = 'none';
+            document.getElementById('receiptFileName').textContent  = finalName;
+            document.getElementById('receiptFileSizes').textContent = sizeNote;
+            succEl.classList.remove('hidden');
+            errEl.classList.add('hidden');
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  PayPal SDK loader + button renderer
+        // ─────────────────────────────────────────────────────────────────
+        window._paypalLoaded = false;
+        window._paypalRendering = false;
+
+        function loadPayPalSDK() {
+            if (window._paypalLoaded) { renderPayPalButtons(); return; }
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '<div class="paypal-loading"><i class="fa-solid fa-spinner fa-spin"></i> Loading PayPal…</div>';
+
+            const script = document.createElement('script');
+            // Client ID is injected via meta tag set by the server or falls back to sandbox placeholder
+            const clientId = document.querySelector('meta[name="paypal-client-id"]')?.content || 'PAYPAL_SANDBOX_CLIENT_ID';
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&intent=capture`;
+            script.onload = () => { window._paypalLoaded = true; renderPayPalButtons(); };
+            script.onerror = () => {
+                container.innerHTML = '<div class="paypal-error"><i class="fa-solid fa-triangle-exclamation"></i> Failed to load PayPal. Please try WhatsApp payment or check your connection.</div>';
+            };
+            document.body.appendChild(script);
+        }
+
+        function renderPayPalButtons() {
+            if (window._paypalRendering) return;
+            window._paypalRendering = true;
+
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '';
+
+            const features = getSelectedFeatures();
+            if (features.length === 0) {
+                container.innerHTML = '<div class="paypal-error"><i class="fa-solid fa-circle-info"></i> Please select at least one feature before paying.</div>';
+                window._paypalRendering = false;
+                return;
+            }
+
+            const totalOmr  = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+            const baseUsd   = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+            const grossUsd  = calcPayPalUsd(baseUsd);
+            const feeUsd    = (grossUsd - baseUsd).toFixed(2);
+            const totalUsd  = grossUsd.toFixed(2);
+
+            // Show fee breakdown note
+            const feeNoteEl = document.getElementById('paypalFeeNote');
+            if (feeNoteEl) {
+                feeNoteEl.style.display = 'flex';
+                feeNoteEl.innerHTML = `<i class="fa-solid fa-circle-info"></i><div>Your total includes a <strong>$${feeUsd} PayPal processing fee</strong> (3.49% + $0.49). Base price: <strong>$${baseUsd.toFixed(2)}</strong> &rarr; charged: <strong>$${totalUsd}</strong>.</div>`;
+            }
+
+            const nameEl  = document.getElementById('orderName');
+            const emailEl = document.getElementById('orderEmail');
+
+            paypal.Buttons({
+                style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay' },
+
+                async createOrder(data, actions) {
+                    // Validate form fields before opening PayPal popup
+                    const nameNote  = document.getElementById('nameNote');
+                    const emailNote = document.getElementById('emailNote');
+                    if (!nameEl.value.trim()) {
+                        nameNote.textContent = 'Please enter your name.';
+                        nameNote.className = 'field-note err';
+                        nameEl.classList.add('invalid');
+                        nameEl.focus();
+                        return Promise.reject(new Error('Name required'));
+                    }
+                    const email = emailEl.value.trim();
+                    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        emailNote.textContent = 'Please enter a valid email address.';
+                        emailNote.className = 'field-note err';
+                        emailEl.classList.add('invalid');
+                        emailEl.focus();
+                        return Promise.reject(new Error('Email required'));
+                    }
+                    // Pre-flight: check for existing pending/active order
+                    try {
+                        const chk = await fetch(`/api/check-email-order?email=${encodeURIComponent(email)}`);
+                        const chkData = await chk.json();
+                        if (chkData.has_order) {
+                            emailNote.textContent = chkData.status === 'active'
+                                ? 'This email already has an active subscription. Sign in with Google at nexcorelabs.vercel.app/auth.'
+                                : 'You already have a pending order for this email. Check your inbox for your Bill ID.';
+                            emailNote.className = 'field-note err';
+                            emailEl.classList.add('invalid');
+                            return Promise.reject(new Error('Duplicate order'));
+                        }
+                    } catch (_) { /* network error — allow through, backend will catch */ }
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: { value: totalUsd, currency_code: 'USD' },
+                            description: 'NexCore Labs Subscription',
+                        }],
+                    });
+                },
+
+                async onApprove(data) {
+                    const statusEl = document.getElementById('paypalStatusMsg');
+                    statusEl.style.display = 'flex';
+                    statusEl.innerHTML = '<span class="btn-spinner"></span> Confirming your payment…';
+                    container.style.pointerEvents = 'none';
+                    container.style.opacity = '0.5';
+
+                    try {
+                        const resp = await fetch('/api/paypal-capture', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                paypal_order_id:   data.orderID,
+                                user_name:         nameEl.value.trim(),
+                                user_email:        emailEl.value.trim(),
+                                whatsapp_number:   document.getElementById('orderWhatsapp').value.trim() || null,
+                                selected_features: getSelectedFeatures(),
+                                notes:             document.getElementById('orderNotes').value.trim() || null,
+                            }),
+                        });
+
+                        const result = await resp.json();
+
+                        if (!resp.ok || !result.success) {
+                            throw new Error(result.error || 'Payment failed. Please contact us.');
+                        }
+
+                        // Redirect to confirmation page
+                        const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+                        const totalUsd = calcPayPalUsd(Math.round(totalOmr * OMR_TO_USD * 100) / 100);
+                        sessionStorage.setItem('nxc_order', JSON.stringify({
+                            bill_id:         result.bill_id,
+                            user_name:       nameEl.value.trim(),
+                            user_email:      emailEl.value.trim(),
+                            whatsapp_number: document.getElementById('orderWhatsapp').value.trim() || null,
+                            features,
+                            total_omr:       totalOmr,
+                            total_usd:       totalUsd,
+                            payment_method:  'paypal',
+                            auto_activated:  result.auto_activated === true,
+                            submitted_at:    new Date().toISOString(),
+                        }));
+                        window.location.href = '/order-confirmation';
+
+                    } catch (err) {
+                        statusEl.style.display = 'none';
+                        container.style.pointerEvents = '';
+                        container.style.opacity = '';
+                        container.insertAdjacentHTML('beforebegin', `<div class="paypal-error"><i class="fa-solid fa-triangle-exclamation"></i> ${err.message || 'Payment failed. Please try again or use WhatsApp.'}</div>`);
+                        window._paypalRendering = false;
+                        renderPayPalButtons(); // re-render buttons
+                    }
+                },
+
+                onError(err) {
+                    console.error('[PayPal] Error:', err);
+                    window._paypalRendering = false;
+                },
+
+                onCancel() {
+                    console.log('[PayPal] Cancelled by user.');
+                    window._paypalRendering = false;
+                },
+            }).render('#paypal-button-container').then(() => {
+                window._paypalRendering = false;
+            }).catch(err => {
+                window._paypalRendering = false;
+                console.error('[PayPal] Render error:', err);
+            });
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Mode toggle (build / budget)
+        // ─────────────────────────────────────────────────────────────────
+        function setMode(mode) {
+            document.getElementById('buildMode').classList.toggle('active', mode === 'build');
+            document.getElementById('budgetMode').classList.toggle('active', mode === 'budget');
+            document.getElementById('modeBuildBtn').classList.toggle('active', mode === 'build');
+            document.getElementById('modeBudgetBtn').classList.toggle('active', mode === 'budget');
+            if (mode === 'build') updateTotal();
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Budget mode
+        // ─────────────────────────────────────────────────────────────────
+        function findBundles() {
+            const budget = parseFloat(document.getElementById('budgetInput').value) || 0;
+            const container = document.getElementById('bundleResults');
+            container.classList.remove('hidden');
+
+            if (budget <= 0) {
+                container.innerHTML = '<div class="bundle-no-result">Enter a budget amount above to see matching plans.</div>';
+                return;
+            }
+
+            const cards = BUNDLES.map(b => {
+                const fits = b.price <= budget;
+                const featureList = b.features
+                    .map(id => `<li><i class="fa-solid fa-check"></i> ${FEATURE_CATALOG[id].label}</li>`)
+                    .join('');
+                const badge = fits
+                    ? `<span class="bundle-fits fits">Fits your budget</span>`
+                    : `<span class="bundle-fits over">+${(b.price - budget).toFixed(3)} OMR over</span>`;
+
+                return `
+                    <div class="bundle-card ${fits ? '' : 'no-match'}" ${fits ? `onclick="applyBundle('${b.id}')"` : ''}>
+                        <div class="bundle-name">${b.name}</div>
+                        <div class="bundle-price">${b.price.toFixed(3)} OMR</div>
+                        <div class="bundle-desc">${b.desc}</div>
+                        <ul class="bundle-features-list">${featureList}</ul>
+                        ${badge}
+                        ${fits ? '<p style="font-size:11px;color:#9aa3b2;margin:8px 0 0;">Click to apply this plan</p>' : ''}
+                    </div>`;
+            }).join('');
+
+            container.innerHTML = cards ||
+                '<div class="bundle-no-result">No bundles found for this budget. Try "Pick Features" mode to build a custom plan.</div>';
+        }
+
+        function applyBundle(bundleId) {
+            const bundle = BUNDLES.find(b => b.id === bundleId);
+            if (!bundle) return;
+
+            // Reset all support + non-forced addons
+            document.querySelectorAll('input[name="support"]').forEach(r => r.checked = r.value === 'none');
+            document.querySelectorAll('input[name="addon"]:not([disabled])').forEach(cb => cb.checked = false);
+
+            bundle.features.forEach(id => {
+                const el = document.querySelector(`input[value="${id}"]`);
+                if (el) el.checked = true;
+            });
+
+            // Switch to build mode and update total
+            setMode('build');
+            updateTotal();
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Email validation hint
+        // ─────────────────────────────────────────────────────────────────
+        const GOOGLE_DOMAINS = ['gmail.com', 'googlemail.com'];
+
+        function validateEmailHint() {
+            const emailEl = document.getElementById('orderEmail');
+            const noteEl  = document.getElementById('emailNote');
+            const val = emailEl.value.trim();
+
+            if (!val) { noteEl.textContent = ''; noteEl.className = 'field-note'; return; }
+
+            const domain = val.split('@')[1] || '';
+            if (GOOGLE_DOMAINS.includes(domain.toLowerCase())) {
+                noteEl.textContent = '✓ Looks like a Google account — perfect.';
+                noteEl.className = 'field-note ok';
+                emailEl.classList.remove('warning');
+            } else {
+                noteEl.textContent = 'Make sure this is the email you use with Google Sign-In — it will be linked to your NexCore account.';
+                noteEl.className = 'field-note warn';
+                emailEl.classList.add('warning');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Form submission
+        // ─────────────────────────────────────────────────────────────────
+        document.getElementById('orderForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const nameEl  = document.getElementById('orderName');
+            const emailEl = document.getElementById('orderEmail');
+            const nameNote  = document.getElementById('nameNote');
+            const emailNote = document.getElementById('emailNote');
+
+            // Validate name
+            if (!nameEl.value.trim()) {
+                nameNote.textContent = 'Please enter your name.';
+                nameNote.className = 'field-note err';
+                nameEl.classList.add('invalid');
+                nameEl.focus();
+                return;
+            } else {
+                nameNote.textContent = '';
+                nameEl.classList.remove('invalid');
+            }
+
+            // Validate email
+            const email = emailEl.value.trim();
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                emailNote.textContent = 'Please enter a valid email address.';
+                emailNote.className = 'field-note err';
+                emailEl.classList.add('invalid');
+                emailEl.focus();
+                return;
+            }
+
+            // Validate features
+            const features = getSelectedFeatures();
+            if (features.length === 0) {
+                alert('Please select at least one feature before submitting.');
+                window.scrollTo({ top: document.querySelector('.builder-section').offsetTop - 80, behavior: 'smooth' });
+                return;
+            }
+
+            const payment = document.querySelector('input[name="payment"]:checked')?.value || 'bank_transfer';
+
+            // ── Bank Transfer extra validation ─────────────────────────────
+            if (payment === 'bank_transfer') {
+                const transferDate = document.getElementById('transferDate')?.value || '';
+                const txRef        = document.getElementById('bankTxRef')?.value.trim() || '';
+                const dateNote     = document.getElementById('transferDateNote');
+                const txRefNote    = document.getElementById('bankTxRefNote');
+
+                if (!transferDate) {
+                    dateNote.textContent = 'Please enter the date you made the transfer.';
+                    dateNote.className = 'field-note err';
+                    document.getElementById('transferDate').focus();
+                    return;
+                } else {
+                    dateNote.textContent = '';
+                    dateNote.className = 'field-note';
+                }
+
+                if (!uploadedReceiptUrl && !txRef) {
+                    const errEl = document.getElementById('receiptError');
+                    errEl.textContent = 'Please upload your payment receipt or enter a transaction reference number.';
+                    errEl.classList.remove('hidden');
+                    if (txRefNote) {
+                        txRefNote.textContent = 'Or enter a reference number here.';
+                        txRefNote.className = 'field-note err';
+                    }
+                    errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                } else {
+                    document.getElementById('receiptError').classList.add('hidden');
+                    if (txRefNote) { txRefNote.textContent = ''; txRefNote.className = 'field-note'; }
+                }
+            }
+
+            // Disable button
+            const btn = document.getElementById('submitOrderBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="btn-spinner"></span> Submitting...';
+
+            try {
+                let endpoint, body;
+
+                if (payment === 'bank_transfer') {
+                    // Bank transfer — go to dedicated endpoint
+                    endpoint = '/api/bank-transfer';
+                    body = {
+                        user_name:            nameEl.value.trim(),
+                        user_email:           email,
+                        selected_features:    features,
+                        transfer_date:        document.getElementById('transferDate').value,
+                        receipt_url:          uploadedReceiptUrl || null,
+                        bank_transaction_ref: document.getElementById('bankTxRef').value.trim() || null,
+                        notes:                document.getElementById('orderNotes').value.trim() || null,
+                    };
+                } else {
+                    // PayPal handled separately via PayPal SDK — this path is a fallback
+                    endpoint = '/api/submit-subscription';
+                    body = {
+                        user_name:         nameEl.value.trim(),
+                        user_email:        email,
+                        whatsapp_number:   document.getElementById('orderWhatsapp').value.trim() || null,
+                        selected_features: features,
+                        payment_method:    payment,
+                        notes:             document.getElementById('orderNotes').value.trim() || null,
+                    };
+                }
+
+                const resp = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
+                });
+
+                const data = await resp.json();
+
+                if (!resp.ok || !data.success) {
+                    throw new Error(data.error || 'Submission failed. Please try again.');
+                }
+
+                // Redirect to confirmation page
+                const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+                const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
+                sessionStorage.setItem('nxc_order', JSON.stringify({
+                    bill_id:        data.bill_id,
+                    user_name:      nameEl.value.trim(),
+                    user_email:     email,
+                    features,
+                    total_omr:      totalOmr,
+                    total_usd:      totalUsd,
+                    payment_method: payment,
+                    auto_activated: false,
+                    submitted_at:   new Date().toISOString(),
+                }));
+                window.location.href = '/order-confirmation';
+
+            } catch (err) {
+                alert(err.message || 'Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Order';
+            }
+        });
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Wire up change listeners
+        // ─────────────────────────────────────────────────────────────────
+        document.querySelectorAll('input[name="support"], input[name="addon"]').forEach(el => {
+            el.addEventListener('change', updateTotal);
+        });
+
+        updateTotal();    // initial price bar render
+        onPaymentChange(); // show bank transfer section by default (it's pre-selected)
+
+        // Year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
+  <script src="assets/js/cookies.js" defer></script>
+
+</body>
+
+</html>

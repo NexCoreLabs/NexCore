@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -40,8 +40,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
 
@@ -664,68 +662,6 @@
 
         }
 
-        .qr-wrapper {
-
-            display: flex;
-
-            flex-direction: column;
-
-            align-items: center;
-
-            gap: 8px;
-
-            margin-top: 16px;
-
-        }
-
-        .qr-scan-label {
-
-            opacity: 0.55;
-
-            font-size: 0.8rem;
-
-            margin: 0;
-
-        }
-
-        .download-qr-btn {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-            padding: 6px 13px;
-
-            background: rgba(255, 255, 255, 0.05);
-
-            border: 1px solid rgba(255, 255, 255, 0.11);
-
-            border-radius: 8px;
-
-            color: rgba(255, 255, 255, 0.6);
-
-            font-size: 0.8rem;
-
-            cursor: pointer;
-
-            transition: all 0.2s;
-
-            font-family: inherit;
-
-        }
-
-        .download-qr-btn:hover {
-
-            background: rgba(110, 231, 243, 0.08);
-
-            border-color: rgba(110, 231, 243, 0.3);
-
-            color: #6ee7f3;
-
-        }
-
             .ai-btn {
 
       position: relative;
@@ -1076,37 +1012,16 @@
 
                 <div class="actions">
                     <button class="btn primary ghost" id="shareBtn">
-
                         <i class="fas fa-share-alt"></i> Share Link
-
                     </button>
-
                     <button class="btn primary ghost" id="copyBtn">
-
                         <i class="fas fa-copy"></i> Copy Link
-
                     </button>
-
                     <button class="btn primary ghost" id="embedBtn">
-
                         <i class="fas fa-code"></i> Embed
-
                     </button>
                 </div>
 
-                <div class="qr-wrapper">
-                    <div class="qr-container">
-                        <div id="qr"></div>
-                    </div>
-
-                    <p class="qr-scan-label">Scan to view this project</p>
-
-                    <button class="download-qr-btn" id="downloadQrBtn">
-
-                        <i class="fas fa-download"></i> Download QR
-
-                    </button>
-                </div>
             </div>
 
             <div id="ownerActions" class="project-section" style="display: none; text-align: center;">
@@ -1787,50 +1702,6 @@
 
 
 
-            // Generate QR code after rendering
-
-            const qrContainer = document.getElementById('qr');
-
-            if (qrContainer) {
-
-                qrContainer.innerHTML = ''; // Clear any existing QR code
-
-                try {
-
-                    new QRCode(qrContainer, {
-
-                        text: currentUrl,
-
-                        width: 200,
-
-                        height: 200,
-
-                        colorDark: '#000000',
-
-                        colorLight: '#ffffff',
-
-                        correctLevel: QRCode.CorrectLevel.H
-
-                    });
-
-                } catch (e) {
-
-                    console.error('Failed to generate QR code:', e);
-
-                    qrContainer.innerHTML = '<p style="color: #ff7878; font-size: 0.9rem;">QR code unavailable</p>';
-
-                }
-
-                // Setup QR download after QR code renders
-
-                setTimeout(() => {
-
-                    try { setupQrDownload(); } catch (e) { console.error('Failed to setup QR download:', e); }
-
-                }, 300);
-
-            }
-
         }
 
         /* ---- Sign-in Modal for AI Insights ---- */
@@ -2409,66 +2280,6 @@
                 });
 
             }
-
-        }
-
-        /* ---- QR Download ---- */
-
-        function setupQrDownload() {
-
-            const downloadBtn = document.getElementById('downloadQrBtn');
-
-            if (!downloadBtn) return;
-
-            downloadBtn.addEventListener('click', () => {
-
-                let dataUrl;
-
-                const qrCanvas = document.querySelector('#qr canvas');
-
-                const qrImg = document.querySelector('#qr img');
-
-                if (qrCanvas) {
-
-                    dataUrl = qrCanvas.toDataURL('image/png');
-
-                } else if (qrImg) {
-
-                    try {
-
-                        const canvas = document.createElement('canvas');
-
-                        canvas.width = qrImg.naturalWidth || 200;
-
-                        canvas.height = qrImg.naturalHeight || 200;
-
-                        canvas.getContext('2d').drawImage(qrImg, 0, 0);
-
-                        dataUrl = canvas.toDataURL('image/png');
-
-                    } catch (e) {
-
-                        console.warn('Could not export QR image:', e);
-
-                        return;
-
-                    }
-
-                } else {
-
-                    return;
-
-                }
-
-                const a = document.createElement('a');
-
-                a.download = 'project-qr.png';
-
-                a.href = dataUrl;
-
-                a.click();
-
-            });
 
         }
 

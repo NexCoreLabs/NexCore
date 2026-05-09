@@ -12,8 +12,8 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 1.5px solid rgba(110, 231, 243, 0.4);
-  background: linear-gradient(135deg, rgba(14, 26, 46, 0.55), rgba(10, 11, 28, 0.55));
+  background: rgba(8, 10, 22, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   box-shadow: 0 4px 24px rgba(2, 6, 23, 0.55);
@@ -30,6 +30,12 @@
   border-color: rgba(110, 231, 243, 0.7);
 }
 
+ #nexai-trigger:hover svg {
+  stroke: #6ee7f3;
+ }
+
+
+
 #nexai-trigger:active {
   transform: scale(0.98);
 }
@@ -38,7 +44,7 @@
   width: 24px;
   height: 24px;
   fill: none;
-  stroke: #6ee7f3;
+  stroke: #9aa3b2;
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -46,15 +52,7 @@
 }
 
 /* Pulse ring when AI is available */
-#nexai-trigger::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(110, 231, 243, 0.3);
-  animation: nexai-pulse 2.4s ease-in-out infinite;
-  pointer-events: none;
-}
+
 
 @keyframes nexai-pulse {
   0%, 100% { opacity: 0.5; transform: scale(1);    }
@@ -69,9 +67,13 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: #6ee7f3;
+  background: #9aa3b2;
   border: 2px solid #0a0b1c;
   display: none;
+}
+
+#nexai-badge:hover{
+  background: #6ee7f3;
 }
 
 #nexai-badge.visible {

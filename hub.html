@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="en">
 
@@ -55,6 +55,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css'>
         <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
         <!-- Vercel Web Analytics -->
         <script>
             window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -73,6 +74,8 @@
             .sort-btn:hover{border-color:rgba(115,189,215,.4);color:var(--primary-accent);}
             .sort-btn.active{background:rgba(115,189,215,.12);border-color:rgba(115,189,215,.4);color:var(--primary-accent);font-weight:600;}
             #projects{scroll-margin-top:100px;}
+
+
         </style>
     </head>
 
@@ -183,6 +186,7 @@
             </div>
 
 
+
             <div class="projects-grid reveal" id="projects-container">
               <!-- Project cards will be loaded here dynamically -->
 
@@ -239,6 +243,8 @@
       <script src="assets/js/script.js"></script>
 
       <script src="assets/js/supabase-client.js"></script>
+
+
 
       <script src="assets/js/auth-ui-db.js"></script>
       <script src="assets/js/ai-chat.js"></script>
@@ -442,11 +448,14 @@
 
                   <span class="metadata-item"><i class="fas fa-eye"></i><span class="view-count">${views.toLocaleString()}</span> views</span>
                 </div>
+
               </div>
 
             `;
 
             container.appendChild(card);
+
+
 
           });
 

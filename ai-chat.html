@@ -707,10 +707,11 @@
 
         <!-- Messages -->
         <div id="page-messages" role="log" aria-live="polite" aria-label="Chat messages">
-          <div class="page-welcome">
-            <span class="page-welcome-icon" aria-hidden="true">✦</span>
-            <p>Hi! I'm the NexCore AI assistant.<br>
-               I can answer questions about NexCore and student projects.</p>
+          <div class="page-welcome" style="color:#f0d8a0;">
+            <span class="page-welcome-icon" aria-hidden="true" style="opacity:1;">⏸</span>
+            <p><strong>AI Chat is temporarily disabled</strong><br>
+               The NexCore AI assistant is currently paused to preserve API limits.<br>
+               Please check back later.</p>
           </div>
         </div>
 
@@ -805,21 +806,24 @@
     (function () {
       'use strict';
 
-      const API_ENDPOINT     = '/api/ai-chat';
+      // ── Feature flag — set to false to re-enable AI Chat ──────────────────
+      const CHAT_DISABLED = true;
+
+      const API_ENDPOINT     = '/api/ai?chat=1';
       const MAX_LEN          = 500;
       const DAILY_LIMIT      = 3;
       const MAX_HISTORY_MSGS = 12;
       const STORAGE_KEY      = 'nexai_page_history';
       const ALLOWED_DOMAINS  = ['squ.edu.om', 'student.squ.edu.om'];
 
-      // Whitelist for approved non-SQU users
+      // Whitelist for approved non-SQU users (students from other Oman universities, external users)
       const APPROVED_EMAILS = [
           // Add approved email addresses here, e.g.:
           // 'johndoe@example.com',
       ];
 
       const AUTH_NOTICE_KEY  = 'auth_notice';
-      const RESTRICTED_EMAIL_NOTICE = 'Only SQU email addresses (@student.squ.edu.om / @squ.edu.om) can sign in.';
+      const RESTRICTED_EMAIL_NOTICE = 'Only SQU email addresses (@student.squ.edu.om / @squ.edu.om) or approved NexCore users can sign in. Visit the pricing page to get approved.';
 
       const SUGGESTIONS = [
         'What is NexCore Labs?',
@@ -1038,7 +1042,7 @@
         const token = await getToken();
         if (!token) return;
         try {
-          const res  = await fetch(`${API_ENDPOINT}?usage=1`, {
+          const res  = await fetch(`${API_ENDPOINT}&usage=1`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (!res.ok) return;
@@ -1413,10 +1417,23 @@
         });
       }
 
-      // ── Breadcrumb ────────────────────────────────────────────
+      // ── Init ──────────────────────────────────────────────────
       document.getElementById('yearFooter').textContent = new Date().getFullYear();
 
-      // ── Init ──────────────────────────────────────────────────
+      if (CHAT_DISABLED) {
+        // Lock the input UI — chat is paused
+        const elInput  = document.getElementById('page-input');
+        const elSend   = document.getElementById('page-send');
+        const elStatus = document.getElementById('page-status');
+        const elSugg   = document.getElementById('page-suggestions');
+        if (elInput)  { elInput.disabled = true; elInput.placeholder = 'AI Chat is temporarily disabled'; }
+        if (elSend)   elSend.disabled = true;
+        if (elStatus) elStatus.textContent = 'Temporarily unavailable';
+        if (elSugg)   elSugg.style.display = 'none';
+        document.getElementById('yearFooter').textContent = new Date().getFullYear();
+        return; // skip all auth / API calls
+      }
+
       updatePill();
       consumeStoredAuthNotice();
       checkAuth();

@@ -26,7 +26,8 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────────────────────────────
-  const API_ENDPOINT = '/api/ai-chat';
+  const CHAT_DISABLED = true; // Set to false to re-enable AI Chat
+  const API_ENDPOINT = '/api/ai?chat=1';
   const MAX_MSG_LEN  = 500;
 
   // Quick suggestion buttons shown on first open
@@ -199,7 +200,7 @@
     const token = await getToken();
     if (!token) return;
     try {
-      const res = await fetch(`${API_ENDPOINT}?usage=1`, {
+      const res = await fetch(`${API_ENDPOINT}&usage=1`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) return;
@@ -600,6 +601,26 @@
     // Hide unread badge
     elBadge.classList.remove('visible');
 
+    // If chat is disabled, show a notice and lock input
+    if (CHAT_DISABLED) {
+      if (messageCount === 0) {
+        const welcome = elMessages.querySelector('.nexai-welcome');
+        if (welcome) welcome.remove();
+        const notice = document.createElement('div');
+        notice.className = 'nexai-msg ai';
+        notice.innerHTML = `<div class="nexai-bubble" style="background:rgba(255,180,0,0.07);border-color:rgba(255,180,0,0.2);color:#f0d8a0;">
+          <strong>AI Chat is temporarily disabled</strong><br>
+          The NexCore AI assistant is currently paused to preserve API limits. Please check back later.
+        </div>`;
+        elMessages.appendChild(notice);
+        messageCount++;
+      }
+      elInput.disabled = true;
+      elSend.disabled  = true;
+      elStatus.textContent = 'Temporarily unavailable';
+      return;
+    }
+
     // Fetch usage on first open
     if (messageCount === 0) {
       fetchUsage();
@@ -689,6 +710,7 @@
 
   // ── Init ────────────────────────────────────────────────────────────────
   function init() {
+    if (CHAT_DISABLED) return; // hide everything — don't build or inject the widget
     buildWidget();
     cacheRefs();
     loadHistory();

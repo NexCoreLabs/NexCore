@@ -215,6 +215,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 3000);
   }
 
+  // Menu hint — show speech bubble on first visit only
+  if (coreMenu && !localStorage.getItem('nx_mh')) {
+    const hint = document.createElement('span');
+    hint.className = 'menu-hint';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = '&#x1F44B; I\'m the menu';
+    coreMenu.parentElement.appendChild(hint);
+
+    const removeHint = () => {
+      hint.style.animation = 'none';
+      hint.style.opacity = '0';
+      localStorage.setItem('nx_mh', '1');
+      setTimeout(() => hint.remove(), 400);
+    };
+
+    setTimeout(removeHint, 9800);
+    coreMenu.addEventListener('click', removeHint, { once: true });
+  }
+
   // Dropdown Menu Logic
   if (coreMenu && myDropdown) {
     coreMenu.addEventListener("click", () => {
