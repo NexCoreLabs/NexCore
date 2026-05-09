@@ -228,6 +228,28 @@
             background: #6ee7f3; border-radius: 4px;
             padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
         }
+        /* Bank-transfer-only add-on (e.g. Priority Review — locked when PayPal is selected) */
+        .addon-bt-only { cursor: not-allowed; }
+        .addon-bt-only .addon-card {
+            opacity: 0.45;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .addon-bt-only .addon-card:hover { border-color: rgba(255,255,255,0.08); }
+        .bt-only-badge {
+            font-size: 10px; font-weight: 700; color: #0d1b2a;
+            background: #f59e0b; border-radius: 4px;
+            padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
+        }
+        .addon-paypal-lock-note {
+            display: none;
+            font-size: 12px;
+            color: #f59e0b;
+            margin-top: 6px;
+            padding-left: 4px;
+        }
+        .addon-bt-only + .addon-paypal-lock-note,
+        label.addon-bt-only ~ .addon-paypal-lock-note { display: block; }
         /* Soon — disabled */
         .addon-soon { cursor: not-allowed; }
         .addon-soon .addon-card { opacity: 0.42; cursor: not-allowed; }
@@ -959,8 +981,8 @@
                                 <span class="soon-badge">Soon</span>
                             </div>
                         </label>
-                        <label class="addon-option">
-                            <input type="checkbox" name="addon" value="priority" data-price="0.300" data-label="Priority Review">
+                        <label id="priorityReviewOption" class="addon-option">
+                            <input type="checkbox" name="addon" id="priorityReviewInput" value="priority" data-price="0.300" data-label="Priority Review">
                             <div class="addon-card">
                                 <div class="addon-icon"><i class="fa-solid fa-bolt"></i></div>
                                 <div class="addon-info">
@@ -968,8 +990,12 @@
                                     <span class="addon-desc">Your project published within 24 hours, skip the queue</span>
                                 </div>
                                 <span class="addon-price">0.300 OMR</span>
+                                <span class="bt-only-badge">Bank Transfer</span>
                             </div>
                         </label>
+                        <p id="priorityLockNote" class="addon-paypal-lock-note" style="display:none">
+                            <i class="fa-solid fa-bolt"></i> Not needed — PayPal activates your account instantly.
+                        </p>
                         <label class="addon-option addon-soon">
                             <input type="checkbox" name="addon" value="spotlight" data-price="0.750" data-label="Featured Spotlight" disabled>
                             <div class="addon-card">
@@ -1474,12 +1500,29 @@
             const btSection   = document.getElementById('bankTransferDetails');
             const activationNote = document.getElementById('activationNote');
 
+            // ── Priority Review: lock when PayPal, unlock for Bank Transfer ──
+            const priorityLabel = document.getElementById('priorityReviewOption');
+            const priorityInput = document.getElementById('priorityReviewInput');
+            const priorityNote  = document.getElementById('priorityLockNote');
+
             if (method === 'paypal') {
+                // Lock Priority Review
+                if (priorityLabel) priorityLabel.classList.add('addon-bt-only');
+                if (priorityInput) { priorityInput.checked = false; priorityInput.disabled = true; }
+                if (priorityNote)  priorityNote.style.display = 'block';
+                updateTotal();
+
                 ppContainer.classList.remove('hidden');
                 submitWrap.classList.add('hidden');
                 btSection.classList.add('hidden');
                 loadPayPalSDK();
             } else if (method === 'bank_transfer') {
+                // Unlock Priority Review
+                if (priorityLabel) priorityLabel.classList.remove('addon-bt-only');
+                if (priorityInput) priorityInput.disabled = false;
+                if (priorityNote)  priorityNote.style.display = 'none';
+                updateTotal();
+
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
                 btSection.classList.remove('hidden');
@@ -1488,6 +1531,11 @@
                     activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Your transfer will be verified within approximately <strong>48 hours</strong>.';
                 }
             } else {
+                // Unlock Priority Review (fallback)
+                if (priorityLabel) priorityLabel.classList.remove('addon-bt-only');
+                if (priorityInput) priorityInput.disabled = false;
+                if (priorityNote)  priorityNote.style.display = 'none';
+
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
                 btSection.classList.add('hidden');
