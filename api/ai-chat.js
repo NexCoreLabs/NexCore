@@ -17,6 +17,9 @@
 const { createClient } = require('@supabase/supabase-js');
 const { GoogleGenAI } = require('@google/genai');
 
+// ─── Feature flag — set to true to block all chat requests ───────────────────
+const CHAT_DISABLED = true;
+
 // ─── Environment ──────────────────────────────────────────────────────────────
 const SUPABASE_URL     = process.env.SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
@@ -168,6 +171,14 @@ module.exports = async (req, res) => {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
+
+  // ── Feature flag ─────────────────────────────────────────────────────────
+  if (CHAT_DISABLED) {
+    return res.status(503).json({
+      error: 'AI Chat is temporarily disabled',
+      message: 'The NexCore AI Chat is currently paused. Please check back later.'
+    });
+  }
 
   // ── Validate environment ─────────────────────────────────────────────────
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !GEMINI_API_KEY) {
