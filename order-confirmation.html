@@ -276,6 +276,34 @@
         }
         .btn-whatsapp i { font-size: 18px; }
 
+        /* ── Bank Transfer pending banner ────────────────────────────── */
+        .bank-transfer-banner {
+            background: linear-gradient(135deg, rgba(255,180,50,0.08), rgba(110,231,243,0.04));
+            border: 1px solid rgba(255,180,50,0.3);
+            border-radius: 14px;
+            padding: 26px 28px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .bank-transfer-banner .banner-icon {
+            font-size: 2.5rem;
+            color: #ffb432;
+            margin-bottom: 10px;
+        }
+        .bank-transfer-banner h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+            color: #ffb432;
+        }
+        .bank-transfer-banner p {
+            color: #cbd5e0;
+            font-size: 14px;
+            line-height: 1.65;
+            margin: 0 0 10px;
+        }
+        .bank-transfer-banner p:last-child { margin-bottom: 0; }
+
         /* ── Action buttons ───────────────────────────────────────────── */
         .action-row {
             display: flex;
@@ -560,8 +588,9 @@
         //  Render the page
         // ─────────────────────────────────────────────────────────────────
         function render(order) {
-            const isPayPalActive = order.payment_method === 'paypal' && order.auto_activated === true;
-            const isWhatsApp     = order.payment_method === 'whatsapp';
+            const isPayPalActive  = order.payment_method === 'paypal' && order.auto_activated === true;
+            const isWhatsApp      = order.payment_method === 'whatsapp';
+            const isBankTransfer  = order.payment_method === 'bank_transfer';
 
             const featureRows = (order.features || []).map(f =>
                 `<tr>
@@ -576,9 +605,13 @@
 
             // ── Header ────────────────────────────────────────────────────
             const headerIcon  = isPayPalActive ? 'fa-circle-check paypal-active' : 'fa-circle-check success';
-            const headerTitle = isPayPalActive ? '🎉 Subscription Activated!' : 'Order Submitted!';
+            const headerTitle = isPayPalActive  ? '🎉 Subscription Activated!'
+                              : isBankTransfer  ? 'Transfer Submitted!'
+                              : 'Order Submitted!';
             const headerSub   = isPayPalActive
                 ? 'Your PayPal payment is confirmed and your subscription is now active.'
+                : isBankTransfer
+                ? 'Your bank transfer details have been received and are awaiting verification.'
                 : 'Your order has been received. Check the instructions below to complete payment.';
 
             // ── PayPal activated block ─────────────────────────────────────
@@ -614,13 +647,32 @@
                     </a>
                 </div>` : '';
 
+            // ── Bank Transfer pending banner ───────────────────────────────
+            const bankTransferBlock = isBankTransfer ? `
+                <div class="bank-transfer-banner">
+                    <div class="banner-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <h2>Transfer Under Review</h2>
+                    <p>
+                        We've received your bank transfer details and your order is
+                        <strong style="color:#ffb432;">pending verification</strong>.
+                    </p>
+                    <p>
+                        Our team will verify your transfer and activate your subscription within <strong>approximately 48 hours</strong>.
+                        A confirmation email has been sent to <strong style="color:#eaf6fb;">${escHtml(order.user_email)}</strong>.
+                    </p>
+                    <p style="font-size:13px;color:#9aa3b2;">
+                        Questions? Contact us on WhatsApp: <strong style="color:#eaf6fb;">+968 93281000</strong>
+                    </p>
+                </div>` : '';
+
             // ── Pending notice (WhatsApp only) ─────────────────────────────
             const pendingNotice = isWhatsApp ? `
                 <div class="pending-notice">
                     <i class="fa-solid fa-clock"></i>
                     <span>Your subscription will be activated within approximately <strong>48 hours</strong> after payment is confirmed by our team.</span>
                 </div>` : '';
-
+            // ── Payment label in receipt card ─────────────────────────────────
+            const paymentLabel = isBankTransfer ? 'Bank Transfer' : (order.payment_method || '—');
             // ── Main receipt card ──────────────────────────────────────────
             const receiptCard = `
                 <div class="confirm-card" id="receiptCard">
@@ -636,7 +688,7 @@
 
                     <div class="meta-row"><span class="meta-label">Name</span><span class="meta-value">${escHtml(order.user_name || '—')}</span></div>
                     <div class="meta-row"><span class="meta-label">Email</span><span class="meta-value">${escHtml(order.user_email)}</span></div>
-                    <div class="meta-row"><span class="meta-label">Payment</span><span class="meta-value" style="text-transform:capitalize;">${escHtml(order.payment_method || '—')}</span></div>
+                    <div class="meta-row"><span class="meta-label">Payment</span><span class="meta-value">${escHtml(paymentLabel)}</span></div>
                     ${metaDate ? `<div class="meta-row"><span class="meta-label">Submitted</span><span class="meta-value">${metaDate}</span></div>` : ''}
 
                     <div class="features-section">
@@ -680,6 +732,7 @@
 
                 ${paypalBlock}
                 ${whatsappBlock}
+                ${bankTransferBlock}
                 ${pendingNotice}
                 ${receiptCard}
 

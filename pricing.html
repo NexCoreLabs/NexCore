@@ -239,6 +239,9 @@
             border-radius: 4px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0;
         }
 
+        /* Hide floating cookie button — pricing page has a sticky price bar at the same position */
+        #nexcore-cookie-settings-btn { display: none !important; }
+
         /* Price Bar */
         .price-bar {
             position: sticky;
@@ -638,6 +641,193 @@
             background: rgba(37,211,102,0.2) !important;
         }
 
+        /* ── Bank Transfer ──────────────────────────────────────────── */
+        .bank-transfer-section { margin-bottom: 18px; }
+        .bank-transfer-section.hidden { display: none; }
+
+        /* Bank details card */
+        .bank-details-card {
+            background: rgba(255,180,50,0.04);
+            border: 1px solid rgba(255,180,50,0.2);
+            border-radius: 12px;
+            padding: 20px 22px;
+            margin-bottom: 16px;
+        }
+        .bank-details-card h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffb432;
+            margin: 0 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bank-detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 13px;
+            flex-wrap: wrap;
+        }
+        .bank-detail-row:last-of-type { border-bottom: none; }
+        .bank-detail-label {
+            color: #9aa3b2;
+            min-width: 110px;
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+        .bank-detail-value {
+            color: #eaf6fb;
+            font-weight: 500;
+            flex: 1;
+            word-break: break-all;
+        }
+        .bank-detail-copy { display: flex; align-items: center; gap: 8px; }
+        .btn-copy-field {
+            background: rgba(255,180,50,0.1);
+            border: 1px solid rgba(255,180,50,0.25);
+            color: #ffb432;
+            padding: 3px 9px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.18s;
+            flex-shrink: 0;
+        }
+        .btn-copy-field:hover { background: rgba(255,180,50,0.22); }
+        .bank-detail-divider {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px 0 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6ee7f3;
+        }
+        .bank-detail-divider::before,
+        .bank-detail-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(110,231,243,0.2);
+        }
+        .bank-detail-divider i { font-size: 12px; }
+        .bank-reference-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 12px;
+            background: rgba(255,180,50,0.07);
+            border-radius: 8px;
+            font-size: 12px;
+            color: #9aa3b2;
+            line-height: 1.55;
+        }
+        .bank-reference-note i { color: #ffb432; flex-shrink: 0; margin-top: 2px; }
+        .bank-reference-note strong { color: #eaf6fb; }
+
+        /* Amount display */
+        .bank-amount-display {
+            background: rgba(110,231,243,0.04);
+            border: 1px solid rgba(110,231,243,0.13);
+            border-radius: 9px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #9aa3b2;
+            line-height: 1.6;
+        }
+        .bank-amount-omr {
+            font-size: 18px;
+            font-weight: 800;
+            color: #6ee7f3;
+        }
+
+        /* Receipt upload zone */
+        .receipt-upload-section { margin-top: 4px; }
+        .receipt-upload-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #eaf6fb;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .receipt-drop-zone {
+            border: 2px dashed rgba(110,231,243,0.25);
+            border-radius: 10px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(110,231,243,0.02);
+        }
+        .receipt-drop-zone:hover, .receipt-drop-zone.drag-over {
+            border-color: rgba(110,231,243,0.55);
+            background: rgba(110,231,243,0.06);
+        }
+        .receipt-drop-icon { font-size: 2rem; color: #6ee7f3; margin-bottom: 8px; opacity: 0.7; }
+        .receipt-drop-text { font-size: 13px; color: #9aa3b2; line-height: 1.6; }
+        .receipt-drop-text strong { color: #eaf6fb; }
+        .receipt-drop-text span { font-size: 11px; }
+        .receipt-progress {
+            height: 3px;
+            background: rgba(110,231,243,0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .receipt-progress.hidden { display: none; }
+        .receipt-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #6ee7f3;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+        .receipt-success {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+            background: rgba(37,211,102,0.08);
+            border: 1px solid rgba(37,211,102,0.25);
+            border-radius: 9px;
+            padding: 10px 14px;
+            font-size: 13px;
+        }
+        .receipt-success.hidden { display: none; }
+        .receipt-success > i { color: #25d366; font-size: 1.1rem; flex-shrink: 0; }
+        .receipt-success-info { flex: 1; min-width: 0; }
+        .receipt-success-info .receipt-filename { display: block; color: #eaf6fb; font-weight: 500; word-break: break-all; }
+        .receipt-size-note { color: #9aa3b2; font-size: 11px; }
+        .receipt-remove-btn {
+            background: rgba(255,120,120,0.1);
+            border: 1px solid rgba(255,120,120,0.2);
+            color: #ff7878;
+            padding: 4px 9px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.18s;
+            flex-shrink: 0;
+        }
+        .receipt-remove-btn:hover { background: rgba(255,120,120,0.2); }
+        .receipt-upload-error {
+            margin-top: 8px;
+            background: rgba(239,68,68,0.08);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: #f87171;
+        }
+        .receipt-upload-error.hidden { display: none; }
+
         /* FAQ link row */
         .faq-row {
             text-align: center;
@@ -767,7 +957,6 @@
                                     <span class="addon-desc">NexCore team professionally configures your project page</span>
                                 </div>
                                 <span class="soon-badge">Soon</span>
-                                <span class="addon-price">0.450 OMR</span>
                             </div>
                         </label>
                         <label class="addon-option">
@@ -790,20 +979,18 @@
                                     <span class="addon-desc">Highlighted on the NexCore Hub for 30 days</span>
                                 </div>
                                 <span class="soon-badge">Soon</span>
-                                <span class="addon-price">0.750 OMR</span>
                             </div>
                         </label>
-                        <label class="addon-option">
-                            <input type="checkbox" name="addon" value="badge" data-price="0.200" data-label="Custom Badge">
+                        <div class="addon-option addon-soon">
                             <div class="addon-card">
                                 <div class="addon-icon"><i class="fa-solid fa-certificate"></i></div>
                                 <div class="addon-info">
                                     <span class="addon-name">Custom Badge</span>
                                     <span class="addon-desc">Exclusive badge displayed on your project card</span>
                                 </div>
-                                <span class="addon-price">0.200 OMR</span>
+                                <span class="soon-badge">Soon</span>
                             </div>
-                        </label>
+                        </div>
                     </div>
                 </div>
 
@@ -939,17 +1126,19 @@
                     <div class="payment-selector">
                         <h3>Payment Method</h3>
                         <div class="payment-options">
+                            <!-- Bank Transfer -->
                             <label class="payment-option" onclick="onPaymentChange()">
-                                <input type="radio" name="payment" value="whatsapp" checked>
+                                <input type="radio" name="payment" value="bank_transfer" checked>
                                 <div class="payment-card">
-                                    <div class="payment-icon" style="color:#25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+                                    <div class="payment-icon" style="color:#ffb432;"><i class="fa-solid fa-building-columns"></i></div>
                                     <div class="payment-info">
-                                        <span class="payment-name">WhatsApp</span>
-                                        <span class="payment-desc">Contact us on WhatsApp to complete payment · <strong>+968 93281000</strong><br><span style="color:#ffb432;"><i class="fa-solid fa-clock" style="font-size:10px;"></i> Activated within ~48 hours after payment</span></span>
+                                        <span class="payment-name">Bank Transfer</span>
+                                        <span class="payment-desc">Transfer directly to our Bank Muscat account<br><span style="color:#ffb432;"><i class="fa-solid fa-clock" style="font-size:10px;"></i> Verified within ~48 hours after transfer</span></span>
                                     </div>
-                                    <div class="payment-badge recommended">Recommended</div>
+                                    <div class="payment-badge" style="background:rgba(255,180,50,0.12);color:#ffb432;border:1px solid rgba(255,180,50,0.25);">~48h Verify</div>
                                 </div>
                             </label>
+                            <!-- PayPal -->
                             <label class="payment-option" onclick="onPaymentChange()">
                                 <input type="radio" name="payment" value="paypal">
                                 <div class="payment-card">
@@ -964,6 +1153,117 @@
                             </label>
                         </div>
                     </div>
+
+                    <!-- Bank Transfer Section (shown when bank_transfer selected) -->
+                    <div id="bankTransferDetails" class="bank-transfer-section">
+
+                        <!-- Bank details card -->
+                        <div class="bank-details-card">
+                            <h4><i class="fa-solid fa-building-columns"></i> Bank Transfer Details</h4>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Bank Name</span>
+                                <span class="bank-detail-value">Bank Muscat</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Account Name</span>
+                                <span class="bank-detail-value">AL FARIS MUJAHIDHAMOODHILAL AL ZAKW</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Account No.</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="accNoValue">0409011343820023</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('accNoValue', this)" title="Copy Account Number"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">IBAN</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="ibanValue">OM1402704090113438200 23</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('ibanValue', this)" title="Copy IBAN"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">SWIFT / BIC</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="swiftValue">BMUSOMRXXXX</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('swiftValue', this)" title="Copy SWIFT"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+
+                            <!-- Mobile Payment divider -->
+                            <div class="bank-detail-divider">
+                                <span><i class="fa-solid fa-mobile-screen-button"></i> Mobile Payment (Oman)</span>
+                            </div>
+                            <div class="bank-detail-row">
+                                <span class="bank-detail-label">Mobile No.</span>
+                                <span class="bank-detail-value bank-detail-copy">
+                                    <span id="mobilePayValue">+968 93281000</span>
+                                    <button type="button" class="btn-copy-field" onclick="copyBankField('mobilePayValue', this)" title="Copy Mobile Number"><i class="fa-solid fa-copy"></i></button>
+                                </span>
+                            </div>
+
+                            <div class="bank-reference-note">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Include your <strong>Full Name or Project ID</strong> in the transfer reference/message field.</span>
+                            </div>
+                        </div>
+
+                        <!-- Amount to transfer (informational, filled by JS) -->
+                        <div class="bank-amount-display" id="bankAmountDisplay">
+                            Select features above to see the transfer amount.
+                        </div>
+
+                        <!-- Transfer date + transaction reference -->
+                        <div class="form-row">
+                            <div class="form-field">
+                                <label for="transferDate">Transfer Date *</label>
+                                <input type="date" id="transferDate">
+                                <div class="field-note" id="transferDateNote"></div>
+                            </div>
+                            <div class="form-field">
+                                <label for="bankTxRef">Transaction Reference <span class="optional">(optional)</span></label>
+                                <input type="text" id="bankTxRef" placeholder="e.g. TXN123456789" maxlength="100">
+                                <div class="field-note" id="bankTxRefNote"></div>
+                            </div>
+                        </div>
+
+                        <!-- Receipt upload -->
+                        <div class="receipt-upload-section">
+                            <label class="receipt-upload-label">
+                                Payment Receipt <span class="optional">(upload receipt or enter reference above — at least one required)</span>
+                            </label>
+                            <div class="receipt-drop-zone" id="receiptDropZone"
+                                 onclick="document.getElementById('receiptFileInput').click()"
+                                 ondragover="onReceiptDragOver(event)"
+                                 ondragleave="onReceiptDragLeave(event)"
+                                 ondrop="onReceiptDrop(event)">
+                                <div class="receipt-drop-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                <div class="receipt-drop-text">
+                                    <strong>Click to upload</strong> or drag &amp; drop<br>
+                                    <span>JPG, PNG, PDF &middot; Max 2 MB &middot; Images auto-compressed</span>
+                                </div>
+                            </div>
+                            <input type="file" id="receiptFileInput" accept=".jpg,.jpeg,.png,.pdf" style="display:none"
+                                   onchange="handleReceiptFile(this.files[0])">
+                            <!-- Upload progress -->
+                            <div class="receipt-progress hidden" id="receiptProgress">
+                                <div class="receipt-progress-bar" id="receiptProgressBar"></div>
+                            </div>
+                            <!-- Success state -->
+                            <div class="receipt-success hidden" id="receiptSuccess">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <div class="receipt-success-info">
+                                    <span class="receipt-filename" id="receiptFileName"></span>
+                                    <span class="receipt-size-note" id="receiptFileSizes"></span>
+                                </div>
+                                <button type="button" class="receipt-remove-btn" onclick="removeReceipt()" title="Remove file">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                            <!-- Error -->
+                            <div class="receipt-upload-error hidden" id="receiptError"></div>
+                        </div>
+                    </div><!-- /#bankTransferDetails -->
 
                     <!-- PayPal Button Container -->
                     <div id="paypalButtonContainer" class="paypal-btn-wrap hidden">
@@ -1046,7 +1346,6 @@
             setup:          { label: 'Professional Setup',  price: 0.450 },
             priority:       { label: 'Priority Review',     price: 0.300 },
             spotlight:      { label: 'Featured Spotlight',  price: 0.750 },
-            badge:          { label: 'Custom Badge',        price: 0.200 },
         };
 
         const BUNDLES = [
@@ -1067,16 +1366,16 @@
             {
                 id: 'professional',
                 name: 'Professional Pack',
-                price: 2.450,
-                features: ['support_3months', 'priority', 'badge'],
-                desc: 'Lifetime access + 3 months of support, priority & custom badge',
+                price: 2.250,
+                features: ['support_3months', 'priority'],
+                desc: 'Lifetime access + 3 months of support & priority publishing',
             },
             {
                 id: 'complete',
                 name: 'Complete Pack',
-                price: 3.950,
-                features: ['support_1year', 'priority', 'badge'],
-                desc: 'Lifetime access + full-year support, priority & custom badge',
+                price: 3.750,
+                features: ['support_1year', 'priority'],
+                desc: 'Lifetime access + full-year support & priority publishing',
             },
         ];
 
@@ -1128,6 +1427,11 @@
             const ppBadge = document.getElementById('paypalAmountBadge');
             if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${calcPayPalUsd(usd).toFixed(2)} USD` : '';
 
+            // Update bank transfer amount display if visible
+            if (document.querySelector('input[name="payment"]:checked')?.value === 'bank_transfer') {
+                updateBankAmountDisplay();
+            }
+
             // Re-render PayPal buttons if PayPal is selected (amount changed)
             if (document.querySelector('input[name="payment"]:checked')?.value === 'paypal' && window._paypalLoaded) {
                 renderPayPalButtons();
@@ -1164,21 +1468,216 @@
         //  Payment method toggle
         // ─────────────────────────────────────────────────────────────────
         function onPaymentChange() {
-            const method = document.querySelector('input[name="payment"]:checked')?.value;
+            const method      = document.querySelector('input[name="payment"]:checked')?.value;
             const ppContainer = document.getElementById('paypalButtonContainer');
             const submitWrap  = document.getElementById('submitButtonWrap');
+            const btSection   = document.getElementById('bankTransferDetails');
             const activationNote = document.getElementById('activationNote');
+
             if (method === 'paypal') {
                 ppContainer.classList.remove('hidden');
                 submitWrap.classList.add('hidden');
+                btSection.classList.add('hidden');
                 loadPayPalSDK();
+            } else if (method === 'bank_transfer') {
+                ppContainer.classList.add('hidden');
+                submitWrap.classList.remove('hidden');
+                btSection.classList.remove('hidden');
+                updateBankAmountDisplay();
+                if (activationNote) {
+                    activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Your transfer will be verified within approximately <strong>48 hours</strong>.';
+                }
             } else {
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
-                if (activationNote) {
-                    activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Access activated within approximately <strong>48 hours</strong> after payment confirmation.';
+                btSection.classList.add('hidden');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Bank Transfer helpers
+        // ─────────────────────────────────────────────────────────────────
+
+        // Tracks the Supabase Storage path of the uploaded receipt
+        let uploadedReceiptUrl = null;
+
+        // Update the "amount to transfer" info panel when features change
+        function updateBankAmountDisplay() {
+            const el = document.getElementById('bankAmountDisplay');
+            if (!el) return;
+            const features = getSelectedFeatures();
+            const total    = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
+            if (features.length === 0) {
+                el.innerHTML = 'Select features above to see the transfer amount.';
+            } else {
+                const usd = Math.round(total * OMR_TO_USD * 100) / 100;
+                el.innerHTML = `Transfer <span class="bank-amount-omr">${total.toFixed(3)} OMR</span> to the account above. <span style="font-size:11px;color:#9aa3b2;">&asymp; $${usd.toFixed(2)} USD for reference only — please pay in OMR.</span>`;
+            }
+        }
+
+        // Copy IBAN or SWIFT to clipboard
+        function copyBankField(elementId, btn) {
+            const val = document.getElementById(elementId)?.textContent?.trim() || '';
+            navigator.clipboard.writeText(val).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+                setTimeout(() => { btn.innerHTML = orig; }, 2000);
+            }).catch(() => {});
+        }
+
+        // ── Image compression (Canvas API — zero dependencies) ───────────────
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const MAX_DIM = 1200;
+                        let { width, height } = img;
+                        if (width > MAX_DIM || height > MAX_DIM) {
+                            if (width > height) {
+                                height = Math.round(height * MAX_DIM / width);
+                                width  = MAX_DIM;
+                            } else {
+                                width  = Math.round(width * MAX_DIM / height);
+                                height = MAX_DIM;
+                            }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width  = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        canvas.toBlob(
+                            (blob) => { if (blob) resolve(blob); else reject(new Error('Compression failed')); },
+                            'image/jpeg',
+                            0.78
+                        );
+                    };
+                    img.onerror = () => reject(new Error('Invalid image'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error('File read failed'));
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // ── Receipt upload handlers ────────────────────────────────────
+        function onReceiptDragOver(e) {
+            e.preventDefault();
+            document.getElementById('receiptDropZone').classList.add('drag-over');
+        }
+        function onReceiptDragLeave() {
+            document.getElementById('receiptDropZone').classList.remove('drag-over');
+        }
+        function onReceiptDrop(e) {
+            e.preventDefault();
+            document.getElementById('receiptDropZone').classList.remove('drag-over');
+            const file = e.dataTransfer?.files[0];
+            if (file) handleReceiptFile(file);
+        }
+
+        function showReceiptError(msg) {
+            const el = document.getElementById('receiptError');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            document.getElementById('receiptSuccess').classList.add('hidden');
+            document.getElementById('receiptProgress').classList.add('hidden');
+        }
+
+        function removeReceipt() {
+            uploadedReceiptUrl = null;
+            document.getElementById('receiptSuccess').classList.add('hidden');
+            document.getElementById('receiptDropZone').style.display = '';
+            document.getElementById('receiptFileInput').value = '';
+            document.getElementById('receiptError').classList.add('hidden');
+        }
+
+        async function handleReceiptFile(file) {
+            if (!file) return;
+
+            const errEl  = document.getElementById('receiptError');
+            const progEl = document.getElementById('receiptProgress');
+            const barEl  = document.getElementById('receiptProgressBar');
+            const succEl = document.getElementById('receiptSuccess');
+            errEl.classList.add('hidden');
+            succEl.classList.add('hidden');
+            progEl.classList.add('hidden');
+
+            // 1. Type validation (MIME + extension)
+            const ALLOWED_MIME = ['image/jpeg', 'image/png', 'application/pdf'];
+            const ALLOWED_EXT  = /\.(jpg|jpeg|png|pdf)$/i;
+            if (!ALLOWED_MIME.includes(file.type) || !ALLOWED_EXT.test(file.name)) {
+                showReceiptError('Unsupported file type. Please upload JPG, PNG, or PDF only.');
+                return;
+            }
+
+            const origSizeKb = (file.size / 1024).toFixed(0);
+
+            // 2. Compress images client-side (PDF uploaded as-is)
+            let uploadBlob  = file;
+            let finalName   = file.name;
+            let sizeNote    = `${origSizeKb} KB`;
+
+            if (file.type === 'image/jpeg' || file.type === 'image/png') {
+                progEl.classList.remove('hidden');
+                barEl.style.width = '20%';
+                try {
+                    const compressed = await compressImage(file);
+                    const compKb = (compressed.size / 1024).toFixed(0);
+                    sizeNote    = `${origSizeKb} KB → ${compKb} KB (compressed)`;
+                    uploadBlob  = compressed;
+                    finalName   = file.name.replace(/\.[^.]+$/, '.jpg');
+                    barEl.style.width = '45%';
+                } catch (_) {
+                    // Compression failed — fall back to original
+                    barEl.style.width = '45%';
                 }
             }
+
+            // 3. Size check after compression (max 2 MB)
+            const MAX_BYTES = 2 * 1024 * 1024;
+            if (uploadBlob.size > MAX_BYTES) {
+                progEl.classList.add('hidden');
+                showReceiptError(`File too large (${(uploadBlob.size / 1024 / 1024).toFixed(1)} MB after compression). Maximum is 2 MB.`);
+                return;
+            }
+
+            // 4. Build storage path: YYYY/MM/timestamp_randomhex.ext
+            const now = Date.now();
+            const d   = new Date(now);
+            const yr  = d.getFullYear();
+            const mo  = String(d.getMonth() + 1).padStart(2, '0');
+            const hex = Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0');
+            const ext = file.type === 'application/pdf' ? 'pdf' : 'jpg';
+            const path = `${yr}/${mo}/${now}_${hex}.${ext}`;
+
+            // 5. Upload to Supabase Storage
+            progEl.classList.remove('hidden');
+            barEl.style.width = '65%';
+
+            const { data: uploadData, error: uploadErr } = await window.supabaseClient
+                .storage
+                .from('payment-receipts')
+                .upload(path, uploadBlob, {
+                    contentType: file.type === 'application/pdf' ? 'application/pdf' : 'image/jpeg',
+                    upsert: false,
+                });
+
+            barEl.style.width = '100%';
+            setTimeout(() => progEl.classList.add('hidden'), 300);
+
+            if (uploadErr) {
+                showReceiptError('Upload failed: ' + (uploadErr.message || 'Please try again.'));
+                return;
+            }
+
+            // 6. Store path and show success state
+            uploadedReceiptUrl = uploadData.path;
+            document.getElementById('receiptDropZone').style.display = 'none';
+            document.getElementById('receiptFileName').textContent  = finalName;
+            document.getElementById('receiptFileSizes').textContent = sizeNote;
+            succEl.classList.remove('hidden');
+            errEl.classList.add('hidden');
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -1478,7 +1977,40 @@
                 return;
             }
 
-            const payment = document.querySelector('input[name="payment"]:checked')?.value || 'whatsapp';
+            const payment = document.querySelector('input[name="payment"]:checked')?.value || 'bank_transfer';
+
+            // ── Bank Transfer extra validation ─────────────────────────────
+            if (payment === 'bank_transfer') {
+                const transferDate = document.getElementById('transferDate')?.value || '';
+                const txRef        = document.getElementById('bankTxRef')?.value.trim() || '';
+                const dateNote     = document.getElementById('transferDateNote');
+                const txRefNote    = document.getElementById('bankTxRefNote');
+
+                if (!transferDate) {
+                    dateNote.textContent = 'Please enter the date you made the transfer.';
+                    dateNote.className = 'field-note err';
+                    document.getElementById('transferDate').focus();
+                    return;
+                } else {
+                    dateNote.textContent = '';
+                    dateNote.className = 'field-note';
+                }
+
+                if (!uploadedReceiptUrl && !txRef) {
+                    const errEl = document.getElementById('receiptError');
+                    errEl.textContent = 'Please upload your payment receipt or enter a transaction reference number.';
+                    errEl.classList.remove('hidden');
+                    if (txRefNote) {
+                        txRefNote.textContent = 'Or enter a reference number here.';
+                        txRefNote.className = 'field-note err';
+                    }
+                    errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                } else {
+                    document.getElementById('receiptError').classList.add('hidden');
+                    if (txRefNote) { txRefNote.textContent = ''; txRefNote.className = 'field-note'; }
+                }
+            }
 
             // Disable button
             const btn = document.getElementById('submitOrderBtn');
@@ -1486,17 +2018,37 @@
             btn.innerHTML = '<span class="btn-spinner"></span> Submitting...';
 
             try {
-                const resp = await fetch('/api/submit-subscription', {
+                let endpoint, body;
+
+                if (payment === 'bank_transfer') {
+                    // Bank transfer — go to dedicated endpoint
+                    endpoint = '/api/bank-transfer';
+                    body = {
+                        user_name:            nameEl.value.trim(),
+                        user_email:           email,
+                        selected_features:    features,
+                        transfer_date:        document.getElementById('transferDate').value,
+                        receipt_url:          uploadedReceiptUrl || null,
+                        bank_transaction_ref: document.getElementById('bankTxRef').value.trim() || null,
+                        notes:                document.getElementById('orderNotes').value.trim() || null,
+                    };
+                } else {
+                    // PayPal handled separately via PayPal SDK — this path is a fallback
+                    endpoint = '/api/submit-subscription';
+                    body = {
+                        user_name:         nameEl.value.trim(),
+                        user_email:        email,
+                        whatsapp_number:   document.getElementById('orderWhatsapp').value.trim() || null,
+                        selected_features: features,
+                        payment_method:    payment,
+                        notes:             document.getElementById('orderNotes').value.trim() || null,
+                    };
+                }
+
+                const resp = await fetch(endpoint, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        user_name: nameEl.value.trim(),
-                        user_email: email,
-                        whatsapp_number: document.getElementById('orderWhatsapp').value.trim() || null,
-                        selected_features: features,
-                        payment_method: payment,
-                        notes: document.getElementById('orderNotes').value.trim() || null,
-                    }),
+                    body: JSON.stringify(body),
                 });
 
                 const data = await resp.json();
@@ -1509,16 +2061,15 @@
                 const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
                 const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
                 sessionStorage.setItem('nxc_order', JSON.stringify({
-                    bill_id:          data.bill_id,
-                    user_name:        nameEl.value.trim(),
-                    user_email:       email,
-                    whatsapp_number:  document.getElementById('orderWhatsapp').value.trim() || null,
+                    bill_id:        data.bill_id,
+                    user_name:      nameEl.value.trim(),
+                    user_email:     email,
                     features,
-                    total_omr:        totalOmr,
-                    total_usd:        totalUsd,
-                    payment_method:   payment,
-                    auto_activated:   false,
-                    submitted_at:     new Date().toISOString(),
+                    total_omr:      totalOmr,
+                    total_usd:      totalUsd,
+                    payment_method: payment,
+                    auto_activated: false,
+                    submitted_at:   new Date().toISOString(),
                 }));
                 window.location.href = '/order-confirmation';
 
@@ -1536,7 +2087,8 @@
             el.addEventListener('change', updateTotal);
         });
 
-        updateTotal(); // initial render
+        updateTotal();    // initial price bar render
+        onPaymentChange(); // show bank transfer section by default (it's pre-selected)
 
         // Year
         document.getElementById('year').textContent = new Date().getFullYear();
