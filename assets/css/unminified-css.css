@@ -1810,6 +1810,61 @@ textarea:focus {
     outline-offset: 3px
 }
 
+/* Menu hint — first-visit speech bubble */
+.menu-hint {
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    color: #6ee7f3;
+    background: rgba(10, 11, 28, .88);
+    border: 1px solid rgba(110, 231, 243, .22);
+    border-radius: 20px;
+    padding: 5px 12px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events: none;
+    opacity: 0;
+    animation: menuHintPop 8s ease forwards;
+    animation-delay: 1.5s;
+    box-shadow: 0 0 14px rgba(110, 231, 243, .1), inset 0 0 8px rgba(110, 231, 243, .04);
+    z-index: 999
+}
+
+.menu-hint::after {
+    content: '';
+    position: absolute;
+    right: -9px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+    border-left-color: rgba(110, 231, 243, .3)
+}
+
+@keyframes menuHintPop {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-8px)
+    }
+
+    12% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0)
+    }
+
+    80% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0)
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px)
+    }
+}
+
 .dropdown {
     position: relative;
     display: flex;
