@@ -125,7 +125,7 @@ module.exports = async (req, res) => {
   if (!bill_id || !String(bill_id).trim())
     return res.status(400).json({ error: "bill_id is required." });
 
-  if (!["active", "rejected", "cancelled", "pending"].includes(status))
+  if (!["active", "rejected", "cancelled", "pending", "pending_verification"].includes(status))
     return res.status(400).json({ error: "Invalid status value." });
 
   const billId = String(bill_id).trim();
@@ -155,6 +155,20 @@ module.exports = async (req, res) => {
   if (updateErr) {
     console.error("DB update error:", updateErr);
     return res.status(500).json({ error: "Failed to update the order." });
+  }
+
+  // ── Whitelist email in approved_users when activating ──────────────────────
+  if (status === "active") {
+    const { error: whitelistErr } = await supabase
+      .from("approved_users")
+      .upsert(
+        { email: order.user_email, reason: `Order ${order.bill_id} approved by admin`, approved_by: "admin" },
+        { onConflict: "email" }
+      );
+    if (whitelistErr) {
+      console.error("approved_users upsert error:", whitelistErr);
+      // Non-fatal — order is marked active, log and continue
+    }
   }
 
   // ── Send status notification email (non-fatal) ──────────────────────────────

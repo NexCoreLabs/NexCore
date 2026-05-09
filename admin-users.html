@@ -1743,8 +1743,9 @@
             font-size: 12px;
             font-weight: 600;
         }
-        .sub-payment-badge.whatsapp { color: #25d366; }
-        .sub-payment-badge.paypal   { color: #0070ba; }
+        .sub-payment-badge.whatsapp      { color: #25d366; }
+        .sub-payment-badge.paypal         { color: #0070ba; }
+        .sub-payment-badge.bank-transfer  { color: #ffb432; }
         .btn-approve {
             background: rgba(110,231,243,0.1);
             border: 1px solid rgba(110,231,243,0.3);
@@ -4155,15 +4156,19 @@
             updateSubFilterCounts();
             renderSubscriptions(allSubscriptions);
 
-            // Update pending orders stat
-            const pending = allSubscriptions.filter(o => o.status === 'pending').length;
+            // Update pending orders stat (pending + pending_verification both need action)
+            const pending = allSubscriptions.filter(o => o.status === 'pending' || o.status === 'pending_verification').length;
             const el = document.getElementById('statPendingOrders');
             if (el) el.textContent = pending;
         }
 
         function updateSubFilterCounts() {
             const counts = { all: allSubscriptions.length, pending: 0, active: 0, rejected: 0, cancelled: 0 };
-            allSubscriptions.forEach(o => { if (counts[o.status] !== undefined) counts[o.status]++; });
+            allSubscriptions.forEach(o => {
+                // Group pending_verification under pending for filter counts
+                const key = o.status === 'pending_verification' ? 'pending' : o.status;
+                if (counts[key] !== undefined) counts[key]++;
+            });
             ['all','pending','active','rejected','cancelled'].forEach(k => {
                 const el = document.getElementById('subFilter' + k.charAt(0).toUpperCase() + k.slice(1));
                 if (el) el.textContent = counts[k];
@@ -4194,21 +4199,37 @@
             empty.classList.add('hidden');
             wrapper.classList.remove('hidden');
 
-            const statusIcons = { pending:'⏳', active:'✅', rejected:'❌', cancelled:'🚫' };
+            const statusIcons = { pending:'⏳', pending_verification:'🔍', active:'✅', rejected:'❌', cancelled:'🚫' };
+            const statusLabels = { pending_verification: 'pending verification' };
 
             tbody.innerHTML = data.map(o => {
                 const features = (o.selected_features || [])
                     .map(f => `<span class="sub-feature-chip">${f.label}</span>`).join('');
-                const paymentHtml = o.payment_method === 'whatsapp'
-                    ? '<span class="sub-payment-badge whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</span>'
-                    : '<span class="sub-payment-badge paypal"><i class="fa-brands fa-paypal"></i> PayPal</span>';
-                const statusHtml = `<span class="sub-status ${o.status}">${statusIcons[o.status] || ''} ${o.status}</span>`;
+
+                let paymentHtml;
+                if (o.payment_method === 'whatsapp') {
+                    paymentHtml = '<span class="sub-payment-badge whatsapp"><i class="fa-brands fa-whatsapp"></i> WhatsApp</span>';
+                } else if (o.payment_method === 'bank_transfer') {
+                    paymentHtml = '<span class="sub-payment-badge bank-transfer"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>';
+                } else {
+                    paymentHtml = '<span class="sub-payment-badge paypal"><i class="fa-brands fa-paypal"></i> PayPal</span>';
+                }
+
+                // Receipt / transaction ref for bank transfer orders
+                const receiptHtml = o.receipt_url
+                    ? `<div style="margin-top:4px;"><a href="#" onclick="viewReceipt('${escapeHtml(o.receipt_url)}');return false;" style="font-size:11px;color:#ffb432;"><i class="fa-solid fa-image"></i> View Receipt</a></div>`
+                    : '';
+                const txRefHtml = o.bank_transaction_ref
+                    ? `<div style="font-size:11px;color:#9aa3b2;margin-top:2px;">Ref: ${escapeHtml(o.bank_transaction_ref)}</div>`
+                    : '';
+
+                const statusHtml = `<span class="sub-status ${o.status}">${statusIcons[o.status] || ''} ${statusLabels[o.status] || o.status}</span>`;
                 const date = new Date(o.created_at).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
 
                 const approveBtn = (o.status !== 'active')
                     ? `<button class="btn-action btn-approve" onclick="approveOrder('${o.bill_id}')"><i class="fa-solid fa-check"></i> Approve</button>`
                     : '';
-                const rejectBtn = (o.status === 'pending' || o.status === 'active')
+                const rejectBtn = (o.status === 'pending' || o.status === 'pending_verification' || o.status === 'active')
                     ? `<button class="btn-action btn-reject-order" onclick="openRejectModal('${o.bill_id}')"><i class="fa-solid fa-xmark"></i> Reject</button>`
                     : '';
 
@@ -4221,7 +4242,7 @@
                     </td>
                     <td><div class="sub-features-list">${features}</div></td>
                     <td style="font-weight:700;color:#6ee7f3;white-space:nowrap;">${parseFloat(o.total_omr).toFixed(3)} OMR</td>
-                    <td>${paymentHtml}</td>
+                    <td>${paymentHtml}${receiptHtml}${txRefHtml}</td>
                     <td>${statusHtml}</td>
                     <td style="font-size:12px;color:#9aa3b2;white-space:nowrap;">${date}</td>
                     <td class="actions-col">
@@ -4322,6 +4343,19 @@
         window.closeRejectModal = closeRejectModal;
         window.confirmReject = confirmReject;
         window.exportSubscriptionsCSV = exportSubscriptionsCSV;
+        window.viewReceipt = viewReceipt;
+
+        function viewReceipt(path) {
+            // Generate a short-lived signed URL from Supabase private bucket
+            sb.storage.from('payment-receipts').createSignedUrl(path, 300)
+              .then(({ data, error }) => {
+                  if (error || !data?.signedUrl) {
+                      showToast('Could not load receipt.', 'error');
+                      return;
+                  }
+                  window.open(data.signedUrl, '_blank', 'noopener,noreferrer');
+              });
+        }
 
         // Initialize activity search
         document.addEventListener('DOMContentLoaded', () => {
