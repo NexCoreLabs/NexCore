@@ -4354,8 +4354,15 @@
         window.viewReceipt = viewReceipt;
 
         async function viewReceipt(path) {
-            // Anon key cannot read private storage — call server-side endpoint
-            // which uses the service role key to generate a signed URL.
+            // Open blank window NOW (synchronously) to preserve the user-gesture
+            // context — browsers block window.open() called after an await.
+            const win = window.open('', '_blank');
+            if (!win) {
+                showToast('Allow popups for this page and try again.', 'error');
+                return;
+            }
+            win.document.write('<p style="font-family:sans-serif;padding:24px;color:#555;">Loading receipt\u2026</p>');
+
             try {
                 const session = await sb.auth.getSession();
                 const token = session.data.session?.access_token;
@@ -4366,8 +4373,9 @@
                 });
                 const result = await resp.json();
                 if (!resp.ok) throw new Error(result.error || 'Failed to load receipt.');
-                window.open(result.url, '_blank', 'noopener,noreferrer');
+                win.location.href = result.url;
             } catch (e) {
+                win.close();
                 showToast(e.message || 'Could not load receipt.', 'error');
             }
         }
