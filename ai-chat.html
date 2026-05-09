@@ -809,7 +809,7 @@
       // ── Feature flag — set to false to re-enable AI Chat ──────────────────
       const CHAT_DISABLED = true;
 
-      const API_ENDPOINT     = '/api/ai-chat';
+      const API_ENDPOINT     = '/api/ai?chat=1';
       const MAX_LEN          = 500;
       const DAILY_LIMIT      = 3;
       const MAX_HISTORY_MSGS = 12;
@@ -1042,7 +1042,7 @@
         const token = await getToken();
         if (!token) return;
         try {
-          const res  = await fetch(`${API_ENDPOINT}?usage=1`, {
+          const res  = await fetch(`${API_ENDPOINT}&usage=1`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           if (!res.ok) return;

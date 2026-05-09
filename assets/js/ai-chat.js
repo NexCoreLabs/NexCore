@@ -27,7 +27,7 @@
 
   // ── Config ──────────────────────────────────────────────────────────────
   const CHAT_DISABLED = true; // Set to false to re-enable AI Chat
-  const API_ENDPOINT = '/api/ai-chat';
+  const API_ENDPOINT = '/api/ai?chat=1';
   const MAX_MSG_LEN  = 500;
 
   // Quick suggestion buttons shown on first open
@@ -200,7 +200,7 @@
     const token = await getToken();
     if (!token) return;
     try {
-      const res = await fetch(`${API_ENDPOINT}?usage=1`, {
+      const res = await fetch(`${API_ENDPOINT}&usage=1`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) return;
