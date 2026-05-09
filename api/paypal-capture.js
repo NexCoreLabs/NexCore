@@ -219,6 +219,7 @@ module.exports = async (req, res) => {
     whatsapp_number,
     selected_features,
     notes,
+    organization,
   } = req.body || {};
 
   // ── Input validation ────────────────────────────────────────────────────────
@@ -332,6 +333,7 @@ module.exports = async (req, res) => {
     status:            "active",
     activated_at:      new Date().toISOString(),
     notes:             notes ? String(notes).trim() : null,
+    organization:      organization ? String(organization).trim().slice(0, 200) : null,
   });
 
   if (dbError) {

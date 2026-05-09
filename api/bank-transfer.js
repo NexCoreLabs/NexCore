@@ -192,6 +192,7 @@ module.exports = async (req, res) => {
     receipt_url,
     bank_transaction_ref,
     notes,
+    organization,
   } = req.body || {};
 
   // ── Input validation ────────────────────────────────────────────────────────
@@ -237,6 +238,9 @@ module.exports = async (req, res) => {
 
   // Sanitise notes
   const cleanNotes = notes ? String(notes).trim().slice(0, 500) : null;
+
+  // Sanitise organization (informational only — no validation required)
+  const cleanOrganization = organization ? String(organization).trim().slice(0, 200) : null;
 
   // ── Validate features against server-side catalog ───────────────────────────
 
@@ -309,6 +313,7 @@ module.exports = async (req, res) => {
     bank_transaction_ref: txRef,
     transfer_date:        String(transfer_date).trim(),
     notes:                cleanNotes,
+    organization:         cleanOrganization,
     activated_at:         null,
   });
 

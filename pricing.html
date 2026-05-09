@@ -828,6 +828,247 @@
         }
         .receipt-upload-error.hidden { display: none; }
 
+        /* ── Priority Review — Bank Transfer Only lock ──────────────── */
+        .addon-bt-only {
+            opacity: 0.45;
+            pointer-events: none;
+        }
+        .addon-bt-only .addon-card { cursor: not-allowed; }
+        .bt-only-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            white-space: nowrap;
+            background: rgba(255,180,50,0.12);
+            color: #ffb432;
+            border: 1px solid rgba(255,180,50,0.25);
+            margin-left: auto;
+        }
+        .addon-paypal-lock-note {
+            font-size: 11px;
+            color: #9aa3b2;
+            margin: 6px 0 0 0;
+            padding: 5px 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            display: none;
+        }
+
+        /* ── OTP Verification ───────────────────────────────────────── */
+        .email-input-wrap {
+            position: relative;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+        .email-input-wrap input[type="email"] {
+            flex: 1;
+            width: auto;
+        }
+        .send-code-btn {
+            flex-shrink: 0;
+            padding: 11px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+            background: rgba(110,231,243,0.1);
+            border: 1px solid rgba(110,231,243,0.35);
+            color: #6ee7f3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: Inter, sans-serif;
+        }
+        .send-code-btn:hover:not(:disabled) {
+            background: rgba(110,231,243,0.18);
+        }
+        .send-code-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .otp-section {
+            margin-top: 10px;
+            padding: 14px 16px;
+            background: rgba(110,231,243,0.03);
+            border: 1px solid rgba(110,231,243,0.15);
+            border-radius: 10px;
+        }
+        .otp-section.hidden { display: none; }
+        .otp-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #eaf6fb;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .otp-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .otp-input-row input {
+            width: 140px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(110,231,243,0.2);
+            border-radius: 8px;
+            color: #eaf6fb;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-align: center;
+            font-family: Inter, sans-serif;
+            transition: border-color 0.2s;
+        }
+        .otp-input-row input:focus {
+            outline: none;
+            border-color: #6ee7f3;
+            box-shadow: 0 0 0 3px rgba(110,231,243,0.12);
+        }
+        .otp-verify-btn {
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 700;
+            background: rgba(110,231,243,0.12);
+            border: 1px solid rgba(110,231,243,0.35);
+            color: #6ee7f3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: Inter, sans-serif;
+        }
+        .otp-verify-btn:hover:not(:disabled) { background: rgba(110,231,243,0.22); }
+        .otp-verify-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .otp-countdown {
+            font-size: 12px;
+            color: #9aa3b2;
+            margin-top: 8px;
+        }
+        .otp-countdown.expiring { color: #ffb432; }
+        .otp-error-msg {
+            font-size: 12px;
+            color: #f87171;
+            margin-top: 7px;
+        }
+        .otp-error-msg.hidden { display: none; }
+        .otp-resend-row {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #9aa3b2;
+        }
+        .otp-resend-row button {
+            background: none;
+            border: none;
+            color: #6ee7f3;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 0;
+            text-decoration: underline;
+            font-family: Inter, sans-serif;
+        }
+        .otp-resend-row button:disabled { color: #9aa3b2; cursor: not-allowed; text-decoration: none; }
+        .otp-verified-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 9px 14px;
+            background: rgba(37,211,102,0.08);
+            border: 1px solid rgba(37,211,102,0.25);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #25d366;
+            font-weight: 600;
+        }
+        .otp-verified-badge.hidden { display: none; }
+
+        /* ── Organization detection ─────────────────────────────────── */
+        .org-detect-row {
+            margin-top: 10px;
+        }
+        .org-detect-row.hidden { display: none; }
+
+        /* Org avatar (colored rounded square with abbreviation) */
+        .org-avatar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+
+        /* Detected chip */
+        .org-detected-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 16px 7px 8px;
+            background: rgba(37,211,102,0.08);
+            border: 1px solid rgba(37,211,102,0.25);
+            border-radius: 10px;
+            font-size: 13px;
+            color: #25d366;
+            font-weight: 600;
+        }
+
+        /* Card picker for manual org selection */
+        .org-picker-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #eaf6fb;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .org-card-picker {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 8px;
+        }
+        .org-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 8px 11px;
+            border-radius: 11px;
+            border: 2px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s, transform 0.12s;
+            user-select: none;
+        }
+        .org-card:hover {
+            border-color: rgba(110,231,243,0.35);
+            background: rgba(110,231,243,0.05);
+            transform: translateY(-2px);
+        }
+        .org-card.selected {
+            border-color: #6ee7f3;
+            background: rgba(110,231,243,0.11);
+        }
+        .org-card .org-avatar {
+            width: 42px;
+            height: 42px;
+            font-size: 11px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.35);
+        }
+        .org-card-label {
+            font-size: 10.5px;
+            color: #cdd6f4;
+            text-align: center;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
         /* FAQ link row */
         .faq-row {
             text-align: center;
@@ -959,14 +1200,16 @@
                                 <span class="soon-badge">Soon</span>
                             </div>
                         </label>
-                        <label class="addon-option">
+                        <label class="addon-option" id="priorityReviewOption">
                             <input type="checkbox" name="addon" value="priority" data-price="0.300" data-label="Priority Review">
                             <div class="addon-card">
                                 <div class="addon-icon"><i class="fa-solid fa-bolt"></i></div>
                                 <div class="addon-info">
                                     <span class="addon-name">Priority Review</span>
                                     <span class="addon-desc">Your project published within 24 hours, skip the queue</span>
+                                    <span class="addon-paypal-lock-note" id="priorityLockNote"><i class="fa-solid fa-bolt"></i> Not needed — PayPal activates your account instantly.</span>
                                 </div>
+                                <span class="bt-only-badge"><i class="fa-solid fa-building-columns"></i> Bank Transfer</span>
                                 <span class="addon-price">0.300 OMR</span>
                             </div>
                         </label>
@@ -1092,6 +1335,7 @@
                     <div class="order-summary-empty">Select features above to see your order summary here.</div>
                 </div>
 
+                <input type="hidden" id="orderOrganization">
                 <form id="orderForm" novalidate>
                     <div class="form-row">
                         <div class="form-field">
@@ -1101,14 +1345,45 @@
                         </div>
                         <div class="form-field">
                             <label for="orderEmail">
-                                Google Account Email *
-                                <span class="field-hint" title="Enter the email address you use to sign in with Google — it will be linked to your NexCore account.">
+                                Organization Email *
+                                <span class="field-hint" title="Enter the email your university provided. It must support Google Sign-In (Google Workspace). Used to verify you belong to the organization.">
                                     <i class="fa-solid fa-circle-info"></i>
                                 </span>
                             </label>
-                            <input type="email" id="orderEmail" placeholder="yourname@gmail.com" required
-                                   oninput="validateEmailHint()">
+                            <div class="email-input-wrap">
+                                <input type="email" id="orderEmail" placeholder="e.g. username@utas.edu.om" required
+                                       oninput="onEmailInput()" autocomplete="email">
+                                <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendOtp()" disabled>
+                                    <i class="fa-solid fa-paper-plane"></i> Send Code
+                                </button>
+                            </div>
                             <div class="field-note" id="emailNote"></div>
+
+                            <!-- Organization detection row -->
+                            <div class="org-detect-row hidden" id="orgDetectRow"></div>
+
+                            <!-- OTP verification section -->
+                            <div class="otp-section hidden" id="otpSection">
+                                <span class="otp-label"><i class="fa-solid fa-envelope-open-text" style="color:#6ee7f3;margin-right:6px;"></i>Enter the 6-digit code sent to your email</span>
+                                <div class="otp-input-row">
+                                    <input type="text" id="otpInput" placeholder="000000" maxlength="6"
+                                           inputmode="numeric" pattern="\d{6}" autocomplete="one-time-code"
+                                           oninput="this.value=this.value.replace(/\D/g,'')">
+                                    <button type="button" class="otp-verify-btn" id="verifyOtpBtn" onclick="verifyOtp()">
+                                        <i class="fa-solid fa-check"></i> Verify
+                                    </button>
+                                </div>
+                                <div class="otp-countdown" id="otpCountdown"></div>
+                                <div class="otp-error-msg hidden" id="otpErrorMsg"></div>
+                                <div class="otp-resend-row">
+                                    Didn't receive it? <button type="button" id="resendOtpBtn" onclick="sendOtp()" disabled>Resend code</button>
+                                </div>
+                            </div>
+
+                            <!-- Verified badge -->
+                            <div class="otp-verified-badge hidden" id="otpVerifiedBadge">
+                                <i class="fa-solid fa-circle-check"></i> Email verified &mdash; <span id="verifiedEmailLabel" style="font-weight:400;color:#cbd5e0;"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="form-row">
@@ -1474,12 +1749,34 @@
             const btSection   = document.getElementById('bankTransferDetails');
             const activationNote = document.getElementById('activationNote');
 
+            // ── Priority Review: lock for PayPal, unlock for Bank Transfer ──
+            const priorityOption = document.getElementById('priorityReviewOption');
+            const priorityInput  = priorityOption?.querySelector('input[value="priority"]');
+            const lockNote       = document.getElementById('priorityLockNote');
+
             if (method === 'paypal') {
+                // Lock Priority Review
+                if (priorityOption) priorityOption.classList.add('addon-bt-only');
+                if (lockNote)       lockNote.style.display = 'block';
+                if (priorityInput && priorityInput.checked) {
+                    priorityInput.checked  = false;
+                    priorityInput.disabled = true;
+                    updateTotal();
+                } else if (priorityInput) {
+                    priorityInput.disabled = true;
+                }
+
                 ppContainer.classList.remove('hidden');
                 submitWrap.classList.add('hidden');
                 btSection.classList.add('hidden');
                 loadPayPalSDK();
+
             } else if (method === 'bank_transfer') {
+                // Unlock Priority Review
+                if (priorityOption) priorityOption.classList.remove('addon-bt-only');
+                if (lockNote)       lockNote.style.display = 'none';
+                if (priorityInput)  priorityInput.disabled = false;
+
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
                 btSection.classList.remove('hidden');
@@ -1488,6 +1785,9 @@
                     activationNote.innerHTML = '<i class="fa-solid fa-clock"></i> Your transfer will be verified within approximately <strong>48 hours</strong>.';
                 }
             } else {
+                if (priorityOption) priorityOption.classList.remove('addon-bt-only');
+                if (lockNote)       lockNote.style.display = 'none';
+                if (priorityInput)  priorityInput.disabled = false;
                 ppContainer.classList.add('hidden');
                 submitWrap.classList.remove('hidden');
                 btSection.classList.add('hidden');
@@ -1748,11 +2048,31 @@
                     }
                     const email = emailEl.value.trim();
                     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                        emailNote.textContent = 'Please enter a valid email address.';
+                        emailNote.textContent = 'Please enter a valid organization email address.';
                         emailNote.className = 'field-note err';
                         emailEl.classList.add('invalid');
                         emailEl.focus();
                         return Promise.reject(new Error('Email required'));
+                    }
+                    // Block SQU
+                    const emailDomain = email.split('@')[1] || '';
+                    if (OMAN_UNIVERSITY_DOMAINS[emailDomain]?.blocked) {
+                        emailNote.innerHTML = '<i class="fa-solid fa-circle-info"></i> SQU students access NexCore for free! <a href="auth.html" style="color:#6ee7f3;">Sign in here →</a>';
+                        emailNote.className = 'field-note err';
+                        return Promise.reject(new Error('SQU email'));
+                    }
+                    // Require OTP verification
+                    if (!orgEmailVerified) {
+                        emailNote.textContent = 'Please verify your email address first.';
+                        emailNote.className = 'field-note err';
+                        document.getElementById('sendCodeBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        return Promise.reject(new Error('Email not verified'));
+                    }
+                    // Require organization
+                    if (!document.getElementById('orderOrganization').value.trim()) {
+                        const picker = document.getElementById('orgCardPicker');
+                        if (picker) { picker.style.outline = '2px solid #ff7878'; picker.style.borderRadius = '12px'; }
+                        return Promise.reject(new Error('Organization required'));
                     }
                     // Pre-flight: check for existing pending/active order
                     try {
@@ -1793,6 +2113,7 @@
                                 whatsapp_number:   document.getElementById('orderWhatsapp').value.trim() || null,
                                 selected_features: getSelectedFeatures(),
                                 notes:             document.getElementById('orderNotes').value.trim() || null,
+                                organization:      document.getElementById('orderOrganization').value.trim() || null,
                             }),
                         });
 
@@ -1913,27 +2234,353 @@
         }
 
         // ─────────────────────────────────────────────────────────────────
-        //  Email validation hint
+        //  Oman University Domain Mapping
         // ─────────────────────────────────────────────────────────────────
-        const GOOGLE_DOMAINS = ['gmail.com', 'googlemail.com'];
+        const OMAN_UNIVERSITY_DOMAINS = {
+            // SQU students get free access via Google Sign-In — block here
+            'student.squ.edu.om': { org: 'Sultan Qaboos University (SQU)', blocked: true,  abbr: 'SQU',  color: '#1e6d4a' },
+            'squ.edu.om':         { org: 'Sultan Qaboos University (SQU)', blocked: true,  abbr: 'SQU',  color: '#1e6d4a' },
+            // Recognised Oman universities/colleges
+            'utas.edu.om':             { org: 'UTAS — University of Technology and Applied Sciences',    blocked: false, abbr: 'UTAS', color: '#003087' },
+            'student.utas.edu.om':     { org: 'UTAS — University of Technology and Applied Sciences',    blocked: false, abbr: 'UTAS', color: '#003087' },
+            'unizwa.edu.om':           { org: 'University of Nizwa',                                     blocked: false, abbr: 'UNZ',  color: '#005b4f' },
+            'soharuni.edu.om':         { org: 'Sohar University',                                        blocked: false, abbr: 'SU',   color: '#8b1a1a' },
+            'muscatuniversity.edu.om': { org: 'Muscat University',                                       blocked: false, abbr: 'MU',   color: '#1a3a6b' },
+            'gutech.edu.om':           { org: 'GUtech — German University of Technology',                blocked: false, abbr: 'GUT',  color: '#1e4588' },
+            'mec.edu.om':              { org: 'Middle East College (MEC)',                               blocked: false, abbr: 'MEC',  color: '#c0392b' },
+            'du.edu.om':               { org: 'Dhofar University',                                      blocked: false, abbr: 'DU',   color: '#2e7d32' },
+            'nust.edu.om':             { org: 'National University of Science and Technology (NUST)',    blocked: false, abbr: 'NUST', color: '#1b3a5c' },
+            'gulfcollege.edu.om':      { org: 'Gulf College',                                           blocked: false, abbr: 'GC',   color: '#6a1b9a' },
+        };
 
-        function validateEmailHint() {
-            const emailEl = document.getElementById('orderEmail');
-            const noteEl  = document.getElementById('emailNote');
-            const val = emailEl.value.trim();
+        // Ordered list for the manual card picker
+        const ORG_LIST = [
+            { name: 'UTAS — University of Technology and Applied Sciences',    abbr: 'UTAS', color: '#003087' },
+            { name: 'University of Nizwa',                                     abbr: 'UNZ',  color: '#005b4f' },
+            { name: 'Sohar University',                                        abbr: 'SU',   color: '#8b1a1a' },
+            { name: 'Muscat University',                                       abbr: 'MU',   color: '#1a3a6b' },
+            { name: 'GUtech — German University of Technology',                abbr: 'GUT',  color: '#1e4588' },
+            { name: 'Middle East College (MEC)',                               abbr: 'MEC',  color: '#c0392b' },
+            { name: 'Dhofar University',                                       abbr: 'DU',   color: '#2e7d32' },
+            { name: 'National University of Science and Technology (NUST)',    abbr: 'NUST', color: '#1b3a5c' },
+            { name: 'Gulf College',                                            abbr: 'GC',   color: '#6a1b9a' },
+            { name: 'Other',                                                   abbr: '···',  color: '#4a5568' },
+        ];
 
-            if (!val) { noteEl.textContent = ''; noteEl.className = 'field-note'; return; }
+        const CONSUMER_DOMAINS = new Set(['gmail.com', 'googlemail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'live.com']);
 
-            const domain = val.split('@')[1] || '';
-            if (GOOGLE_DOMAINS.includes(domain.toLowerCase())) {
-                noteEl.textContent = '✓ Looks like a Google account — perfect.';
-                noteEl.className = 'field-note ok';
-                emailEl.classList.remove('warning');
-            } else {
-                noteEl.textContent = 'Make sure this is the email you use with Google Sign-In — it will be linked to your NexCore account.';
-                noteEl.className = 'field-note warn';
-                emailEl.classList.add('warning');
+        // ─────────────────────────────────────────────────────────────────
+        //  OTP state
+        // ─────────────────────────────────────────────────────────────────
+        let orgEmailVerified  = false;
+        let verifiedEmailAddr = '';
+        let otpCountdownTimer = null;
+        let otpExpiryTime     = null;
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Email input handler (replaces validateEmailHint)
+        // ─────────────────────────────────────────────────────────────────
+        function onEmailInput() {
+            const emailEl   = document.getElementById('orderEmail');
+            const noteEl    = document.getElementById('emailNote');
+            const sendBtn   = document.getElementById('sendCodeBtn');
+            const val       = emailEl.value.trim();
+            const domain    = (val.split('@')[1] || '').toLowerCase();
+
+            // If email changed from what was verified, reset verification
+            if (orgEmailVerified && val !== verifiedEmailAddr) {
+                resetOtpState();
             }
+
+            if (!val) {
+                noteEl.textContent = '';
+                noteEl.className   = 'field-note';
+                sendBtn.disabled   = true;
+                updateOrgDisplay(null);
+                return;
+            }
+
+            // Not a valid email yet — don't show org detection
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+                noteEl.textContent = '';
+                noteEl.className   = 'field-note';
+                sendBtn.disabled   = true;
+                updateOrgDisplay(null);
+                return;
+            }
+
+            const match = OMAN_UNIVERSITY_DOMAINS[domain];
+
+            // ── SQU: block with redirect message ──────────────────────
+            if (match && match.blocked) {
+                noteEl.innerHTML = '<i class="fa-solid fa-circle-info"></i> SQU students access NexCore for <strong>free</strong>! <a href="auth.html" style="color:#6ee7f3;">Sign in here →</a>';
+                noteEl.className = 'field-note err';
+                emailEl.classList.add('invalid');
+                sendBtn.disabled = true;
+                updateOrgDisplay(null);
+                document.getElementById('orderOrganization').value = '';
+                return;
+            }
+
+            emailEl.classList.remove('invalid');
+
+            // ── Recognised org domain ──────────────────────────────────
+            if (match && !match.blocked) {
+                noteEl.textContent = '✓ Organization domain recognized.';
+                noteEl.className   = 'field-note ok';
+                sendBtn.disabled   = orgEmailVerified;
+                updateOrgDisplay('detected', match);
+                document.getElementById('orderOrganization').value = match.org;
+                return;
+            }
+
+            // ── Consumer email ─────────────────────────────────────────
+            if (CONSUMER_DOMAINS.has(domain)) {
+                noteEl.textContent = 'Please use your university or organization email, not a personal email address.';
+                noteEl.className   = 'field-note warn';
+                emailEl.classList.add('warning');
+                sendBtn.disabled = true;
+                updateOrgDisplay(null);
+                document.getElementById('orderOrganization').value = '';
+                return;
+            }
+
+            emailEl.classList.remove('warning');
+
+            // ── Unrecognised domain — allow, but require manual org ────
+            noteEl.textContent = 'Domain not in our list. Please select your organization below.';
+            noteEl.className   = 'field-note warn';
+            sendBtn.disabled   = orgEmailVerified;
+            updateOrgDisplay('manual');
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  Organization display (detected chip or manual dropdown)
+        // ─────────────────────────────────────────────────────────────────
+        function updateOrgDisplay(mode, orgData) {
+            const row = document.getElementById('orgDetectRow');
+
+            if (!mode) {
+                row.classList.add('hidden');
+                row.innerHTML = '';
+                return;
+            }
+
+            row.classList.remove('hidden');
+
+            if (mode === 'detected') {
+                row.innerHTML = `
+                    <div class="org-detected-chip">
+                        <div class="org-avatar" style="background:${orgData.color}">${orgData.abbr}</div>
+                        ${orgData.org}
+                    </div>`;
+            } else {
+                // Card picker — build from ORG_LIST
+                const current = document.getElementById('orderOrganization').value;
+                const cards = ORG_LIST.map(org => {
+                    const sel = current === org.name ? ' selected' : '';
+                    return `<div class="org-card${sel}" onclick="onOrgCardSelect(this, '${org.name.replace(/'/g, "&#39;")}')">
+                        <div class="org-avatar" style="background:${org.color}">${org.abbr}</div>
+                        <span class="org-card-label">${org.name}</span>
+                    </div>`;
+                }).join('');
+                row.innerHTML = `
+                    <span class="org-picker-label">Select your organization *</span>
+                    <div class="org-card-picker" id="orgCardPicker">${cards}</div>`;
+            }
+        }
+
+        function onOrgCardSelect(cardEl, val) {
+            // Deselect all, select clicked
+            const picker = document.getElementById('orgCardPicker');
+            if (picker) picker.querySelectorAll('.org-card').forEach(c => c.classList.remove('selected'));
+            cardEl.classList.add('selected');
+            document.getElementById('orderOrganization').value = val;
+            // Enable send code once org is chosen
+            const emailEl = document.getElementById('orderEmail');
+            const email   = emailEl.value.trim();
+            if (val && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('sendCodeBtn').disabled = orgEmailVerified;
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  OTP: Send
+        // ─────────────────────────────────────────────────────────────────
+        async function sendOtp() {
+            const email   = document.getElementById('orderEmail').value.trim();
+            const sendBtn = document.getElementById('sendCodeBtn');
+
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+
+            sendBtn.disabled   = true;
+            sendBtn.innerHTML  = '<span class="btn-spinner"></span>';
+
+            // Hide any existing OTP state
+            document.getElementById('otpVerifiedBadge').classList.add('hidden');
+            hideOtpError();
+
+            try {
+                const resp = await fetch('/api/verify-org-email', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ action: 'send', email }),
+                });
+                const data = await resp.json();
+
+                if (!resp.ok) {
+                    // Restore button and show inline error
+                    sendBtn.disabled  = false;
+                    sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Code';
+                    showOtpInlineError(data.error || 'Failed to send code. Please try again.');
+                    if (data.redirect_to_auth) {
+                        document.getElementById('emailNote').innerHTML =
+                            '<i class="fa-solid fa-circle-info"></i> SQU students get free access. <a href="auth.html" style="color:#6ee7f3;">Sign in here →</a>';
+                        document.getElementById('emailNote').className = 'field-note err';
+                    }
+                    return;
+                }
+
+                // Success — show OTP input
+                sendBtn.innerHTML = '<i class="fa-solid fa-check"></i> Sent!';
+                document.getElementById('otpSection').classList.remove('hidden');
+                document.getElementById('otpInput').value = '';
+                document.getElementById('otpInput').focus();
+                document.getElementById('resendOtpBtn').disabled = true;
+
+                // Countdown: expiry is 10 minutes
+                startCountdown(data.expires_in_minutes * 60 || 600);
+
+            } catch (_) {
+                sendBtn.disabled  = false;
+                sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Code';
+                showOtpInlineError('Network error. Please check your connection and try again.');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  OTP: Verify
+        // ─────────────────────────────────────────────────────────────────
+        async function verifyOtp() {
+            const email     = document.getElementById('orderEmail').value.trim();
+            const code      = document.getElementById('otpInput').value.trim();
+            const verifyBtn = document.getElementById('verifyOtpBtn');
+
+            if (!code || code.length !== 6) {
+                showOtpInlineError('Please enter the full 6-digit code.');
+                return;
+            }
+
+            verifyBtn.disabled  = true;
+            verifyBtn.innerHTML = '<span class="btn-spinner"></span>';
+            hideOtpError();
+
+            try {
+                const resp = await fetch('/api/verify-org-email', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify({ action: 'verify', email, code }),
+                });
+                const data = await resp.json();
+
+                if (!resp.ok) {
+                    verifyBtn.disabled  = false;
+                    verifyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Verify';
+                    showOtpInlineError(data.error || 'Verification failed. Please try again.');
+                    return;
+                }
+
+                // ✅ Verified
+                orgEmailVerified  = true;
+                verifiedEmailAddr = email;
+
+                clearCountdown();
+                document.getElementById('otpSection').classList.add('hidden');
+                document.getElementById('sendCodeBtn').disabled  = true;
+                document.getElementById('sendCodeBtn').innerHTML = '<i class="fa-solid fa-lock"></i> Verified';
+
+                const badge = document.getElementById('otpVerifiedBadge');
+                badge.classList.remove('hidden');
+                document.getElementById('verifiedEmailLabel').textContent = email;
+
+                // Clear any field-note warnings
+                const noteEl = document.getElementById('emailNote');
+                if (!noteEl.className.includes('err')) {
+                    noteEl.textContent = '';
+                    noteEl.className   = 'field-note';
+                }
+
+            } catch (_) {
+                verifyBtn.disabled  = false;
+                verifyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Verify';
+                showOtpInlineError('Network error. Please check your connection and try again.');
+            }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  OTP: Countdown timer
+        // ─────────────────────────────────────────────────────────────────
+        function startCountdown(seconds) {
+            clearCountdown();
+            otpExpiryTime = Date.now() + seconds * 1000;
+
+            function tick() {
+                const remaining = Math.max(0, Math.round((otpExpiryTime - Date.now()) / 1000));
+                const el        = document.getElementById('otpCountdown');
+                if (!el) return;
+                if (remaining <= 0) {
+                    el.textContent = 'Code expired. Please request a new one.';
+                    el.className   = 'otp-countdown expiring';
+                    document.getElementById('resendOtpBtn').disabled = false;
+                    clearCountdown();
+                    return;
+                }
+                const mins = String(Math.floor(remaining / 60)).padStart(2, '0');
+                const secs = String(remaining % 60).padStart(2, '0');
+                el.textContent = `Code expires in ${mins}:${secs}`;
+                el.className   = remaining <= 60 ? 'otp-countdown expiring' : 'otp-countdown';
+                otpCountdownTimer = setTimeout(tick, 1000);
+            }
+            tick();
+        }
+
+        function clearCountdown() {
+            if (otpCountdownTimer) { clearTimeout(otpCountdownTimer); otpCountdownTimer = null; }
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        //  OTP: Helpers
+        // ─────────────────────────────────────────────────────────────────
+        function showOtpInlineError(msg) {
+            const el = document.getElementById('otpErrorMsg');
+            if (!el) {
+                // Fallback: show in email note
+                const noteEl = document.getElementById('emailNote');
+                noteEl.textContent = msg;
+                noteEl.className   = 'field-note err';
+                return;
+            }
+            el.textContent = msg;
+            el.classList.remove('hidden');
+        }
+
+        function hideOtpError() {
+            const el = document.getElementById('otpErrorMsg');
+            if (el) el.classList.add('hidden');
+        }
+
+        function resetOtpState() {
+            orgEmailVerified  = false;
+            verifiedEmailAddr = '';
+            clearCountdown();
+            document.getElementById('otpSection').classList.add('hidden');
+            document.getElementById('otpVerifiedBadge').classList.add('hidden');
+            const sendBtn = document.getElementById('sendCodeBtn');
+            sendBtn.disabled  = false;
+            sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Send Code';
+            hideOtpError();
+            document.getElementById('otpInput').value = '';
+            document.getElementById('otpCountdown').textContent = '';
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -1962,10 +2609,44 @@
             // Validate email
             const email = emailEl.value.trim();
             if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                emailNote.textContent = 'Please enter a valid email address.';
+                emailNote.textContent = 'Please enter a valid organization email address.';
                 emailNote.className = 'field-note err';
                 emailEl.classList.add('invalid');
                 emailEl.focus();
+                return;
+            }
+
+            // Block SQU emails at form level
+            const emailDomain = email.split('@')[1] || '';
+            if (OMAN_UNIVERSITY_DOMAINS[emailDomain]?.blocked) {
+                emailNote.innerHTML = '<i class="fa-solid fa-circle-info"></i> SQU students access NexCore for free! <a href="auth.html" style="color:#6ee7f3;">Sign in here →</a>';
+                emailNote.className = 'field-note err';
+                emailEl.classList.add('invalid');
+                emailEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Validate OTP verification
+            if (!orgEmailVerified) {
+                emailNote.textContent = 'Please verify your email address with the code before submitting.';
+                emailNote.className = 'field-note err';
+                document.getElementById('sendCodeBtn').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Validate organization
+            const organization = document.getElementById('orderOrganization').value.trim();
+            if (!organization) {
+                // Highlight card picker if it's visible
+                const picker = document.getElementById('orgCardPicker');
+                if (picker) {
+                    picker.style.outline = '2px solid #ff7878';
+                    picker.style.borderRadius = '12px';
+                    picker.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    emailNote.textContent = 'Organization could not be detected. Please try again.';
+                    emailNote.className = 'field-note err';
+                }
                 return;
             }
 
@@ -2021,7 +2702,6 @@
                 let endpoint, body;
 
                 if (payment === 'bank_transfer') {
-                    // Bank transfer — go to dedicated endpoint
                     endpoint = '/api/bank-transfer';
                     body = {
                         user_name:            nameEl.value.trim(),
@@ -2031,9 +2711,10 @@
                         receipt_url:          uploadedReceiptUrl || null,
                         bank_transaction_ref: document.getElementById('bankTxRef').value.trim() || null,
                         notes:                document.getElementById('orderNotes').value.trim() || null,
+                        organization,
                     };
                 } else {
-                    // PayPal handled separately via PayPal SDK — this path is a fallback
+                    // PayPal handled via SDK — this path is a fallback
                     endpoint = '/api/submit-subscription';
                     body = {
                         user_name:         nameEl.value.trim(),
@@ -2042,6 +2723,7 @@
                         selected_features: features,
                         payment_method:    payment,
                         notes:             document.getElementById('orderNotes').value.trim() || null,
+                        organization,
                     };
                 }
 
@@ -2057,7 +2739,6 @@
                     throw new Error(data.error || 'Submission failed. Please try again.');
                 }
 
-                // Redirect to confirmation page
                 const totalOmr = Math.round(features.reduce((s, f) => s + f.price, 0) * 1000) / 1000;
                 const totalUsd = Math.round(totalOmr * OMR_TO_USD * 100) / 100;
                 sessionStorage.setItem('nxc_order', JSON.stringify({
