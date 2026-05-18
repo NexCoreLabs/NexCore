@@ -1,20 +1,18 @@
 # 🧾 Changelog
 
-## v2.9.0 - 9 May 2026
-### Monetization & Subscription System:
+## v2.9.1 - 2026
+- 
 
-- Pricing Page: Launched a dedicated Pricing page (`pricing.html`) with tiered plans, beta banners, and a new FAQ category for billing.
+---
+
+## v2.9.0 - 9 May 2026
+### Monetization & Subscription System(BETA):
+
+- Pricing Page: Launched a dedicated Pricing page (`pricing.html`) with tiered plans, and a new FAQ category for billing.
 - PayPal Integration: Implemented PayPal order capture with automated email confirmations sent on successful payment.
 - Bank Transfer API: Added a bank transfer API endpoint with reference instructions for manual payment processing.
 - Order Management: Introduced a full subscription management system for submitting and updating orders, including duplicate order detection and a new Order Confirmation page (`order-confirmation.html`).
 - Receipt Generation: Developed a server-side endpoint for generating signed receipt URLs with enhanced print styles for professional order confirmations.
-
-
-### Visual Identification (Constellation Code):
-
-- Constellation Code: Introduced a unique visual identification system replacing the previous "Wave Code" — uses code bytes to generate a constellation-like pattern per project.
-- QR Integration: Integrated QR code generation directly into the project modal for easier mobile access and scanning.
-- Scanner UI Refactor: Improved the project scanner layout with status indicators and better error handling for scan codes.
 
 
 ### AI & Feature Enhancements:

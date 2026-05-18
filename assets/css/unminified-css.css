@@ -103,7 +103,7 @@ a {
     box-shadow: 0 8px 32px 0 rgba(115, 189, 215, .06), inset 0 0 20px hsla(0, 0%, 100%, .1);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    background: rgba(10, 11, 28, .7);
+    background: rgba(10, 11, 28, .6);
     margin-top: 20px;
     margin-left: 40px;
     margin-right: 40px;
