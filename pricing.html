@@ -100,6 +100,8 @@
             color: #fcd34d;
             line-height: 1.55;
             text-align: left;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
         .beta-banner i { margin-top: 2px; flex-shrink: 0; }
         .beta-banner strong { color: #fbbf24; }
@@ -131,6 +133,8 @@
             text-transform: uppercase;
             vertical-align: middle;
             margin-left: 8px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         /* Builder Section */
@@ -310,12 +314,28 @@
         /* Hide floating cookie button — pricing page has a sticky price bar at the same position */
         #nexcore-cookie-settings-btn { display: none !important; }
 
+        /* ── Price Update Animation ──────────────────────────────────── */
+        @keyframes priceUpdate {
+            0% { 
+                color: #6ee7f3;
+                text-shadow: 0 0 8px rgba(110,231,243,0.6);
+                transform: scale(1.05);
+            }
+            50% { 
+                text-shadow: 0 0 16px rgba(110,231,243,0.8);
+            }
+            100% { 
+                color: #6ee7f3;
+                text-shadow: none;
+                transform: scale(1);
+            }
+        }
+
         /* Price Bar */
         .price-bar {
             position: sticky;
             bottom: 20px;
-            background: linear-gradient(135deg, rgba(15,16,40,0.97), rgba(10,11,28,0.97));
-            border: 1px solid rgba(110,231,243,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 14px;
             padding: 16px 22px;
             display: flex;
@@ -323,7 +343,8 @@
             justify-content: space-between;
             gap: 16px;
             margin-top: 20px;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
             z-index: 100;
             flex-wrap: wrap;
@@ -350,8 +371,17 @@
             flex-shrink: 0;
         }
         .price-bar-label { font-size: 13px; color: #9aa3b2; }
-        .price-bar-amount { font-size: 1.4rem; font-weight: 800; color: #6ee7f3; }
-        .price-bar-usd { font-size: 13px; color: #9aa3b2; }
+        .price-bar-amount { 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            color: #6ee7f3;
+            transition: color 0.3s ease-out;
+            will-change: transform;
+        }
+        .price-bar-amount.updating {
+            animation: priceUpdate 0.6s ease-out;
+        }
+        .price-bar-usd { font-size: 13px; color: #9aa3b2; transition: color 0.3s ease-out; }
 
         /* Budget Mode */
         .budget-input-section { max-width: 480px; margin: 0 auto 30px; }
@@ -486,7 +516,15 @@
             border-bottom: none;
             margin-top: 4px;
         }
-        .order-summary-row .row-price { color: #6ee7f3; font-weight: 600; }
+        .order-summary-row .row-price { 
+            color: #6ee7f3; 
+            font-weight: 600;
+            transition: color 0.3s ease-out;
+            will-change: transform;
+        }
+        .order-summary-row .row-price.updating {
+            animation: priceUpdate 0.6s ease-out;
+        }
 
         /* Form Fields */
         .form-row {
@@ -1413,6 +1451,11 @@
             return Math.ceil(((baseUsd + PAYPAL_FEE_FIXED) / (1 - PAYPAL_FEE_RATE)) * 100) / 100;
         }
 
+        // Convert USD back to OMR for display
+        function convertUsdToOmr(usd) {
+            return Math.round(usd / OMR_TO_USD * 1000) / 1000;
+        }
+
         const FEATURE_CATALOG = {
             support_1week:  { label: 'Support — 1 Week',    price: 0.250 },
             support_1month: { label: 'Support — 1 Month',   price: 0.500 },
@@ -1497,12 +1540,30 @@
                     .map(f => `<span class="price-feature-chip">${f.label}</span>`)
                     .join('');
             }
-            document.getElementById('priceBarTotal').textContent = totalFixed.toFixed(3) + ' OMR';
-            document.getElementById('priceBarUSD').textContent = '≈ $' + usd.toFixed(2);
+            // Update price bar with animation
+            const priceBarTotal = document.getElementById('priceBarTotal');
+            priceBarTotal.classList.remove('updating');
+            void priceBarTotal.offsetWidth; // Force reflow to restart animation
+            priceBarTotal.classList.add('updating');
+            priceBarTotal.textContent = totalFixed.toFixed(3) + ' OMR';
+            
+            const priceBarUSD = document.getElementById('priceBarUSD');
+            priceBarUSD.classList.remove('updating');
+            void priceBarUSD.offsetWidth; // Force reflow to restart animation
+            priceBarUSD.classList.add('updating');
+            priceBarUSD.textContent = '≈ $' + usd.toFixed(2);
 
-            // PayPal amount hint badge (shows grossed-up amount)
+            // PayPal amount hint badge (shows grossed-up amount in both USD and OMR)
             const ppBadge = document.getElementById('paypalAmountBadge');
-            if (ppBadge) ppBadge.textContent = features.length > 0 ? `$${calcPayPalUsd(usd).toFixed(2)} USD` : '';
+            if (ppBadge) {
+                if (features.length > 0) {
+                    const paypalUsd = calcPayPalUsd(usd);
+                    const paypalOmr = convertUsdToOmr(paypalUsd);
+                    ppBadge.textContent = `${paypalOmr.toFixed(3)} OMR ($${paypalUsd.toFixed(2)})`;
+                } else {
+                    ppBadge.textContent = '';
+                }
+            }
 
             // Update bank transfer amount display if visible
             if (document.querySelector('input[name="payment"]:checked')?.value === 'bank_transfer') {
@@ -1533,12 +1594,32 @@
                 </div>`
             ).join('');
 
+            // Check if PayPal is selected
+            const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value;
+            let finalTotalOmr = totalOmr;
+            let totalLabel = 'Total';
+            
+            if (paymentMethod === 'paypal') {
+                // Calculate final total with PayPal fees
+                const grossUsd = calcPayPalUsd(totalUsd);
+                const finalOmr = convertUsdToOmr(grossUsd);
+                finalTotalOmr = finalOmr;
+                totalLabel = 'Total (with PayPal fee)';
+            }
+
             el.innerHTML = `
                 ${rows}
                 <div class="order-summary-row total">
-                    <span>Total</span>
-                    <span class="row-price">${totalOmr.toFixed(3)} OMR</span>
+                    <span>${totalLabel}</span>
+                    <span class="row-price">${finalTotalOmr.toFixed(3)} OMR</span>
                 </div>`;
+            
+            // Trigger animation on all price elements
+            el.querySelectorAll('.row-price').forEach(priceEl => {
+                priceEl.classList.remove('updating');
+                void priceEl.offsetWidth; // Force reflow to restart animation
+                priceEl.classList.add('updating');
+            });
         }
 
         // ─────────────────────────────────────────────────────────────────
@@ -1820,12 +1901,30 @@
             const grossUsd  = calcPayPalUsd(baseUsd);
             const feeUsd    = (grossUsd - baseUsd).toFixed(2);
             const totalUsd  = grossUsd.toFixed(2);
+            const grossOmr  = convertUsdToOmr(grossUsd);
+            const feeOmr    = (grossOmr - totalOmr).toFixed(3);
 
-            // Show fee breakdown note
+            // Show detailed fee breakdown note with OMR amounts
             const feeNoteEl = document.getElementById('paypalFeeNote');
             if (feeNoteEl) {
-                feeNoteEl.style.display = 'flex';
-                feeNoteEl.innerHTML = `<i class="fa-solid fa-circle-info"></i><div>Your total includes a <strong>$${feeUsd} PayPal processing fee</strong> (3.49% + $0.49). Base price: <strong>$${baseUsd.toFixed(2)}</strong> &rarr; charged: <strong>$${totalUsd}</strong>.</div>`;
+                feeNoteEl.style.display = 'block';
+                feeNoteEl.innerHTML = `
+                    <div style="background:rgba(0,112,186,0.08);border:1px solid rgba(0,112,186,0.2);border-radius:8px;padding:14px 16px;font-size:13px;color:#ccc;line-height:1.6;">
+                        <div style="margin-bottom:10px;"><strong>Pricing Breakdown:</strong></div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                            <span>Base total:</span>
+                            <span><strong>${totalOmr.toFixed(3)} OMR</strong> <span style="color:#9aa3b2;">(≈ $${baseUsd.toFixed(2)} USD)</span></span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+                            <span>PayPal fee (3.49% + $0.49):</span>
+                            <span style="color:#fbbf24;"><strong>+${feeOmr} OMR</strong> <span style="color:#9aa3b2;">($${feeUsd})</span></span>
+                        </div>
+                        <div style="border-top:1px solid rgba(0,112,186,0.3);padding-top:8px;display:flex;justify-content:space-between;">
+                            <span style="color:#6ee7f3;"><strong>You will pay:</strong></span>
+                            <span style="color:#6ee7f3;"><strong>${grossOmr.toFixed(3)} OMR</strong> <span style="color:#9aa3b2;">($${totalUsd})</span></span>
+                        </div>
+                    </div>
+                `;
             }
 
             const nameEl  = document.getElementById('orderName');
